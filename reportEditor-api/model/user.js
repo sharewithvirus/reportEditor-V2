@@ -5,7 +5,15 @@ const userSchema = new Schema({
     userName: String,
     email: String,
     password: String,
+    userStatus: {
+        type: Boolean,
+        default: false,
+    },
     isAdmin:{
+        type: Boolean,
+        default: false
+    },
+    emailVerified:{
         type: Boolean,
         default: false
     },
@@ -14,13 +22,19 @@ const userSchema = new Schema({
         default: 'user',
         enum: ['user', 'admin']
     },
-    activity: {
-        type: Schema.ObjectId,
-        ref: 'Activity'
-    },
+    activity: [
+        {
+            type: Schema.ObjectId,
+            ref: 'Activity'
+        }
+    ],
     department: {
         type: Schema.ObjectId,
         ref: 'Department'
+    },
+    access: {
+        type: Schema.ObjectId,
+        ref: 'Role'
     }
 },{
     timestamps: true,

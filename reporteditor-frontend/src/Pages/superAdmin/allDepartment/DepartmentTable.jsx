@@ -10,9 +10,12 @@ import Paper from '@mui/material/Paper';
 import Button from '@mui/material/Button'
 import Switch from '@mui/material/Switch';
 import EditDepartmentModal from './EditDepartmentModal';
+import { Rewind } from 'react-bootstrap-icons';
+
 const label = { inputProps: { 'aria-label': 'Switch demo' } };
 
-export default function DepartmentTable() {
+
+export default function DepartmentTable({ rows, changeStatus, modify }) {
 
   const [open, setOpen] = React.useState(false);
     const handleOpen = () => setOpen(true);
@@ -24,32 +27,25 @@ export default function DepartmentTable() {
         <TableHead>
           <TableRow>
             <TableCell align="center" sx={{fontWeight:'bold'}}>Department Name</TableCell>         
-            <TableCell align="center" sx={{fontWeight:'bold'}}>Acces</TableCell>
+            <TableCell align="center" sx={{fontWeight:'bold'}}>Description</TableCell>
             <TableCell align="center" sx={{fontWeight:'bold'}}>Action</TableCell>
             <TableCell align="center" sx={{fontWeight:'bold'}}>Status</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
-          {/* {rows.map((row) => ( */}
+          {rows.map((row, index) => (
             <TableRow
-            //   key={row.name}
+              key={row.name}
               sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
             >
-            
-              
-              <TableCell align="center">Research</TableCell>
-              <TableCell align="center">ADMIN</TableCell>
-              <TableCell align="center"><Button variant="outlined" color="primary" sx={{textTransform: "none"}} onClick={handleOpen}>
+              <TableCell align="center">{row.name}</TableCell>
+              <TableCell align="center">{row.description}</TableCell>
+              <TableCell align="center"><Button variant="outlined" color="primary" sx={{textTransform: "none"}} onClick={() => modify(index)}>
               Modify
               </Button></TableCell>
-              <TableCell align="center"> <Switch {...label} defaultChecked /></TableCell>  
-
-              {/* <TableCell align="right">{row.calories}</TableCell>
-              <TableCell align="right">{row.fat}</TableCell>
-              <TableCell align="right">{row.carbs}</TableCell>
-              <TableCell align="right">{row.protein}</TableCell> */}
+              <TableCell align="center"> <Switch {...label} checked={row.status} onChange={() => changeStatus(row._id)} /></TableCell>  
             </TableRow>
-          {/* ))} */}
+          ))}
         </TableBody>
         {
           open ? <EditDepartmentModal open={open}  handleClose={handleClose}/>

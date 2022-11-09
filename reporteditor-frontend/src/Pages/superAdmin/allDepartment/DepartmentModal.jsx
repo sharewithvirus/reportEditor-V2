@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React, {useState, useEffect} from 'react';
 // import Modal from '@mui/material/Modal';
 import { Box, Stack, TextField, Grid } from '@mui/material';
 import Button from '@mui/material/Button';
@@ -14,6 +14,7 @@ const style = {
   position: 'absolute',
   top: '50%',
   left: '50%',
+  width: '40rem',
   transform: 'translate(-50%, -50%)',
   bgcolor: 'background.paper',
   border: '2px solid #000',
@@ -22,6 +23,20 @@ const style = {
 };
 
 export default function DepartmentModal(props) {
+    const [data, setData] = useState({
+        name: props.deptData.name,
+        description: props.deptData.description,
+    });
+
+    const onInputChange = (e) => {
+        const {name, value} = e.target;
+        setData({...data, [name]: value});
+    }
+
+    const handleSubmit = async () => {
+        await props.create(data);
+        setData("");
+    }
  
 
   return (
@@ -42,17 +57,18 @@ export default function DepartmentModal(props) {
                             spacing={2}
                         >
                             <FileCopyRoundedIcon />
-                            <Typography sx={{ fontSize: '20px', fontWeight: 'bold' }}>Create a Department</Typography>
+                            <Typography sx={{ fontSize: '20px', fontWeight: 'bold' }}>{props.edit ? "Update Department" : "Create a Department"}</Typography>
                         </Stack>
                         <hr />
                     </Typography>
                     <Box>
                         <Grid container spacing={2}>
                             <Grid lg={4} item xs={12}>
+                            <FormControl fullWidth sx={{ m: 1 }}>
                                 <Box
                                     component="form"
                                     sx={{
-                                        '& .MuiTextField-root': { m: 1, width: '25ch' },
+                                        '& .MuiTextField-root': { m: 1, width: '65ch' },
                                     }}
                                     noValidate
                                     autoComplete="off"
@@ -60,11 +76,27 @@ export default function DepartmentModal(props) {
                                     <TextField color='primary'
                                         label="Department Name"
                                         id="outlined-size-small"
-                                        // defaultValue="Small"
-
-                                        size="small"
+                                        placeholder="Input Department Name"
+                                        fullWidth
+                                        name="name"
+                                        onChange={onInputChange}
+                                        defaultValue={props.deptData ? props.deptData.name : ''}
+                                        size="large"
+                                    />
+                                    <TextField color='primary'
+                                        label="Department Name Description"
+                                        id="outlined-multiline-flexible"
+                                        fullWidth
+                                        multiline
+                                        maxRows={10}
+                                        placeholder="Input Department Description"
+                                        name="description"
+                                        defaultValue={props.deptData ? props.deptData.description : ''}
+                                        onChange={onInputChange}
+                                        size="large"
                                     />
                                 </Box>
+                                </FormControl>
                             </Grid>
                             {/* <Grid item lg={4} xs={12}>
                                 <Box
@@ -101,61 +133,18 @@ export default function DepartmentModal(props) {
                                 </Box>
                             </Grid> */}
                         </Grid>
-                        <Box my={4}>
-                            <Grid container spacing={2}>
-                                <Grid item lg={12}  spacing={2}>
-                                
-                                    <FormControl sx={{ m: 1, minWidth: 216 }} size="small">
-                                        <InputLabel id="demo-select-small">Select Roles</InputLabel>
-                                        <Select
-                                            labelId="demo-select-small"
-                                            id="demo-select-small"
-                                            // value={age}
-                                            label="Select Roles"
-                                        // onChange={handleChange}
-                                        >
-                                            <MenuItem value="">
-                                                <em>None</em>
-                                            </MenuItem>
-                                            <MenuItem value='admin'>Admin</MenuItem>
-                                            <MenuItem value={20}>Twenty</MenuItem>
-                                            <MenuItem value={30}>Thirty</MenuItem>
-                                        </Select>
-                                    </FormControl>
-                                </Grid>
-                                <Grid item lg={12}  spacing={2} pl={4}>
-                                    <FormControl sx={{ m: 1, minWidth: 216 }} size="small">
-                                        <InputLabel id="demo-select-small">Select</InputLabel>
-                                        <Select
-                                            labelId="demo-select-small"
-                                            id="demo-select-small"
-                                            // value={age}
-                                            label="Select"
-                                        // onChange={handleChange}
-                                        >
-                                            <MenuItem value="">
-                                                <em>None</em>
-                                            </MenuItem>
-                                            <MenuItem value='admin'>Read</MenuItem>
-                                            <MenuItem value={20}>Write</MenuItem>
-                                        </Select>
-                                    </FormControl>
-                                </Grid>
-                            </Grid>
-                        </Box>
-                        <Box my={5} pl={1}>
-                            <Button variant="outlined" color="primary" sx={{ textTransform: "none" }} >
-                                Send Invitaion
-                            </Button>
-                        </Box>
 
                     </Box>
                     <Stack display='flex'
                         direction='row'
                         justifyContent='end'
+                        spacing={2}
                     >
                         <Button variant="outlined" color="primary" sx={{ textTransform: "none" }} onClick={props.handleClose} >
                             Cancel
+                        </Button>
+                        <Button variant="outlined" color="primary" sx={{ textTransform: "none" }} onClick={handleSubmit} >
+                            Save
                         </Button>
                     </Stack>
                 </Box>

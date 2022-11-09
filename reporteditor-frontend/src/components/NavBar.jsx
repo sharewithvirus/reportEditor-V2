@@ -1,28 +1,27 @@
 import * as React from 'react';
+import { useNavigate } from "react-router-dom";
 import Logo from '.././asset/logo/LogoGMI.PNG'
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
-// import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
-// import Menu from '@mui/material/Menu';
-// import MenuIcon from '@mui/icons-material/Menu';
 import Container from '@mui/material/Container';
-// import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
-// import Tooltip from '@mui/material/Tooltip';
-// import MenuItem from '@mui/material/MenuItem';
 import AdbIcon from '@mui/icons-material/Adb';
 
 
 
 
-const pages = ['Products', 'Pricing', 'Blog'];
-const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
+import { UserDataContext } from '../context/userContext';
+import { userLogout } from '../Services/authService';
+
 
 const NavBar = () => {
+  const { setIsAdmin, userInfo, setIsLoading, setIsAuthenticated } = React.useContext(UserDataContext)
   const [anchorElNav, setAnchorElNav] = React.useState(null);
   const [anchorElUser, setAnchorElUser] = React.useState(null);
+
+  const navigate = useNavigate();
 
   const handleOpenNavMenu = (event) => {
     setAnchorElNav(event.currentTarget);
@@ -37,6 +36,15 @@ const NavBar = () => {
   
   const handleCloseUserMenu = () => {
     setAnchorElUser(null);
+  };
+
+  const handelLogOut = async () => {
+    setIsLoading(true)
+    await userLogout(userInfo._id);
+      setIsAdmin(false);
+      setIsAuthenticated(false)
+      setIsLoading(false);
+    return navigate("/login");
   };
 
   return (
@@ -136,9 +144,8 @@ const NavBar = () => {
           </Button></Box>
           
           <Box sx={{ flexGrow: 0 }}>
-          <Button variant="text" color="primary" sx={{fontSize:'17px',textTransform: "none" }}>
-          Logout
-
+          <Button variant="text" color="primary" sx={{fontSize:'17px',textTransform: "none" }} onClick={handelLogOut}>
+            Logout
           </Button>
             {/* <Tooltip title="Open settings">
               <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
@@ -173,4 +180,5 @@ const NavBar = () => {
     </AppBar>
   );
 };
+
 export default NavBar;

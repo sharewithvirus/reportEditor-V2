@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Box, Stack, TextField, Grid } from '@mui/material';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
@@ -22,17 +22,92 @@ const style = {
     p: 4,
 };
 
-export default function UserManagementModal(props) {
+const UserManagementModal = ({open, edit, activeUser, handleClose, deptList, roleList, handelCreate, handelUpdate}) => {
 
+    const [data, setData] = useState({
+        userName: "", 
+        email: "",
+        verifyEmail: "", 
+        department: "",
+        access: ""
+    });
+    const [deptRoleList, setDeptRoleList] = useState([]);
+
+    const departmentRole = () => {
+        if(data.department) {
+            let list = [];
+        for (let i = 0; i < roleList.length; i++) {
+            if( data.department === roleList[i].department._id){
+                list.push(roleList[i])
+            } 
+        }
+        setDeptRoleList(list);
+        }else if(edit === true && deptRoleList.length > 0){
+            let list = [];
+        for (let i = 0; i < roleList.length; i++) {
+            if( activeUser.department._id === roleList[i].department._id){
+                list.push(roleList[i])
+            } 
+        }
+        setDeptRoleList(list);
+        }
+    }
+
+    const handelInput = (e) => {
+        const { name, value } = e.target;
+        setData({...data, [name]: value});
+    }
+
+    const handleSubmit = () => {
+        if(edit === false){
+            if(data.userName === ""){
+                alert("Please Enter a username");
+                return;
+            }else
+            if(data.email === "" || data.verifyEmail === "" ){
+                alert("Please Enter Email");
+                return;
+            }else
+            if(data.email !== data.verifyEmail){
+                alert("Email are not Matched");
+                return;
+            }else 
+            if(data.department === ""){ 
+                alert("Please Select a Department");
+                return;
+            }else
+            if(data.access === ""){
+                alert("Please Select Department Role");
+                return; 
+            }else{
+                    handelCreate(data) 
+                }
+        }else {
+            handelUpdate(data)
+            }   
+    }
+
+    useEffect(() => {
+        departmentRole();
+    }, [data])
+    useEffect(() => {
+        if(edit){
+            setData({...data, 
+                _id: activeUser._id, 
+                userName: activeUser.userName, 
+                email: activeUser.email, 
+                verifyEmail: "",
+                department: activeUser.department._id,
+                access: activeUser.access._id 
+            })
+        }
+    }, [])
 
     return (
         <div>
-            {/* <Button onClick={handleOpen}>Open modal</Button> */}
             <Modal
-                open={props.open}
-                onClose={props.handleClose}
-                aria-labelledby="modal-modal-title"
-                aria-describedby="modal-modal-description"
+                open={open}
+                onClose={handleClose}
             >
                 <Box sx={style}>
                     <Typography id="modal-modal-title" variant="h6" component="h2">
@@ -43,7 +118,7 @@ export default function UserManagementModal(props) {
                             spacing={2}
                         >
                             <FileCopyRoundedIcon />
-                            <Typography sx={{ fontSize: '20px', fontWeight: 'bold' }}>Create User</Typography>
+                            <Typography sx={{ fontSize: '20px', fontWeight: 'bold' }}>{edit ? "Update User" : "Create User"}</Typography>
                         </Stack>
                         <hr />
                     </Typography>
@@ -60,9 +135,11 @@ export default function UserManagementModal(props) {
                                 >
                                     <TextField color='primary'
                                         label="Full Name"
+                                        name="userName"
                                         id="outlined-size-small"
+                                        onChange={handelInput}
+                                        defaultValue={edit ? activeUser.userName : data.userName}
                                         // defaultValue="Small"
-
                                         size="small"
                                     />
                                 </Box>
@@ -76,12 +153,28 @@ export default function UserManagementModal(props) {
                                     noValidate
                                     autoComplete="off"
                                 >
+                                {
+                                    edit ? 
                                     <TextField
                                         label="Email"
                                         id="outlined-size-small"
-                                        // defaultValue="Small"
+                                        name="email"
+                                        onChange={handelInput}
+                                        defaultValue={edit ? activeUser.email : data.email}
+                                        size="small"
+                                        disabled
+                                    />
+                                    : 
+                                    <TextField
+                                        label="Email"
+                                        id="outlined-size-small"
+                                        name="email"
+                                        onChange={handelInput}
+                                        // defaultValue={""}
                                         size="small"
                                     />
+                                }
+                                    
                                 </Box>
                             </Grid>
                             <Grid item xs={12} lg={4}>
@@ -93,12 +186,27 @@ export default function UserManagementModal(props) {
                                     noValidate
                                     autoComplete="off"
                                 >
+                            {
+                                edit ? 
                                     <TextField
                                         label="Verify Email"
                                         id="outlined-size-small"
+                                        name="verifyEmail"
+                                        onChange={handelInput}
+                                        defaultValue={edit ? activeUser.email : data.verifyEmail}
+                                        size="small"
+                                        disabled
+                                    />
+                                :   
+                                    <TextField
+                                        label="Verify Email"
+                                        id="outlined-size-small"
+                                        name="verifyEmail"
+                                        onChange={handelInput}
                                         // defaultValue="Small"
                                         size="small"
                                     />
+                            }
                                 </Box>
                             </Grid>
                         </Grid>
@@ -106,56 +214,99 @@ export default function UserManagementModal(props) {
                             <Grid container spacing={2}>
                                 <Grid item xs={12} lg={4}>
                                     <FormControl sx={{ m: 1, minWidth: 216 }} size="small">
-                                        <InputLabel id="demo-select-small">Select Roles</InputLabel>
+                                        <InputLabel id="demo-select-small">Select Department</InputLabel>
                                         <Select
                                             labelId="demo-select-small"
                                             id="demo-select-small"
-                                            // value={age}
+                                            name="department"
+                                            onChange={handelInput}
+                                            defaultValue={edit ? activeUser.department._id : data.department}
                                             label="Select Roles"
-                                        // onChange={handleChange}
                                         >
-                                            <MenuItem value="">
-                                                <em>None</em>
-                                            </MenuItem>
-                                            <MenuItem value='admin'>Admin</MenuItem>
-                                            <MenuItem value={20}>Twenty</MenuItem>
-                                            <MenuItem value={30}>Thirty</MenuItem>
+                                            {deptList ? 
+                                                deptList.map((x, i) => (
+                                                    <MenuItem value={x._id}>{x.name}</MenuItem>
+                                                ))
+                                            :
+                                                <MenuItem disabled>No Department Found</MenuItem>    
+                                            }
                                         </Select>
                                     </FormControl>
                                 </Grid>
                                 <Grid item xs={12} lg={4}>
                                     <FormControl sx={{ m: 1, minWidth: 216 }} size="small">
-                                        <InputLabel id="demo-select-small">Select</InputLabel>
+                                        <InputLabel id="demo-select-small">Select Role</InputLabel>
+                                        {
+                                            edit && deptRoleList.length === 0 ? 
+                                            <Select
+                                            labelId="demo-select-small"
+                                            id="demo-select-small"
+                                            name="access"
+                                            onChange={handelInput}
+                                            defaultValue={edit ? activeUser.access._id : data.access}
+                                            label="Select"
+                                            disabled
+                                        >
+                                            {deptRoleList.length > 0 ? 
+                                                deptRoleList.map((x, i) => (
+                                                    <MenuItem value={x._id}>{x.name}</MenuItem>
+                                                ))
+                                            :
+                                                <MenuItem disabled>No Role Found</MenuItem>
+                                            }
+                                        </Select>
+                                        :
                                         <Select
                                             labelId="demo-select-small"
                                             id="demo-select-small"
-                                            // value={age}
+                                            name="access"
+                                            onChange={handelInput}
+                                            defaultValue={edit ? activeUser.access._id : data.access}
                                             label="Select"
-                                        // onChange={handleChange}
                                         >
-                                            <MenuItem value="">
-                                                <em>None</em>
-                                            </MenuItem>
-                                            <MenuItem value='admin'>Read</MenuItem>
-                                            <MenuItem value={20}>Write</MenuItem>
-
+                                            {deptRoleList.length > 0 ? 
+                                                deptRoleList.map((x, i) => (
+                                                    <MenuItem value={x._id}>{x.name}</MenuItem>
+                                                ))
+                                            :
+                                                <MenuItem disabled>No Role Found</MenuItem>
+                                            }
                                         </Select>
+                                        }
                                     </FormControl>
                                 </Grid>
                             </Grid>
                         </Box>
-                        <Box my={5} pl={1}>
-                            <Button variant="outlined" color="primary" sx={{ textTransform: "none" }} >
-                                Send Invitaion
-                            </Button>
-                        </Box>
+                        { edit ? 
+                            ""
+                            :
+                            <Box my={5} pl={1}>
+                                {   data.userName === "" || data.email === "" || data.verifyEmail === "" || data.department === "" || data.access === "" ?
+                                                
+                                    <Button variant="outlined" color="primary" sx={{ textTransform: "none" }} disabled>
+                                        Send Invitation
+                                    </Button>
+                                        : 
+                                    <Button variant="outlined" color="primary" sx={{ textTransform: "none" }} onClick={handleSubmit}>
+                                        Send Invitation
+                                    </Button>
+                                }
+                            </Box>
+                        }
 
                     </Box>
                     <Stack display='flex'
                         direction='row'
                         justifyContent='end'
-                    >
-                        <Button variant="outlined" color="primary" sx={{ textTransform: "none" }} onClick={props.handleClose} >
+                        spacing={2}
+                    >   {edit ?
+                            <Button variant="outlined" color="primary" sx={{ textTransform: "none" }} onClick={handleSubmit} >
+                                Update User
+                            </Button>
+                            :
+                            ""
+                        }
+                        <Button variant="outlined" color="primary" sx={{ textTransform: "none" }} onClick={handleClose} >
                             Cancel
                         </Button>
                     </Stack>
@@ -164,3 +315,5 @@ export default function UserManagementModal(props) {
         </div>
     );
 }
+
+export default UserManagementModal;

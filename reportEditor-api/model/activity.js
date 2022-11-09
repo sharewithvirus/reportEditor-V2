@@ -6,8 +6,14 @@ const activitySchema = new Schema({
         type: Schema.ObjectId,
         ref: 'User'
     },
-    activityType: String,
-    ipAddress: String,
+    activityType:{
+        type: String,
+        enum: [ "Login", "Logout" ]
+    },
+    ipAddress: {
+        type: String,
+        default: "0.0.0.0",
+    },
     
 },
 {

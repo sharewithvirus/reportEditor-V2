@@ -11,13 +11,10 @@ import { Grid,Box } from "@mui/material";
 function DashboardAdmin() {
   return (
     <>
-
       <NavBar />
       <Box mt={8}>
         <Grid container  >
-
           <Grid item xs={12} lg={9}>
-
             <UserManagement />
             <Department />
             <Roles />

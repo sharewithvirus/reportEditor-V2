@@ -12,7 +12,7 @@ import EditUserManagementModal from './EditUserManagementModal';
 const label = { inputProps: { 'aria-label': 'Switch demo' } };
 
 
-export default function UserManagementTable() {
+export default function UserManagementTable({ rows, updateStatus, editModelOpen }) {
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
@@ -23,33 +23,17 @@ export default function UserManagementTable() {
           <TableRow>
             <TableCell align="center" sx={{fontWeight:'bold'}}>User Name</TableCell>
             <TableCell align="center" sx={{fontWeight:'bold'}}>Email</TableCell>
-            <TableCell align="center" sx={{fontWeight:'bold'}}>Acces</TableCell>
+            <TableCell align="center" sx={{fontWeight:'bold'}}>Email Status</TableCell>
+            <TableCell align="center" sx={{fontWeight:'bold'}}>Department</TableCell>
+            <TableCell align="center" sx={{fontWeight:'bold'}}>Permission</TableCell>
             <TableCell align="center" sx={{fontWeight:'bold'}}>Action</TableCell>
             <TableCell align="center" sx={{fontWeight:'bold'}}>Status</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
-          {/* {rows.map((row) => ( */}
-            <TableRow
-            //   key={row.name}
-              sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-            >
-            
-              
-              <TableCell align="center">Vikas</TableCell>
-              <TableCell align="center">vikas@example.com</TableCell>
-              <TableCell align="center">Admin</TableCell>
-              <TableCell align="center"><Button variant="outlined" color="primary" sx={{textTransform: "none" }} onClick={handleOpen}>
-              Modify
-              </Button></TableCell>
-              <TableCell align="center"> <Switch {...label} defaultChecked /></TableCell>  
-
-              {/* <TableCell align="right">{row.calories}</TableCell>
-              <TableCell align="right">{row.fat}</TableCell>
-              <TableCell align="right">{row.carbs}</TableCell>
-              <TableCell align="right">{row.protein}</TableCell> */}
-            </TableRow>
-          {/* ))} */}
+          {rows.map((row, index) => (
+            <RowLine item={row} index={index} updateStatus={(x) => updateStatus(x)} editModelOpen={(x) => editModelOpen(x)}/>
+          ))}
         </TableBody>
         {
       open ?  <EditUserManagementModal open={open} handleClose={handleClose}/>
@@ -61,4 +45,29 @@ export default function UserManagementTable() {
     </TableContainer>
     
   );
+}
+
+const RowLine = ({ item, index, updateStatus, editModelOpen }) => {
+
+  return (
+    <TableRow
+    //   key={row.name}
+      sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+    >
+      <TableCell align="center">{item.userName}</TableCell>
+      <TableCell align="center">{item.email}</TableCell>
+      <TableCell align="center">{item.emailVerified ? "Verified" : "Not Verified"}</TableCell>
+      <TableCell align="center">{item.department.name}</TableCell>
+      <TableCell align="center">{item.access.name}</TableCell>
+      <TableCell align="center"><Button variant="outlined" color="primary" sx={{textTransform: "none" }} onClick={() => editModelOpen(index)}>
+      Modify
+      </Button></TableCell>
+      <TableCell align="center"> <Switch {...label} checked={item.userStatus} defaultValue={item.userStatus} onChange={() => updateStatus(item._id)} /></TableCell>  
+
+      {/* <TableCell align="right">{row.calories}</TableCell>
+      <TableCell align="right">{row.fat}</TableCell>
+      <TableCell align="right">{row.carbs}</TableCell>
+      <TableCell align="right">{row.protein}</TableCell> */}
+    </TableRow>
+  )
 }
