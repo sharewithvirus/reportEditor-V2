@@ -94,3 +94,23 @@ exports.updateRole = async (req, res) => {
         })
     }
 }
+
+// i javed akhtar start code from here
+
+exports.roleDelete = async (req, res) => {
+    try {
+        const { roleId } = req.body;
+        const deptStatus = await Role.findById(roleId).select("status");
+        await Role.findByIdAndUpdate(deptStatus._id, {status:false});
+        res.status(200).json({
+            status: "success",
+            message: "Role Status updated successfully"
+        })
+    } catch (error) {
+        console.log(error)
+        res.status(500).json({
+            status: "error",
+            message: "Internal Server Error",
+        })
+    }
+}

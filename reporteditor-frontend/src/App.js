@@ -16,6 +16,7 @@ import LogIn from './Pages/login/LogIn';
 import VerifyPassword from './Pages/verifyPassword/VerifyPassword';
 import Loader from './components/Loader';
 import DashboardRoutes from './Pages/Routes/DashboardRoutes';
+import Dashboard from './Pages/researchTeam/dashboard/Dashboard';
 
 
 function App() {
@@ -49,7 +50,7 @@ useEffect(( ) => {
     <>
     <Loader />
 
-    { isAuthenticated ? (
+    {/* { isAuthenticated ? (
         <DashboardRoutes />
     )
     :
@@ -63,7 +64,14 @@ useEffect(( ) => {
       <Route path="/verifyEmail/:token" element={<VerifyPassword />} />
     </Routes>
     )
-    }
+    } */}
+    <Routes>
+    <Route
+    path="/" 
+            element={<Navigate replace to="dashboard" />}
+          ></Route>
+      <Route path="/dashboard" element={<Dashboard/>} />
+    </Routes>
     </>
   );
 }

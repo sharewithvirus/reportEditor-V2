@@ -16,7 +16,7 @@ import { UserDataContext } from '../context/userContext';
 import { userLogout } from '../Services/authService';
 
 
-const NavBar = () => {
+const NavBar = (props) => {
   const { setIsAdmin, userInfo, setIsLoading, setIsAuthenticated } = React.useContext(UserDataContext)
   const [anchorElNav, setAnchorElNav] = React.useState(null);
   const [anchorElUser, setAnchorElUser] = React.useState(null);
@@ -128,7 +128,7 @@ const NavBar = () => {
            GMI LOGO
           </Typography>
          
-          <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
+          <Box sx={{ flexGrow: 0, display: { xs: 'none', md: 'flex' } }}>
             {/* {pages.map((page) => (
               <Button
                 key={page}
@@ -139,10 +139,40 @@ const NavBar = () => {
               </Button>
             ))} */}
           </Box>
+          {!props.reportsDashboard?
+          <>
+           
           <Box sx={{ flexGrow:1 , color:'block !important'}}><Button  variant="text" sx={{fontSize:'17px',textTransform: "none"  }}>
           Admin Panel
           </Button></Box>
-          
+          </>
+          :
+          <>
+          <Box sx={{ flexGrow:2 , color:'block !important'}}><Button  variant="text" sx={{fontSize:'17px',textTransform: "none"  }}>
+          Reports Management
+          </Button>
+          <Button  variant="text" sx={{fontSize:'17px',textTransform: "none"  }}>
+          Reports Templates
+          </Button>
+          </Box>
+          <Box sx={{ flexGrow:1 , color:'block !important'}}>
+         <Button  variant="text" sx={{fontSize:'17px',textTransform: "none"  }}>
+          Research Team Mode
+          </Button></Box>
+          <Box sx={{ flexGrow:2 , color:'block !important'}}>
+         <Button  variant="contained" sx={{fontSize:'10px',textTransform: "none" ,marginRight:"8px" }}>
+          All Reports
+          </Button>
+          <Button  variant="contained" sx={{fontSize:'10px',textTransform: "none", marginLeft:"8px" }}>
+          Create A Report
+          </Button>
+          </Box>
+          <Box sx={{ flexGrow:1 , color:'block !important'}}>
+         <Button  variant="text" sx={{fontSize:'17px',textTransform: "none"  }}>
+          Research Team Mode
+          </Button></Box>
+          </>
+          }
           <Box sx={{ flexGrow: 0 }}>
           <Button variant="text" color="primary" sx={{fontSize:'17px',textTransform: "none" }} onClick={handelLogOut}>
             Logout

@@ -33,7 +33,7 @@ const Roles = () => {
     const [open, setOpen] = React.useState(false);
     const [deptList, setDeptList] = React.useState([]);
     const [roleList, setRoleList] = React.useState([]);
-
+    const [deleteModelShow, setDeleteModelShow ] = React.useState(false)
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
 
@@ -52,7 +52,15 @@ const createNewRole = async ( data ) => {
     }
     setIsLoading(false)
 }
-
+// const handleShowDeleteModel = (index) => {
+//     const roleId = roleList[index];
+//     if(deleteModelShow){
+//         setActiveRoleId("");    
+//     }else{
+//         setActiveRoleId(roleId._id);
+//     }
+//     setDeleteModelShow(!deleteModelShow);
+// }
 const changeStatusOfRole = async (x) => {
     setIsLoading(true)
     const res = await changeRoleStatus(x)
@@ -236,3 +244,68 @@ const Model = ({open, handleClose, deptList, createRole}) => {
 }
 
 export default Roles;
+
+// i javed added lines of code here
+
+const DeleteConfirmationModel = ({open, handleClose, deptList, createRole, handleModelClose}) => {
+
+    const [ data, setData ] = useState({
+        name: '',
+        department: '',
+        access: ''
+    })
+
+    const inputChange = (e) => {
+        const { name, value} = e.target;
+        setData({...data, [name]: value});
+    }
+
+    const handleSubmit = () => {
+        createRole(data);
+    }
+
+    const changeRoleStatus = (id) => {
+        
+    }
+
+    return (
+        <Modal
+        open={open}
+        onClose={handleClose}
+    >
+        <Box sx={style}>
+            <Typography id="modal-modal-title" variant="h6" component="h2">
+                <Stack display='flex'
+                    direction='row'
+                    justifyContent='start'
+                    alignItems='center'
+                    spacing={2}
+                >
+                    <FileCopyRoundedIcon />
+                    <Typography sx={{ fontSize: '20px', fontWeight: 'bold' }}>Deleting Confirmaction</Typography>
+                </Stack>
+                <hr />
+            </Typography>
+            <Box>
+                <Grid container spacing={2}>
+                    <Grid height={75} item xs={12}>
+                        <Typography> Are You Sure to Delete ?</Typography>
+                    </Grid>
+                </Grid>
+            </Box>
+            <Stack display='flex'
+                direction='row'
+                justifyContent='center'
+                spacing={2}
+            >
+                <Button variant="outlined" color="primary" sx={{ textTransform: "none" }} onClick={handleModelClose} >
+                    Cancel
+                </Button>
+                <Button variant="outlined" color="primary" sx={{ textTransform: "none" }} onClick={createRole} >
+                    Delete
+                </Button>
+            </Stack>
+        </Box>
+    </Modal>
+    )
+}

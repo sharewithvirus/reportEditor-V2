@@ -222,3 +222,22 @@ exports.updateUser = async (req, res) => {
         })
     }
 }
+
+// i javed stated code from here
+exports.deleteUser = async (req, res) => {
+    try {
+        const { _id, userName, department, access } = req.body;
+        const userText = await User.findByIdAndUpdate({ _id: _id},{isAdmin:false})
+        res.status(200).json({
+            status: "Success",
+            message: "User Updated Successfully",
+            data: userText
+        })
+    } catch (error) {
+        console.log(error)
+        res.status(500).json({
+            status: "Error",
+            message: "Internal Server Error",
+        })
+    }
+}

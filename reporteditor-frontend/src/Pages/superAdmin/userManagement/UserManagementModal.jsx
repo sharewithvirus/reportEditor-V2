@@ -306,6 +306,9 @@ const UserManagementModal = ({open, edit, activeUser, handleClose, deptList, rol
                             :
                             ""
                         }
+                        <Button variant="outlined" color="primary" sx={{ textTransform: "none" }}  >
+                                Delete
+                            </Button>
                         <Button variant="outlined" color="primary" sx={{ textTransform: "none" }} onClick={handleClose} >
                             Cancel
                         </Button>

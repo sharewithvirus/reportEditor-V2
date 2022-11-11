@@ -38,7 +38,6 @@ export default function DepartmentModal(props) {
         setData("");
     }
  
-
   return (
     <div>
       {/* <Button onClick={handleOpen}>Open modal</Button> */}
@@ -142,6 +141,10 @@ export default function DepartmentModal(props) {
                     >
                         <Button variant="outlined" color="primary" sx={{ textTransform: "none" }} onClick={props.handleClose} >
                             Cancel
+                        </Button>
+                        {/* i javed added line here of delete button */}
+                        <Button variant="outlined" color="primary" sx={{ textTransform: "none" }} onClick={props.handleClose} >
+                            Delete
                         </Button>
                         <Button variant="outlined" color="primary" sx={{ textTransform: "none" }} onClick={handleSubmit} >
                             Save

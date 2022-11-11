@@ -19,12 +19,12 @@ export default function RolesTable({rows, changeVisibility}) {
             <TableCell align="center" sx={{fontWeight:'bold'}}>Role</TableCell>
             <TableCell align="center" sx={{fontWeight:'bold'}}>Department Name</TableCell>
             <TableCell align="center" sx={{fontWeight:'bold'}}>Permission</TableCell>
-            {/* <TableCell align="center" sx={{fontWeight:'bold'}}>Action</TableCell> */}
+            <TableCell align="center" sx={{fontWeight:'bold'}}>Action</TableCell>
             <TableCell align="center" sx={{fontWeight:'bold'}}>Status</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
-          {rows.map((row) => (
+          {rows.map((row,index) => (
             <TableRow
               key={row.name}
               sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
@@ -32,9 +32,14 @@ export default function RolesTable({rows, changeVisibility}) {
               <TableCell align="center">{row.name}</TableCell>
               <TableCell align="center">{row.department.name}</TableCell>
               <TableCell align="center">{row.access === "read_write" ? ("Read And Write") :  row.access === "read" ? ("Read") : row.access === "write" ? "Write" : "" }</TableCell>
-              {/* <TableCell align="center"><Button variant="outlined" color="primary" sx={{textTransform: "none"}}>
-              Modify
-              </Button></TableCell> */}
+              <TableCell align="center"><Button
+                    variant="outlined"
+                    color="primary"
+                    sx={{ textTransform: "none" }}
+                    // onClick={() => showConfirmation(index)}
+                  >
+                    Delete
+                  </Button></TableCell>
               <TableCell align="center"> <Switch {...label} checked={row.status} defaultValue={row.status} onChange={() => changeVisibility(row._id)} /></TableCell>  
             </TableRow>
             
