@@ -12,7 +12,12 @@ import { Box } from "@mui/system";
 import React from "react";
 import StatusTable from "./StatusTable";
 import SettingsOutlinedIcon from "@mui/icons-material/SettingsOutlined";
-function ReportManagementTable() {
+import NoteAltOutlinedIcon from '@mui/icons-material/NoteAltOutlined';
+function ReportManagementTable({taskStatus}) {
+  let taskFlag=true;
+  for (var i=0; i < taskStatus.length; i++) {
+    if(taskStatus[i]===false){taskFlag=false}
+} 
   return (
     <>
       <Box
@@ -22,25 +27,10 @@ function ReportManagementTable() {
           "& > :not(style)": {
             width: "100%",
           },
+          marginTop:"40px"
         }}
       >
         <Paper elevation={3} sx={{ padding: "5px", display: "flex" }}>
-          {/* <Box sx={{ flexGrow: 6, color: "block !important", padding: "15px" }}>
-            <Typography variant="body1">
-              Power Line Communication (PLC) Market Size By Offering (Software
-              [Energy Management, Data Acquisition and
-            </Typography>
-            <Typography variant="caption">
-              Author: Nikhil, Vikas, Uttareshwa
-            </Typography>
-            <Typography variant="caption" display="block">
-              Author: Nikhil, Vikas, Uttareshwa
-            </Typography>
-            </Box>
-            <Box sx={{ flexGrow: 3, color: "block !important" }}>
-            
-            </Box>
-        <Box sx={{ flexGrow: 3, color: "block !important" }}></Box> */}
           <Grid container spacing={0}>
             <Grid item sm={12} md={7} sx={{ padding: 4 }}>
               <Typography variant="body2">
@@ -54,8 +44,8 @@ function ReportManagementTable() {
                 Author: Nikhil, Vikas, Uttareshwa
               </Typography>
             </Grid>
-            <Grid item sm={12} md={2} sx={{ padding: 1 }}>
-              <StatusTable />
+            <Grid item sm={12} md={2} sx={{ paddingTop:3,alignItems:"center"}}>
+              <StatusTable completedTask={taskStatus}/>
             </Grid>
             <Grid item sm={12} md={3}>
               <Grid container spacing={8} sx={{ alignItems: "center" }}>
@@ -64,13 +54,13 @@ function ReportManagementTable() {
                   <Box
                     sx={{
                       display: "flex",
-                      justifyContent: "space-evenly",
+                      justifyContent: "center",
                       marginLeft: "auto",
                       marginRight: "auto",
                     }}
                   >
                     <IconButton>
-                      <TaskOutlinedIcon />
+                      {taskFlag===true?<TaskOutlinedIcon />:<NoteAltOutlinedIcon/>} 
                     </IconButton>
                     <IconButton>
                       <SettingsOutlinedIcon />

@@ -3,94 +3,36 @@ import React from "react";
 import TaskAltOutlinedIcon from "@mui/icons-material/TaskAltOutlined";
 import { Box } from "@mui/system";
 
-function StatusTable() {
+function StatusTable({completedTask}) {
+  const taskStatus=["Drafting"," Forwarded to Editing"," Editing Version Done","Research Published"]
   return (
     <>
       <Grid container spacing={1} sx={{padding:"1"}}>
-        <Grid item sm={12} md={12}>
+        {taskStatus.map((task,index) =>{
+          return <Grid item sm={12} md={12}>
           <Box sx={{ display: "flex", justifyConten: "center",height:"25px" }}>
-            <IconButton>
+            <IconButton sx={{
+              color: `${completedTask[index]!==true?"grey":"green"}`
+            }}>
               <TaskAltOutlinedIcon />
             </IconButton>
             <Paper
               variant="outlined"
               square
               sx={{
-                backgroundColor: "rgba(14, 176, 168, 1)",
+                backgroundColor: `${completedTask[index]!==true?"rgba(117, 116, 116, 0.48)":"rgba(14, 176, 168, 1)"}`,
                 color: "white",
                 textAlign: "center",
                 padding: "2px",
                 fontSize: "15px",
-                width:"220px"
+                width:"80%"
               }}
             >
-              Drafting
+              {task}
             </Paper>
           </Box>
         </Grid>
-        <Grid item sm={12} md={12}>
-          <Box sx={{ display: "flex", justifyConten: "center",height:"25px" }}>
-            <IconButton>
-              <TaskAltOutlinedIcon />
-            </IconButton>
-            <Paper
-              variant="outlined"
-              square
-              sx={{
-                backgroundColor: "rgba(14, 176, 168, 1)",
-                color: "white",
-                textAlign: "center",
-                padding: "2px",
-                fontSize: "15px",
-                width:"220px"
-              }}
-            >
-              Forwarded to Editing
-            </Paper>
-          </Box>
-        </Grid>
-        <Grid item sm={12} md={12}>
-          <Box sx={{ display: "flex", justifyConten: "center",height:"25px" }}>
-            <IconButton>
-              <TaskAltOutlinedIcon />
-            </IconButton>
-            <Paper
-              variant="outlined"
-              square
-              sx={{
-                backgroundColor: "rgba(14, 176, 168, 1)",
-                color: "white",
-                textAlign: "center",
-                padding: "2px",
-                fontSize: "15px",
-                width:"220px"
-              }}
-            >
-              Editing Version Done
-            </Paper>
-          </Box>
-        </Grid>
-        <Grid item sm={12} md={12}>
-          <Box sx={{ display: "flex", justifyConten: "center",height:"25px" }}>
-            <IconButton>
-              <TaskAltOutlinedIcon />
-            </IconButton>
-            <Paper
-              variant="outlined"
-              square
-              sx={{
-                backgroundColor: "rgba(14, 176, 168, 1)",
-                color: "white",
-                textAlign: "center",
-                padding: "2px",
-                fontSize: "15px",
-                width:"220px"
-              }}
-            >
-              Research Published
-            </Paper>
-          </Box>
-        </Grid>
+        })}
       </Grid>
     </>
   );

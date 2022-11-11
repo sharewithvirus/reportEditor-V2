@@ -169,7 +169,7 @@ const NavBar = (props) => {
           </Box>
           <Box sx={{ flexGrow:1 , color:'block !important'}}>
          <Button  variant="text" sx={{fontSize:'17px',textTransform: "none"  }}>
-          Research Team Mode
+          Dashboard
           </Button></Box>
           </>
           }
