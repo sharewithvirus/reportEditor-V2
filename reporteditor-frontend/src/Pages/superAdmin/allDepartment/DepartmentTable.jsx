@@ -48,7 +48,7 @@ export default function DepartmentTable({ rows, changeStatus, modify }) {
           ))}
         </TableBody>
         {
-          open ? <EditDepartmentModal open={open}  handleClose={handleClose}/>
+          open ? <EditDepartmentModal open={open}   handleClose={handleClose}/>
           :
           ""
         }

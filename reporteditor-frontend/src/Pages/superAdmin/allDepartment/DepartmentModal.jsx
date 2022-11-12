@@ -9,6 +9,8 @@ import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
+import DeleteConfirmationModel from '../../../components/DeleteConfirmactionModel';
+import { deleteDepartment } from '../../../Services/departmentService';
 
 const style = {
   position: 'absolute',
@@ -26,8 +28,9 @@ export default function DepartmentModal(props) {
     const [data, setData] = useState({
         name: props.deptData.name,
         description: props.deptData.description,
+        deptId:props.deptData._id,
     });
-
+console.log(props)
     const onInputChange = (e) => {
         const {name, value} = e.target;
         setData({...data, [name]: value});
@@ -143,7 +146,7 @@ export default function DepartmentModal(props) {
                             Cancel
                         </Button>
                         {/* i javed added line here of delete button */}
-                        <Button variant="outlined" color="primary" sx={{ textTransform: "none" }} onClick={props.handleClose} >
+                        <Button variant="outlined" color="primary" sx={{ textTransform: "none" }} onClick={()=>{props.handleClose();   props.handleDeleteModelShow()}}  >
                             Delete
                         </Button>
                         <Button variant="outlined" color="primary" sx={{ textTransform: "none" }} onClick={handleSubmit} >
@@ -153,6 +156,11 @@ export default function DepartmentModal(props) {
                 </Box>
             </Modal>
 
+            <div>
+            <DeleteConfirmationModel open={props.deleteModelShow}  handleShow={props.handleDeleteModelShow} id = {props.deptData._id} handleClose={props.handleDeleteModelShow}/>
+            </div>
+{/* {console.log("department id is....",props.deptData._id)} */}
     </div>
+    
   );
 }

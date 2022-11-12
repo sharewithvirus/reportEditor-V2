@@ -30,7 +30,7 @@ exports.createRole = async (req, res) => {
 
 exports.getAllRole = async (req, res) => {
     try {
-        const allRole = await Role.find({})
+        const allRole = await Role.find({ isDeleted: false })
         .populate({
             path: "department",
             select: "name"
@@ -99,9 +99,9 @@ exports.updateRole = async (req, res) => {
 
 exports.roleDelete = async (req, res) => {
     try {
-        const { roleId } = req.body;
-        const deptStatus = await Role.findById(roleId).select("status");
-        await Role.findByIdAndUpdate(deptStatus._id, {status:false});
+        const { roleId } = req.params;
+        console.log("Role Id", roleId)
+        await Role.findByIdAndUpdate({_id: roleId}, {isDeleted:true});    
         res.status(200).json({
             status: "success",
             message: "Role Status updated successfully"

@@ -11,7 +11,7 @@ import {
 import FileCopyOutlinedIcon from "@mui/icons-material/FileCopyOutlined";
 import ReportManagementTable from "./component/ReportManagementTable";
 
-function DashboardPanel({ pageType }) {
+function DashboardPanel() {
   return (
     <>
       <Box
@@ -35,12 +35,10 @@ function DashboardPanel({ pageType }) {
           >
             <FileCopyOutlinedIcon />
             <Typography sx={{ fontSize: "20px", fontWeight: "" }}>
-              {pageType === "Reports Management"
-                ? "Reports Management"
-                : "Create Report"}
+            Reports Management
             </Typography>
           </Stack>
-          {pageType === "Reports Management" ? (
+         
             <Stack
               display="flex"
               direction="row"
@@ -57,9 +55,6 @@ function DashboardPanel({ pageType }) {
                 <MenuItem value={3}>Thirty</MenuItem>
               </Select>
             </Stack>
-          ) : (
-            ""
-          )}
         </Stack>
         <Box
           my={4}

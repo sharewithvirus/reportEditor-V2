@@ -6,6 +6,7 @@ import DepartmentModal from './DepartmentModal';
 
 import { getAllDepartment, changeDepartmentStatus, createDepartment, updateNewDepartment } from "../../../Services/departmentService";
 import { UserDataContext } from '../../../context/userContext';
+
 const Department = () => {
 
     const { setIsLoading } = useContext(UserDataContext);
@@ -13,14 +14,28 @@ const Department = () => {
     const [activeDept, setActiveDept] = React.useState('');
     const [editDept, setEditDept] = React.useState(false);
     const [departmentList, setDepartmentList] = React.useState([]);
-
+    const [deleteModelShow, setDeleteModelShow ] = React.useState(false)
     const handleShow = () => {
         if(open === true){
             setActiveDept("")
         }
         setOpen(!open);
     }
-
+    const handleDeleteModelShow = () =>{
+       
+        setDeleteModelShow(!deleteModelShow);
+    }
+    const handleDelete = async (id) => {
+        setIsLoading(true)
+        const res = await deleteDepartment(id)
+        if(res.status === 200){
+          setOpen(false);
+          getData();
+        }
+        setActiveRoleId('');
+        setIsLoading(false)
+    
+      }
     const getDepartment = async () => {
         const res = await getAllDepartment();
         if(res.status === 200){
@@ -74,7 +89,7 @@ const Department = () => {
 
     return (
         <>
-        <DepartmentModal handleClose={handleShow} open={open} edit={editDept} deptData={activeDept} create={(x) => createNewDepartment(x)}/>
+        <DepartmentModal handleDeleteModelShow={handleDeleteModelShow} deleteModelShow={deleteModelShow} handleClose={handleShow} open={open} edit={editDept} deptData={activeDept} create={(x) => createNewDepartment(x)} handleDelete={handleDelete}/>
             <Box
                 sx={{
                     // border: "1px solid black",
@@ -112,9 +127,11 @@ const Department = () => {
 
                 }}>
                     <DepartmentTable rows={departmentList} changeStatus={(x) => {deptStatusChange(x)}} modify={(x) => updateDepartment(x)}/>
+                    
                     </Box>
                 </Box>
             </Box>
+            {/* {console.log("department id is....",departmentList)} */}
         </>
     )
 }

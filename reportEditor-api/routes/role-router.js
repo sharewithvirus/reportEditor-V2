@@ -8,7 +8,7 @@ router.route("/").get( getAllRole);
 router.route("/update-status/").post(roleStatusUpdate);
 router.route("/create").post(createRole);
 // router.route("/update/:id").patch(updateDepartment);
-router.route("/delete/:id").delete(roleDelete);  
+router.route("/delete/:roleId").delete(roleDelete);  
 
 
 module.exports = router;

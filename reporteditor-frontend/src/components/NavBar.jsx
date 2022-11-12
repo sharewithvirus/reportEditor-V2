@@ -1,23 +1,20 @@
-import * as React from 'react';
-import { useNavigate } from "react-router-dom";
-import Logo from '.././asset/logo/LogoGMI.PNG'
-import AppBar from '@mui/material/AppBar';
-import Box from '@mui/material/Box';
-import Toolbar from '@mui/material/Toolbar';
-import Typography from '@mui/material/Typography';
-import Container from '@mui/material/Container';
-import Button from '@mui/material/Button';
-import AdbIcon from '@mui/icons-material/Adb';
+import * as React from "react";
+import { useNavigate, Link } from "react-router-dom";
+import Logo from ".././asset/logo/LogoGMI.PNG";
+import AppBar from "@mui/material/AppBar";
+import Box from "@mui/material/Box";
+import Toolbar from "@mui/material/Toolbar";
+import Typography from "@mui/material/Typography";
+import Container from "@mui/material/Container";
+import Button from "@mui/material/Button";
+import AdbIcon from "@mui/icons-material/Adb";
 
-
-
-
-import { UserDataContext } from '../context/userContext';
-import { userLogout } from '../Services/authService';
-
+import { UserDataContext } from "../context/userContext";
+import { userLogout } from "../Services/authService";
 
 const NavBar = (props) => {
-  const { setIsAdmin, userInfo, setIsLoading, setIsAuthenticated } = React.useContext(UserDataContext)
+  const { setIsAdmin, userInfo, setIsLoading, setIsAuthenticated } =
+    React.useContext(UserDataContext);
   const [anchorElNav, setAnchorElNav] = React.useState(null);
   const [anchorElUser, setAnchorElUser] = React.useState(null);
 
@@ -33,23 +30,33 @@ const NavBar = (props) => {
   const handleCloseNavMenu = () => {
     setAnchorElNav(null);
   };
-  
+
   const handleCloseUserMenu = () => {
     setAnchorElUser(null);
   };
 
   const handelLogOut = async () => {
-    setIsLoading(true)
+    setIsLoading(true);
     await userLogout(userInfo._id);
-      setIsAdmin(false);
-      setIsAuthenticated(false)
-      setIsLoading(false);
+    setIsAdmin(false);
+    setIsAuthenticated(false);
+    setIsLoading(false);
     return navigate("/login");
   };
 
   return (
-    <AppBar sx={{background:'white', color:'black', minHeight:'100px',    paddingTop: "28px" ,width:'96%', margin:'auto'}}  position="static">
-      <Container maxWidth="xll"  sx={{ color:'black'}}>
+    <AppBar
+      sx={{
+        background: "white",
+        color: "black",
+        minHeight: "100px",
+        paddingTop: "28px",
+        width: "96%",
+        margin: "auto",
+      }}
+      position="static"
+    >
+      <Container maxWidth="xll" sx={{ color: "black" }}>
         <Toolbar disableGutters>
           {/* <AdbIcon sx={{ display: { xs: 'none', md: 'flex' }, mr: 1 }} /> */}
           <Typography
@@ -59,20 +66,20 @@ const NavBar = (props) => {
             href="/"
             sx={{
               mr: 2,
-              display: { xs: 'none', md: 'flex' },
-              fontFamily: 'monospace',
+              display: { xs: "none", md: "flex" },
+              fontFamily: "monospace",
               fontWeight: 700,
-              letterSpacing: '.3rem',
-              color: 'inherit',
-              textDecoration: 'none',
-              color:'black'
+              letterSpacing: ".3rem",
+              color: "inherit",
+              textDecoration: "none",
+              color: "black",
             }}
           >
-           <img src={Logo} alt="" />
+            <img src={Logo} alt="" />
           </Typography>
 
           {/* <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}> */}
-            {/* <IconButton
+          {/* <IconButton
               size="large"
               aria-label="account of current user"
               aria-controls="menu-appbar"
@@ -82,7 +89,7 @@ const NavBar = (props) => {
             >
               <MenuIcon />
             </IconButton> */}
-            {/* <Menu
+          {/* <Menu
               id="menu-appbar"
               anchorEl={anchorElNav}
               anchorOrigin={{
@@ -115,20 +122,19 @@ const NavBar = (props) => {
             href=""
             sx={{
               mr: 2,
-              display: { xs: 'flex', md: 'none' },
+              display: { xs: "flex", md: "none" },
               flexGrow: 1,
-              fontFamily: 'monospace',
+              fontFamily: "monospace",
               fontWeight: 700,
-              letterSpacing: '.3rem',
-              color: 'inherit',
-              textDecoration: 'none',
-      
+              letterSpacing: ".3rem",
+              color: "inherit",
+              textDecoration: "none",
             }}
           >
-           GMI LOGO
+            GMI LOGO
           </Typography>
-         
-          <Box sx={{ flexGrow: 0, display: { xs: 'none', md: 'flex' } }}>
+
+          <Box sx={{ flexGrow: 0, display: { xs: "none", md: "flex" } }}>
             {/* {pages.map((page) => (
               <Button
                 key={page}
@@ -139,44 +145,85 @@ const NavBar = (props) => {
               </Button>
             ))} */}
           </Box>
-          {!props.reportsDashboard?
-          <>
-           
-          <Box sx={{ flexGrow:1 , color:'block !important'}}><Button  variant="text" sx={{fontSize:'17px',textTransform: "none"  }}>
-          Admin Panel
-          </Button></Box>
-          </>
-          :
-          <>
-          <Box sx={{ flexGrow:2 , color:'block !important'}}><Button  variant="text" sx={{fontSize:'17px',textTransform: "none"  }}>
-          Reports Management
-          </Button>
-          <Button  variant="text" sx={{fontSize:'17px',textTransform: "none"  }}>
-          Reports Templates
-          </Button>
-          </Box>
-          <Box sx={{ flexGrow:1 , color:'block !important'}}>
-         <Button  variant="text" sx={{fontSize:'17px',textTransform: "none"  }}>
-          Research Team Mode
-          </Button></Box>
-          <Box sx={{ flexGrow:2 , color:'block !important'}}>
-         <Button  variant="contained" sx={{fontSize:'10px',textTransform: "none" ,marginRight:"8px" }}>
-          All Reports
-          </Button>
-          <Button  variant="contained" sx={{fontSize:'10px',textTransform: "none", marginLeft:"8px" }}>
-          Create A Report
-          </Button>
-          </Box>
-          <Box sx={{ flexGrow:1 , color:'block !important'}}>
-         <Button  variant="text" sx={{fontSize:'17px',textTransform: "none"  }}>
-          Dashboard
-          </Button></Box>
-          </>
-          }
+          {!props.reportsDashboard ? (
+            <>
+              <Box sx={{ flexGrow: 1, color: "block !important" }}>
+                <Button
+                  variant="text"
+                  sx={{ fontSize: "17px", textTransform: "none" ,color:"black"}}
+                >
+                  Admin Panel
+                </Button>
+              </Box>
+            </>
+          ) : (
+            <>
+              <Box sx={{ flexGrow: 2, color: "block !important" }}>
+                <Button
+                  variant="text"
+                  sx={{ fontSize: "17px", textTransform: "none" ,color:"black"}}
+                >
+                  Reports Management
+                </Button>
+                <Button
+                  variant="text"
+                  sx={{ fontSize: "17px", textTransform: "none",color:"black" }}
+                >
+                  Reports Templates
+                </Button>
+              </Box>
+              <Box sx={{ flexGrow: 1, color: "block !important" }}>
+                <Button
+                  variant="text"
+                  sx={{ fontSize: "17px", textTransform: "none" ,color:"black",fontWeight:"600"}}
+                >
+                  Research Team Mode
+                </Button>
+              </Box>
+              <Box sx={{ flexGrow: 2, color: "block !important" }}>
+                <Button
+                  variant="contained"
+                  sx={{
+                    fontSize: "10px",
+                    textTransform: "none",
+                    marginRight: "8px",
+                  }}
+                >
+                  All Reports
+                </Button>
+                <Link to="/create-report" style={{textDecoration:"none"}}>
+                  <Button
+                    variant="contained"
+                    sx={{
+                      fontSize: "10px",
+                      textTransform: "none",
+                      marginLeft: "8px",
+                    }}
+                  >
+                    Create A Report
+                  </Button>
+                </Link>
+              </Box>
+              <Box sx={{ flexGrow: 1, color: "block !important" }}>
+                <Button
+                  variant="text"
+                  sx={{ fontSize: "17px", textTransform: "none",color:"black"}}
+                  
+                >
+                  Dashboard
+                </Button>
+              </Box>
+            </>
+          )}
           <Box sx={{ flexGrow: 0 }}>
-          <Button variant="text" color="primary" sx={{fontSize:'17px',textTransform: "none" }} onClick={handelLogOut}>
-            Logout
-          </Button>
+            <Button
+              variant="text"
+              color="primary"
+              sx={{ fontSize: "17px", textTransform: "none",color:"black" }}
+              onClick={handelLogOut}
+            >
+              Logout
+            </Button>
             {/* <Tooltip title="Open settings">
               <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
                 <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />

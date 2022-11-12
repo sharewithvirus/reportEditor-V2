@@ -9,6 +9,8 @@ import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
 
+import DeleteConfirmationModel from '../../../components/DeleteConfirmactionModel';
+
 import {UserDataContext} from '../../../context/userContext'
 import { getAllDepartment } from '../../../Services/departmentService'
 import { getAllRole, createRole, changeRoleStatus } from '../../../Services/roleService'
@@ -36,6 +38,10 @@ const Roles = () => {
     const [deleteModelShow, setDeleteModelShow ] = React.useState(false)
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
+
+const handleDeletemodel = () => {
+    setDeleteModelShow(!deleteModelShow);
+}
 
 const getData = async () => {
     const res = await getAllDepartment();
@@ -108,19 +114,20 @@ useEffect(() => {
                             margin: "50px",
 
                         }}>
-                        <RolesTable rows={roleList} changeVisibility={changeStatusOfRole}/>
+                        <RolesTable rows={roleList} changeVisibility={changeStatusOfRole} getData={() => getData()}/>
                     </Box>
                 </Box>
             </Box>
 
             <div>
-                <Model open={open} handleClose={handleClose} deptList={deptList} createRole={(x) => createNewRole(x)} />
+                <Model open={open} handleClose={handleClose} deptList={deptList} openDeleteModel={() => handleDeletemodel()} createRole={(x) => createNewRole(x)} />
+                <DeleteConfirmationModel open={deleteModelShow} handleShow={handleDeletemodel}  /> 
             </div>
         </>
     )
 }
 
-const Model = ({open, handleClose, deptList, createRole}) => {
+const Model = ({open, handleClose, deptList, createRole, openDeleteModel}) => {
 
     const [ data, setData ] = useState({
         name: '',
@@ -243,69 +250,6 @@ const Model = ({open, handleClose, deptList, createRole}) => {
     )
 }
 
-export default Roles;
-
 // i javed added lines of code here
 
-const DeleteConfirmationModel = ({open, handleClose, deptList, createRole, handleModelClose}) => {
-
-    const [ data, setData ] = useState({
-        name: '',
-        department: '',
-        access: ''
-    })
-
-    const inputChange = (e) => {
-        const { name, value} = e.target;
-        setData({...data, [name]: value});
-    }
-
-    const handleSubmit = () => {
-        createRole(data);
-    }
-
-    const changeRoleStatus = (id) => {
-        
-    }
-
-    return (
-        <Modal
-        open={open}
-        onClose={handleClose}
-    >
-        <Box sx={style}>
-            <Typography id="modal-modal-title" variant="h6" component="h2">
-                <Stack display='flex'
-                    direction='row'
-                    justifyContent='start'
-                    alignItems='center'
-                    spacing={2}
-                >
-                    <FileCopyRoundedIcon />
-                    <Typography sx={{ fontSize: '20px', fontWeight: 'bold' }}>Deleting Confirmaction</Typography>
-                </Stack>
-                <hr />
-            </Typography>
-            <Box>
-                <Grid container spacing={2}>
-                    <Grid height={75} item xs={12}>
-                        <Typography> Are You Sure to Delete ?</Typography>
-                    </Grid>
-                </Grid>
-            </Box>
-            <Stack display='flex'
-                direction='row'
-                justifyContent='center'
-                spacing={2}
-            >
-                <Button variant="outlined" color="primary" sx={{ textTransform: "none" }} onClick={handleModelClose} >
-                    Cancel
-                </Button>
-                <Button variant="outlined" color="primary" sx={{ textTransform: "none" }} onClick={createRole} >
-                    Delete
-                </Button>
-            </Stack>
-        </Box>
-    </Modal>
-    )
-}
+export default Roles;
