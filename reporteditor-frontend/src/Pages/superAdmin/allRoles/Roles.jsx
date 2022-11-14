@@ -9,6 +9,8 @@ import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
 
+import DeleteConfirmationModel from '../../../components/DeleteConfirmactionModel';
+
 import {UserDataContext} from '../../../context/userContext'
 import { getAllDepartment } from '../../../Services/departmentService'
 import { getAllRole, createRole, changeRoleStatus } from '../../../Services/roleService'
@@ -33,9 +35,13 @@ const Roles = () => {
     const [open, setOpen] = React.useState(false);
     const [deptList, setDeptList] = React.useState([]);
     const [roleList, setRoleList] = React.useState([]);
-
+    const [deleteModelShow, setDeleteModelShow ] = React.useState(false)
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
+
+const handleDeletemodel = () => {
+    setDeleteModelShow(!deleteModelShow);
+}
 
 const getData = async () => {
     const res = await getAllDepartment();
@@ -52,7 +58,15 @@ const createNewRole = async ( data ) => {
     }
     setIsLoading(false)
 }
-
+// const handleShowDeleteModel = (index) => {
+//     const roleId = roleList[index];
+//     if(deleteModelShow){
+//         setActiveRoleId("");    
+//     }else{
+//         setActiveRoleId(roleId._id);
+//     }
+//     setDeleteModelShow(!deleteModelShow);
+// }
 const changeStatusOfRole = async (x) => {
     setIsLoading(true)
     const res = await changeRoleStatus(x)
@@ -100,19 +114,20 @@ useEffect(() => {
                             margin: "50px",
 
                         }}>
-                        <RolesTable rows={roleList} changeVisibility={changeStatusOfRole}/>
+                        <RolesTable rows={roleList} changeVisibility={changeStatusOfRole} getData={() => getData()}/>
                     </Box>
                 </Box>
             </Box>
 
             <div>
-                <Model open={open} handleClose={handleClose} deptList={deptList} createRole={(x) => createNewRole(x)} />
+                <Model open={open} handleClose={handleClose} deptList={deptList} openDeleteModel={() => handleDeletemodel()} createRole={(x) => createNewRole(x)} />
+                <DeleteConfirmationModel open={deleteModelShow} handleShow={handleDeletemodel}  /> 
             </div>
         </>
     )
 }
 
-const Model = ({open, handleClose, deptList, createRole}) => {
+const Model = ({open, handleClose, deptList, createRole, openDeleteModel}) => {
 
     const [ data, setData ] = useState({
         name: '',
@@ -234,5 +249,7 @@ const Model = ({open, handleClose, deptList, createRole}) => {
     </Modal>
     )
 }
+
+// i javed added lines of code here
 
 export default Roles;

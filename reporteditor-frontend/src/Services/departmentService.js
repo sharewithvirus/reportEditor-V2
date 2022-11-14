@@ -34,3 +34,13 @@ export const changeDepartmentStatus = async ( deptId ) => {
         return error.response;
      }
 }
+export const deleteDepartment = async ( deptId ) => {
+    console.log("Department Id", deptId)
+    try {
+       return await axios.delete(`/api/v1/admin/department/delete/${deptId}`)
+    } catch (error) {
+       alert(error.response.data.message)
+       return error.response;
+    }
+}
+

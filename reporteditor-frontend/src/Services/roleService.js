@@ -36,3 +36,13 @@ export const changeRoleStatus = async ( roleId ) => {
         return error.response;
      }
 }
+
+export const deleteRole = async ( roleId ) => {
+    console.log("Role Id", roleId)
+    try {
+       return await axios.delete(`/api/v1/user/role/delete/${roleId}`)
+    } catch (error) {
+       alert(error.response.data.message)
+       return error.response;
+    }
+}

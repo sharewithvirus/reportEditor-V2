@@ -89,3 +89,22 @@ exports.updateDepartment = async (req, res) => {
         })
     }
 }
+//i javed started code from here
+
+exports.departmentDelete = async (req, res) => {
+    try {
+        const { deptId } = req.body;
+        const deptStatus = await Department.findById(deptId).select("status");
+        await Department.findByIdAndUpdate(deptStatus._id, {status: false});
+        res.status(200).json({
+            status: "success",
+            message: "Department Status updated successfully"
+        })
+    } catch (error) {
+        console.log(error)
+        res.status(500).json({
+            status: "error",
+            message: "Internal Server Error",
+        })
+    }
+}
