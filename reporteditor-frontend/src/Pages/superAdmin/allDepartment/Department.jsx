@@ -4,7 +4,7 @@ import FileCopyRoundedIcon from '@mui/icons-material/FileCopyRounded';
 import DepartmentTable from './DepartmentTable';
 import DepartmentModal from './DepartmentModal';
 
-import { getAllDepartment, changeDepartmentStatus, createDepartment, updateNewDepartment } from "../../../Services/departmentService";
+import { getAllDepartment, changeDepartmentStatus, createDepartment, updateNewDepartment, deleteDepartment } from "../../../Services/departmentService";
 import { UserDataContext } from '../../../context/userContext';
 
 const Department = () => {
@@ -21,20 +21,28 @@ const Department = () => {
         }
         setOpen(!open);
     }
-    const handleDeleteModelShow = () =>{
-       
+    const handleDeleteModelShow = (data) =>{
+        console.log(activeDept)
+        if(deleteModelShow === false){
+            setActiveDept(activeDept); 
+        }
         setDeleteModelShow(!deleteModelShow);
     }
     const handleDelete = async (id) => {
+        // console.log(id._id)
         setIsLoading(true)
-        const res = await deleteDepartment(id)
+        const res = await deleteDepartment(id._id)
+        console.log(res)
         if(res.status === 200){
           setOpen(false);
-          getData();
+          getDepartment();
+        }else if(res.status === 204) {
+            setOpen(false);
+            alert("Department is Assign to Users. Remove all user to Delete Department Firsts.")
         }
-        setActiveRoleId('');
+        setActiveDept('');
+        setDeleteModelShow(false);
         setIsLoading(false)
-    
       }
     const getDepartment = async () => {
         const res = await getAllDepartment();
@@ -89,7 +97,7 @@ const Department = () => {
 
     return (
         <>
-        <DepartmentModal handleDeleteModelShow={handleDeleteModelShow} deleteModelShow={deleteModelShow} handleClose={handleShow} open={open} edit={editDept} deptData={activeDept} create={(x) => createNewDepartment(x)} handleDelete={handleDelete}/>
+        <DepartmentModal handleDeleteModelShow={handleDeleteModelShow} deleteModelShow={deleteModelShow} handleClose={handleShow} open={open} edit={editDept} deptData={activeDept} create={(x) => createNewDepartment(x)} handleDelete={(x) => handleDelete(activeDept)}/>
             <Box
                 sx={{
                     // border: "1px solid black",
