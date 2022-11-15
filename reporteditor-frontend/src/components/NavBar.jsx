@@ -150,7 +150,11 @@ const NavBar = (props) => {
               <Box sx={{ flexGrow: 1, color: "block !important" }}>
                 <Button
                   variant="text"
-                  sx={{ fontSize: "17px", textTransform: "none" ,color:"black"}}
+                  sx={{
+                    fontSize: "17px",
+                    textTransform: "none",
+                    color: "black",
+                  }}
                 >
                   Admin Panel
                 </Button>
@@ -159,23 +163,43 @@ const NavBar = (props) => {
           ) : (
             <>
               <Box sx={{ flexGrow: 2, color: "block !important" }}>
-                <Button
-                  variant="text"
-                  sx={{ fontSize: "17px", textTransform: "none" ,color:"black"}}
+                <Link style={{ textDecoration: "none" }}>
+                  <Button
+                    variant="text"
+                    sx={{
+                      fontSize: "17px",
+                      textTransform: "none",
+                      color: "black",
+                    }}
+                  >
+                    Reports Management
+                  </Button>
+                </Link>
+                <Link
+                  to="/report-template-management"
+                  style={{ textDecoration: "none" }}
                 >
-                  Reports Management
-                </Button>
-                <Button
-                  variant="text"
-                  sx={{ fontSize: "17px", textTransform: "none",color:"black" }}
-                >
-                  Reports Templates
-                </Button>
+                  <Button
+                    variant="text"
+                    sx={{
+                      fontSize: "17px",
+                      textTransform: "none",
+                      color: "black",
+                    }}
+                  >
+                    Reports Templates
+                  </Button>
+                </Link>
               </Box>
               <Box sx={{ flexGrow: 1, color: "block !important" }}>
                 <Button
                   variant="text"
-                  sx={{ fontSize: "17px", textTransform: "none" ,color:"black",fontWeight:"600"}}
+                  sx={{
+                    fontSize: "17px",
+                    textTransform: "none",
+                    color: "black",
+                    fontWeight: "600",
+                  }}
                 >
                   Research Team Mode
                 </Button>
@@ -191,7 +215,7 @@ const NavBar = (props) => {
                 >
                   All Reports
                 </Button>
-                <Link to="/create-report" style={{textDecoration:"none"}}>
+                <Link to="/create-report" style={{ textDecoration: "none" }}>
                   <Button
                     variant="contained"
                     sx={{
@@ -207,8 +231,11 @@ const NavBar = (props) => {
               <Box sx={{ flexGrow: 1, color: "block !important" }}>
                 <Button
                   variant="text"
-                  sx={{ fontSize: "17px", textTransform: "none",color:"black"}}
-                  
+                  sx={{
+                    fontSize: "17px",
+                    textTransform: "none",
+                    color: "black",
+                  }}
                 >
                   Dashboard
                 </Button>
@@ -219,7 +246,7 @@ const NavBar = (props) => {
             <Button
               variant="text"
               color="primary"
-              sx={{ fontSize: "17px", textTransform: "none",color:"black" }}
+              sx={{ fontSize: "17px", textTransform: "none", color: "black" }}
               onClick={handelLogOut}
             >
               Logout
