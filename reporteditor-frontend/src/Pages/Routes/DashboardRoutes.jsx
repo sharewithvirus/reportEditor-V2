@@ -7,12 +7,13 @@ import { UserDataContext } from '../../context/userContext';
 import NavBar from '../../components/NavBar';
 import DashboardAdmin from "../superAdmin/dashboard/DashboardAdmin";
 import DashboardResearchPanel from "../../Pages/researchTeam/dashboard/Dashboard";
+import CreateReport from '../researchTeam/createReport/createReport';
 // import DashboardResearchPanel from "../../Pages/researchTeam/reportsection/component";
 import LogIn from '../login/LogIn';
 // import NavBar from '../../components/NavBar';
 
 function DashboardRoutes() {
-  const { userIf } = useContext(UserDataContext);
+  // const { userIf } = useContext(UserDataContext);
   return (
     <>
       <Routes>
@@ -22,10 +23,9 @@ function DashboardRoutes() {
             </Route>
             <Route path='/u_control'>
               <Route index element={<DashboardResearchPanel />} />
-              <Route path='create-report' element={<DashboardResearchPanel />} />
+              <Route path='/u_control/create-report' element={<CreateReport />} />
             </Route>
           </Route>
-          {/* <Route path="/login" element={<LogIn />} /> */}
       </Routes>
     </>
   )
