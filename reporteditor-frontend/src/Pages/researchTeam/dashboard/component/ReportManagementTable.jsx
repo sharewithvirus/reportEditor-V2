@@ -7,17 +7,20 @@ import {
   Paper,
   Typography,
 } from "@mui/material";
-import TaskOutlinedIcon from '@mui/icons-material/TaskOutlined';
+import TaskOutlinedIcon from "@mui/icons-material/TaskOutlined";
 import { Box } from "@mui/system";
 import React from "react";
 import StatusTable from "./StatusTable";
 import SettingsOutlinedIcon from "@mui/icons-material/SettingsOutlined";
-import NoteAltOutlinedIcon from '@mui/icons-material/NoteAltOutlined';
-function ReportManagementTable({taskStatus}) {
-  let taskFlag=true;
-  for (var i=0; i < taskStatus.length; i++) {
-    if(taskStatus[i]===false){taskFlag=false}
-} 
+import NoteAltOutlinedIcon from "@mui/icons-material/NoteAltOutlined";
+import { Link } from "react-router-dom";
+function ReportManagementTable({ taskStatus }) {
+  let taskFlag = true;
+  for (var i = 0; i < taskStatus.length; i++) {
+    if (taskStatus[i] === false) {
+      taskFlag = false;
+    }
+  }
   return (
     <>
       <Box
@@ -27,7 +30,7 @@ function ReportManagementTable({taskStatus}) {
           "& > :not(style)": {
             width: "100%",
           },
-          marginTop:"40px"
+          marginTop: "40px",
         }}
       >
         <Paper elevation={3} sx={{ padding: "5px", display: "flex" }}>
@@ -44,8 +47,13 @@ function ReportManagementTable({taskStatus}) {
                 Author: Nikhil, Vikas, Uttareshwa
               </Typography>
             </Grid>
-            <Grid item sm={12} md={2} sx={{ paddingTop:3,alignItems:"center"}}>
-              <StatusTable completedTask={taskStatus}/>
+            <Grid
+              item
+              sm={12}
+              md={2}
+              sx={{ paddingTop: 3, alignItems: "center" }}
+            >
+              <StatusTable completedTask={taskStatus} />
             </Grid>
             <Grid item sm={12} md={3}>
               <Grid container spacing={8} sx={{ alignItems: "center" }}>
@@ -59,12 +67,23 @@ function ReportManagementTable({taskStatus}) {
                       marginRight: "auto",
                     }}
                   >
-                    <IconButton>
-                      {taskFlag===true?<TaskOutlinedIcon />:<NoteAltOutlinedIcon/>} 
-                    </IconButton>
-                    <IconButton>
-                      <SettingsOutlinedIcon />
-                    </IconButton>
+                    <Link
+                      to="submit-report"
+                      style={{
+                        textDecoration: "none",
+                      }}
+                    >
+                      <IconButton>
+                        {taskFlag === true ? (
+                          <TaskOutlinedIcon />
+                        ) : (
+                          <NoteAltOutlinedIcon />
+                        )}
+                      </IconButton>
+                      <IconButton>
+                        <SettingsOutlinedIcon />
+                      </IconButton>
+                    </Link>
                   </Box>
                 </Grid>
                 <Grid item sm={12} md={12}></Grid>
