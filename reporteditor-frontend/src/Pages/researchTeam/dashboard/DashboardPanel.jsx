@@ -51,8 +51,10 @@ function DashboardPanel() {
               </Typography>
               <Select sx={{ width: "10vw", height: "30px" }} value={1}>
                 <MenuItem value={1}>Showing all</MenuItem>
-                <MenuItem value={2}>Twenty</MenuItem>
-                <MenuItem value={3}>Thirty</MenuItem>
+                <MenuItem value={2}>Drafting</MenuItem>
+                <MenuItem value={3}>Forwaded to Editing</MenuItem>
+                <MenuItem value={4}>Editing version Done</MenuItem>
+                <MenuItem value={5}>Research Published</MenuItem>
               </Select>
             </Stack>
         </Stack>

@@ -222,12 +222,15 @@ const ResearchUserSection = () => {
         >
           Reports Management
         </Button>
+        <Link to='/u_control/report-template-management'  style={{ textDecoration: "none" }}>
+
         <Button
           variant="text"
           sx={{ fontSize: "17px", textTransform: "none", color: "black" }}
-        >
+          >
           Reports Templates
         </Button>
+          </Link>
       </Box>
       <Box sx={{ flexGrow: 1, color: "block !important" }}>
         <Button

@@ -10,6 +10,7 @@ import DashboardResearchPanel from "../../Pages/researchTeam/dashboard/Dashboard
 import CreateReport from '../researchTeam/createReport/createReport';
 // import DashboardResearchPanel from "../../Pages/researchTeam/reportsection/component";
 import LogIn from '../login/LogIn';
+import ReportTemplateManagement from '../researchTeam/reportsection/ReportTemplateManagement';
 // import NavBar from '../../components/NavBar';
 
 function DashboardRoutes() {
@@ -21,9 +22,15 @@ function DashboardRoutes() {
             <Route path='/a_control'>
               <Route index element={<DashboardAdmin />} />
             </Route>
+            {/* <Route path='/u_control'>
+              <Route index element={<DashboardResearchPanel />} />
+              <Route path='/u_control/create-report' element={<CreateReport />} />
+            </Route> */}
+
             <Route path='/u_control'>
               <Route index element={<DashboardResearchPanel />} />
-              {/* <Route path='/u_control/create-report' element={<CreateReport />} /> */}
+              <Route path='/u_control/create-report' element={<CreateReport />} />
+              <Route path='/u_control/report-template-management' element={<ReportTemplateManagement />} />
             </Route>
           </Route>
       </Routes>
