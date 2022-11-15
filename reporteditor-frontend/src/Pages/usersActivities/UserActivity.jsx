@@ -54,7 +54,8 @@ const UserActivity = () => {
 
             // borderRadius: "5px",
             padding: "5px 50px 5px 40px",
-            margin: "5px 50px 5px 20px",
+            // margin: "5px 50px 5px 20px",
+            margin: '0px auto',
             width: "65%",
           }}
         >

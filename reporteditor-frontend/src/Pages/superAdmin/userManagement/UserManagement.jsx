@@ -156,7 +156,8 @@ const UserManagement = () => {
                         sx={{
                             borderRadius: "5px",
                             // padding: "50px",
-                            margin: "50px",
+                            margin: "10px",
+                            marginY:'20px'
 
                         }}>
                         <UserManagementTable rows={userList}  editModelOpen={(x) => userEditModelHandle(x)} updateStatus={(x) => userStatusUpdate(x)} />

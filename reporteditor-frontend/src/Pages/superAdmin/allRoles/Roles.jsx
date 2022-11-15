@@ -111,7 +111,8 @@ useEffect(() => {
 
                             borderRadius: "5px",
                             // padding: "50px",
-                            margin: "50px",
+                            margin: "10px",
+                            marginY:'20px'
 
                         }}>
                         <RolesTable rows={roleList} changeVisibility={changeStatusOfRole} getData={() => getData()}/>
