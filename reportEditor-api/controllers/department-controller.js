@@ -93,13 +93,23 @@ exports.updateDepartment = async (req, res) => {
 
 exports.departmentDelete = async (req, res) => {
     try {
-        const { deptId } = req.body;
-        const deptStatus = await Department.findById(deptId).select("status");
-        await Department.findByIdAndUpdate(deptStatus._id, {status: false});
-        res.status(200).json({
-            status: "success",
-            message: "Department Status updated successfully"
-        })
+        const { id } = req.params;
+
+        const userCount = await User.find({ userStatus: true, isDeleted: false, department: id}).count();
+        console.log(userCount);
+        if(userCount > 0){
+            await Department.findByIdAndUpdate(id, {isDeleted: true});
+            res.status(200).json({
+                status: "success",
+                message: "Department Deleted successfully"
+            })
+            return;
+        }else{
+            res.status(204).json({
+                status: "error",
+                message: "Department is Assine. Remove all user to Delete Department."
+            })
+        }
     } catch (error) {
         console.log(error)
         res.status(500).json({
