@@ -7,7 +7,7 @@ const userSchema = new Schema({
     password: String,
     userStatus: {
         type: Boolean,
-        default: false,
+        default: true,
     },
     isAdmin:{
         type: Boolean,

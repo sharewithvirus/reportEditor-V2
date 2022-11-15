@@ -30,7 +30,6 @@ export default function DepartmentModal(props) {
         description: props.deptData.description,
         deptId:props.deptData._id,
     });
-console.log(props)
     const onInputChange = (e) => {
         const {name, value} = e.target;
         setData({...data, [name]: value});
@@ -146,7 +145,7 @@ console.log(props)
                             Cancel
                         </Button>
                         {/* i javed added line here of delete button */}
-                        <Button variant="outlined" color="primary" sx={{ textTransform: "none" }} onClick={()=>{props.handleClose();   props.handleDeleteModelShow()}}  >
+                        <Button variant="outlined" color="primary" sx={{ textTransform: "none" }} onClick={()=> {props.handleClose();   props.handleDeleteModelShow(props.deptData)}}  >
                             Delete
                         </Button>
                         <Button variant="outlined" color="primary" sx={{ textTransform: "none" }} onClick={handleSubmit} >
@@ -157,7 +156,7 @@ console.log(props)
             </Modal>
 
             <div>
-            <DeleteConfirmationModel open={props.deleteModelShow}  handleShow={props.handleDeleteModelShow} id = {props.deptData._id} handleClose={props.handleDeleteModelShow}/>
+            <DeleteConfirmationModel open={props.deleteModelShow}  handleShow={props.handleDeleteModelShow} id = {props.deptData._id} handleClose={props.handleDeleteModelShow} handleDelete={props.handleDelete}/>
             </div>
 {/* {console.log("department id is....",props.deptData._id)} */}
     </div>
