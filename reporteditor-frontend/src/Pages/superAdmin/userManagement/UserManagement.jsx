@@ -3,9 +3,10 @@ import { Stack, Typography, Box, Button } from '@mui/material'
 import FileCopyRoundedIcon from '@mui/icons-material/FileCopyRounded';
 import UserManagementTable from './UserManagementTable';
 import UserManagementModal from './UserManagementModal';
+import DeleteConfirmationModel from '../../../components/DeleteConfirmactionModel';
 import { UserDataContext } from '../../../context/userContext'
 
-import { createUser, getUsers, changeUserStatus, updateUser } from '../../../Services/userService';
+import { createUser, getUsers, changeUserStatus, updateUser, deleteUser  } from '../../../Services/userService';
 
 import { getAllDepartment } from '../../../Services/departmentService';
 import { getAllRole } from '../../../Services/roleService';
@@ -14,12 +15,25 @@ const UserManagement = () => {
 
     const { setIsLoading } = useContext(UserDataContext)
     const [open, setOpen] = useState(false);
+    const [deleteOpen, setDeleteOpen] = useState(false);
     const [activeUser, setActiveUser] = useState('');
+    const [deleteId, setDeleteId] = useState('')
     const [editModel, setEditModel] = useState(false);
     const [userList, setUserList] = useState([]);
 
     const [departmentList, setDepartmentList] = useState([]);
     const [roleList, setRoleList] = useState([]);
+
+    const handleDeleteModel = (x) => {
+        setDeleteId(x)
+        setDeleteOpen(!deleteOpen)
+    }
+
+    const handleDeleteSubmit = async (x) => {
+        // const res = await deleteUser(x);
+        console.log(x)
+        setDeleteOpen(!deleteOpen)
+    }
 
     const getData = async () => {
         const res = await getAllDepartment();
@@ -101,7 +115,12 @@ const UserManagement = () => {
     return (
         <>
             {
-                open ? <UserManagementModal open={open} edit={editModel} activeUser={activeUser} deptList={departmentList} roleList={roleList} handleClose={handleShow} handelCreate={userCreate} handelUpdate={(x) => userUpdate(x)}/>
+                open ? <UserManagementModal open={open} edit={editModel} activeUser={activeUser} deleteModelOpen={(x) => handleDeleteModel(x)} deptList={departmentList} roleList={roleList} handleClose={handleShow} handelCreate={userCreate} handelUpdate={(x) => userUpdate(x)}/>
+                    : 
+                    ""
+            }
+            {
+                open ? <DeleteConfirmationModel open={deleteOpen} activeUser={activeUser} handleDelete={handleDeleteSubmit}  handleClose={handleDeleteModel}/>
                     : 
                     ""
             }

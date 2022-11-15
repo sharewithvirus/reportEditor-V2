@@ -67,7 +67,7 @@ exports.adminLogout = async(req, res) => {
 
 exports.getAllUsers = async (req, res) => {
     try {
-        const userList = await User.find({ isAdmin: false })
+        const userList = await User.find({ isAdmin: false, isDeleted:false })
         .select("userName email emailVerified userStatus role department access")
         .populate({
             path: "department",
@@ -223,14 +223,14 @@ exports.updateUser = async (req, res) => {
     }
 }
 
-// i javed stated code from here
+// i javed stated code from here// shivam
 exports.deleteUser = async (req, res) => {
     try {
-        const { _id, userName, department, access } = req.body;
-        const userText = await User.findByIdAndUpdate({ _id: _id},{isAdmin:false})
+        const { id } = req.params;
+        const userText = await User.findByIdAndUpdate({ _id: id},{isDeleted:true})
         res.status(200).json({
             status: "Success",
-            message: "User Updated Successfully",
+            message: "User Deleted Successfully",
             data: userText
         })
     } catch (error) {

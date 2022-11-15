@@ -11,11 +11,11 @@ const style = {
     // width: 800,
     bgcolor: 'background.paper',
     border: '2px solid #000',
-    boxShadow: 24,
+    boxShadow: 24,            
     p: 4,
 };
 
-const DeleteConfirmationModel = ({open, handleClose, handleDelete, handleModelClose,id}) => {
+const DeleteConfirmationModel = ({open, handleClose, handleDelete, handleModelClose, id}) => {
 
 // {console.log("department data on modal........",id);}
     return (

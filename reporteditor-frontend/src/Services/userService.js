@@ -63,3 +63,12 @@ export const changeUserStatus = async ( userId ) => {
         return error.response;
      }
 }
+
+export const deleteUser = async ( userId ) => {
+    try {
+       return await axios.post(`/api/v1/user/delete`, {userId: userId})
+    } catch (error) {
+       alert(error.response.data.message)
+       return error.response;
+    }
+}

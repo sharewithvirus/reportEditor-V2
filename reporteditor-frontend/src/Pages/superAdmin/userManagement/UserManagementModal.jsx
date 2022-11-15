@@ -8,6 +8,7 @@ import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
+import DeleteConfirmationModel from '../../../components/DeleteConfirmactionModel';
 
 
 const style = {
@@ -22,7 +23,7 @@ const style = {
     p: 4,
 };
 
-const UserManagementModal = ({open, edit, activeUser, handleClose, deptList, roleList, handelCreate, handelUpdate}) => {
+const UserManagementModal = ({open, edit, activeUser, handleClose, deptList, roleList, handelCreate, handelUpdate, deleteModelOpen}) => {
 
     const [data, setData] = useState({
         userName: "", 
@@ -306,7 +307,8 @@ const UserManagementModal = ({open, edit, activeUser, handleClose, deptList, rol
                             :
                             ""
                         }
-                        <Button variant="outlined" color="primary" sx={{ textTransform: "none" }}  >
+                        <Button variant="outlined" color="primary" sx={{ textTransform: "none" }} onClick={() => deleteModelOpen(data._id)}  >
+
                                 Delete
                             </Button>
                         <Button variant="outlined" color="primary" sx={{ textTransform: "none" }} onClick={handleClose} >
@@ -314,7 +316,7 @@ const UserManagementModal = ({open, edit, activeUser, handleClose, deptList, rol
                         </Button>
                     </Stack>
                 </Box>
-            </Modal>
+            </Modal>        
         </div>
     );
 }

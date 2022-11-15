@@ -31,7 +31,7 @@ export default function UserManagementTable({ rows, updateStatus, editModelOpen 
           </TableRow>
         </TableHead>
         <TableBody>
-          {rows.map((row, index) => (
+        {rows.map((row, index) => (
             <RowLine item={row} index={index} updateStatus={(x) => updateStatus(x)} editModelOpen={(x) => editModelOpen(x)}/>
           ))}
         </TableBody>
