@@ -120,7 +120,8 @@ const Department = () => {
                    
                     borderRadius: "5px",
                     // padding: "50px",
-                    margin: "50px"
+                    margin: "10px",
+                    marginY:'20px'
                     // borderRadius: "5px",
                     // // padding: "",
                     // margin: "20px 50px 20px 50px",

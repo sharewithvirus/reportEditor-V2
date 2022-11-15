@@ -59,24 +59,32 @@ const LogIn = () => {
                     <Box
                         component="form" x
                         sx={{
-                            '& > :not(style)': { m: 1, width: '35ch' },
+                           
+                           width:'90%',
+                           display: 'flex',
+                           justifyContent: 'center',
+                           marginTop:'15px'
                         }}
                         noValidate
                         autoComplete="off"
                     >
-                        <TextField label="Email" name="email" type="email" color="primary" focused  onChange={handleInput} />
+                        <TextField label="Email" name="email" sx={{width:'80%'}} type="email" color="primary" focused  onChange={handleInput} />
                         {/* <TextField label="Filled success" variant="filled" color="success" focused /> */}
 
                     </Box>
                     <Box
                         component="form"
                         sx={{
-                            '& > :not(style)': { m: 1, width: '35ch' },
+                           
+                           width:'90%',
+                           display: 'flex',
+                           justifyContent: 'center',
+                           marginTop:'15px'
                         }}
                         noValidate
                         autoComplete="off"
                     >
-                        <TextField  label="Password" name="password" color="primary" focused type='password' onChange={handleInput} />
+                        <TextField  label="Password" name="password" sx={{width:'80%'}} color="primary" focused type='password' onChange={handleInput} />
                         {/* <TextField label="Filled success" variant="filled" color="success" focused /> */}
 
                     </Box>
