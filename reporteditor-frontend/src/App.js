@@ -49,6 +49,7 @@ function App() {
     <>
       <Loader />
     { isAuthenticated ? (
+
         <DashboardRoutes />
     )
     :
@@ -59,7 +60,15 @@ function App() {
       <Route path="/verifyEmail/:token" element={<VerifyPassword />} />
     </Routes>
     )
-    }
+        <NavBar reportsDashboard={"Research Team Mode"} />
+
+      <Routes>
+        <Route path="/" element={<Navigate replace to="dashboard" />}></Route>
+        <Route path="/dashboard" element={<Dashboard />} />
+        <Route path="report-template-management" element={<ReportTemplateManagement/>} />
+        <Route path="create-report" element={ <CreateReport />} />
+        <Route path="report-editor" element={<ReportEditor/>}  />
+      </Routes>
     </>
   );
 }
