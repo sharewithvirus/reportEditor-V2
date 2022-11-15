@@ -120,7 +120,7 @@ const UserManagement = () => {
                     ""
             }
             {
-                open ? <DeleteConfirmationModel open={deleteOpen} activeUser={activeUser} onClick ={(x) => handleDeleteSubmit(x)}  handleClose={handleDeleteModel}/>
+                open ? <DeleteConfirmationModel open={deleteOpen} activeUser={activeUser} handleDelete={handleDeleteSubmit}  handleClose={handleDeleteModel}/>
                     : 
                     ""
             }

@@ -7,7 +7,6 @@ import DashboardPanel from "./DashboardPanel";
 function Dashboard() {
   return (
     <>
-     {/* <NavBar  /> */}
       <DashboardPanel/> 
     </>
   );

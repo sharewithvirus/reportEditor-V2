@@ -3,7 +3,7 @@ import { FileEarmarkText } from "react-bootstrap-icons";
 import UserManagement from "../userManagement/UserManagement";
 import Roles from "../allRoles/Roles";
 import Department from "../allDepartment/Department";
-// import NavBar from "../../../components/NavBar";
+import NavBar from "../../../components/NavBar";
 import UserActivity from "../../usersActivities/UserActivity";
 import { Grid,Box } from "@mui/material";
 

@@ -57,34 +57,26 @@ const LogIn = () => {
                 <Box className='login-box' sx={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', }}>
                     <Typography sx={{ fontSize: '25px' }}>Admin</Typography>
                     <Box
-                        component="form" 
+                        component="form" x
                         sx={{
-                           
-                           width:'90%',
-                           display: 'flex',
-                           justifyContent: 'center',
-                           marginTop:'2px'
+                            '& > :not(style)': { m: 1, width: '35ch' },
                         }}
                         noValidate
                         autoComplete="off"
                     >
-                        <TextField label="Email" sx={{width:'80%'}} name="email" type="email" color="primary" focused  onChange={handleInput} />
+                        <TextField label="Email" name="email" type="email" color="primary" focused  onChange={handleInput} />
                         {/* <TextField label="Filled success" variant="filled" color="success" focused /> */}
 
                     </Box>
                     <Box
                         component="form"
                         sx={{
-                           
-                           width:'90%',
-                           display: 'flex',
-                           justifyContent: 'center',
-                           marginTop:'15px'
+                            '& > :not(style)': { m: 1, width: '35ch' },
                         }}
                         noValidate
                         autoComplete="off"
                     >
-                        <TextField  label="Password" sx={{width:'80%'}} name="password" color="primary" focused type='password' onChange={handleInput} />
+                        <TextField  label="Password" name="password" color="primary" focused type='password' onChange={handleInput} />
                         {/* <TextField label="Filled success" variant="filled" color="success" focused /> */}
 
                     </Box>

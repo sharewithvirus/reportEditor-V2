@@ -1,6 +1,5 @@
 import {
   Box,
-  Button,
   Checkbox,
   Divider,
   FormControlLabel,
@@ -11,7 +10,6 @@ import {
 } from "@mui/material";
 import React from "react";
 import FileCopyOutlinedIcon from "@mui/icons-material/FileCopyOutlined";
-import { margin } from "@mui/system";
 
 function CreateReport() {
   return (
@@ -77,7 +75,11 @@ function CreateReport() {
           Author Name
         </Typography>
         <Box sx={{}}>
-          <Box sx={{}}>
+          <Box
+            sx={{
+              
+            }}
+          >
             <FormGroup sx={{ fontSize: "10px" }}>
               <FormControlLabel
                 control={
@@ -112,7 +114,7 @@ function CreateReport() {
         alignItems="start"
         spacing={2}
         marginTop="50px"
-       
+        width="100vw"
         // border="2px solid black"
       >
         <Stack
@@ -230,7 +232,7 @@ function CreateReport() {
                 flexWrap: "wrap",
                 "& > :not(style)": {
                   m: 1,
-                  marginRight: "50px",
+                  marginRight:"50px",
                   width: 132,
                   height: 150,
                 },
@@ -241,86 +243,67 @@ function CreateReport() {
                   sx={{
                     display: "flex",
                     flexDirection: "column",
-
+                    
                     alignItems: "center",
+                    
                   }}
                 >
                   <FormGroup>
                     <FormControlLabel
-                      control={<Checkbox color="default" size="small" />}
+                      control={
+                        <Checkbox  color="default" size="small" />
+                      }
                       label={<span style={{ fontSize: "0.7rem" }}>select</span>}
                     />
                   </FormGroup>
-                  <Typography sx={{ fontSize: "10px", marginTop: "50px" }}>
-                    Template one
-                  </Typography>
+                  <Typography sx={{fontSize:"10px",marginTop:"50px"}}>Template one</Typography>
                 </Stack>
               </Paper>
               <Paper elevation={3} square>
-                <Stack
+              <Stack
                   sx={{
                     display: "flex",
                     flexDirection: "column",
-
+                    
                     alignItems: "center",
+                    
                   }}
                 >
                   <FormGroup>
                     <FormControlLabel
-                      control={<Checkbox color="default" size="small" />}
+                      control={
+                        <Checkbox  color="default" size="small" />
+                      }
                       label={<span style={{ fontSize: "0.7rem" }}>select</span>}
                     />
                   </FormGroup>
-                  <Typography sx={{ fontSize: "10px", marginTop: "50px" }}>
-                    Template Two
-                  </Typography>
+                  <Typography sx={{fontSize:"10px",marginTop:"50px"}}>Template Two</Typography>
                 </Stack>
               </Paper>
               <Paper elevation={3} square>
-                <Stack
+              <Stack
                   sx={{
                     display: "flex",
                     flexDirection: "column",
-
+                    
                     alignItems: "center",
+                    
                   }}
                 >
                   <FormGroup>
                     <FormControlLabel
-                      control={<Checkbox color="default" size="small" />}
+                      control={
+                        <Checkbox  color="default" size="small" />
+                      }
                       label={<span style={{ fontSize: "0.7rem" }}>select</span>}
                     />
                   </FormGroup>
-                  <Typography sx={{ fontSize: "10px", marginTop: "50px" }}>
-                    Template Three
-                  </Typography>
+                  <Typography sx={{fontSize:"10px",marginTop:"50px"}}>Template Three</Typography>
                 </Stack>
               </Paper>
             </Box>
           </Box>
         </Box>
-      </Stack>
-      <Stack 
-      sx={{
-        display:"flex",
-        justifyContent:"center",
-        marginTop:"8vh"
-      }}
-      >
-        <Button
-          variant="contained"
-          
-          sx={{
-            fontSize: "10px",
-            textTransform: "none",
-            marginLeft: "8px",
-            width:"10vw",
-            margin:"auto",
-            backgroundColor:"rgba(15, 154, 173, 1)"
-          }}
-        >
-          Start Report Draft
-        </Button>
       </Stack>
     </Box>
   );

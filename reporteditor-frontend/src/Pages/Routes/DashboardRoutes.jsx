@@ -23,7 +23,7 @@ function DashboardRoutes() {
             </Route>
             <Route path='/u_control'>
               <Route index element={<DashboardResearchPanel />} />
-              <Route path='/u_control/create-report' element={<CreateReport />} />
+              {/* <Route path='/u_control/create-report' element={<CreateReport />} /> */}
             </Route>
           </Route>
       </Routes>

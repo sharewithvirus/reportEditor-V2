@@ -35,6 +35,7 @@ export const changeDepartmentStatus = async ( deptId ) => {
      }
 }
 export const deleteDepartment = async ( deptId ) => {
+    console.log("Department Id", deptId)
     try {
        return await axios.delete(`/api/v1/admin/department/delete/${deptId}`)
     } catch (error) {
