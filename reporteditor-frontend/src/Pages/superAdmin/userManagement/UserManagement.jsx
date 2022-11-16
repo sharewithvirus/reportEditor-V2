@@ -120,7 +120,7 @@ const UserManagement = () => {
         <>
             {
                 open ? <UserManagementModal open={open} edit={editModel} activeUser={activeUser} deleteModelOpen={(x) => handleDeleteModel(x)} deptList={departmentList} roleList={roleList} handleClose={handleShow} handelCreate={userCreate} handelUpdate={(x) => userUpdate(x)}/>
-                    : 
+                    :   
                     ""
             }
             {
