@@ -106,7 +106,7 @@ const UserManagement = () => {
         setIsLoading(true)
         const res = await changeUserStatus(data);
         if(res.status === 200){
-            getData();
+            getUserList();
         }
         setIsLoading(false)
     }

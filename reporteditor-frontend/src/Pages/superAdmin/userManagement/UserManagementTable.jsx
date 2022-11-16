@@ -51,7 +51,7 @@ const RowLine = ({ item, index, updateStatus, editModelOpen }) => {
 
   return (
     <TableRow
-    //   key={row.name}
+      key={item._id}
       sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
     >
       <TableCell align="center">{item.userName}</TableCell>
@@ -62,7 +62,8 @@ const RowLine = ({ item, index, updateStatus, editModelOpen }) => {
       <TableCell align="center"><Button variant="outlined" color="primary" sx={{textTransform: "none" }} onClick={() => editModelOpen(index)}>
       Modify
       </Button></TableCell>
-      <TableCell align="center"> <Switch {...label} checked={item.userStatus} defaultValue={item.userStatus} onChange={() => updateStatus(item._id)} /></TableCell>  
+      {console.log(item.userStatus)}
+      <TableCell align="center"> <Switch {...label} checked={item.userStatus} onChange={() => updateStatus(item._id)} /></TableCell>  
 
       {/* <TableCell align="right">{row.calories}</TableCell>
       <TableCell align="right">{row.fat}</TableCell>

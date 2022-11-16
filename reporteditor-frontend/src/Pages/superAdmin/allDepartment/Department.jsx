@@ -6,12 +6,12 @@ import DepartmentModal from './DepartmentModal';
 
 import { getAllDepartment, changeDepartmentStatus, createDepartment, updateNewDepartment, deleteDepartment } from "../../../Services/departmentService";
 import { UserDataContext } from '../../../context/userContext';
+import DeleteConfirmationModel from '../../../components/DeleteConfirmactionModel';
 
 const Department = () => {
 
     const { setIsLoading } = useContext(UserDataContext);
     const [open, setOpen] = React.useState(false);
-    const [deleteOpen, setDeleteOpen] = useState(false);
     const [activeDept, setActiveDept] = React.useState('');
     const [editDept, setEditDept] = React.useState(false);
     const [departmentList, setDepartmentList] = React.useState([]);
@@ -22,17 +22,20 @@ const Department = () => {
         }
         setOpen(!open);
     }
-    const handleDeleteModelShow = (x) =>{
-     
+    const handleDeleteModelShow = (id) =>{
         setOpen(false)
         setDeleteModelShow(!deleteModelShow);
     }
     const handleDelete = async (id) => {
         setIsLoading(true)
-        const res = await deleteDepartment(id)
+        const res = await deleteDepartment(id);
         if(res.status === 200){
           setOpen(false);
+          setDeleteModelShow(false);
           getDepartment();
+        }else if(res.status === 204){
+            setDeleteModelShow(false);
+            alert("Department is assigned to To Users First Remove Users.");
         }
         setActiveDept('');
         setIsLoading(false)
@@ -92,11 +95,8 @@ const Department = () => {
     return (
         <>
  {}
-  <DepartmentModal handleDeleteModelShow={handleDeleteModelShow} deleteModelShow={deleteModelShow} handleClose={handleShow} open={open} edit={editDept} deptData={activeDept} create={(x) => createNewDepartment(x)} handleDelete={handleDelete}/>
- 
-
-
-   
+  <DepartmentModal handleDeleteModelShow={handleDeleteModelShow} handleClose={handleShow} open={open} edit={editDept} deptData={activeDept} create={(x) => createNewDepartment(x)}/>
+  <DeleteConfirmationModel open={deleteModelShow}  handleShow={handleDeleteModelShow} id={activeDept._id} handleClose={handleDeleteModelShow} handleDelete={(x) => handleDelete(x)} />
             <Box
                 sx={{
                     // border: "1px solid black",

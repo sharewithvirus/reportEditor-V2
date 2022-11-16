@@ -16,8 +16,6 @@ const style = {
 };
 
 const DeleteConfirmationModel = ({open, handleClose, handleDelete, handleModelClose, id}) => {
-console.log("DEP is ",id)
-// {console.log("department data on modal........",id);}
     return (
         <Modal
         open={open}

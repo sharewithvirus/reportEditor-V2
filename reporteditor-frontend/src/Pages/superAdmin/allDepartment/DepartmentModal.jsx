@@ -31,7 +31,6 @@ export default function DepartmentModal(props) {
         description: props.deptData.description,
         deptId:props.deptData._id,
     });
-console.log(props)
     const onInputChange = (e) => {
         const {name, value} = e.target;
         setData({...data, [name]: value});
@@ -44,7 +43,6 @@ console.log(props)
  
   return (
     <div>
-      {/* <Button onClick={handleOpen}>Open modal</Button> */}
       <Modal
                 open={props.open}
                 onClose={props.handleClose}
@@ -104,40 +102,6 @@ console.log(props)
                                 </Box>
                                 </FormControl>
                             </Grid>
-                            {/* <Grid item lg={4} xs={12}>
-                                <Box
-                                    component="form"
-                                    sx={{
-                                        '& .MuiTextField-root': { m: 1, width: '25ch' },
-                                    }}
-                                    noValidate
-                                    autoComplete="off"
-                                >
-                                    <TextField
-                                        label="Email"
-                                        id="outlined-size-small"
-                                        // defaultValue="Small"
-                                        size="small"
-                                    />
-                                </Box>
-                            </Grid>
-                            <Grid item xs={12} lg={4}>
-                                <Box
-                                    component="form"
-                                    sx={{
-                                        '& .MuiTextField-root': { m: 1, width: '25ch' },
-                                    }}
-                                    noValidate
-                                    autoComplete="off"
-                                >
-                                    <TextField
-                                        label="Verify Email"
-                                        id="outlined-size-small"
-                                        // defaultValue="Small"
-                                        size="small"
-                                    />
-                                </Box>
-                            </Grid> */}
                         </Grid>
 
                     </Box>
@@ -149,10 +113,9 @@ console.log(props)
                         <Button variant="outlined" color="primary" sx={{ textTransform: "none" }} onClick={props.handleClose} >
                             Cancel
                         </Button>
-                        {/* i javed added line here of delete button */}
 
                     {
-                        props.edit ? <Button variant="outlined" color="primary" sx={{ textTransform: "none" }} onClick={()=>{props.handleClose();   props.handleDeleteModelShow()}}  >
+                        props.edit ? <Button variant="outlined" color="primary" sx={{ textTransform: "none" }} onClick={()=>{props.handleDeleteModelShow(props.deptData._id)}}  >
                             Delete
                         </Button> : ""
                     }
@@ -166,7 +129,6 @@ console.log(props)
             </Modal>
 
             <div>
-            <DeleteConfirmationModel open={props.deleteModelShow}  handleShow={props.handleDeleteModelShow} id = {props.deptData.name } handleClose={props.handleDeleteModelShow} handleDelete={props.handleDelete} />
             </div>
 {/* {console.log("department id is....",props.deptData._id)} */}
     </div>
