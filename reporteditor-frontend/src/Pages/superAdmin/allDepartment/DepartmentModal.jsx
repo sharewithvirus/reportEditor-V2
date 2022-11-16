@@ -156,6 +156,7 @@ console.log(props)
                             Delete
                         </Button> : ""
                     }
+                    
                         
                         <Button variant="outlined" color="primary" sx={{ textTransform: "none" }} onClick={handleSubmit} >
                             Save
@@ -165,7 +166,7 @@ console.log(props)
             </Modal>
 
             <div>
-            <DeleteConfirmationModel open={props.deleteModelShow}  handleShow={props.handleDeleteModelShow} id = {props.deptData._id} handleClose={props.handleDeleteModelShow}/>
+            <DeleteConfirmationModel open={props.deleteModelShow}  handleShow={props.handleDeleteModelShow} id = {props.deptData.name } handleClose={props.handleDeleteModelShow} handleDelete={props.handleDelete} />
             </div>
 {/* {console.log("department id is....",props.deptData._id)} */}
     </div>

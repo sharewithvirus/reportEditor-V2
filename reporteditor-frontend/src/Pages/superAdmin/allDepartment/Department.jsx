@@ -1,4 +1,4 @@
-import React, { useEffect, useContext } from 'react'
+import React, { useEffect, useContext, useState } from 'react'
 import { Stack, Typography, Box, Button } from '@mui/material'
 import FileCopyRoundedIcon from '@mui/icons-material/FileCopyRounded';
 import DepartmentTable from './DepartmentTable';
@@ -11,6 +11,7 @@ const Department = () => {
 
     const { setIsLoading } = useContext(UserDataContext);
     const [open, setOpen] = React.useState(false);
+    const [deleteOpen, setDeleteOpen] = useState(false);
     const [activeDept, setActiveDept] = React.useState('');
     const [editDept, setEditDept] = React.useState(false);
     const [departmentList, setDepartmentList] = React.useState([]);
@@ -21,8 +22,9 @@ const Department = () => {
         }
         setOpen(!open);
     }
-    const handleDeleteModelShow = () =>{
-       
+    const handleDeleteModelShow = (x) =>{
+     
+        setOpen(false)
         setDeleteModelShow(!deleteModelShow);
     }
     const handleDelete = async (id) => {
@@ -89,7 +91,7 @@ const Department = () => {
 
     return (
         <>
- 
+ {}
   <DepartmentModal handleDeleteModelShow={handleDeleteModelShow} deleteModelShow={deleteModelShow} handleClose={handleShow} open={open} edit={editDept} deptData={activeDept} create={(x) => createNewDepartment(x)} handleDelete={handleDelete}/>
  
 
