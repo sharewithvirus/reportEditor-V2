@@ -66,7 +66,7 @@ export const changeUserStatus = async ( userId ) => {
 
 export const deleteUser = async ( userId ) => {
     try {
-       return await axios.post(`/api/v1/user/delete`, {userId: userId})
+       return await axios.delete(`/api/v1/user/delete/${userId}` )
     } catch (error) {
        alert(error.response.data.message)
        return error.response;

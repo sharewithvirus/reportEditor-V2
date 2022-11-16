@@ -94,7 +94,7 @@ const Department = () => {
                 sx={{
                     // border: "1px solid black",
                     // borderRadius: "5px",
-                    padding: "5px 50px 5px 50px",
+                    padding: "5px 0px 5px 0px",
                     margin: "5px 50px 5px 50px"
 
                 }}

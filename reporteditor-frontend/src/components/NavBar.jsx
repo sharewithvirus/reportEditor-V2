@@ -58,7 +58,7 @@ const NavBar = (props) => {
         position="static"
       >
         <Container maxWidth="xll" sx={{ color: "black" }}>
-          <Toolbar disableGutters>
+          <Toolbar disableGutters sx={{display:'flex', justifyContent:"space-between"}}>
             {/* <AdbIcon sx={{ display: { xs: 'none', md: 'flex' }, mr: 1 }} /> */}
           <Link to='/'>
             <Typography
@@ -152,7 +152,7 @@ const NavBar = (props) => {
             ) : userRole == 'user' ? (
               <ResearchUserSection />
             ) : ''}
-            <Box sx={{ flexGrow: 0 }}>
+            <Box sx={{ flexGrow: 0,  }}>
               <Button
                 variant="text"
                 color="primary"
