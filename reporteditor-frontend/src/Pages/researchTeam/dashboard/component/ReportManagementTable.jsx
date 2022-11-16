@@ -14,13 +14,18 @@ import StatusTable from "./StatusTable";
 import SettingsOutlinedIcon from "@mui/icons-material/SettingsOutlined";
 import NoteAltOutlinedIcon from "@mui/icons-material/NoteAltOutlined";
 import { Link } from "react-router-dom";
+import UpdateModal from "../UpdateModal";
 function ReportManagementTable({ taskStatus }) {
+  const [open, setOpen] = React.useState(false);
   let taskFlag = true;
   for (var i = 0; i < taskStatus.length; i++) {
     if (taskStatus[i] === false) {
       taskFlag = false;
     }
   }
+  const handleShow = () => {
+    setOpen(!open);
+  };
   return (
     <>
       <Box
@@ -80,10 +85,10 @@ function ReportManagementTable({ taskStatus }) {
                           <NoteAltOutlinedIcon />
                         )}
                       </IconButton>
-                      <IconButton>
-                        <SettingsOutlinedIcon />
-                      </IconButton>
                     </Link>
+                    <IconButton>
+                      <SettingsOutlinedIcon onClick={handleShow} />
+                    </IconButton>
                   </Box>
                 </Grid>
                 <Grid item sm={12} md={12}></Grid>
@@ -92,6 +97,7 @@ function ReportManagementTable({ taskStatus }) {
           </Grid>
         </Paper>
       </Box>
+      <UpdateModal open={open} handleClose={handleShow} />
     </>
   );
 }
