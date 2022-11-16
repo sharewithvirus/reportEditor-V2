@@ -18,12 +18,40 @@ import {
 } from "@mui/material";
 import { Box } from "@mui/system";
 import React from "react";
-
+import { styled } from "@mui/material/styles";
 import AddBoxIcon from "@mui/icons-material/AddBox";
 import FileCopyOutlinedIcon from "@mui/icons-material/FileCopyOutlined";
+const Item = styled(Paper)(({ theme }) => ({
+  ...theme.typography.body2,
+  padding: theme.spacing(2),
+  textAlign: "center",
+  height: "3vh",
+  color: theme.palette.text.secondary,
+  border: "1px solid",
+}));
 function ReportEditor() {
   const [open, setOpen] = React.useState(true);
+  const [active, setActive] = React.useState({
 
+    first:"transparent",
+    second:"transparent",
+    third:"transparent"
+
+});
+  const changeActiveBtn = (e) => {
+    if(e===1)
+    {
+      setActive({first:"grey",second:"transparent",third:"transparent"})
+    }
+    else if(e===2)
+    {
+      setActive({second:"grey",third:"transparent",first:"transparent"})
+    }
+    else if(e===3)
+    {
+      setActive({third:"grey",first:"transparent",second:"transparent"})
+    }
+  };
   const handleClick = () => {
     setOpen(!open);
   };
@@ -146,88 +174,115 @@ function ReportEditor() {
               </Stack>
             </Stack>
             <Stack
-            sx={{
-              marginTop:"20px",
-              
-              minHeight:"100vh",
-              display:"flex",
-              flexDirection:"row"
-            }}
+              sx={{
+                marginTop: "20px",
+
+                minHeight: "100vh",
+                display: "flex",
+                flexDirection: "row",
+              }}
             >
               <Stack
-              sx={{
-                width:"60%",
-                border:"5px solid",
-                height:"100vh"
-              }}
-              >
-
-              </Stack>
+                sx={{
+                  width: "60%",
+                  border: "5px solid",
+                  height: "100vh",
+                }}
+              ></Stack>
               <Stack
-              sx={{
-                width:"40%",
-                border:"5px solid",
-                height:"100vh"
-              }}
+                sx={{
+                  width: "40%",
+                  border: "5px solid",
+                  height: "100vh",
+                }}
               >
                 <Stack
-                sx={{
-                  marginTop:"10px"
-                }}
+                  sx={{
+                    marginTop: "10px",
+                  }}
                 >
                   <Button
-                  variant="outlined"
-                  color="inherit"
-                  size="small"
-                  sx={{
-                    width:"70%",
-                    margin:"auto"
-                  }}
+                    variant="outlined"
+                    color="inherit"
+                    size="small"
+                    sx={{
+                      width: "70%",
+                      margin: "auto",
+                    }}
                   >
                     Search Here
                   </Button>
                 </Stack>
                 <Stack
-                sx={{
-                  border:"1px solid",
-                  width:"90%",
-                  margin:"10px auto",
-                  height:'20vh'
-                }}
+                  sx={{
+                    border: "1px solid",
+                    width: "90%",
+                    margin: "10px auto",
+                    height: "20vh",
+                  }}
+                ></Stack>
+                <Stack
+                  sx={{
+                    width: "80%",
+                    margin: "10px  auto",
+                    display: "flex",
+                    flexDirection: "row",
+                    justifyContent: "center",
+                  }}
                 >
-
-                </Stack>
-                <Stack sx={{
-                  width:"80%",
-                  margin:"10px  auto",
-                  display:"flex",
-                  flexDirection:"row",
-                  justifyContent:"center"
-                }}>
-                  <ButtonGroup size="small"  sx={{
-                  }} >
+                  <ButtonGroup size="small" sx={{}}>
                     <Button
-                    sx={{
-                      width:"120px"
-                    }}
-                    >Images</Button>
+                      variant="contained"
+                      color="inherit"
+                      sx={{
+                        width: "120px",
+                        backgroundColor:`${active.first}`
+                      }}
+                      onClick={()=>changeActiveBtn(1)}
+                    >
+                      Images
+                    </Button>
                     <Button
-                     sx={{
-                      width:"120px"
-                    }}
-                    >Tables</Button>
+                   
+                      variant="contained"
+                      color="inherit"
+                      sx={{
+                        width: "120px",
+                        backgroundColor:`${active.second}`
+                      }}
+                      onClick={()=>changeActiveBtn(2)}
+                    >
+                      Tables
+                    </Button>
                     <Button
-                     sx={{
-                      width:"120px"
-                    }}
-                    >Charts</Button>
+                      variant="contained"
+                      color="inherit"
+                      sx={{
+                        width: "120px",
+                        backgroundColor:`${active.third}`
+                      }}
+                      onClick={()=>changeActiveBtn(3)}
+                    >
+                      Charts
+                    </Button>
                   </ButtonGroup>
                 </Stack>
                 <Stack
-                sx={{
-
-                }}
+                  sx={{
+                    padding: "10px",
+                  }}
                 >
+                  <Grid
+                    container
+                    spacing={{ xs: 2, md: 3 }}
+                    columns={{ xs: 4, sm: 8, md: 12 }}
+                  >
+                    {Array.from(Array(6)).map((_, index) => (
+                      <Grid item sm={4} md={4} key={index}>
+                        <Item square color="inherit"></Item>
+                      </Grid>
+                    ))}
+                  </Grid>
                 </Stack>
               </Stack>
             </Stack>
