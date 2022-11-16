@@ -89,7 +89,12 @@ const Department = () => {
 
     return (
         <>
-        <DepartmentModal handleDeleteModelShow={handleDeleteModelShow} deleteModelShow={deleteModelShow} handleClose={handleShow} open={open} edit={editDept} deptData={activeDept} create={(x) => createNewDepartment(x)} handleDelete={handleDelete}/>
+ 
+  <DepartmentModal handleDeleteModelShow={handleDeleteModelShow} deleteModelShow={deleteModelShow} handleClose={handleShow} open={open} edit={editDept} deptData={activeDept} create={(x) => createNewDepartment(x)} handleDelete={handleDelete}/>
+ 
+
+
+   
             <Box
                 sx={{
                     // border: "1px solid black",

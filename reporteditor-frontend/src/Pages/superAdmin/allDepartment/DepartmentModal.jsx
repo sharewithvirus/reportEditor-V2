@@ -16,12 +16,13 @@ const style = {
   position: 'absolute',
   top: '50%',
   left: '50%',
-  width: '40rem',
+  width: '20rem',
   transform: 'translate(-50%, -50%)',
   bgcolor: 'background.paper',
   border: '2px solid #000',
   boxShadow: 24,
   p: 4,
+ 
 };
 
 export default function DepartmentModal(props) {
@@ -49,6 +50,7 @@ console.log(props)
                 onClose={props.handleClose}
                 aria-labelledby="modal-modal-title"
                 aria-describedby="modal-modal-description"
+                
             >
                 <Box sx={style}>
                     <Typography id="modal-modal-title" variant="h6" component="h2">
@@ -70,7 +72,7 @@ console.log(props)
                                 <Box
                                     component="form"
                                     sx={{
-                                        '& .MuiTextField-root': { m: 1, width: '65ch' },
+                                        '& .MuiTextField-root': { width: '35ch' },
                                     }}
                                     noValidate
                                     autoComplete="off"
@@ -81,6 +83,7 @@ console.log(props)
                                         placeholder="Input Department Name"
                                         fullWidth
                                         name="name"
+                                        margin="normal"
                                         onChange={onInputChange}
                                         defaultValue={props.deptData ? props.deptData.name : ''}
                                         size="large"
@@ -91,6 +94,7 @@ console.log(props)
                                         fullWidth
                                         multiline
                                         maxRows={10}
+                                        margin="normal"
                                         placeholder="Input Department Description"
                                         name="description"
                                         defaultValue={props.deptData ? props.deptData.description : ''}
@@ -146,9 +150,13 @@ console.log(props)
                             Cancel
                         </Button>
                         {/* i javed added line here of delete button */}
-                        <Button variant="outlined" color="primary" sx={{ textTransform: "none" }} onClick={()=>{props.handleClose();   props.handleDeleteModelShow()}}  >
+
+                    {
+                        props.edit ? <Button variant="outlined" color="primary" sx={{ textTransform: "none" }} onClick={()=>{props.handleClose();   props.handleDeleteModelShow()}}  >
                             Delete
-                        </Button>
+                        </Button> : ""
+                    }
+                        
                         <Button variant="outlined" color="primary" sx={{ textTransform: "none" }} onClick={handleSubmit} >
                             Save
                         </Button>
