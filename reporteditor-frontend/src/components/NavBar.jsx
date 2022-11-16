@@ -10,15 +10,15 @@ import Button from "@mui/material/Button";
 import AdbIcon from "@mui/icons-material/Adb";
 
 import { UserDataContext } from "../context/userContext";
-import { userLogout } from "../Services/authService";
+import { userDashboard, userLogout } from "../Services/authService";
 
 const NavBar = (props) => {
-  const { setIsAdmin, userRole, userInfo, setIsLoading, setIsAuthenticated } = React.useContext(UserDataContext);
+  const { setIsAdmin, userRole, userInfo, setIsLoading, setIsAuthenticated, setUserRole, setUserInfo } = React.useContext(UserDataContext);
   const [anchorElNav, setAnchorElNav] = React.useState(null);
   const [anchorElUser, setAnchorElUser] = React.useState(null);
+  const [userData, setUserData] = React.useState('');
 
   const navigate = useNavigate();
-
   const handleOpenNavMenu = (event) => {
     setAnchorElNav(event.currentTarget);
   };
@@ -43,7 +43,34 @@ const NavBar = (props) => {
     return navigate("/login");
   };
 
-  console.log(userInfo)
+  const getUserDataApi = async () => {
+    const res = await userDashboard();
+    if (res === "User Not found") {
+      setIsLoading(false);
+      navigate("/login");
+    } else {
+      setIsAuthenticated(true);
+      setUserData(res.data.data.userData.role)
+      setIsAdmin(res.data.data.userData.isAdmin);
+      setUserRole(res.data.data.userData.role);
+      setUserInfo(res.data.data.userData);
+      setIsLoading(false);
+      if (res.data.user.role === "admin") {
+        navigate("/a_control");
+      } else if (res.data.user.role === "user") {
+        navigate("/u_control");
+      }
+    }
+  };
+
+  React.useEffect(() => {
+    getUserDataApi();
+  }, []);
+
+  React.useEffect(() => {
+    console.log(userData);
+    setUserData(userInfo);
+  }, [userData, userInfo])
   return (
     <>
       <AppBar
@@ -147,9 +174,9 @@ const NavBar = (props) => {
               </Button>
             ))} */}
             </Box>
-            {userRole == 'admin' ? (
+            {userData == 'admin' ? (
               <AdminSection />
-            ) : userRole == 'user' ? (
+            ) : userData == 'user' ? (
               <ResearchUserSection />
             ) : ''}
             <Box sx={{ flexGrow: 0,  }}>

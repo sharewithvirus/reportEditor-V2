@@ -30,7 +30,7 @@ exports.createDepartment = async (req, res) => {
 
 exports.getAllDepartments = async (req, res) => {
     try {
-        const allDepartments = await Department.find({}).sort({ _id : -1}); 
+        const allDepartments = await Department.find({ isDeleted: false}).sort({ _id : -1}); 
         res.status(200).json({
             status: 'success',
             message: 'Department List Fetched Successfully',
@@ -94,21 +94,22 @@ exports.updateDepartment = async (req, res) => {
 exports.departmentDelete = async (req, res) => {
     try {
         const { id } = req.params;
-
+        console.log(id)
         const userCount = await User.find({ userStatus: true, isDeleted: false, department: id}).count();
-        console.log(userCount);
+        console.log(userCount)
         if(userCount > 0){
+            res.status(204).json({
+                status: "error",
+                message: "Department is Assign. Remove all user to Delete Department."
+            })
+            return;
+        }else{
             await Department.findByIdAndUpdate(id, {isDeleted: true});
             res.status(200).json({
                 status: "success",
                 message: "Department Deleted successfully"
             })
             return;
-        }else{
-            res.status(204).json({
-                status: "error",
-                message: "Department is Assine. Remove all user to Delete Department."
-            })
         }
     } catch (error) {
         console.log(error)

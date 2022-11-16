@@ -182,10 +182,8 @@ exports.createUserPassword = async (req, res) => {
 
 exports.changeUserStatus = async (req, res) => {
     try {
-        console.log("API Hit")
         const { userId } = req.body;
         const userTextStatus = await User.findById({ _id: userId}).select("userStatus");
-        console.log(userTextStatus)
         const userText = await User.findByIdAndUpdate({ _id: userId },{ userStatus: !userTextStatus.userStatus }, { new: true});
         res.status(200)
         .json({
