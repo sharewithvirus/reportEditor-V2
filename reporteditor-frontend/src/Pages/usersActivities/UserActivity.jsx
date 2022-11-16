@@ -29,7 +29,7 @@ const UserActivity = () => {
         sx={{
           // border: "1px solid black",
           // borderRadius: "5px",
-          padding: "5px 50px 5px 60px",
+          padding: "5px 50px 5px 50px",
           // margin: "5px 50px 5px 50px",
           width: "50%",
         }}

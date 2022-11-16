@@ -16,7 +16,7 @@ const style = {
 };
 
 const DeleteConfirmationModel = ({open, handleClose, handleDelete, handleModelClose, id}) => {
-
+// console.log("is is ",id)
 // {console.log("department data on modal........",id);}
     return (
         <Modal

@@ -26,14 +26,11 @@ const UserManagement = () => {
 
     const handleDeleteModel = (x) => {
         setDeleteId(x)
+        setOpen(false)
         setDeleteOpen(!deleteOpen)
-    }
+    }            
 
-    const handleDeleteSubmit = async (x) => {
-        // const res = await deleteUser(x);
-        console.log(x)
-        setDeleteOpen(!deleteOpen)
-    }
+
 
     const getData = async () => {
         const res = await getAllDepartment();
@@ -51,6 +48,13 @@ const UserManagement = () => {
         if(resUser.status === 200){
             setUserList(resUser.data.data);
         }
+    }
+
+    const handleDeleteSubmit = async (x) => {
+        const res = await deleteUser(x);
+        console.log("id is ",x)
+        setDeleteOpen(false)
+        await getUserList();
     }
 
     const handleShow = () => {
@@ -120,13 +124,13 @@ const UserManagement = () => {
                     ""
             }
             {
-                open ? <DeleteConfirmationModel open={deleteOpen} activeUser={activeUser} handleDelete={handleDeleteSubmit}  handleClose={handleDeleteModel}/>
+                deleteOpen ? <DeleteConfirmationModel open={deleteOpen} activeUser={activeUser} handleDelete={handleDeleteSubmit} id={userList[0]._id}  handleClose={handleDeleteModel}/>
                     : 
                     ""
             }
             <Box
                 sx={{
-                    padding: "15px 50px 5px 50px",
+                    padding: "15px 0px 5px 0px",
                     margin: "5px 50px 5px 50px"
                 }}
             >

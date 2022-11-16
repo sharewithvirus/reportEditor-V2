@@ -83,7 +83,7 @@ useEffect(() => {
         <>
             <Box
                 sx={{
-                    padding: "15px 50px 5px 50px",
+                    padding: "15px 0px 5px 0px",
                     margin: "5px 50px 5px 50px"
 
                 }}
