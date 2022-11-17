@@ -9,11 +9,30 @@ import {
     Stack,
     Typography,
   } from "@mui/material";
-  import React from "react";
+  import React, { useEffect, useState } from "react";
+  import axios from "axios"
   import FileCopyOutlinedIcon from "@mui/icons-material/FileCopyOutlined";
   import { margin } from "@mui/system";
    
   function CreateReport() {
+    const [allAuther, setAllAuther] = useState({});
+
+     const getAllAuther = async () => {
+          try {
+            const res = await axios.get("api/v1/user");
+            // console.log(res.data.data);
+            console.log("data is ");
+            setAllAuther(res.data);
+            console.log(allAuther)
+          } catch (error) {
+            console.log(error)
+          }
+     }
+
+useEffect(() => {
+  getAllAuther();
+}, [])
+
     return (
       <Box
         sx={{
@@ -79,13 +98,37 @@ import {
           <Box sx={{}}>
             <Box sx={{}}>
               <FormGroup sx={{ fontSize: "10px" }}>
+
+
+
+
+
+        {
+          allAuther.map((data, index) => {
+            return (
+       
+                <h1>{}</h1>
+           
+            )
+          })
+        }
+
+
+
                 <FormControlLabel
                   control={
                     <Checkbox defaultChecked color="default" size="small" />
                   }
                   label={<span style={{ fontSize: "0.7rem" }}>Vikash [me] </span>}
                 />
+
+
+
+
+
+
                 <FormControlLabel
+                
                   control={<Checkbox color="default" size="small" />}
                   label={
                     <span style={{ fontSize: "0.7rem" }}>Nikhil Changle </span>
