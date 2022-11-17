@@ -1,5 +1,14 @@
 import React, { useState, useEffect } from "react";
-import { Box, Stack, TextField, Grid } from "@mui/material";
+import {
+  Box,
+  Stack,
+  TextField,
+  Grid,
+  Radio,
+  FormControlLabel,
+  FormLabel,
+  RadioGroup,
+} from "@mui/material";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import Modal from "@mui/material/Modal";
@@ -41,7 +50,15 @@ const UserManagementModal = ({
     access: "",
   });
   const [deptRoleList, setDeptRoleList] = useState([]);
+  const [selectedValue, setSelectedValue] = React.useState('research-team');
+  const handleChange = (event) => {
+    setSelectedValue((event.target.value));
+  };
+  // const handleChange = (event) => {
+  //   setSelectedValue(event.target.value);
+  // };
 
+  
   const departmentRole = () => {
     if (data.department) {
       let list = [];
@@ -129,12 +146,20 @@ const UserManagementModal = ({
             <hr />
           </Typography>
           <Box>
-            <Grid container spacing={2} sx={{display:'flex', alignItems:'center', justifyContent:'center', }}>
-              <Grid lg={4} item xs={12}  >
+            <Grid
+              container
+              spacing={2}
+              sx={{
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+              }}
+            >
+              <Grid lg={4} item xs={12}>
                 <Box
                   component="form"
                   sx={{
-                    "& .MuiTextField-root": { m: 1, width: "100%" }, 
+                    "& .MuiTextField-root": { m: 1, width: "100%" },
                   }}
                   noValidate
                   autoComplete="off"
@@ -214,10 +239,34 @@ const UserManagementModal = ({
                 </Box>
               </Grid>
             </Grid>
+            <Box my={4} mx={2}>
+              <FormControl>
+                <RadioGroup
+                  row
+                  aria-labelledby="demo-row-radio-buttons-group-label"
+                  name="row-radio-buttons-group"
+                  value={selectedValue}
+                  onChange={handleChange}
+                >
+                  <FormControlLabel
+                    value="research-team"
+                    control={<Radio />}
+                    label="Reseach Team"
+                    // onChange={()=> handleChange('research-team')}
+                  />
+                  <FormControlLabel
+                    value="editing-team"
+                    control={<Radio />}
+                    label="Editing Team"
+                    // onChange={()=> handleChange('editing-team')}
+                  />
+                </RadioGroup>
+              </FormControl>
+            </Box>
             <Box my={4}>
               <Grid container spacing={2}>
                 <Grid item xs={12} lg={5}>
-                  <FormControl sx={{ m: 1, width: "100%"}} size="small">
+                  <FormControl sx={{ m: 1, width: "100%" }} size="small">
                     <InputLabel id="demo-select-small">
                       Select Department
                     </InputLabel>
@@ -292,13 +341,13 @@ const UserManagementModal = ({
               ""
             ) : (
               <Box
-              
-              display="flex"
-            direction="row"
-            justifyContent="end"
-            spacing={2}
-              
-               my={5} pl={1}>
+                display="flex"
+                direction="row"
+                justifyContent="end"
+                spacing={2}
+                my={5}
+                pl={1}
+              >
                 {data.userName === "" ||
                 data.email === "" ||
                 data.verifyEmail === "" ||
@@ -307,7 +356,6 @@ const UserManagementModal = ({
                   <Button
                     variant="outlined"
                     color="primary"
-                   
                     sx={{ textTransform: "none" }}
                     disabled
                   >
@@ -317,8 +365,7 @@ const UserManagementModal = ({
                   <Button
                     variant="outlined"
                     color="primary"
-                    
-                    sx={{ textTransform: "none" , }}
+                    sx={{ textTransform: "none" }}
                     onClick={handleSubmit}
                   >
                     Send Invitation
@@ -326,15 +373,13 @@ const UserManagementModal = ({
                 )}
 
                 <Button
-              variant="outlined"
-              color="primary"
-              sx={{ textTransform: "none",  marginLeft:'15px' }}
-              onClick={handleClose}
-            >
-              Cancel
-            </Button>
-
-
+                  variant="outlined"
+                  color="primary"
+                  sx={{ textTransform: "none", marginLeft: "15px" }}
+                  onClick={handleClose}
+                >
+                  Cancel
+                </Button>
               </Box>
             )}
           </Box>
@@ -357,32 +402,30 @@ const UserManagementModal = ({
             ) : (
               ""
             )}
-
-{
-    edit ? (  <Button
-              variant="outlined"
-              color="primary"
-              sx={{ textTransform: "none" }}
-              onClick={() => deleteModelOpen(data._id)}
-            >
-              Delete
-            </Button>) : ""
-}
-          
-{
-    edit ? (    <Button
-              variant="outlined"
-              color="primary"
-              sx={{ textTransform: "none" }}
-              onClick={handleClose}
-            >
-              Cancel
-            </Button>) : ""
-}
-
-
-
-          
+            {edit ? (
+              <Button
+                variant="outlined"
+                color="primary"
+                sx={{ textTransform: "none" }}
+                onClick={() => deleteModelOpen(data._id)}
+              >
+                Delete
+              </Button>
+            ) : (
+              ""
+            )}
+            {edit ? (
+              <Button
+                variant="outlined"
+                color="primary"
+                sx={{ textTransform: "none" }}
+                onClick={handleClose}
+              >
+                Cancel
+              </Button>
+            ) : (
+              ""
+            )}
           </Stack>
         </Box>
       </Modal>
