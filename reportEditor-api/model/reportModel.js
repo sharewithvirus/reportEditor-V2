@@ -6,9 +6,12 @@ const reportModel = new mongoose.Schema(
     name: {
       type: String,
     },
-    author: {
-      type: String,
-    },
+    userList: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "User"
+      }
+    ],
     industry: {
       type: String,
     },
