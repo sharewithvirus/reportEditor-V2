@@ -21,6 +21,7 @@ import React from "react";
 import { styled } from "@mui/material/styles";
 import AddBoxIcon from "@mui/icons-material/AddBox";
 import FileCopyOutlinedIcon from "@mui/icons-material/FileCopyOutlined";
+import SideBar from "./component/SideBar";
 const Item = styled(Paper)(({ theme }) => ({
   ...theme.typography.body2,
   padding: theme.spacing(2),
@@ -31,25 +32,19 @@ const Item = styled(Paper)(({ theme }) => ({
 }));
 function ReportEditor() {
   const [open, setOpen] = React.useState(true);
+  const [expanSidePanel,setExpandSidePanel]= React.useState();
   const [active, setActive] = React.useState({
-
-    first:"transparent",
-    second:"transparent",
-    third:"transparent"
-
-});
+    first: "transparent",
+    second: "transparent",
+    third: "transparent",
+  });
   const changeActiveBtn = (e) => {
-    if(e===1)
-    {
-      setActive({first:"grey",second:"transparent",third:"transparent"})
-    }
-    else if(e===2)
-    {
-      setActive({second:"grey",third:"transparent",first:"transparent"})
-    }
-    else if(e===3)
-    {
-      setActive({third:"grey",first:"transparent",second:"transparent"})
+    if (e === 1) {
+      setActive({ first: "grey", second: "transparent", third: "transparent" });
+    } else if (e === 2) {
+      setActive({ second: "grey", third: "transparent", first: "transparent" });
+    } else if (e === 3) {
+      setActive({ third: "grey", first: "transparent", second: "transparent" });
     }
   };
   const handleClick = () => {
@@ -60,18 +55,20 @@ function ReportEditor() {
     <>
       <Box
         sx={{
-          padding: "15px 36px 5px 45px",
+          padding: "0px 36px 5px 45px",
         }}
       >
-        <Grid container spacing={2}>
+        <Grid container spacing={0}>
           <Grid
             item
             sm={4}
             md={2}
             sx={{
               minHeight: "100vh",
-              backgroundColor: "grey",
-              padding: "0 px",
+              backgroundColor: "rgba(0, 0, 0, 0.19)",
+              paddingTop:"30px",
+              zIndex:"50",
+             
             }}
           >
             <Stack
@@ -79,30 +76,16 @@ function ReportEditor() {
                 display: "flex",
                 justifyContent: "center",
                 alignItems: "center",
+                
               }}
             >
-              <Typography>Indexing</Typography>
-            </Stack>
-
-            <List
+              <Typography
               sx={{
-                bgcolor: "background.paper",
+                marginBottom: "25px",
               }}
-            >
-              <ListItemButton onClick={handleClick}>
-                <ListItemIcon></ListItemIcon>
-                <ListItemText primary="Inbox" />
-                <AddBoxIcon />
-              </ListItemButton>
-              <Collapse in={open} timeout="auto" unmountOnExit>
-                <List component="div" disablePadding>
-                  <ListItemButton sx={{ pl: 4 }}>
-                    <ListItemIcon></ListItemIcon>
-                    <ListItemText primary="Starred" />
-                  </ListItemButton>
-                </List>
-              </Collapse>
-            </List>
+              >Indexing</Typography>
+              <SideBar />
+            </Stack>
           </Grid>
           <Grid
             item
@@ -236,21 +219,20 @@ function ReportEditor() {
                       color="inherit"
                       sx={{
                         width: "120px",
-                        backgroundColor:`${active.first}`
+                        backgroundColor: `${active.first}`,
                       }}
-                      onClick={()=>changeActiveBtn(1)}
+                      onClick={() => changeActiveBtn(1)}
                     >
                       Images
                     </Button>
                     <Button
-                   
                       variant="contained"
                       color="inherit"
                       sx={{
                         width: "120px",
-                        backgroundColor:`${active.second}`
+                        backgroundColor: `${active.second}`,
                       }}
-                      onClick={()=>changeActiveBtn(2)}
+                      onClick={() => changeActiveBtn(2)}
                     >
                       Tables
                     </Button>
@@ -259,9 +241,9 @@ function ReportEditor() {
                       color="inherit"
                       sx={{
                         width: "120px",
-                        backgroundColor:`${active.third}`
+                        backgroundColor: `${active.third}`,
                       }}
-                      onClick={()=>changeActiveBtn(3)}
+                      onClick={() => changeActiveBtn(3)}
                     >
                       Charts
                     </Button>
