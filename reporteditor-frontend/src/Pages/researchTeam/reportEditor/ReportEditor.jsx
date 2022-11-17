@@ -17,7 +17,7 @@ import {
   Typography,
 } from "@mui/material";
 import { Box } from "@mui/system";
-import React from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { styled } from "@mui/material/styles";
 import AddBoxIcon from "@mui/icons-material/AddBox";
 import FileCopyOutlinedIcon from "@mui/icons-material/FileCopyOutlined";
@@ -32,7 +32,36 @@ const Item = styled(Paper)(({ theme }) => ({
 }));
 function ReportEditor() {
   const [open, setOpen] = React.useState(true);
-  const [expanSidePanel,setExpandSidePanel]= React.useState();
+  const [expanSidePanel, setExpandSidePanel] = React.useState({
+    left: 1,
+    right: 11,
+  });
+  const ref = useRef(null);
+
+  const [width, setWidth] = useState(0);
+  // useEffect(() => {
+  //   setWidth(ref.current.clientWidth);
+  //   console.log(ref.current.parentElement.clientWidth);
+  // }, []);
+  const handleMouseEnter = () => {
+    setExpandSidePanel({ left: 4, right: 8 });
+    // setWidth(ref.current.clientWidth);
+    console.log("on mouse enter", ref.current.clientWidth);
+  };
+  const handleMouseLeave = () => {
+    setExpandSidePanel({ left: 1, right: 11 });
+    console.log("value" + ref.current.clientWidth);
+    // setWidth(ref.current.clientWidth);
+    console.log("on mouse leave", ref.current.clientWidth);
+  };
+  useEffect(() => {
+    console.log("v"+ref.current.clientWidth);
+    setTimeout(() => {
+      setWidth(ref.current.clientWidth);
+      
+    }, 230);
+  }, [expanSidePanel]);
+
   const [active, setActive] = React.useState({
     first: "transparent",
     second: "transparent",
@@ -55,42 +84,44 @@ function ReportEditor() {
     <>
       <Box
         sx={{
-          padding: "0px 36px 5px 45px",
+          padding: "0px 36px 5px 30px",
         }}
       >
         <Grid container spacing={0}>
           <Grid
             item
-            sm={4}
-            md={2}
+            md={expanSidePanel.left}
             sx={{
               minHeight: "100vh",
-              backgroundColor: "rgba(0, 0, 0, 0.19)",
-              paddingTop:"30px",
-              zIndex:"50",
-             
+              backgroundColor: "rgba(0, 0, 0, 0.12)",
+              paddingTop: "30px",
+              transition: "0.3s",
+              zIndex: "50",
             }}
+            onMouseEnter={handleMouseEnter}
+            onMouseLeave={handleMouseLeave}
           >
             <Stack
+              ref={ref}
               sx={{
                 display: "flex",
                 justifyContent: "center",
                 alignItems: "center",
-                
               }}
             >
               <Typography
-              sx={{
-                marginBottom: "25px",
-              }}
-              >Indexing</Typography>
-              <SideBar />
+                sx={{
+                  marginBottom: "25px",
+                }}
+              >
+                Indexing
+              </Typography>
+              {width && <SideBar scrWidth={width} />}
             </Stack>
           </Grid>
           <Grid
             item
-            sm={8}
-            md={10}
+            md={expanSidePanel.right}
             sx={{
               minHeight: "100vh",
             }}
