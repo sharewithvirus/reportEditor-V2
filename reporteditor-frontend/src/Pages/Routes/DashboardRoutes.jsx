@@ -30,8 +30,8 @@ function DashboardRoutes() {
             </Route> */}
 
             <Route path='/u_control'>
-              {/* <Route index element={<ReportEditor />} /> */}
-              <Route index element={<CreateReport />} />
+              <Route index element={<ReportEditor />} />
+              {/* <Route index element={<CreateReport />} /> */}
               <Route path='/u_control/create-report' element={<CreateReport />} />
               <Route path="/u_control/report-editor" element ={<ReportEditor />} />
               <Route path='/u_control/report-template-management' element={<ReportTemplateManagement />} />
