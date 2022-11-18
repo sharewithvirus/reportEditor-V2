@@ -13,6 +13,9 @@ import LogIn from '../login/LogIn';
 import ReportTemplateManagement from '../researchTeam/reportsection/ReportTemplateManagement';
 import SubmitReport from '../researchTeam/dashboard/component/SubmitReport';
 import ReportEditor from '../researchTeam/reportEditor/ReportEditor';
+import ReportPreview from '../researchTeam/reportEditor/ReportPreview';
+import EditingDashboard from '../editingTeam/dashboard/EditingDashboard';
+import DraftAccept from '../editingTeam/dashboard/component/DraftAccept';
 // import NavBar from '../../components/NavBar';
 
 function DashboardRoutes() {
@@ -30,13 +33,17 @@ function DashboardRoutes() {
             </Route> */}
 
             <Route path='/u_control'>
-              <Route index element={<ReportEditor />} />
+              {/* <Route index element={<ReportEditor />} /> */}
+              {/* <Route index element={<ReportPreview/>}/> */}
               {/* <Route index element={<CreateReport />} /> */}
+              <Route index element={<EditingDashboard/>} />
+              {/* <Route index element={<DraftAccept/>}/> */}
               <Route path='/u_control/create-report' element={<CreateReport />} />
               <Route path="/u_control/report-editor" element ={<ReportEditor />} />
               <Route path='/u_control/report-template-management' element={<ReportTemplateManagement />} />
               <Route path="/u_control/submit-report" element={<SubmitReport/>}/>
             </Route>
+            
           </Route>
       </Routes>
     </>

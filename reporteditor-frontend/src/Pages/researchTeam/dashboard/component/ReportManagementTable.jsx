@@ -58,7 +58,7 @@ function ReportManagementTable({ taskStatus }) {
               md={2}
               sx={{ paddingTop: 3, alignItems: "center" }}
             >
-              <StatusTable completedTask={taskStatus} />
+              <StatusTable completedTask={taskStatus} taskType={"research"}/>
             </Grid>
             <Grid item sm={12} md={3}>
               <Grid container spacing={8} sx={{ alignItems: "center" }}>
