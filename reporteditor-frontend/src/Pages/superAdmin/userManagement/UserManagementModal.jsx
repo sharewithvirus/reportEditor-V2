@@ -45,20 +45,34 @@ const UserManagementModal = ({
   const [data, setData] = useState({
     userName: "",
     email: "",
+    teamType: "",
     verifyEmail: "",
     department: "",
     access: "",
   });
+  const [deptTextList, setDeptTextList] = useState([]);
   const [deptRoleList, setDeptRoleList] = useState([]);
-  const [selectedValue, setSelectedValue] = React.useState('research-team');
-  const handleChange = (event) => {
-    setSelectedValue((event.target.value));
-  };
-  // const handleChange = (event) => {
-  //   setSelectedValue(event.target.value);
-  // };
 
   
+  const handleChange = (event) => {
+    const { name, value } = event.target;
+    setData({...data, [name]: value});
+    console.log("Name: ", name, "Value: ", value)
+    setDepartmentList(value);
+  };
+
+  const setDepartmentList = (data) => {
+    let list = [];
+    if(data){
+      deptList.forEach(element => {
+        if(data === element.teamType){
+          list.push(element);
+        }
+      });
+    }
+    setDeptTextList(list);
+  }
+
   const departmentRole = () => {
     if (data.department) {
       let list = [];
@@ -85,6 +99,7 @@ const UserManagementModal = ({
   };
 
   const handleSubmit = () => {
+    console.log(data)
     if (edit === false) {
       if (data.userName === "") {
         alert("Please Enter a username");
@@ -112,17 +127,21 @@ const UserManagementModal = ({
   useEffect(() => {
     departmentRole();
   }, [data]);
+
   useEffect(() => {
     if (edit) {
+      console.log("User Data", activeUser)
       setData({
         ...data,
         _id: activeUser._id,
         userName: activeUser.userName,
         email: activeUser.email,
+        teamType: activeUser.teamType,
         verifyEmail: "",
         department: activeUser.department._id,
         access: activeUser.access._id,
       });
+      setDepartmentList(activeUser.teamType)
     }
   }, []);
 
@@ -244,21 +263,19 @@ const UserManagementModal = ({
                 <RadioGroup
                   row
                   aria-labelledby="demo-row-radio-buttons-group-label"
-                  name="row-radio-buttons-group"
-                  value={selectedValue}
+                  name="teamType"
+                  defaultValue={edit ? activeUser.teamType : data.teamType}
                   onChange={handleChange}
                 >
                   <FormControlLabel
                     value="research-team"
                     control={<Radio />}
                     label="Reseach Team"
-                    // onChange={()=> handleChange('research-team')}
                   />
                   <FormControlLabel
                     value="editing-team"
                     control={<Radio />}
                     label="Editing Team"
-                    // onChange={()=> handleChange('editing-team')}
                   />
                 </RadioGroup>
               </FormControl>
@@ -270,6 +287,8 @@ const UserManagementModal = ({
                     <InputLabel id="demo-select-small">
                       Select Department
                     </InputLabel>
+                    {
+                      data.teamType !== '' ?
                     <Select
                       labelId="demo-select-small"
                       id="demo-select-small"
@@ -280,6 +299,25 @@ const UserManagementModal = ({
                       }
                       label="Select Roles"
                     >
+                      {deptTextList.length > 0 ? (
+                        deptTextList.map((x, i) => (
+                          <MenuItem value={x._id}>{x.name}</MenuItem>
+                        ))
+                      ) : (
+                        <MenuItem disabled>No Department Found</MenuItem>
+                      )}
+                    </Select>
+                    : <Select
+                      labelId="demo-select-small"
+                      id="demo-select-small"
+                      name="department"
+                      onChange={handelInput}
+                      defaultValue={
+                        edit ? activeUser.department._id : data.department
+                      }
+                      label="Select Roles"
+                      disabled
+                    >
                       {deptList ? (
                         deptList.map((x, i) => (
                           <MenuItem value={x._id}>{x.name}</MenuItem>
@@ -288,12 +326,13 @@ const UserManagementModal = ({
                         <MenuItem disabled>No Department Found</MenuItem>
                       )}
                     </Select>
+                    }
                   </FormControl>
                 </Grid>
                 <Grid item xs={12} lg={5}>
                   <FormControl sx={{ m: 1, width: "100%" }} size="small">
                     <InputLabel id="demo-select-small">Select Role</InputLabel>
-                    {edit && deptRoleList.length === 0 ? (
+                    {edit && data.department === '' && deptRoleList.length === 0 ? (
                       <Select
                         labelId="demo-select-small"
                         id="demo-select-small"
@@ -305,7 +344,7 @@ const UserManagementModal = ({
                         label="Select"
                         disabled
                       >
-                        {deptRoleList.length > 0 ? (
+                        { data.department !== '' || deptRoleList.length > 0 ? (
                           deptRoleList.map((x, i) => (
                             <MenuItem value={x._id}>{x.name}</MenuItem>
                           ))

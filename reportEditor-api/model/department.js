@@ -4,9 +4,14 @@ const Schema = mongoose.Schema;
 const departmentSchema = new Schema({
     name: String,
     description: String,
-    isDeleted:{
-        type: Boolean,
-        default: false
+    teamType: {
+        type: String,
+        default: '',
+        enum: [ 'research-team', 'editing-team' ]
+    },
+    deletedAt:{
+        type: Date,
+        default: null
     },
     status: {
         type: Boolean,

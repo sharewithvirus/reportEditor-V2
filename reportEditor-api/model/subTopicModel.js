@@ -29,6 +29,10 @@ const subTopicModel = new mongoose.Schema(
     htmlData: {
       type: String,
     },
+    deletedAt: {
+      type: Date,
+      default: null,
+    }
   },
   {
     timestamps: true,

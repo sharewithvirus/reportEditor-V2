@@ -26,7 +26,8 @@ export default function DepartmentTable({ rows, changeStatus, modify }) {
       <Table sx={{ minWidth: 650 }} aria-label="simple table">
         <TableHead>
           <TableRow>
-            <TableCell align="center" sx={{fontWeight:'bold'}}>Department Name</TableCell>         
+            <TableCell align="center" sx={{fontWeight:'bold'}}>Team Name</TableCell>         
+            <TableCell align="center" sx={{fontWeight:'bold'}}>Team Type</TableCell>         
             <TableCell align="center" sx={{fontWeight:'bold'}}>Description</TableCell>
             <TableCell align="center" sx={{fontWeight:'bold'}}>Action</TableCell>
             <TableCell align="center" sx={{fontWeight:'bold'}}>Status</TableCell>
@@ -39,6 +40,7 @@ export default function DepartmentTable({ rows, changeStatus, modify }) {
               sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
             >
               <TableCell align="center">{row.name}</TableCell>
+              <TableCell align="center">{row.teamType === "research-team" ? "Research Team" : row.teamType === "editing-team" ? "Editing Team" : ''}</TableCell>
               <TableCell align="center">{row.description}</TableCell>
               <TableCell align="center"><Button variant="outlined" color="primary" sx={{textTransform: "none"}} onClick={() => modify(index)}>
               Modify

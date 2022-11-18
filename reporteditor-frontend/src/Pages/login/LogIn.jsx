@@ -22,7 +22,8 @@ const LogIn = () => {
         setLoginData({...loginData, [name]: value})
     }
 
-    const loginHandler = async () => {
+    const loginHandler = async (e) => {
+        e.preventDefault();
         try{
             if(!loginData.email || !loginData.password){
                 alert("Email And Password are Required");
@@ -52,7 +53,6 @@ const LogIn = () => {
     }
     return (
         <>
-
             <Box className='login-container'>
                 <Box className='login-box' sx={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', }}>
                     <Typography sx={{ fontSize: '25px' }}>Admin</Typography>

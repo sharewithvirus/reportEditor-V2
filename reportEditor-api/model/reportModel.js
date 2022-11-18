@@ -15,6 +15,10 @@ const reportModel = new mongoose.Schema(
     industry: {
       type: String,
     },
+    deletedAt: {
+      type: Date,
+      default: null
+    },
     template: {
       type: mongoose.Schema.Types.ObjectId,
       // ref: "",

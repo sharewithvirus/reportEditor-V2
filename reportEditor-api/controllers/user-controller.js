@@ -67,8 +67,8 @@ exports.adminLogout = async(req, res) => {
 
 exports.getAllUsers = async (req, res) => {
     try {
-        const userList = await User.find({ isAdmin: false, isDeleted:false })
-        .select("userName email emailVerified userStatus role department access")
+        const userList = await User.find({ isAdmin: false, deletedAt: null })
+        .select("userName email emailVerified userStatus teamType role department access")
         .populate({
             path: "department",
             select: "name"
@@ -92,7 +92,7 @@ exports.getAllUsers = async (req, res) => {
 
 exports.createUser = async (req, res) => {
     try {
-        const { userName, email, department, access } = req.body;
+        const { userName, email, teamType, department, access } = req.body;
         const checkUser = await User.findOne({ email });
             if(checkUser){
                 res.status(204)
@@ -105,6 +105,7 @@ exports.createUser = async (req, res) => {
         const userText = await User.create({
             userName,
             email,
+            teamType,
             department,
             access
         })
@@ -201,9 +202,10 @@ exports.changeUserStatus = async (req, res) => {
 
 exports.updateUser = async (req, res) => {
     try {
-        const { _id, userName, department, access } = req.body;
+        const { _id, userName, teamType, department, access } = req.body;
         const userText = await User.findByIdAndUpdate({ _id: _id},{
             userName,
+            teamType,
             department,
             access
         })
@@ -220,12 +222,10 @@ exports.updateUser = async (req, res) => {
         })
     }
 }
-
-// i javed stated code from here// shivam
 exports.deleteUser = async (req, res) => {
     try {
         const { id } = req.params;
-        const userText = await User.findByIdAndUpdate({ _id: id},{isDeleted:true})
+        const userText = await User.findByIdAndUpdate({ _id: id},{deletedAt: Date.now()})
         res.status(200).json({
             status: "Success",
             message: "User Deleted Successfully",

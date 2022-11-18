@@ -12,10 +12,10 @@ const roleSchema = new Schema({
         default: "read",
         enum: ["read", "write", "read_write"]
     },
-    isDeleted:{
-        type: Boolean,
-        default: false
-    },
+    deletedAt: {
+        type: Date,
+        default: null,
+      },
     status: {
         type: Boolean,
         default: false

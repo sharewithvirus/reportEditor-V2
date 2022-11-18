@@ -14,7 +14,10 @@ const activitySchema = new Schema({
         type: String,
         default: "0.0.0.0",
     },
-    
+    deletedAt: {
+        type: Date,
+        default: null,
+    }
 },
 {
     timestamps: true,

@@ -4,16 +4,21 @@ const Department = require("../model/department");
 
 exports.createDepartment = async (req, res) => {
     try {
-        console.log(req.body);
-        const { name, description } = req.body;
+        const { name, teamType, description } = req.body;
         if(!name){
             res.status(200).json({
                 status: 'error',
                 message: "Department Name required",
             })
             return;
+        }else if(!teamType){
+            res.status(200).json({
+                status: 'error',
+                message: "Team Type is required",
+            })
+            return;
         }else{
-            const newDepartment = await Department.create({name, description});
+            const newDepartment = await Department.create({name, teamType, description});
             res.status(200).json({
                 status: 'success',
                 message: "Department Created Successfully",
@@ -30,7 +35,7 @@ exports.createDepartment = async (req, res) => {
 
 exports.getAllDepartments = async (req, res) => {
     try {
-        const allDepartments = await Department.find({ isDeleted: false}).sort({ _id : -1}); 
+        const allDepartments = await Department.find({ deletedAt: null}).sort({ _id : -1});
         res.status(200).json({
             status: 'success',
             message: 'Department List Fetched Successfully',
@@ -104,7 +109,7 @@ exports.departmentDelete = async (req, res) => {
             })
             return;
         }else{
-            await Department.findByIdAndUpdate(id, {isDeleted: true});
+            await Department.findByIdAndUpdate(id, {deletedAt: Date.now()});
             res.status(200).json({
                 status: "success",
                 message: "Department Deleted successfully"

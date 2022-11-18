@@ -52,12 +52,12 @@ const UserManagement = () => {
 
     const handleDeleteSubmit = async (x) => {
         const res = await deleteUser(x);
-        console.log("id is ",x)
         setDeleteOpen(false)
         await getUserList();
     }
 
     const handleShow = () => {
+        getData();
         if(open === true){
             setActiveUser('')
         }

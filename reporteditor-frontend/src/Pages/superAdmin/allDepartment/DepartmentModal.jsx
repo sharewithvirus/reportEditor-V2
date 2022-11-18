@@ -29,6 +29,7 @@ export default function DepartmentModal(props) {
     name: props.deptData.name,
     description: props.deptData.description,
     deptId: props.deptData._id,
+    teamType: props.deptData.teamType,
   });
   const onInputChange = (e) => {
     const { name, value } = e.target;
@@ -39,10 +40,7 @@ export default function DepartmentModal(props) {
     await props.create(data);
     setData("");
   };
-  const [selectedValue, setSelectedValue] = React.useState('research-team');
-  const handleChange = (event) => {
-    setSelectedValue((event.target.value));
-  };
+  
   return (
     <div>
       <Modal
@@ -62,12 +60,36 @@ export default function DepartmentModal(props) {
             >
               <FileCopyRoundedIcon />
               <Typography sx={{ fontSize: "20px", fontWeight: "bold" }}>
-                {props.edit ? "Update Department" : "Create a Department"}
+                {props.edit ? "Update Team" : "Create Team"}
               </Typography>
             </Stack>
             <hr />
           </Typography>
           <Box>
+              <Stack lg={4} item xs={12}>
+              <Box my={0} mx={0}>
+              <FormControl>
+                <RadioGroup
+                  row
+                  aria-labelledby="demo-row-radio-buttons-group-label"
+                  name="teamType"
+                  value={data.teamType}
+                  onChange={onInputChange}
+                >
+                  <FormControlLabel
+                    value="research-team"
+                    control={<Radio />}
+                    label="Research Team"
+                  />
+                  <FormControlLabel
+                    value="editing-team"
+                    control={<Radio />}
+                    label="Editing Team"
+                  />
+                </RadioGroup>
+              </FormControl>
+            </Box>
+              </Stack>
             <Grid container spacing={2}>
               <Grid lg={4} item xs={12}>
                 <FormControl fullWidth sx={{ m: 1 }}>
@@ -81,9 +103,9 @@ export default function DepartmentModal(props) {
                   >
                     <TextField
                       color="primary"
-                      label="Department Name"
+                      label="Team Name"
                       id="outlined-size-small"
-                      placeholder="Input Department Name"
+                      placeholder="Input Team Name"
                       fullWidth
                       name="name"
                       margin="normal"
@@ -93,13 +115,13 @@ export default function DepartmentModal(props) {
                     />
                     <TextField
                       color="primary"
-                      label="Department Name Description"
+                      label="Team Description"
                       id="outlined-multiline-flexible"
                       fullWidth
                       multiline
                       maxRows={10}
                       margin="normal"
-                      placeholder="Input Department Description"
+                      placeholder="Add Team Description"
                       name="description"
                       defaultValue={
                         props.deptData ? props.deptData.description : ""
@@ -111,30 +133,6 @@ export default function DepartmentModal(props) {
                 </FormControl>
               </Grid>
             </Grid>
-            <Box my={4} mx={0}>
-              <FormControl>
-                <RadioGroup
-                  row
-                  aria-labelledby="demo-row-radio-buttons-group-label"
-                  name="row-radio-buttons-group"
-                  value={selectedValue}
-                  onChange={handleChange}
-                >
-                  <FormControlLabel
-                    value="research-team"
-                    control={<Radio />}
-                    label="Reseach Team"
-                    // onChange={()=> handleChange('research-team')}
-                  />
-                  <FormControlLabel
-                    value="editing-team"
-                    control={<Radio />}
-                    label="Editing Team"
-                    // onChange={()=> handleChange('editing-team')}
-                  />
-                </RadioGroup>
-              </FormControl>
-            </Box>
           </Box>
           <Stack
             display="flex"

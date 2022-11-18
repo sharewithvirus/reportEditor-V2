@@ -51,7 +51,7 @@ export default function RolesTable({ rows, changeVisibility, getData }) {
               Role
             </TableCell>
             <TableCell align="center" sx={{ fontWeight: "bold" }}>
-              Department Name
+              Team Name
             </TableCell>
             <TableCell align="center" sx={{ fontWeight: "bold" }}>
               Permission
@@ -65,13 +65,15 @@ export default function RolesTable({ rows, changeVisibility, getData }) {
           </TableRow>
         </TableHead>
         <TableBody>
-          {rows.map((row, index) => (
+        {console.log(rows)}
+          {rows.length > 0 ? 
+          rows.map((row, index) => (
             <TableRow
-              key={row.name}
+              key={`${row.name}${index}`}
               sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
             >
-              <TableCell align="center">{row.name}</TableCell>
-              <TableCell align="center">{row.department.name}</TableCell>
+              <TableCell align="center">{row.name ? row.name : ''}</TableCell>
+              <TableCell align="center">{row.department.name ? row.department.name : ''}</TableCell>
               <TableCell align="center">
                 {row.access === "read_write"
                   ? "Read And Write"
@@ -95,15 +97,16 @@ export default function RolesTable({ rows, changeVisibility, getData }) {
                 {" "}
                 <Switch
                   {...label}
-                  checked={row.status}
+                  checked={row.status ? row.status : ''}
                   defaultValue={row.status}
                   onChange={() => changeVisibility(row._id)}
                 />
               </TableCell>
             </TableRow>
-          ))}
+          ))
+          : ""
+          }
         </TableBody>
-        <DeleteConfirmationModel open={open} handleClose={handleClose} handleDelete={handleDelete}/>
       </Table>
     </TableContainer>
   );
