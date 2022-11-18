@@ -1,12 +1,10 @@
 import axios from "axios";
 
-export const getUserAllActivity = async (email, password) => {
+export const getUserAllActivity = async (page, limit) => {
     try {
-        const data = await axios.get(`/api/v1/user/activity`)
+        const data = await axios.get(`/api/v1/user/activity/${page}/${limit}`)
         return data;
     } catch (error) {
-        console.log("Error Message", error.response.data.message)
-        console.log("Error Status", error.response.status)
         alert(error.response.data.message)
         return error.response;
     }

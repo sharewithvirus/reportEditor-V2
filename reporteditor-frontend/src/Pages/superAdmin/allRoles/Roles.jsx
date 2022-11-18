@@ -36,7 +36,11 @@ const Roles = () => {
     const [deptList, setDeptList] = React.useState([]);
     const [roleList, setRoleList] = React.useState([]);
     const [deleteModelShow, setDeleteModelShow ] = React.useState(false)
-    const handleOpen = () => setOpen(true);
+    const handleOpen = async () => {
+        const res = await getAllDepartment();
+        setDeptList(res.data.data)
+        setOpen(true)
+    };
     const handleClose = () => setOpen(false);
 
 const handleDeletemodel = () => {
@@ -49,6 +53,11 @@ const getData = async () => {
     const res1 = await getAllRole();
     setRoleList(res1.data.data)
 }
+
+const getDepartment = () => {
+
+}
+
 const createNewRole = async ( data ) => {
     setIsLoading(true);
     const res = await createRole(data)

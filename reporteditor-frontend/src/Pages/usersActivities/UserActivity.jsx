@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import moment from "moment";
-import { Typography, Box, Stack } from "@mui/material";
+import { Typography, Box, Stack, getAccordionDetailsUtilityClass } from "@mui/material";
 import { border, width } from "@mui/system";
 import FileCopyRoundedIcon from "@mui/icons-material/FileCopyRounded";
 import Pagination from '@mui/material/Pagination';
@@ -11,11 +11,20 @@ import { X } from "react-bootstrap-icons";
 const UserActivity = () => {
 
     const [activityList, setActivityList] = useState([]);
+    const [totalCount, setTotalCount] = useState(0);
+    const [page, setPage] = React.useState(1);
+    const limit = 5;
+    
+    const handlePageChange = async (event, value) => {
+      setPage(value);
+      getActivity();
+    }
 
     const getActivity = async () => {
-        const res = await getUserAllActivity();
+        const res = await getUserAllActivity(page, limit);
         if(res.status === 200){
             setActivityList(res.data.data);
+            setTotalCount(res.data.count);
         }
     }
 
@@ -74,7 +83,7 @@ const UserActivity = () => {
         }}
         >
             <Stack spacing={0.5}>
-                <Pagination count={1} showFirstButton showLastButton />
+                <Pagination count={Number(totalCount/page)} page={page} onChange={handlePageChange} />
             </Stack>
         </Box>
         </Box>

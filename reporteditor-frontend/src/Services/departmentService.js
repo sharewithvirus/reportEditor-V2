@@ -2,7 +2,9 @@ import axios from "axios";
 
 export const getAllDepartment = async () => {
     try {
-        return await axios.get(`/api/v1/admin/department/`)
+        const res = await axios.get(`/api/v1/admin/department/`)
+        console.log(res)
+        return res;
     } catch (error) {
         alert(error.response.data.message)
         return error.response;

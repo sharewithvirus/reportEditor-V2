@@ -9,11 +9,12 @@ const userSchema = new Schema({
         type: Boolean,
         default: false,
     },
-    isAdmin:{
-        type: Boolean,
-        default: false
+    teamType: {
+        type: String,
+        default: '',
+        enum: [ '', 'admin', 'research-team', 'editing-team' ]
     },
-    isDeleted:{
+    isAdmin:{
         type: Boolean,
         default: false
     },
@@ -39,7 +40,11 @@ const userSchema = new Schema({
     access: {
         type: Schema.ObjectId,
         ref: 'Role'
-    }
+    },
+    deletedAt: {
+        type: Date,
+        default: null,
+    },
 },{
     timestamps: true,
 })
