@@ -27,7 +27,7 @@ const UserContext = (props) => {
         isLoading, setIsLoading,
         setSupportSingleData,supportSigleData,
         isAdmin, setIsAdmin,
-        userRole, setUserRole
+        userRole, setUserRole,setAdminData
       }}>
         {props.children}
       </UserDataContext.Provider>

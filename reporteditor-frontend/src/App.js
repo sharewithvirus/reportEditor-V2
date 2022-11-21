@@ -22,20 +22,23 @@ import NavBar from "./components/NavBar";
 import CreateReport from "./Pages/researchTeam/reportsection/component/CreateReport";
 
 function App() {
-  const { isAuthenticated, setIsAuthenticated, setIsLoading, updateAdminData } =
+  const { isAuthenticated, setUserInfo, setIsAuthenticated, setIsLoading, updateAdminData } =
     useContext(UserDataContext);
 
   const navigate = useNavigate();
 
   const getUserDataApi = async () => {
     const res = await userDashboard();
+    console.log("Status", res.status)
+    console.log("Error", res)
     if (res === "User Not found") {
       isAuthenticated(false);
       setIsLoading(false);
       navigate("/login");
     } else {
       setIsAuthenticated(true);
-      updateAdminData(res.data.user);
+      // updateAdminData(res.data.user);
+      setUserInfo(res.data.user)
       setIsLoading(false);
       if (res.data.user.role === "admin") {
         navigate("/a_control");

@@ -25,7 +25,7 @@ const LogIn = () => {
     const loginHandler = async (e) => {
         e.preventDefault();
         try{
-            if(!loginData.email || !loginData.password){
+            if(loginData.email === "" || loginData.password === ""){
                 alert("Email And Password are Required");
                 return;
             }
@@ -55,46 +55,20 @@ const LogIn = () => {
         <>
             <Box className='login-container'>
                 <Box className='login-box' sx={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', }}>
-                    <Typography sx={{ fontSize: '25px' }}>Admin</Typography>
-                    <Box
-                        component="form" x
-                        sx={{
-                           
-                           width:'90%',
-                           display: 'flex',
-                           justifyContent: 'center',
-                           marginTop:'15px'
-                        }}
-                        noValidate
-                        autoComplete="off"
-                    >
-                        <TextField label="Email" name="email" sx={{width:'80%'}} type="email" color="primary" focused  onChange={handleInput} />
+                    <Typography sx={{ fontSize: '25px' }}>Admin</Typography>                    
+                   <form onSubmit={loginHandler}>
+                        <TextField label="Email" name="email" sx={{width:'80%'}} type="email" color="primary"   onChange={handleInput} />
+                        {/* <TextField label="Filled success" variant="filled" color="success" focused /> */}
+                        <TextField  label="Password" name="password" sx={{width:'80%'}} color="primary" type='password' onChange={handleInput} />
                         {/* <TextField label="Filled success" variant="filled" color="success" focused /> */}
 
-                    </Box>
-                    <Box
-                        component="form"
-                        sx={{
-                           
-                           width:'90%',
-                           display: 'flex',
-                           justifyContent: 'center',
-                           marginTop:'15px'
-                        }}
-                        noValidate
-                        autoComplete="off"
-                    >
-                        <TextField  label="Password" name="password" sx={{width:'80%'}} color="primary" focused type='password' onChange={handleInput} />
-                        {/* <TextField label="Filled success" variant="filled" color="success" focused /> */}
-
-                    </Box>
                     {/* <Link to="#"> Forget Password</Link> */}
                     {/* <a href="#" style={{textAlign:'center'}}>Forget Password</a> */}
-                    <Box my={2}>
-                        <Button variant="contained" color="primary" sx={{width :"20vh",padding:'15px 0'}} onClick={loginHandler}>
+                        <Button variant="contained" color="primary" sx={{width :"20vh",padding:'15px 0'}}  onClick={(e)=>loginHandler(e)}>
                             Submit
                         </Button>
-                    </Box>
+                  
+                    </form>
                 </Box>
             </Box>
         </>
