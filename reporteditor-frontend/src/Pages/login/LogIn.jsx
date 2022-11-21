@@ -54,19 +54,24 @@ const LogIn = () => {
     return (
         <>
             <Box className='login-container'>
-                <Box className='login-box' sx={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', }}>
+                <Box className='login-box' sx={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center',  }}>
                     <Typography sx={{ fontSize: '25px' }}>Admin</Typography>                    
-                   <form onSubmit={loginHandler}>
-                        <TextField label="Email" name="email" sx={{width:'80%'}} type="email" color="primary"   onChange={handleInput} />
+                   <form onSubmit={loginHandler} sx={{   }}> 
+
+<Box sx={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', width:'40vw' }}>
+
+                        <TextField label="Email" name="email" sx={{width:'80%', marginTop:'15px' }} type="email" color="primary"   onChange={handleInput} />
                         {/* <TextField label="Filled success" variant="filled" color="success" focused /> */}
-                        <TextField  label="Password" name="password" sx={{width:'80%'}} color="primary" type='password' onChange={handleInput} />
+                        <TextField  label="Password" name="password" sx={{width:'80%', marginTop:'15px'}} color="primary" type='password' onChange={handleInput} />
                         {/* <TextField label="Filled success" variant="filled" color="success" focused /> */}
 
                     {/* <Link to="#"> Forget Password</Link> */}
                     {/* <a href="#" style={{textAlign:'center'}}>Forget Password</a> */}
-                        <Button variant="contained" color="primary" sx={{width :"20vh",padding:'15px 0'}}  onClick={(e)=>loginHandler(e)}>
+                        <Button variant="contained" color="primary" sx={{width :"20vh",padding:'15px 0', marginTop:'15px'}}  onClick={(e)=>loginHandler(e)}>
                             Submit
                         </Button>
+
+</Box>
                   
                     </form>
                 </Box>
