@@ -45,17 +45,16 @@ exports.adminLogin = async (req, res) => {
 exports.adminLogout = async(req, res) => {
     try {
         const { user } = req;
+        console.log("ppp")
         const Ip = req.ip.split(":");
         const activityText = await Activity.create({ user: user, activityType: "Logout", ipAddress: `${Ip[3]}` });
         const userText = await User.findById(user._id);
         userText.activity.push(activityText._id) 
         await userText.save();
-        res.status(200)
-        .clearCookie("bearerToken")
-        .json({
-            status: 'success',
-            message: 'Logout successfully'
-        })
+        res
+      .status(200)
+      .clearCookie("bearer")
+    //   .json({ message: "Logout successfully", status: "Success" })
     } catch (error) {
         console.log(error)
         res.status(500).json({
