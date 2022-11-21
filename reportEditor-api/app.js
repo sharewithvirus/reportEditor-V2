@@ -18,12 +18,13 @@ app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
-app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.static(path.join(__dirname, 'build')));
 
-app.get("/", (req, res) => res.status(200).send("Server Is Running"));
-// i javed akhtar
+
 app.use('/api/v1', require("./routes/1V-main_routes"));
-
+app.get("/*", (req, res) => {
+  res.sendFile(path.join(__dirname, "build", "index.html"));
+});
 // Others Routes
 app.get("*", (req, res) => {
   res.status(500).json({
