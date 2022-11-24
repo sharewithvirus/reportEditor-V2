@@ -3,21 +3,62 @@ import {
   Button,
   Checkbox,
   Divider,
+  FormControl,
   FormControlLabel,
   FormGroup,
+  IconButton,
+  InputLabel,
+  MenuItem,
+  OutlinedInput,
   Paper,
   Stack,
   TextareaAutosize,
+  TextField,
   Typography,
 } from "@mui/material";
+import CloseIcon from "@mui/icons-material/Close";
+import Add from "@mui/icons-material/Add";
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import FileCopyOutlinedIcon from "@mui/icons-material/FileCopyOutlined";
 import { margin } from "@mui/system";
-
+import Select, { SelectChangeEvent } from "@mui/material/Select";
+import ListItemText from "@mui/material/ListItemText";
 function CreateReport() {
-  const [allAuther, setAllAuther] = useState([]);
+  const ITEM_HEIGHT = 40;
+  const ITEM_PADDING_TOP = 4;
+  const MenuProps = {
+    PaperProps: {
+      style: {
+        maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
+        width: 250,
+      },
+    },
+  };
+  const [searchField, setSearchField] = useState("");
+  const [allAuther, setAllAuther] = useState([
+    "Oliver Hansen",
+    "Van Henry",
+    "April Tucker",
+    "Ralph Hubbard",
+    "Omar Alexander",
+    "Carlos Abbott",
+    "Miriam Wagner",
+    "Bradley Wilkerson",
+    "Virginia Andrews",
+    "Kelly Snyder",
+  ]);
+  const [personName, setPersonName] = React.useState([]);
 
+  const handleChange = (event) => {
+    const {
+      target: { value },
+    } = event;
+    setPersonName(
+      // On autofill we get a stringified value.
+      typeof value === "string" ? value.split(",") : value
+    );
+  };
   const getAllAuther = async () => {
     try {
       const res = await axios.get("api/v1/user");
@@ -29,11 +70,39 @@ function CreateReport() {
       console.log(error);
     }
   };
-
+  const currentYear = new Date().getFullYear();
+  const addYear = (event) => {
+    if (event === "baseyear") {
+      setBaseYear([...baseYear, baseYear[baseYear.length - 1] + 1]);
+    } else if (event === "forecast") {
+      setForecastYear([
+        ...forecastYear,
+        forecastYear[forecastYear.length - 1] + 1,
+      ]);
+    }
+  };
+  const deleteYear = (event, index) => {
+    if (event === "baseyear") {
+      const deletedArray = baseYear.filter((value, i) => {
+        return i !== index;
+      });
+      setBaseYear(deletedArray);
+    } else if (event === "forecast") {
+      const deletedArray = forecastYear.filter((value, i) => {
+        return i !== index;
+      });
+      setForecastYear(deletedArray);
+    }
+  };
+  const [baseYear, setBaseYear] = useState([new Date().getFullYear()]);
+  const [forecastYear, setForecastYear] = useState([
+    new Date().getFullYear() + 5,
+  ]);
+  const [selectedTemplate, setSelectedTemplate] = useState();
   useEffect(() => {
     getAllAuther();
   }, []);
-
+  const tempelates = [1, 2, 3, 4, 5, 6];
   return (
     <Box
       sx={{
@@ -57,7 +126,7 @@ function CreateReport() {
         >
           <FileCopyOutlinedIcon />
           <Typography sx={{ fontSize: "20px", fontWeight: "" }}>
-            creat a report
+          Create a Report
           </Typography>
         </Stack>
       </Stack>
@@ -73,12 +142,12 @@ function CreateReport() {
         <Typography sx={{ width: "10vw", fontSize: "15px" }}>
           Report Name
         </Typography>
-        <Box sx={{ border: "1px solid gray" }}>
+        <Box sx={{}}>
           <TextareaAutosize
             aria-label="minimum height"
-            minRows={15}
+            minRows={5}
             placeholder="ABCD MARKET"
-            style={{ width: "70vw" }}
+            style={{ width: "75vw", padding: "15px" }}
           />
 
           {/* <Box
@@ -103,9 +172,9 @@ function CreateReport() {
         <Typography sx={{ width: "10vw", fontSize: "15px" }}>
           Author Name
         </Typography>
-        <Box sx={{}}>
-          <Box sx={{}}>
-            <FormGroup sx={{ fontSize: "10px" }}>
+        {/* <Box sx={{}}>
+          <Box sx={{width:'100%'}}> */}
+            {/* <FormGroup sx={{ fontSize: "10px" }}>
               {allAuther.map((x, index) => {
                 return (
                   <FormControlLabel
@@ -118,16 +187,68 @@ function CreateReport() {
                   />
                 );
               })}
-            </FormGroup>
-          </Box>
-        </Box>
+            </FormGroup> */}
+            <FormControl sx={{ m:1,width:"80vw",}}>
+              <InputLabel id="demo-multiple-checkbox-label">select</InputLabel>
+              <Select
+                labelId="demo-multiple-checkbox-label"
+                id="demo-multiple-checkbox"
+                multiple
+                value={personName}
+                onChange={handleChange}
+                input={<OutlinedInput label="select" />}
+                renderValue={(selected) => selected.join(", ")}
+                MenuProps={MenuProps}
+                size="medium"
+              >
+                <MenuItem>
+                  <TextField
+                    hiddenLabel
+                    id="filled-hidden-label-normal"
+                    size="small"
+                    variant="standard"
+                    sx={{ width: "100%" }}
+                    placeholder="search"
+                    value={searchField}
+                    onChange={(event) => setSearchField(event.target.value)}
+                  />
+                </MenuItem>
+                {searchField === ""
+                  ? allAuther.map((name, index) => (
+                      <MenuItem key={index} value={name}>
+                        <ListItemText primary={name} />
+                      </MenuItem>
+                    ))
+                  : allAuther.filter((name, index) => {
+                    if(name.includes(searchField) === true)
+                    {
+                      return (
+                        <MenuItem key={index} value={name}>
+                          <ListItemText primary={name} />
+                        </MenuItem>
+                      );
+                    }
+                    else
+                    {
+                      return (
+                        <MenuItem key={index} value={name}>
+                          <ListItemText primary={name} />
+                        </MenuItem>
+                      );
+                    }
+                    })}
+              </Select>
+            </FormControl>
+          {/* </Box>
+        </Box> */}
       </Stack>
       <Stack
         display="flex"
-        direction="row"
+       
         justifyContent="start"
         alignItems="start"
-        spacing={2}
+        alignContent="start"
+        spacing={5}
         marginTop="50px"
 
         // border="2px solid black"
@@ -144,35 +265,40 @@ function CreateReport() {
           <Typography sx={{ width: "10vw", fontSize: "15px" }}>
             Base Year
           </Typography>
-          <Box sx={{ marginLeft: "10px", width: "10vw" }}>
-            <Box sx={{}}>
-              <FormGroup>
-                <FormControlLabel
-                  control={
-                    <Checkbox defaultChecked color="default" size="small" />
-                  }
-                  label={<span style={{ fontSize: "0.7rem" }}>2020</span>}
-                />
-                <FormControlLabel
-                  control={<Checkbox color="default" size="small" />}
-                  label={<span style={{ fontSize: "0.7rem" }}>2021 </span>}
-                />
-                <FormControlLabel
-                  control={<Checkbox color="default" size="small" />}
-                  label={<span style={{ fontSize: "0.7rem" }}>2022</span>}
-                />
-                <FormControlLabel
-                  control={<Checkbox color="default" size="small" />}
-                  label={<span style={{ fontSize: "0.7rem" }}>2023</span>}
-                />
-                <FormControlLabel
-                  control={<Checkbox color="default" size="small" />}
-                  label={<span style={{ fontSize: "0.7rem" }}>2024</span>}
-                />
-                <FormControlLabel
-                  control={<Checkbox color="default" />}
-                  label={<span style={{ fontSize: "0.7rem" }}>2025</span>}
-                />
+          <IconButton color="secondary" onClick={() => addYear("baseyear")}>
+            <Add />
+          </IconButton>
+          <Box sx={{ marginLeft: "10px",}}>
+            <Box sx={{ display: "flex", justifyContent: "space-between" }}>
+              <FormGroup
+                sx={{
+                  display: "flex",
+                  justifyContent: "space-between",
+                  flexDirection: "row",
+                }}
+              >
+                {baseYear &&
+                  baseYear.map((x, index) => {
+                    return (
+                      <>
+                        <FormControlLabel
+                          control={<Checkbox color="default" size="small" defaultChecked />}
+                          label={
+                            <span style={{ fontSize: "0.7rem" }}>{x}</span>
+                          }
+                        />
+                        {baseYear.length > 1 ? (
+                          <IconButton
+                            onClick={() => deleteYear("baseyear", index)}
+                          >
+                            <CloseIcon sx={{ fontSize: "12px" }} />
+                          </IconButton>
+                        ) : (
+                          ""
+                        )}
+                      </>
+                    );
+                  })}
               </FormGroup>
             </Box>
           </Box>
@@ -189,35 +315,40 @@ function CreateReport() {
           <Typography sx={{ width: "10vw", fontSize: "15px" }}>
             Forecast Year
           </Typography>
-          <Box sx={{ marginLeft: "5px", width: "20vw" }}>
-            <Box sx={{}}>
-              <FormGroup>
-                <FormControlLabel
-                  control={
-                    <Checkbox defaultChecked color="default" size="small" />
-                  }
-                  label={<span style={{ fontSize: "0.7rem" }}>2028</span>}
-                />
-                <FormControlLabel
-                  control={<Checkbox color="default" size="small" />}
-                  label={<span style={{ fontSize: "0.7rem" }}>2029</span>}
-                />
-                <FormControlLabel
-                  control={<Checkbox color="default" size="small" />}
-                  label={<span style={{ fontSize: "0.7rem" }}>2030</span>}
-                />
-                <FormControlLabel
-                  control={<Checkbox color="default" size="small" />}
-                  label={<span style={{ fontSize: "0.7rem" }}>2031</span>}
-                />
-                <FormControlLabel
-                  control={<Checkbox color="default" size="small" />}
-                  label={<span style={{ fontSize: "0.7rem" }}>2032</span>}
-                />
-                <FormControlLabel
-                  control={<Checkbox color="default" size="small" />}
-                  label={<span style={{ fontSize: "0.7rem" }}>2033 </span>}
-                />
+          <IconButton color="secondary" onClick={() => addYear("forecast")}>
+            <Add />
+          </IconButton>
+          <Box sx={{ marginLeft: "5px", }}>
+            <Box sx={{ display: "flex", justifyContent: "space-around" }}>
+              <FormGroup
+                sx={{
+                  display: "flex",
+                  justifyContent: "center",
+                  flexDirection: "row",
+                }}
+              >
+                {forecastYear &&
+                  forecastYear.map((x, index) => {
+                    return (
+                      <>
+                        <FormControlLabel
+                          control={<Checkbox color="default" size="small" defaultChecked />}
+                          label={
+                            <span style={{ fontSize: "0.7rem" }}>{x}</span>
+                          }
+                        />
+                        {forecastYear.length > 1 ? (
+                          <IconButton
+                            onClick={() => deleteYear("forecast", index)}
+                          >
+                            <CloseIcon sx={{ fontSize: "12px" }} />
+                          </IconButton>
+                        ) : (
+                          ""
+                        )}
+                      </>
+                    );
+                  })}
               </FormGroup>
             </Box>
           </Box>
@@ -253,66 +384,33 @@ function CreateReport() {
                 },
               }}
             >
-              <Paper elevation={3} square>
-                <Stack
-                  sx={{
-                    display: "flex",
-                    flexDirection: "column",
+              {tempelates.map((value, index) => {
+                return (
+                  <Paper
+                    elevation={selectedTemplate === index ? 16 : 3}
+                    square
+                    style={
+                      selectedTemplate === index
+                        ? { backgroundColor: "rgba(0, 0, 255, 0.42)" }
+                        : { backgroundColor: "" }
+                    }
+                    onClick={() => setSelectedTemplate(index)}
+                  >
+                    <Stack
+                      sx={{
+                        display: "flex",
+                        flexDirection: "column",
 
-                    alignItems: "center",
-                  }}
-                >
-                  <FormGroup>
-                    <FormControlLabel
-                      control={<Checkbox color="default" size="small" />}
-                      label={<span style={{ fontSize: "0.7rem" }}>select</span>}
-                    />
-                  </FormGroup>
-                  <Typography sx={{ fontSize: "10px", marginTop: "50px" }}>
-                    Template one
-                  </Typography>
-                </Stack>
-              </Paper>
-              <Paper elevation={3} square>
-                <Stack
-                  sx={{
-                    display: "flex",
-                    flexDirection: "column",
-
-                    alignItems: "center",
-                  }}
-                >
-                  <FormGroup>
-                    <FormControlLabel
-                      control={<Checkbox color="default" size="small" />}
-                      label={<span style={{ fontSize: "0.7rem" }}>select</span>}
-                    />
-                  </FormGroup>
-                  <Typography sx={{ fontSize: "10px", marginTop: "50px" }}>
-                    Template Two
-                  </Typography>
-                </Stack>
-              </Paper>
-              <Paper elevation={3} square>
-                <Stack
-                  sx={{
-                    display: "flex",
-                    flexDirection: "column",
-
-                    alignItems: "center",
-                  }}
-                >
-                  <FormGroup>
-                    <FormControlLabel
-                      control={<Checkbox color="default" size="small" />}
-                      label={<span style={{ fontSize: "0.7rem" }}>select</span>}
-                    />
-                  </FormGroup>
-                  <Typography sx={{ fontSize: "10px", marginTop: "50px" }}>
-                    Template Three
-                  </Typography>
-                </Stack>
-              </Paper>
+                        alignItems: "center",
+                      }}
+                    >
+                      <Typography sx={{ fontSize: "10px", marginTop: "50px" }}>
+                        Template {value}
+                      </Typography>
+                    </Stack>
+                  </Paper>
+                );
+              })}
             </Box>
           </Box>
         </Box>
