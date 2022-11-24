@@ -54,11 +54,11 @@ const RowLine = ({ item, index, updateStatus, editModelOpen }) => {
       key={item._id}
       sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
     >
-      <TableCell align="center">{item.userName}</TableCell>
-      <TableCell align="center">{item.email}</TableCell>
+      <TableCell align="center">{item.userName ? item.userName : ''}</TableCell>
+      <TableCell align="center">{item.email ? item.email : ''}</TableCell>
       <TableCell align="center">{item.emailVerified ? "Verified" : "Not Verified"}</TableCell>
-      <TableCell align="center">{item.department.name}</TableCell>
-      <TableCell align="center">{item.access.name}</TableCell>
+      <TableCell align="center">{item.department.name ? item.department.name : ''}</TableCell>
+      <TableCell align="center">{item.access.name ? item.access.name : ''}</TableCell>
       <TableCell align="center"><Button variant="outlined" color="primary" sx={{textTransform: "none" }} onClick={() => editModelOpen(index)}>
       Modify
       </Button></TableCell>
