@@ -10,8 +10,23 @@ import {
 
 import FileCopyOutlinedIcon from "@mui/icons-material/FileCopyOutlined";
 import ReportManagementTable from "./component/ReportManagementTable";
+import axios from "axios";
+import { useEffect } from "react";
+import { useState } from "react";
 
 function DashboardPanel() {
+  const [getData, setGetData] = useState([]);
+  const url = "/api/v1/report";
+  const getApiData = async () => {
+    const res = await axios.get("/api/v1/report");
+    // console.log("api data is coming",res.data.reportsList);
+    setGetData(res.data.reportsList);
+  };
+
+  // console.log(getData);
+  useEffect(() => {
+    getApiData();
+  }, []);
   return (
     <>
       <Box
@@ -35,28 +50,28 @@ function DashboardPanel() {
           >
             <FileCopyOutlinedIcon />
             <Typography sx={{ fontSize: "20px", fontWeight: "" }}>
-            Reports Management
+              Reports Management
             </Typography>
           </Stack>
-         
-            <Stack
-              display="flex"
-              direction="row"
-              justifyContent="start"
-              alignItems="center"
-              spacing={5}
-            >
-              <Typography sx={{ fontSize: "18px", fontWeight: "" }}>
-                Showing
-              </Typography>
-              <Select sx={{ width: "10vw", height: "30px" }} value={1}>
-                <MenuItem value={1}>Showing all</MenuItem>
-                <MenuItem value={2}>Drafting</MenuItem>
-                <MenuItem value={3}>Forwaded to Editing</MenuItem>
-                <MenuItem value={4}>Editing version Done</MenuItem>
-                <MenuItem value={5}>Research Published</MenuItem>
-              </Select>
-            </Stack>
+
+          <Stack
+            display="flex"
+            direction="row"
+            justifyContent="start"
+            alignItems="center"
+            spacing={5}
+          >
+            <Typography sx={{ fontSize: "18px", fontWeight: "" }}>
+              Showing
+            </Typography>
+            <Select sx={{ width: "10vw", height: "30px" }} value={1}>
+              <MenuItem value={1}>Showing all</MenuItem>
+              <MenuItem value={2}>Drafting</MenuItem>
+              <MenuItem value={3}>Forwaded to Editing</MenuItem>
+              <MenuItem value={4}>Editing version Done</MenuItem>
+              <MenuItem value={5}>Research Published</MenuItem>
+            </Select>
+          </Stack>
         </Stack>
         <Box
           my={4}
@@ -75,9 +90,18 @@ function DashboardPanel() {
           >
             
           </Box> */}
-          <ReportManagementTable taskStatus={[true,true,true,true]}/>
-          <ReportManagementTable taskStatus={[true,true,false,false]}/>
-          <ReportManagementTable taskStatus={[true,false,false,false]}/>
+          {getData
+            ? getData.map((data, index) => {
+                return (
+                  <ReportManagementTable
+                    taskStatus={[true, true, true, true]}
+                  />
+                );
+              })
+            : ""}
+            {/* <p> {getData ? getData[3].name : "not coming"} </p> */}
+          {/* <ReportManagementTable taskStatus={[true,true,false,false]}/>
+          <ReportManagementTable taskStatus={[true,false,false,false]}/> */}
         </Box>
       </Box>
     </>
