@@ -126,7 +126,7 @@ function CreateReport() {
         >
           <FileCopyOutlinedIcon />
           <Typography sx={{ fontSize: "20px", fontWeight: "" }}>
-            creat a report
+          Create a Report
           </Typography>
         </Stack>
       </Stack>
@@ -145,9 +145,9 @@ function CreateReport() {
         <Box sx={{}}>
           <TextareaAutosize
             aria-label="minimum height"
-            minRows={15}
+            minRows={5}
             placeholder="ABCD MARKET"
-            style={{ width: "70vw", padding: "15px" }}
+            style={{ width: "75vw", padding: "15px" }}
           />
 
           {/* <Box
@@ -172,8 +172,8 @@ function CreateReport() {
         <Typography sx={{ width: "10vw", fontSize: "15px" }}>
           Author Name
         </Typography>
-        <Box sx={{}}>
-          <Box sx={{}}>
+        {/* <Box sx={{}}>
+          <Box sx={{width:'100%'}}> */}
             {/* <FormGroup sx={{ fontSize: "10px" }}>
               {allAuther.map((x, index) => {
                 return (
@@ -188,7 +188,7 @@ function CreateReport() {
                 );
               })}
             </FormGroup> */}
-            <FormControl sx={{ m: 1, width: 300 }}>
+            <FormControl sx={{ m:1,width:"80vw",}}>
               <InputLabel id="demo-multiple-checkbox-label">select</InputLabel>
               <Select
                 labelId="demo-multiple-checkbox-label"
@@ -239,12 +239,12 @@ function CreateReport() {
                     })}
               </Select>
             </FormControl>
-          </Box>
-        </Box>
+          {/* </Box>
+        </Box> */}
       </Stack>
       <Stack
         display="flex"
-        direction="row"
+       
         justifyContent="start"
         alignItems="start"
         alignContent="start"
@@ -268,7 +268,7 @@ function CreateReport() {
           <IconButton color="secondary" onClick={() => addYear("baseyear")}>
             <Add />
           </IconButton>
-          <Box sx={{ marginLeft: "10px", width: "10vw" }}>
+          <Box sx={{ marginLeft: "10px",}}>
             <Box sx={{ display: "flex", justifyContent: "space-between" }}>
               <FormGroup
                 sx={{
@@ -282,7 +282,7 @@ function CreateReport() {
                     return (
                       <>
                         <FormControlLabel
-                          control={<Checkbox color="default" size="small" />}
+                          control={<Checkbox color="default" size="small" defaultChecked />}
                           label={
                             <span style={{ fontSize: "0.7rem" }}>{x}</span>
                           }
@@ -318,7 +318,7 @@ function CreateReport() {
           <IconButton color="secondary" onClick={() => addYear("forecast")}>
             <Add />
           </IconButton>
-          <Box sx={{ marginLeft: "5px", width: "10vw" }}>
+          <Box sx={{ marginLeft: "5px", }}>
             <Box sx={{ display: "flex", justifyContent: "space-around" }}>
               <FormGroup
                 sx={{
@@ -332,7 +332,7 @@ function CreateReport() {
                     return (
                       <>
                         <FormControlLabel
-                          control={<Checkbox color="default" size="small" />}
+                          control={<Checkbox color="default" size="small" defaultChecked />}
                           label={
                             <span style={{ fontSize: "0.7rem" }}>{x}</span>
                           }

@@ -4,6 +4,7 @@ import React from "react";
 import FileCopyOutlinedIcon from "@mui/icons-material/FileCopyOutlined";
 import AddCircleOutlineOutlinedIcon from "@mui/icons-material/AddCircleOutlineOutlined";
 import DoneOutlineOutlinedIcon from '@mui/icons-material/DoneOutlineOutlined';
+import { Link } from "react-router-dom";
 function ReportTemplateManagement() {
   return (
     <>
@@ -39,16 +40,18 @@ function ReportTemplateManagement() {
             alignItems="center"
             spacing={5}
           >
-            <Button color="inherit"
-            sx={{
-                height:"5vh"
-            }}
-            >
-                Add
-            <IconButton>
-                <AddCircleOutlineOutlinedIcon/>
-            </IconButton>
-                </Button>
+            <Link to={"/u_control/report-template-management/template-creator"}>
+              <Button color="inherit"
+              sx={{
+                  height:"5vh"
+              }}
+              >
+                  Add
+              <IconButton>
+                  <AddCircleOutlineOutlinedIcon/>
+              </IconButton>
+                  </Button>
+            </Link>
           </Stack>
         </Stack>
         <Divider />
