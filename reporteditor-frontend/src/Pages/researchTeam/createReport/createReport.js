@@ -16,23 +16,70 @@ import FileCopyOutlinedIcon from "@mui/icons-material/FileCopyOutlined";
 import { margin } from "@mui/system";
 
 function CreateReport() {
-  const [allAuther, setAllAuther] = useState([]);
+ // let currentYear=new Date().getUTCFullYear;
+  const [allAuthor, setAllAuthor] = useState([]);
+  const [baseYear, setBaseYear] = useState([]);
+  const [forecastYear, setForecastYear] = useState([]);
+  const [btnState, setBtnState] = useState(false);
+  
 
-  const getAllAuther = async () => {
+  const getAllAuthor = async () => {
     try {
       const res = await axios.get("api/v1/user");
       // console.log(res.data.data);
       console.log("data is ");
-      setAllAuther(res.data.data);
-      console.log(allAuther);
+      setAllAuthor(res.data.data);
+      console.log(allAuthor);
     } catch (error) {
       console.log(error);
     }
   };
 
   useEffect(() => {
-    getAllAuther();
+    getAllAuthor();
   }, []);
+
+// Adding BaseYear
+const addBaseYear = async () => {
+  try{
+    const today = new Date();
+    const year = today.getFullYear; 
+     setBaseYear(()=>[...baseYear, year+1 ])
+   //return <Button>2022</Button>
+
+
+  }catch(error){
+    console.log(error);
+  }
+};
+
+useEffect(()=>{
+  //addBaseYear();
+  const today = new Date();
+  let year = today.getFullYear();
+  console.log(year);
+  setBaseYear([...baseYear,year+1]);
+}, []);
+
+// Selecting Forecast year
+const selectForecastYear = async () => {
+  try{
+   
+
+
+  }catch(error){
+    console.log(error);
+  }
+};
+
+function handleClick(){
+  setBtnState(btnState => !btnState)
+}
+
+// useEffect(()=>{
+//  // selectForecastYear();
+//  setForecastYear(()=> Number(forecastYear)+5)
+// }, [forecastYear]);
 
   return (
     <Box
@@ -57,7 +104,7 @@ function CreateReport() {
         >
           <FileCopyOutlinedIcon />
           <Typography sx={{ fontSize: "20px", fontWeight: "" }}>
-            creat a report
+            Create a Report
           </Typography>
         </Stack>
       </Stack>
@@ -77,7 +124,7 @@ function CreateReport() {
           <TextareaAutosize
             aria-label="minimum height"
             minRows={15}
-            placeholder="ABCD MARKET"
+            placeholder="Enter the Report Name"
             style={{ width: "70vw" }}
           />
 
@@ -106,7 +153,7 @@ function CreateReport() {
         <Box sx={{}}>
           <Box sx={{}}>
             <FormGroup sx={{ fontSize: "10px" }}>
-              {allAuther.map((x, index) => {
+              {allAuthor.map((x, index) => {
                 return (
                   <FormControlLabel
                     control={<Checkbox color="default" size="small" />}
@@ -122,16 +169,8 @@ function CreateReport() {
           </Box>
         </Box>
       </Stack>
-      <Stack
-        display="flex"
-        direction="row"
-        justifyContent="start"
-        alignItems="start"
-        spacing={2}
-        marginTop="50px"
 
-        // border="2px solid black"
-      >
+  
         <Stack
           display="flex"
           direction="row"
@@ -146,7 +185,7 @@ function CreateReport() {
           </Typography>
           <Box sx={{ marginLeft: "10px", width: "10vw" }}>
             <Box sx={{}}>
-              <FormGroup>
+              {/* <FormGroup>
                 <FormControlLabel
                   control={
                     <Checkbox defaultChecked color="default" size="small" />
@@ -173,10 +212,34 @@ function CreateReport() {
                   control={<Checkbox color="default" />}
                   label={<span style={{ fontSize: "0.7rem" }}>2025</span>}
                 />
-              </FormGroup>
+              </FormGroup> */}
+              <Box sx={{display:"flex",direction:"row"}}>
+              {/* <button onClick={() => setBaseYear((c) => c - 1)}>-</button> */}
+                {/* {addBaseYear} */}
+                <button onClick={addBaseYear}>Add Year</button>
+                &nbsp;&nbsp; &nbsp;&nbsp;
+                {/* <p >The base Year :{baseYear}</p> */}
+                {/* <input type="text">{baseYear}</input> */}
+
+                {/* <button >{baseYear}</button> */}
+               
+                &nbsp;&nbsp;
+                {/* <input
+                 type="text" 
+                 value={baseYear}
+                 size={10}
+                 onChange={(e) => setBaseYear(e.target.value)}
+               /> */}
+
+                &nbsp;&nbsp;
+              
+               </Box>
             </Box>
           </Box>
         </Stack>
+        &nbsp;&nbsp; &nbsp;&nbsp;
+
+
         <Stack
           display="flex"
           direction="row"
@@ -191,7 +254,7 @@ function CreateReport() {
           </Typography>
           <Box sx={{ marginLeft: "5px", width: "20vw" }}>
             <Box sx={{}}>
-              <FormGroup>
+              {/* <FormGroup>
                 <FormControlLabel
                   control={
                     <Checkbox defaultChecked color="default" size="small" />
@@ -218,11 +281,24 @@ function CreateReport() {
                   control={<Checkbox color="default" size="small" />}
                   label={<span style={{ fontSize: "0.7rem" }}>2033 </span>}
                 />
-              </FormGroup>
+              </FormGroup> */}
+              <Box sx={{display:"flex",direction:"row"}}>
+              <button onClick={() => setForecastYear((c) => Number(forecastYear) - 1)}>-</button>
+                &nbsp;&nbsp;
+                {/* <input
+                 type="text" 
+                 value={baseYear+5}
+                 size={10}
+                 onChange={(e) => setForecastYear(e.target.value)}
+               /> */}
+                &nbsp;&nbsp;
+               <button onClick={() => setForecastYear((c) => Number(forecastYear) + 1)}>+</button>
+               </Box>
             </Box>
           </Box>
         </Stack>
-      </Stack>
+
+
       <Stack
         display="flex"
         direction="row"

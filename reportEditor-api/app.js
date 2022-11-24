@@ -8,7 +8,7 @@ const logger = require('morgan');
 const { dbConnect } = require("./config/dbConfig")
 
 var app = express();
-console.log(`GMI Backend is Listing On Port ${process.env.PORT}`);
+console.log(`GMI Backend is Listening On Port ${process.env.PORT}`);
 dbConnect()
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -27,13 +27,13 @@ app.use('/api/v1', require("./routes/1V-main_routes"));
 // Others Routes
 app.get("*", (req, res) => {
   res.status(500).json({
-    status: "success",
+    status: "Fail",
     message: "Url not found",
   });
 });
 app.post("*", (req, res) => {
   res.status(500).json({
-    status: "success",
+    status: "Fail",
     message: "Url not found",
   });
 });
