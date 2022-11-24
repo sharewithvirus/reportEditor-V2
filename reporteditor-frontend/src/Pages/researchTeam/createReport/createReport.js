@@ -13,6 +13,7 @@ import {
   Paper,
   Stack,
   TextareaAutosize,
+  TextField,
   Typography,
 } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
@@ -34,6 +35,7 @@ function CreateReport() {
       },
     },
   };
+  const [searchField, setSearchField] = useState("");
   const [allAuther, setAllAuther] = useState([
     "Oliver Hansen",
     "Van Henry",
@@ -96,14 +98,9 @@ function CreateReport() {
   const [forecastYear, setForecastYear] = useState([
     new Date().getFullYear() + 5,
   ]);
-  const [selectedTemplate,setSelectedTemplate] = useState()
+  const [selectedTemplate, setSelectedTemplate] = useState();
   useEffect(() => {
     getAllAuther();
-    // const currentYear=new Date().getFullYear();
-    // const arr=[];
-    // setBaseYear([currentYear])
-    // // arr.push(currentYear);
-    // // setBaseYear(arr);
   }, []);
   const tempelates = [1, 2, 3, 4, 5, 6];
   return (
@@ -202,13 +199,44 @@ function CreateReport() {
                 input={<OutlinedInput label="select" />}
                 renderValue={(selected) => selected.join(", ")}
                 MenuProps={MenuProps}
+                size="medium"
               >
-                {allAuther.map((name, index) => (
-                  <MenuItem key={index} value={name}>
-                    <Checkbox checked={personName.indexOf(name) > 1} />
-                    <ListItemText primary={name} />
-                  </MenuItem>
-                ))}
+                <MenuItem>
+                  <TextField
+                    hiddenLabel
+                    id="filled-hidden-label-normal"
+                    size="small"
+                    variant="standard"
+                    sx={{ width: "100%" }}
+                    placeholder="search"
+                    value={searchField}
+                    onChange={(event) => setSearchField(event.target.value)}
+                  />
+                </MenuItem>
+                {searchField === ""
+                  ? allAuther.map((name, index) => (
+                      <MenuItem key={index} value={name}>
+                        <ListItemText primary={name} />
+                      </MenuItem>
+                    ))
+                  : allAuther.filter((name, index) => {
+                    if(name.includes(searchField) === true)
+                    {
+                      return (
+                        <MenuItem key={index} value={name}>
+                          <ListItemText primary={name} />
+                        </MenuItem>
+                      );
+                    }
+                    else
+                    {
+                      return (
+                        <MenuItem key={index} value={name}>
+                          <ListItemText primary={name} />
+                        </MenuItem>
+                      );
+                    }
+                    })}
               </Select>
             </FormControl>
           </Box>
@@ -356,13 +384,17 @@ function CreateReport() {
                 },
               }}
             >
-              {tempelates.map((value,index) => {
+              {tempelates.map((value, index) => {
                 return (
                   <Paper
                     elevation={selectedTemplate === index ? 16 : 3}
                     square
-                    style={selectedTemplate === index ?{ backgroundColor: "rgba(0, 0, 255, 0.42)" }:{backgroundColor:""}}
-                    onClick={()=>setSelectedTemplate(index)}
+                    style={
+                      selectedTemplate === index
+                        ? { backgroundColor: "rgba(0, 0, 255, 0.42)" }
+                        : { backgroundColor: "" }
+                    }
+                    onClick={() => setSelectedTemplate(index)}
                   >
                     <Stack
                       sx={{
