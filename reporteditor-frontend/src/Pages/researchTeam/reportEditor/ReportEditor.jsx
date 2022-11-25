@@ -22,6 +22,7 @@ import { styled } from "@mui/material/styles";
 import AddBoxIcon from "@mui/icons-material/AddBox";
 import FileCopyOutlinedIcon from "@mui/icons-material/FileCopyOutlined";
 import SideBar from "./component/SideBar";
+import { Link } from "react-router-dom";
 const Item = styled(Paper)(({ theme }) => ({
   ...theme.typography.body2,
   padding: theme.spacing(2),
@@ -46,13 +47,13 @@ function ReportEditor() {
   const handleMouseEnter = () => {
     setExpandSidePanel({ left: 4, right: 8 });
     // setWidth(ref.current.clientWidth);
-    console.log("on mouse enter", ref.current.clientWidth);
+    // console.log("on mouse enter", ref.current.clientWidth);
   };
   const handleMouseLeave = () => {
     setExpandSidePanel({ left: 1, right: 11 });
-    console.log("value" + ref.current.clientWidth);
+    // console.log("value" + ref.current.clientWidth);
     // setWidth(ref.current.clientWidth);
-    console.log("on mouse leave", ref.current.clientWidth);
+    // console.log("on mouse leave", ref.current.clientWidth);
   };
   useEffect(() => {
     console.log("v"+ref.current.clientWidth);
@@ -175,6 +176,7 @@ function ReportEditor() {
                 </Typography>
               </Stack>
               <Stack>
+                <Link to = "/u_control/report-preview" >
                 <Button
                   color="inherit"
                   variant="outlined"
@@ -182,9 +184,10 @@ function ReportEditor() {
                   sx={{
                     height: "3vh",
                   }}
-                >
+                  >
                   Preview
                 </Button>
+                </Link>
               </Stack>
             </Stack>
             <Stack

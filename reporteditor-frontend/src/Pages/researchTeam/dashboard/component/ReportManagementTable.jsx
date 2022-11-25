@@ -15,14 +15,27 @@ import SettingsOutlinedIcon from "@mui/icons-material/SettingsOutlined";
 import NoteAltOutlinedIcon from "@mui/icons-material/NoteAltOutlined";
 import { Link } from "react-router-dom";
 import UpdateModal from "../UpdateModal";
-function ReportManagementTable({ taskStatus }) {
+import { useState } from "react";
+function ReportManagementTable({reportData , key}) {
   const [open, setOpen] = React.useState(false);
-  let taskFlag = true;
-  for (var i = 0; i < taskStatus.length; i++) {
-    if (taskStatus[i] === false) {
-      taskFlag = false;
+  const [taskStatus,setTaskstatus]=useState([
+    {
+      drafting : false ,
+      forwardedtoEditing : false,
+      editingVersionDone : false ,
+      researchPublished : false,
     }
-  }
+  ])
+  let taskFlag = true;
+  // for (var i = 0; i < taskStatus.length; i++) {
+  //   if (taskStatus[i] === false) {
+  //     taskFlag = false;
+  //   }
+  // }
+  
+  {reportData.reportStatusResearch === "research published"
+ ? taskFlag = true  : taskFlag = false
+}
   const handleShow = () => {
     setOpen(!open);
   };
@@ -42,15 +55,14 @@ function ReportManagementTable({ taskStatus }) {
           <Grid container spacing={0}>
             <Grid item sm={12} md={7} sx={{ padding: 4 }}>
               <Typography variant="body2">
-                Power Line Communication (PLC) Market Size By Offering (Software
-                [Energy Management, Data Acquisition and
+                {reportData.name}
               </Typography>
               <Typography variant="caption">
-                Author: Nikhil, Vikas, Uttareshwa
+                {reportData.userList ? reportData.userList : "Author: Nikhil, Vikas, Uttareshwa"}
               </Typography>
-              <Typography variant="caption" display="block">
+              {/* <Typography variant="caption" display="block">
                 Author: Nikhil, Vikas, Uttareshwa
-              </Typography>
+              </Typography> */}
             </Grid>
             <Grid
               item

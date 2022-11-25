@@ -3,7 +3,7 @@ import React from "react";
 import TaskAltOutlinedIcon from "@mui/icons-material/TaskAltOutlined";
 import { Box } from "@mui/system";
 import WatchLaterOutlinedIcon from '@mui/icons-material/WatchLaterOutlined';
-function StatusTable({completedTask,taskType}) {
+function  StatusTable({completedTask,taskType}) {
   const taskStatus=["Drafting"," Forwarded to Editing"," Editing Version Done","Research Published"]
   const taskStatus2=["Draft Received","Draft Accepted","Editing version Done","Transferred to Research"]
   return (

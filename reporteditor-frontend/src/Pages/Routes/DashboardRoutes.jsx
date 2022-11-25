@@ -41,6 +41,7 @@ function DashboardRoutes() {
               {/* <Route index element={<DraftAccept/>}/> */}
               <Route path="/u_control/create-report" element={<CreateReport />} />
               <Route path="/u_control/report-editor" element ={<ReportEditor />} />
+              <Route path='/u_control/report-preview' element={<ReportPreview/>}/>
               <Route path="/u_control/report-template-management/template-creator" element={<ReportTemplateCreator/>}/>
               <Route path='/u_control/report-template-management' element={<ReportTemplateManagement />} />
               <Route path="/u_control/submit-report" element={<SubmitReport/>}/>
