@@ -12,7 +12,7 @@ function  StatusTable({completedTask,taskType}) {
         {
           taskType === "research" ? taskStatus.map((task,index) =>{
             return <Grid item sm={12} md={12}>
-            <Box sx={{ display: "flex", justifyConten: "center",height:"25px" }}>
+            <Box sx={{ display: "flex", justifyContent: "center",height:"25px" }}>
              
               <IconButton sx={{
                 color: `${completedTask[index]!==true?"grey":"green"}`

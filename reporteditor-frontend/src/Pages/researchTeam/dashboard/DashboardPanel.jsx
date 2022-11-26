@@ -15,15 +15,19 @@ import ReportManagementTable from "./component/ReportManagementTable";
 import axios from "axios";
 import { useEffect } from "react";
 import { useState } from "react";
+import { getReport } from "../../../Services/reportServices";
 
 function DashboardPanel() {
   const [getData, setGetData] = useState([]);
   const url = "/api/v1/report";
   const getApiData = async () => {
-    const res = await axios.get("/api/v1/report");
-    // console.log("api data is coming",res.data.reportsList);
-    setGetData(res.data.reportsList);
-    setOpen(true);
+    const res = await getReport();
+    if(res.status === 200)
+    {
+      setGetData(res.data.reportsList);
+      console.log("working or not",res);
+      setOpen(true);
+    }
   };
   const [open, setOpen] = React.useState(false);
   // const handleClick = () => {
