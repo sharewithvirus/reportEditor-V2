@@ -23,7 +23,7 @@ exports.createSendToken = async (admin, statusCode, res) => {
       httpOnly: true,
     };
     if (process.env.NODE_ENV === "production") cookieOptions.secure = true;
-    res.cookie("bearerToken", token, cookieOptions);
+    res.cookie("bearer", token, cookieOptions);
     res.status(statusCode).json({
       status: "success",
       message: "Login Successfully",

@@ -35,7 +35,7 @@ function CreateReport() {
         >
           <FileCopyOutlinedIcon />
           <Typography sx={{ fontSize: "20px", fontWeight: "" }}>
-            creat a report
+            create a report
           </Typography>
         </Stack>
       </Stack>

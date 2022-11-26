@@ -29,17 +29,50 @@ exports.adminLogin = async (req, res) => {
           message: "Invalid Username or Password",
         });
       } else {
-        const activityText = await Activity.create({
-          user: user._id,
-          activityType: "Login",
-          ipAddress: `${Ip[3]}`,
-        });
+          const user = await User.findOne({ email }).select("password");
+          console.log(user)
+          if(!user || !(await comparePassword(password, user.password))){    
+                res.status(403).json({
+                    status: "unauthorized",
+                    message: "Invalid Username or Password",
+                });
+            }else{
+                const activityText = await Activity.create({ user: user._id, activityType: "Login", ipAddress: `${Ip[3]}`  })
+                const userText = await User.findById(user._id);
+                userText.activity.push(activityText._id);
+                await userText.save();
+                userText.password = undefined;
+                createSendToken(userText, 200, res);
+            }
+    }
+    } catch (error) {
+      console.log(error);
+      res.status(500).json({
+        status: "Error",
+        message: "Internal Server Error",
+      });
+    }
+};
+
+exports.adminLogout = async(req, res) => {
+    try {
+        const { user } = req;
+        console.log("ppp")
+        const Ip = req.ip.split(":");
+        const activityText = await Activity.create({ user: user, activityType: "Logout", ipAddress: `${Ip[3]}` });
         const userText = await User.findById(user._id);
         userText.activity.push(activityText._id);
         await userText.save();
-        userText.password = undefined;
-        createSendToken(userText, 200, res);
-      }
+        res
+      .status(200)
+      .clearCookie("bearer")
+    //   .json({ message: "Logout successfully", status: "Success" })
+    } catch (error) {
+        console.log(error)
+        res.status(500).json({
+            status: "Error",
+            message: "Internal Server Error",
+        })
     }
   } catch (error) {
     console.log(error);

@@ -3,7 +3,7 @@ import React from "react";
 import TaskAltOutlinedIcon from "@mui/icons-material/TaskAltOutlined";
 import { Box } from "@mui/system";
 import WatchLaterOutlinedIcon from '@mui/icons-material/WatchLaterOutlined';
-function StatusTable({completedTask,taskType}) {
+function  StatusTable({completedTask,taskType}) {
   const taskStatus=["Drafting"," Forwarded to Editing"," Editing Version Done","Research Published"]
   const taskStatus2=["Draft Received","Draft Accepted","Editing version Done","Transferred to Research"]
   return (
@@ -12,7 +12,7 @@ function StatusTable({completedTask,taskType}) {
         {
           taskType === "research" ? taskStatus.map((task,index) =>{
             return <Grid item sm={12} md={12}>
-            <Box sx={{ display: "flex", justifyConten: "center",height:"25px" }}>
+            <Box sx={{ display: "flex", justifyContent: "center",height:"25px" }}>
              
               <IconButton sx={{
                 color: `${completedTask[index]!==true?"grey":"green"}`

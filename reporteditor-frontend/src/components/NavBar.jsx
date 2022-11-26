@@ -16,7 +16,7 @@ const NavBar = (props) => {
   const { setIsAdmin, userRole, userInfo, setIsLoading, setIsAuthenticated, setUserRole, setUserInfo } = React.useContext(UserDataContext);
   const [anchorElNav, setAnchorElNav] = React.useState(null);
   const [anchorElUser, setAnchorElUser] = React.useState(null);
-  const [userData, setUserData] = React.useState('');
+  const [userData, setUserData] = React.useState(userInfo.role);
 
   const navigate = useNavigate();
   const handleOpenNavMenu = (event) => {
@@ -36,40 +36,43 @@ const NavBar = (props) => {
 
   const handelLogOut = async () => {
     setIsLoading(true);
-    await userLogout(userInfo._id);
-    setIsAdmin(false);
-    setIsAuthenticated(false);
-    setIsLoading(false);
-    return navigate("/login");
-  };
-
-  const getUserDataApi = async () => {
-    const res = await userDashboard();
-    if (res === "User Not found") {
+    const res = await userLogout(userInfo._id);
+    if(res.status === 200){
+      setIsAdmin(false);
+      setIsAuthenticated(false);
       setIsLoading(false);
-      navigate("/login");
-    } else {
-      setIsAuthenticated(true);
-      setUserData(res.data.data.userData.role)
-      setIsAdmin(res.data.data.userData.isAdmin);
-      setUserRole(res.data.data.userData.role);
-      setUserInfo(res.data.data.userData);
-      setIsLoading(false);
-      if (res.data.user.role === "admin") {
-        navigate("/a_control");
-      } else if (res.data.user.role === "user") {
-        navigate("/u_control");
-      }
+      return navigate("/login");
     }
   };
 
-  React.useEffect(() => {
-    getUserDataApi();
-  }, []);
+  // const getUserDataApi = async () => {
+  //   const res = await userDashboard();
+  //   if (res === "User Not found") {
+  //     setIsLoading(false);
+  //     navigate("/login");
+  //   } else {
+  //     setIsAuthenticated(true);
+  //     setUserData(res.data.data.userData.role)
+  //     setIsAdmin(res.data.data.userData.isAdmin);
+  //     setUserRole(res.data.data.userData.role);
+  //     setUserInfo(res.data.data.userData);
+  //     setIsLoading(false);
+  //     if (res.data.user.role === "admin") {
+  //       navigate("/a_control");
+  //     } else if (res.data.user.role === "user") {
+  //       navigate("/u_control");
+  //     }
+  //   }
+  // };
 
   React.useEffect(() => {
-    console.log(userData);
-    setUserData(userInfo);
+    // getUserDataApi();
+  }, []);
+
+  console.log(userData)
+  React.useEffect(() => {
+    // console.log(userData);
+    // setUserData(userInfo);
   }, [userData, userInfo])
   return (
     <>

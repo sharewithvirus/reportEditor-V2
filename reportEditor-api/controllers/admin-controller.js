@@ -49,7 +49,7 @@ exports.adminLogout = async(req, res) => {
         userText.activity.push(activityText._id) 
         await userText.save();
         res.status(200)
-        .clearCookie("bearerToken")
+        .clearCookie("bearer")
         .json({
             status: 'success',
             message: 'Logout successfully'
