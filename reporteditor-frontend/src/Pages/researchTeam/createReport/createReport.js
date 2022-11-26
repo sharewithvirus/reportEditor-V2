@@ -33,6 +33,7 @@ import { getAllUsersByDepartmentAndTeam } from "../../../Services/userService";
 import { getTemplate } from "../../../Services/templateServices";
 import { createReport } from "../../../Services/reportServices";
 function CreateReport() {
+
   const ITEM_HEIGHT = 40;
   const ITEM_PADDING_TOP = 4;
   const MenuProps = {
@@ -110,6 +111,7 @@ function CreateReport() {
   }
 
   useEffect(() => {
+
     // getAllAuther();
     getUserList();
   }, []);
@@ -131,7 +133,6 @@ function CreateReport() {
   //     name: "Research Topic text 6258",
   //     reportStatusEditing: "draftRecived",
   //     reportStatusResearch: "drafting",
-
   //     industry: "",
   //     template: "",
   //   });
@@ -173,6 +174,7 @@ function CreateReport() {
   useEffect(() =>{
     getData();
   },[])
+  
   return (
     <>
       <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
@@ -324,6 +326,9 @@ function CreateReport() {
           {/* </Box>
         </Box> */}
         </Stack>
+        &nbsp;&nbsp; &nbsp;&nbsp;
+
+
         <Stack
           display="flex"
           justifyContent="start"

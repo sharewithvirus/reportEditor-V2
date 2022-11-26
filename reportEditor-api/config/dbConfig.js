@@ -4,8 +4,8 @@ const DB = process.env.DATABASE;
 exports.dbConnect = async () => {
     mongoose
       .connect(DB)
-      .then(() => console.log(DB, "DB connection successful!"))
+      .then(() => console.log("MongoDB connection is successful!"))
       .catch((e) => {
-        console.log(`SomeThing went wrong with DataBase. and the error is =  ${e}`);
+        console.log(`SomeThing went wrong with MongoDB DataBase and the error is =  ${e}`);
       });
 }
