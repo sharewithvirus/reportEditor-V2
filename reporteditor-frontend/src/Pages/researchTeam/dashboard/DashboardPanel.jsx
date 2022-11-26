@@ -1,9 +1,11 @@
 import React from "react";
 import {
+  Alert,
   Box,
   Button,
   MenuItem,
   Select,
+  Snackbar,
   Stack,
   Typography,
 } from "@mui/material";
@@ -13,22 +15,39 @@ import ReportManagementTable from "./component/ReportManagementTable";
 import axios from "axios";
 import { useEffect } from "react";
 import { useState } from "react";
+import { getReport } from "../../../Services/reportServices";
 
 function DashboardPanel() {
   const [getData, setGetData] = useState([]);
   const url = "/api/v1/report";
   const getApiData = async () => {
-    const res = await axios.get("/api/v1/report");
-    // console.log("api data is coming",res.data.reportsList);
-    setGetData(res.data.reportsList);
+    const res = await getReport();
+    if(res.status === 200)
+    {
+      setGetData(res.data.reportsList);
+      console.log("working or not",res);
+      setOpen(true);
+    }
   };
+  const [open, setOpen] = React.useState(false);
+  // const handleClick = () => {
+  //   setOpen(true);
+  // };
 
-  // console.log(getData);
+  const handleClose = () => {
+       setOpen(false);
+  };
+  console.log(getData);
   useEffect(() => {
     getApiData();
   }, []);
   return (
     <>
+      <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
+        <Alert onClose={handleClose} severity="success" sx={{ width: "100%" }}>
+          This is a success message!
+        </Alert>
+      </Snackbar>
       <Box
         sx={{
           padding: "15px 50px 5px 50px",
@@ -95,11 +114,13 @@ function DashboardPanel() {
                 return (
                   <ReportManagementTable
                     taskStatus={[true, true, true, true]}
+                    reportData={data}
+                    key={index}
                   />
                 );
               })
             : ""}
-            {/* <p> {getData ? getData[3].name : "not coming"} </p> */}
+          {/* <p> {getData ? getData[3].name : "not coming"} </p> */}
           {/* <ReportManagementTable taskStatus={[true,true,false,false]}/>
           <ReportManagementTable taskStatus={[true,false,false,false]}/> */}
         </Box>
