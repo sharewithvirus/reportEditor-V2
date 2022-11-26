@@ -44,6 +44,7 @@ exports.adminLogin = async (req, res) => {
                 userText.password = undefined;
                 createSendToken(userText, 200, res);
             }
+      }
     }
     } catch (error) {
       console.log(error);
@@ -74,13 +75,6 @@ exports.adminLogout = async(req, res) => {
             message: "Internal Server Error",
         })
     }
-  } catch (error) {
-    console.log(error);
-    res.status(500).json({
-      status: "Error",
-      message: "Internal Server Error",
-    });
-  }
 };
 
 exports.adminLogout = async (req, res) => {
@@ -305,6 +299,26 @@ exports.deleteUser = async (req, res) => {
 exports.getAllUsersByDepartment = async (req, res) => {
   try {
     const {teamType, department}=req.params;
+    const userList = await User.find({ department: department, teamType:teamType, isAdmin: false, deletedAt: null })
+      .select(
+        "userName"
+      )
+    res.status(200).send({
+      status: "success",
+      message: "All User List By Department & Team",
+      data: userList,
+    });
+  } catch (error) {
+    res.status(500).send({
+      status: "error",
+      message: "Internal Server Error",
+    });
+  }
+};
+
+exports.getAllUsersByDepartmentAndTeamType = async (req, res) => {
+  try {
+    const { teamType, department }=req.params;
     const userList = await User.find({ department: department, teamType:teamType, isAdmin: false, deletedAt: null })
       .select(
         "userName"

@@ -27,7 +27,7 @@ exports.singleTemplateData = async (req, res) => {
     res.status(200).json({
       status: "success",
       message: "Template Data",
-      Data: template,
+      data: template,
     });
   } catch (error) {
     console.log(error);
@@ -66,17 +66,11 @@ exports.createTemplate = async (req, res) => {
 
 exports.updateTemplate = async (req, res) => {
   try {
-    console.log(req.body);
     const { _id,  name, editor,logoAlignment, header, footer, url} = req.body;
-
-    const updatedTemplate = await Template.findByIdAndUpdate(_id, req.body, {
-      new: true,
-    });
-    console.log(updatedTemplate);
-    res.status(200).json({
+    await Template.findByIdAndUpdate(_id, req.body);
+        res.status(200).json({
       status: "Success",
       message: "Template Updated successfully",
-      newTemplate: updatedTemplate,
     });
   } catch (error) {
     res.status(500).json({
