@@ -268,3 +268,23 @@ exports.deleteUser = async (req, res) => {
     });
   }
 };
+
+exports.getAllUsersByDepartment = async (req, res) => {
+  try {
+    const {teamType, department}=req.params;
+    const userList = await User.find({ department: department, teamType:teamType, isAdmin: false, deletedAt: null })
+      .select(
+        "userName"
+      )
+    res.status(200).send({
+      status: "success",
+      message: "All User List By Department & Team",
+      data: userList,
+    });
+  } catch (error) {
+    res.status(500).send({
+      status: "error",
+      message: "Internal Server Error",
+    });
+  }
+};

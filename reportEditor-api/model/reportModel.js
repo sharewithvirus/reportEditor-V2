@@ -7,10 +7,10 @@ const reportModel = new mongoose.Schema(
       type: String,
     },
     reportStatusEditing: {
-      type: String,
-      default: "drafting",
+      type: [String],
+      default: ["drafting"],
       enum: [
-        null,
+        "drafting",
         "draftRecived",
         "draftAccepted",
         "editingVersionDone",
@@ -18,8 +18,8 @@ const reportModel = new mongoose.Schema(
       ],
     },
     reportStatusResearch: {
-      type: String,
-      default: "drafting",
+      type: [String],
+      default: ["drafting"],
       enum: [
         null,
         "drafting",
@@ -28,14 +28,17 @@ const reportModel = new mongoose.Schema(
         "researchedPublished",
       ],
     },
-    userList: [
-      {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "User",
-      },
-    ],
+    userList:{
+      type:[String]
+    },
     industry: {
       type: String,
+    },
+    baseYear:{
+      type:String
+    },
+    forecastYear:{
+      type:String
     },
     deletedAt: {
       type: Date,

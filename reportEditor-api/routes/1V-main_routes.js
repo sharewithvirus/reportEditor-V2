@@ -7,5 +7,6 @@ router.use("/user/role", require("./role-router"))
 router.use("/user/activity", require("./user-activity-router"))
 router.use("/user", require("./user-router"))
 router.use("/report", require("./reportRoutes"))
+router.use("/template", require("./templateRoutes"))
 
 module.exports = router;

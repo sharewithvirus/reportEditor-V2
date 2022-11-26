@@ -11,12 +11,13 @@ const Report = require("../model/reportModel");
 
 exports.createReport = async (req, res) => {
     try {
+
       const { name,
               userList, 
               industry,
               template ,
-              reportStatusEditing,
-              reportStatusResearch
+              baseYear,
+              forecastYear
 
       } = req.body;
       const newReport = await Report.create({
@@ -24,8 +25,8 @@ exports.createReport = async (req, res) => {
               userList, 
               industry,
               template ,
-              reportStatusEditing,
-              reportStatusResearch,
+              baseYear,
+              forecastYear
        });
       res.status(201).json({
         status: "Success",
@@ -46,8 +47,7 @@ exports.createReport = async (req, res) => {
 
   exports.getReportsList = async (req, res) => {
     try {
-      const reportList = await Report.find({})
-                                     .populate("userList");
+      const reportList = await Report.find({});
       res.status(200).json({
         status: "Success",
         message: "All reports were successfully retrieved.",
