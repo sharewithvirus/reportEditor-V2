@@ -2,12 +2,11 @@ import {
   Alert,
   Box,
   Button,
-  Checkbox,
+ 
   Chip,
   Divider,
   FormControl,
-  FormControlLabel,
-  FormGroup,
+
   IconButton,
   Input,
   InputAdornment,
@@ -18,18 +17,19 @@ import {
   Snackbar,
   Stack,
   TextareaAutosize,
-  TextField,
+ 
   Typography,
 } from "@mui/material";
-import CloseIcon from "@mui/icons-material/Close";
 import Add from "@mui/icons-material/Add";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import axios from "axios";
 import FileCopyOutlinedIcon from "@mui/icons-material/FileCopyOutlined";
 import { margin } from "@mui/system";
 import Select, { SelectChangeEvent } from "@mui/material/Select";
 import ListItemText from "@mui/material/ListItemText";
+import { UserDataContext } from "../../../context/userContext";
 import { useNavigate } from "react-router-dom";
+import { getAllUsersByDepartmentAndTeam } from "../../../Services/userService";
 import { getTemplate } from "../../../Services/templateServices";
 import { createReport } from "../../../Services/reportServices";
 function CreateReport() {
@@ -43,35 +43,12 @@ function CreateReport() {
       },
     },
   };
-
+  const { setIsLoading, userInfo } = useContext(UserDataContext);
   const navigate = useNavigate();
+  console.log("User Info", userInfo)
+
   const [searchField, setSearchField] = useState("");
-  const [allAuther, setAllAuther] = useState([
-    {
-      name: "David",
-      id: "1",
-    },
-    {
-      name: "Avon",
-      id: "2",
-    },
-    {
-      name: "Jennifer",
-      id: "3",
-    },
-    {
-      name: "Jhon",
-      id: "4",
-    },
-    {
-      name: "Hetmyer",
-      id: "5",
-    },
-    {
-      name: "Robbinson",
-      id: "6",
-    },
-  ]);
+  const [allAuther, setAllAuther] = useState([]);
   const [personName, setPersonName] = React.useState([]);
   const [reportName, setReportName] = useState("");
   const changeValue = (e) => {
@@ -80,17 +57,17 @@ function CreateReport() {
   const handleChange = (event) => {
     setPersonName(event.target.value);
   };
-  const getAllAuther = async () => {
-    try {
-      const res = await axios.get("api/v1/user");
-      // console.log(res.data.data);
-      console.log("data is ");
-      setAllAuther(res.data.data);
-      console.log(allAuther);
-    } catch (error) {
-      console.log(error);
-    }
-  };
+  // const getAllAuther = async () => {
+  //   try {
+  //     const res = await axios.get("api/v1/user");
+  //     // console.log(res.data.data);
+  //     console.log("data is ");
+  //     setAllAuther(res.data.data);
+  //     console.log(allAuther);
+  //   } catch (error) {
+  //     console.log(error);
+  //   }
+  // };
   const currentYear = new Date().getFullYear();
   const addYear = (event) => {
     if (event === "baseyear") {
@@ -123,17 +100,29 @@ function CreateReport() {
     new Date().getFullYear() + 5
   );
   const [selectedTemplate, setSelectedTemplate] = useState();
+
+  const getUserList = async() => {
+    const res = await getAllUsersByDepartmentAndTeam(userInfo.department , userInfo.teamType);
+    console.log(res);
+    if(res.status === 200){
+      setAllAuther(res.data.data)
+    }
+  }
+
   useEffect(() => {
-    getAllAuther();
+    // getAllAuther();
+    getUserList();
   }, []);
  
   const [templatesData, setTemplatesData] = useState([]);
   const getData = async () => {
+    setIsLoading(true)
     const res = await getTemplate();
     if (res.status === 200) {
       console.log("get details create report",res.data.templateList);
       setTemplatesData(res.data.templateList);
     }
+    setIsLoading(false)
   };
   const [open, setOpen] = React.useState(false);
 
@@ -157,11 +146,11 @@ function CreateReport() {
     setOpen(false);
   };
   const reportData ={
-    baseYear: {...baseYear},
-    forecastYear:{...forecastYear},
-    template :{...selectedTemplate},
-    userList:{...personName},
-    name:{...reportName}
+    baseYear: baseYear,
+    forecastYear: forecastYear,
+    template : selectedTemplate,
+    userList: personName,
+    name: reportName
     // name: "Research Topic text 000",
     //     reportStatusEditing: "draftRecived",
     //     reportStatusResearch: "drafting",
@@ -171,12 +160,14 @@ function CreateReport() {
     //     template: "",
   }
   const submitDetail = async() =>{
+    setIsLoading(true)
     const res = await createReport(reportData);
-    if(res.status === 200)
+    if(res.status === 201)
     {
       console.log("response of report creation",res.status);
       setOpen(true);
-    navigate("/u_control/report-editor");
+      setIsLoading(false)
+      navigate("/u_control/report-editor");
     }
   }
   useEffect(() =>{
@@ -309,15 +300,15 @@ function CreateReport() {
               </MenuItem>
               {searchField === ""
                 ? allAuther.map((author, index) => (
-                    <MenuItem key={index} value={author.name}>
-                      <ListItemText primary={author.name} />
+                    <MenuItem key={index} value={author.userName}>
+                      <ListItemText primary={author.userName} />
                     </MenuItem>
                   ))
                 : allAuther.filter((author, index) => {
                     if (author.name.includes(searchField) === true) {
                       return (
-                        <MenuItem key={index} value={author.name}>
-                          <ListItemText primary={author.name} />
+                        <MenuItem key={index} value={author.userName}>
+                          <ListItemText primary={author.userName} />
                         </MenuItem>
                       );
                     } else {
@@ -572,6 +563,7 @@ function CreateReport() {
             marginTop: "8vh",
           }}
         >
+          
           <Button
             variant="contained"
             sx={{

@@ -11,6 +11,15 @@ export const getUsers = async () => {
     }
 }
 
+export const getAllUsersByDepartmentAndTeam = async (departmentId, teamType) => {
+    try {
+        return await axios.get(`/api/v1/user/${teamType}/${departmentId}`)
+    } catch (error) {
+        alert(error.response.data.message)
+        return error.response;
+    }
+}
+
 export const createUser = async (data) => {
     try {
         return await axios.post(`/api/v1/user/create`, data);

@@ -55,7 +55,7 @@ function ReportTemplateManagement() {
             alignItems="center"
             spacing={5}
           >
-            <Link to={"/u_control/template"}>
+            <Link to={"/u_control/report-template/create"}>
               <Button
                 color="inherit"
                 sx={{
@@ -71,7 +71,11 @@ function ReportTemplateManagement() {
           </Stack>
         </Stack>
         <Divider />
-        <Stack flexDirection="row" flexWrap="wrap" justifyContent="space-between" >
+        <Stack
+          flexDirection="row"
+          flexWrap="wrap"
+          justifyContent="space-between"
+        >
           {templatesData
             ? templatesData.map((data, index) => {
                 return (
@@ -128,24 +132,23 @@ function ReportTemplateManagement() {
                               fontSize: "10px",
                             }}
                           >
-                            {index === 0 ? <DoneOutlineOutlinedIcon
-                              sx={{
-                                fontSize: "15px",
-                                marginRight: "12px",
-                              }}
-                            /> : ""}
-                            
-                           {index === 0 ? "Default" : ""}
+                            {index === 0 ? (
+                              <DoneOutlineOutlinedIcon
+                                sx={{
+                                  fontSize: "15px",
+                                  marginRight: "12px",
+                                }}
+                              />
+                            ) : (
+                              ""
+                            )}
+
+                            {index === 0 ? "Default" : ""}
                           </IconButton>
-                          <Typography 
-                          sx={{fontSize:"10px",color:"green"}}
-                          
-                          >
+                          <Typography sx={{ fontSize: "10px", color: "green" }}>
                             {data.name}
                           </Typography>
-                          <Typography>
-                            {data.footer}
-                          </Typography>
+                          <Typography>{data.footer}</Typography>
                         </Paper>
                       </Box>
                       <Box
@@ -158,17 +161,19 @@ function ReportTemplateManagement() {
                           alignItems: "center",
                         }}
                       >
-                        <Button
-                          variant="outlined"
-                          color="inherit"
-                          sx={{
-                            width: "100%",
-                            height: "4vh",
-                            marginTop: "10px",
-                          }}
-                        >
-                          Edit
-                        </Button>
+                        <Link to={`/u_control/report-template/edit/${data._id}`} >
+                          <Button
+                            variant="outlined"
+                            color="inherit"
+                            sx={{
+                              width: "100%",
+                              height: "4vh",
+                              marginTop: "10px",
+                            }}
+                          >
+                            Edit
+                          </Button>
+                        </Link>
                         <Button
                           variant="outlined"
                           color="inherit"
@@ -193,7 +198,7 @@ function ReportTemplateManagement() {
                         </Button>
                       </Box>
                     </Box>
-                  </Box> 
+                  </Box>
                 );
               })
             : ""}

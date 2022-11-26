@@ -4,7 +4,7 @@ import axios from "axios";
 
 export const getTemplate = async () => {
     try {
-        return await axios.get(`/api/v1/template`)
+        return await axios.get(`/api/v1/template/`)
     } catch (error) {
         alert(error.response.data.message)
         return error.response;
@@ -13,7 +13,25 @@ export const getTemplate = async () => {
 
 export const createTemplate = async (data) => {
     try {
-        return await axios.post(`/api/v1/template`, data)
+        return await axios.post(`/api/v1/template/`, data)
+    } catch (error) {
+        alert(error.response.data.message)
+        return error.response;
+    }
+}
+
+export const updateTemplate = async (data) => {
+    try {
+        return await axios.put(`/api/v1/template/`, data)
+    } catch (error) {
+        alert(error.response.data.message)
+        return error.response;
+    }
+}
+
+export const getTemplateDataById = async (id) => {
+    try {
+        return await axios.get(`/api/v1/template/templateData/${id}`)
     } catch (error) {
         alert(error.response.data.message)
         return error.response;
@@ -28,14 +46,14 @@ export const updateNewDepartment = async (data, id) => {
         return error.response;
     }
 }
-export const updateTemplate = async ( templateId ) => {
-     try {
-        return await axios.post(`/api/v1/template`, {templateId: templateId})
-     } catch (error) {
-        alert(error.response.data.message)
-        return error.response;
-     }
-}
+// export const updateTemplate = async ( templateId ) => {
+//      try {
+//         return await axios.post(`/api/v1/template`, {templateId: templateId})
+//      } catch (error) {
+//         alert(error.response.data.message)
+//         return error.response;
+//      }
+// }
 
 export const deleteTemplate = async ( templateId ) => {
     console.log("Role Id", templateId)

@@ -300,12 +300,14 @@ const ResearchUserSection = () => {
         </Link>
       </Box>
       <Box sx={{ flexGrow: 1, color: "block !important" }}>
+        <Link to="/u_control">
         <Button
           variant="text"
           sx={{ fontSize: "17px", textTransform: "none", color: "black" }}
         >
           Dashboard
         </Button>
+        </Link>
       </Box>
     </>
   );
