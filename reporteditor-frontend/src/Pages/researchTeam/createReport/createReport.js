@@ -174,14 +174,14 @@ function CreateReport() {
         }}
       >
         <Stack
-          display="flex"
+          
           direction="row"
           justifyContent="space-between"
           alignItems="center"
           height="8vh"
         >
           <Stack
-            display="flex"
+           
             direction="row"
             justifyContent="start"
             alignItems="center"
@@ -195,64 +195,40 @@ function CreateReport() {
         </Stack>
         <Divider />
         <Stack
-          display="flex"
+        
           direction="row"
           justifyContent="start"
-          alignItems="start"
           spacing={2}
           marginTop="30px"
         >
           <Typography sx={{ width: "10vw", fontSize: "15px" }}>
             Report Name
           </Typography>
-          <Box sx={{}}>
+          <Box sx={{width:"100%",paddingX:"8px",paddingY:"5p"}}
+          >
             <TextareaAutosize
               aria-label="minimum height"
               minRows={5}
-              placeholder="ABCD MARKET"
-              style={{ width: "75vw", padding: "15px" }}
+              placeholder="WRITE NAME"
+              style={{ width: "100%", padding:"0.2rem"}}
               value={reportName}
               onChange={(e) => changeValue(e)}
             />
 
-            {/* <Box
-            sx={{
-              padding: "50px",
-              width: "70vw",
-              textAlign: "center",
-            }}
-            >
-            ABCD MARKET
-          </Box> */}
+           
           </Box>
         </Stack>
         <Stack
-          display="flex"
+         
           direction="row"
           justifyContent="start"
           alignItems="start"
-          spacing={2}
+          spacing={2 }
           marginTop="20px"
         >
           <Typography sx={{ width: "10vw", fontSize: "15px" }}>
             Author Name
           </Typography>
-          {/* <Box sx={{}}>
-          <Box sx={{width:'100%'}}> */}
-          {/* <FormGroup sx={{ fontSize: "10px" }}>
-              {allAuther.map((x, index) => {
-                return (
-                  <FormControlLabel
-                  control={<Checkbox color="default" size="small" />}
-                  label={
-                    <span style={{ fontSize: "0.7rem" }}>
-                    {x.userName} [me]{" "}
-                    </span>
-                  }
-                  />
-                  );
-                })}
-              </FormGroup> */}
           <FormControl sx={{ m: 1, width: "80vw" }}>
             <InputLabel id="demo-multiple-checkbox-label">select</InputLabel>
             <Select
@@ -308,22 +284,21 @@ function CreateReport() {
                   })}
             </Select>
           </FormControl>
-          {/* </Box>
-        </Box> */}
+          
         </Stack>
         &nbsp;&nbsp; &nbsp;&nbsp;
         <Stack
-          display="flex"
+          
           justifyContent="start"
           alignItems="start"
           alignContent="start"
-          spacing={5}
+          spacing={4}
           marginTop="50px"
-
+         
           // border="2px solid black"
         >
           <Stack
-            display="flex"
+            
             direction="row"
             justifyContent="start"
             alignItems="start"
@@ -334,16 +309,13 @@ function CreateReport() {
             <Typography sx={{ width: "10vw", fontSize: "15px" }}>
               Base Year
             </Typography>
-            {/* <IconButton color="secondary" onClick={() => addYear("baseyear")}>
-            <Add />
-          </IconButton> */}
-            <FormControl variant="standard">
+            <FormControl variant="outlined">
               <Input
                 id="input-with-icon-adornment"
                 value={baseYear}
                 size="small"
                 sx={{
-                  width: "8vw",
+                  
                   fontSize: "14px",
                 }}
                 onChange={(e) => setBaseYear(Number(e.target.value))}
@@ -395,7 +367,7 @@ function CreateReport() {
                       </Box> */}
           </Stack>
           <Stack
-            display="flex"
+           
             direction="row"
             justifyContent="start"
             alignItems="start"
@@ -409,13 +381,12 @@ function CreateReport() {
             {/* <IconButton color="secondary" onClick={() => addYear("forecast")}>
             <Add />
           </IconButton> */}
-            <FormControl variant="standard">
+            <FormControl variant="outlined">
               <Input
                 id="input-with-icon-adornment"
                 value={forecastYear}
                 size="small"
                 sx={{
-                  width: "8vw",
                   fontSize: "14px",
                 }}
                 onChange={(e) => setForecastYear(Number(e.target.value))}
@@ -431,46 +402,6 @@ function CreateReport() {
                 }
               />
             </FormControl>
-            {/* <Box sx={{ marginLeft: "5px" }}>
-            <Box sx={{ display: "flex", justifyContent: "space-around" }}>
-            <FormGroup
-            sx={{
-              display: "flex",
-              justifyContent: "center",
-              flexDirection: "row",
-            }}
-            >
-            {forecastYear &&
-              forecastYear.map((x, index) => {
-                return (
-                  <>
-                  <FormControlLabel
-                  control={
-                    <Checkbox
-                    color="default"
-                    size="small"
-                    defaultChecked
-                    />
-                  }
-                  label={
-                    <span style={{ fontSize: "0.7rem" }}>{x}</span>
-                  }
-                  />
-                  {forecastYear.length > 1 ? (
-                    <IconButton
-                    onClick={() => deleteYear("forecast", index)}
-                    >
-                    <CloseIcon sx={{ fontSize: "12px" }} />
-                    </IconButton>
-                    ) : (
-                      ""
-                      )}
-                      </>
-                      );
-                    })}
-                    </FormGroup>
-                    </Box>
-                  </Box> */}
           </Stack>
         </Stack>
         <Stack
@@ -500,6 +431,7 @@ function CreateReport() {
                     marginRight: "50px",
                     width: 132,
                     height: 150,
+
                   },
                 }}
               >
@@ -513,12 +445,13 @@ function CreateReport() {
                             selectedTemplate === index
                               ? { backgroundColor: "rgba(0, 0, 255, 0.42)" }
                               : { backgroundColor: "" }
+
                           }
                           onClick={() => setSelectedTemplate(index)}
                         >
                           <Stack
                             flexDirection="column"
-                            justifyContent="space-between"
+                            justifyContent="space-around"
                             alignItems="center"
                             spacing={4}
                           >
