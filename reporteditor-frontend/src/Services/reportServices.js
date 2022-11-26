@@ -4,16 +4,23 @@ import axios from "axios";
 
 export const getReport = async () => {
     try {
-        return await axios.get(`/api/v1/report`)
+        return await axios.get(`/api/v1/report/`)
     } catch (error) {
         alert(error.response.data.message)
         return error.response;
     }
 }
-
+export const getReportDataById = async (id) => {
+    try {
+        return await axios.get(`/api/v1/report/reportData/${id}`)
+    } catch (error) {
+        alert(error.response.data.message)
+        return error.response;
+    }
+}
 export const createReport = async (data) => {
     try {
-        return await axios.post(`/api/v1/report`, data)
+        return await axios.post(`/api/v1/report/`, data)
     } catch (error) {
         alert(error.response.data.message)
         return error.response;
@@ -28,16 +35,16 @@ export const updateReportData = async (data, id) => {
         return error.response;
     }
 }
-export const updateReport = async ( reportId ) => {
+export const updateReport = async (data) => {
      try {
-        return await axios.post(`/api/v1/report`, {reportId: reportId})
+        return await axios.put(`/api/v1/report`, {data})
      } catch (error) {
         alert(error.response.data.message)
         return error.response;
      }
 }
 
-export const deleteReport = async ( reportId) => {
+export const deleteReport = async (reportId) => {
     console.log("Role Id", reportId)
     try {
        return await axios.delete(`/api/v1/report/${reportId}`)

@@ -2,11 +2,9 @@ import {
   Alert,
   Box,
   Button,
- 
   Chip,
   Divider,
   FormControl,
-
   IconButton,
   Input,
   InputAdornment,
@@ -17,7 +15,6 @@ import {
   Snackbar,
   Stack,
   TextareaAutosize,
- 
   Typography,
 } from "@mui/material";
 import Add from "@mui/icons-material/Add";
@@ -28,12 +25,15 @@ import { margin } from "@mui/system";
 import Select, { SelectChangeEvent } from "@mui/material/Select";
 import ListItemText from "@mui/material/ListItemText";
 import { UserDataContext } from "../../../context/userContext";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { getAllUsersByDepartmentAndTeam } from "../../../Services/userService";
 import { getTemplate } from "../../../Services/templateServices";
-import { createReport } from "../../../Services/reportServices";
+import {
+  createReport,
+  getReportDataById,
+  updateReport,
+} from "../../../Services/reportServices";
 function CreateReport() {
-
   const ITEM_HEIGHT = 40;
   const ITEM_PADDING_TOP = 4;
   const MenuProps = {
@@ -45,9 +45,9 @@ function CreateReport() {
     },
   };
   const { setIsLoading, userInfo } = useContext(UserDataContext);
-  const navigate = useNavigate();
-  console.log("User Info", userInfo)
 
+  const { id } = useParams();
+  const navigate = useNavigate();
   const [searchField, setSearchField] = useState("");
   const [allAuther, setAllAuther] = useState([]);
   const [personName, setPersonName] = React.useState([]);
@@ -58,123 +58,108 @@ function CreateReport() {
   const handleChange = (event) => {
     setPersonName(event.target.value);
   };
-  // const getAllAuther = async () => {
-  //   try {
-  //     const res = await axios.get("api/v1/user");
-  //     // console.log(res.data.data);
-  //     console.log("data is ");
-  //     setAllAuther(res.data.data);
-  //     console.log(allAuther);
-  //   } catch (error) {
-  //     console.log(error);
-  //   }
-  // };
+
   const currentYear = new Date().getFullYear();
   const addYear = (event) => {
     if (event === "baseyear") {
-      // setBaseYear([...baseYear, baseYear[baseYear.length - 1] + 1]);
       setBaseYear(baseYear + 1);
     } else if (event === "forecastyear") {
-      // setForecastYear([
-      //   ...forecastYear,
-      //   forecastYear[forecastYear.length - 1] + 1,
-      // ]);
       setForecastYear(forecastYear + 1);
-      // console.log("forecast year");
     }
   };
-  // const deleteYear = (event, index) => {
-  //   if (event === "baseyear") {
-  //     const deletedArray = baseYear.filter((value, i) => {
-  //       return i !== index;
-  //     });
-  //     setBaseYear(deletedArray);
-  //   } else if (event === "forecast") {
-  //     const deletedArray = forecastYear.filter((value, i) => {
-  //       return i !== index;
-  //     });
-  //     setForecastYear(deletedArray);
-  //   }
-  // };
+
   const [baseYear, setBaseYear] = useState(new Date().getFullYear());
   const [forecastYear, setForecastYear] = useState(
     new Date().getFullYear() + 5
   );
   const [selectedTemplate, setSelectedTemplate] = useState();
 
-  const getUserList = async() => {
-    const res = await getAllUsersByDepartmentAndTeam(userInfo.department , userInfo.teamType);
+  const getUserList = async () => {
+    const res = await getAllUsersByDepartmentAndTeam(
+      userInfo.department,
+      userInfo.teamType
+    );
     console.log(res);
-    if(res.status === 200){
-      setAllAuther(res.data.data)
+    if (res.status === 200) {
+      setAllAuther(res.data.data);
     }
-  }
+  };
 
   useEffect(() => {
-
     // getAllAuther();
     getUserList();
   }, []);
- 
+
   const [templatesData, setTemplatesData] = useState([]);
   const getData = async () => {
-    setIsLoading(true)
+    setIsLoading(true);
     const res = await getTemplate();
     if (res.status === 200) {
-      console.log("get details create report",res.data.templateList);
+      console.log("get details create report", res.data.templateList);
       setTemplatesData(res.data.templateList);
     }
-    setIsLoading(false)
+    setIsLoading(false);
   };
   const [open, setOpen] = React.useState(false);
-
-  // const submitDetail = async () => {
-  //   const res = await axios.post("/api/v1/report", {
-  //     name: "Research Topic text 6258",
-  //     reportStatusEditing: "draftRecived",
-  //     reportStatusResearch: "drafting",
-  //     industry: "",
-  //     template: "",
-  //   });
-  //   console.log("function working");
-  //   setOpen(true);
-  //   navigate("/u_control/report-editor");
-  // };
   const handleClick = () => {
     setOpen(true);
   };
   const handleClose = () => {
     setOpen(false);
   };
-  const reportData ={
+  const reportData = {
+    _id: "",
     baseYear: baseYear,
     forecastYear: forecastYear,
-    template : selectedTemplate,
+    template: selectedTemplate,
     userList: personName,
-    name: reportName
-    // name: "Research Topic text 000",
-    //     reportStatusEditing: "draftRecived",
-    //     reportStatusResearch: "drafting",
-    //     baseYear:"2022",
-    //     forecastYear:"2025",
-    //     industry: "",
-    //     template: "",
-  }
-  const submitDetail = async() =>{
-    setIsLoading(true)
-    const res = await createReport(reportData);
-    if(res.status === 201)
-    {
-      console.log("response of report creation",res.status);
-      setOpen(true);
-      setIsLoading(false)
-      navigate("/u_control/report-editor");
+  };
+
+  const submitDetail = async () => {
+    if (id) {
+      setIsLoading(true);
+      const res = await updateReport(reportData);
+      if (res.status === 200) {
+        console.log("response of report creation", res.status);
+        setOpen(true);
+        setIsLoading(false);
+        navigate("/u_control/report-editor");
+      }
+    } else {
+      setIsLoading(true);
+      const res = await createReport(reportData);
+      if (res.status === 201) {
+        console.log("response of report creation", res.status);
+        setOpen(true);
+        setIsLoading(false);
+        navigate("/u_control/report-editor/");
+      }
     }
-  }
-  useEffect(() =>{
+  };
+  const getReportData = async (x) => {
+    const res = await getReportDataById(x);
+    console.log(res);
+    if (res.status === 200) {
+      let obj = {
+        _id: "",
+        baseYear : res.data.data.baseYear,
+        forecastYear : res.data.data.forecastYear,
+        template : res.data.data.template,
+        userList : res.data.data.userList,
+      };
+      setBaseYear(obj.baseYear);
+      setForecastYear(obj.forecastYear);
+      setSelectedTemplate(Number(obj.template));
+
+    }
+  };
+  useEffect(() => {
     getData();
-  },[])
-  
+    if(id){
+      getReportData(id);
+    }
+  }, []);
+
   return (
     <>
       <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
@@ -279,7 +264,7 @@ function CreateReport() {
               input={<OutlinedInput label="select" />}
               // renderValue={(selected) => selected.join(", ")}
               renderValue={(selected) => (
-                <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5 }}>
+                <Box sx={{ display: "flex", flexWrap: "wrap", gap: 0.5 }}>
                   {selected.map((value) => (
                     <Chip key={value} label={value} />
                   ))}
@@ -327,8 +312,6 @@ function CreateReport() {
         </Box> */}
         </Stack>
         &nbsp;&nbsp; &nbsp;&nbsp;
-
-
         <Stack
           display="flex"
           justifyContent="start"
@@ -520,43 +503,41 @@ function CreateReport() {
                   },
                 }}
               >
-                {templatesData ?  templatesData.map((value , index) => {
-                  return (
-                    <Paper
-                      elevation={selectedTemplate === index ? 16 : 3}
-                      square
-                      style={
-                        selectedTemplate === index
-                          ? { backgroundColor: "rgba(0, 0, 255, 0.42)" }
-                          : { backgroundColor: "" }
-                      }
-                      onClick={() => setSelectedTemplate(index)}
-                    >
-                      <Stack
-                        flexDirection="column"
-                        justifyContent="space-between"
-                        alignItems="center"
-                        spacing={4}
-                      >
-                        <Typography
-                          sx={{ fontSize: "10px", }}
+                {templatesData
+                  ? templatesData.map((value, index) => {
+                      return (
+                        <Paper
+                          elevation={selectedTemplate === index ? 16 : 3}
+                          square
+                          style={
+                            selectedTemplate === index
+                              ? { backgroundColor: "rgba(0, 0, 255, 0.42)" }
+                              : { backgroundColor: "" }
+                          }
+                          onClick={() => setSelectedTemplate(index)}
                         >
-                          {value.header}
-                        </Typography>
-                        <Typography
-                          sx={{ fontSize: "10px",color:"green"}}
-                        >
-                          {value.name}
-                        </Typography>
-                        <Typography
-                          sx={{ fontSize: "10px", }}
-                        >
-                          {value.footer}
-                        </Typography>
-                      </Stack>
-                    </Paper>
-                  );
-                }):""}
+                          <Stack
+                            flexDirection="column"
+                            justifyContent="space-between"
+                            alignItems="center"
+                            spacing={4}
+                          >
+                            <Typography sx={{ fontSize: "10px" }}>
+                              {value.header}
+                            </Typography>
+                            <Typography
+                              sx={{ fontSize: "10px", color: "green" }}
+                            >
+                              {value.name}
+                            </Typography>
+                            <Typography sx={{ fontSize: "10px" }}>
+                              {value.footer}
+                            </Typography>
+                          </Stack>
+                        </Paper>
+                      );
+                    })
+                  : ""}
               </Box>
             </Box>
           </Box>
@@ -568,7 +549,6 @@ function CreateReport() {
             marginTop: "8vh",
           }}
         >
-          
           <Button
             variant="contained"
             sx={{
