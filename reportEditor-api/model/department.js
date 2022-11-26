@@ -2,12 +2,16 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const departmentSchema = new Schema({
-    name: String,
+    name: {
+        type:String,
+        required:true
+    },
     description: String,
     teamType: {
         type: String,
         default: '',
-        enum: [ 'research-team', 'editing-team' ]
+        enum: [ 'research-team', 'editing-team' ],
+        required:true
     },
     deletedAt:{
         type: Date,

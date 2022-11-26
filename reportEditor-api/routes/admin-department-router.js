@@ -4,8 +4,8 @@ const { createDepartment, getAllDepartments, departmentStatusUpdate, updateDepar
 const {protect} = require("../helpers/auth")
 
 
-router.route("/").get(protect, getAllDepartments);
-router.route("/update-status/").post(protect, departmentStatusUpdate);
+router.route("/").get(getAllDepartments);
+router.route("/update-status/").post(departmentStatusUpdate);
 router.route("/create").post(createDepartment);
 router.route("/update/:id").patch(updateDepartment);
 router.route("/delete/:id").delete(departmentDelete);  

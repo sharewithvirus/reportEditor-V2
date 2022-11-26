@@ -6,29 +6,48 @@ const reportModel = new mongoose.Schema(
     name: {
       type: String,
     },
-    userList: [
-      {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "User"
-      }
-    ],
+    reportStatusEditing: {
+      type: [String],
+      default: ["drafting"],
+      enum: [
+        "drafting",
+        "draftRecived",
+        "draftAccepted",
+        "editingVersionDone",
+        "transferredToResearch",
+      ],
+    },
+    reportStatusResearch: {
+      type: [String],
+      default: ["drafting"],
+      enum: [
+        null,
+        "drafting",
+        "forwardedToEditing",
+        "editingVersionDone",
+        "researchedPublished",
+      ],
+    },
+    userList:{
+      type:[String]
+    },
     industry: {
       type: String,
     },
+    baseYear:{
+      type:String
+    },
+    forecastYear:{
+      type:String
+    },
     deletedAt: {
       type: Date,
-      default: null
+      default: null,
     },
     template: {
-      type: mongoose.Schema.Types.ObjectId,
-      // ref: "",
+      type:String,
     },
-    subTopics: [
-      {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "SubTopic",
-      },
-    ],
+    
   },
   {
     timestamps: true,
@@ -38,3 +57,8 @@ const reportModel = new mongoose.Schema(
 const Report = mongoose.model("Report", reportModel);
 
 module.exports = Report;
+
+
+
+
+
