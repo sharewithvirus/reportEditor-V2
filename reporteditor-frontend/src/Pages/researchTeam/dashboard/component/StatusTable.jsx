@@ -39,7 +39,7 @@ function  StatusTable({completedTask,taskType}) {
 
           taskStatus2.map((task,index) =>{
             return <Grid item sm={12} md={12}>
-            <Box sx={{ display: "flex", justifyConten: "center",height:"25px" }}>
+            <Box sx={{ display: "flex", justifyContent: "center",height:"25px" }}>
               <IconButton 
               color={completedTask[index]!==true?"warning":"success"}
               >
