@@ -49,7 +49,6 @@ function ReportTemplateManagement() {
             </Typography>
           </Stack>
           <Stack
-            display="flex"
             direction="row"
             justifyContent="start"
             alignItems="center"
@@ -75,28 +74,30 @@ function ReportTemplateManagement() {
           flexDirection="row"
           flexWrap="wrap"
           justifyContent="space-between"
+          alignItems="center"
+          // bgcolor="darkblue"
         >
           {templatesData
             ? templatesData.map((data, index) => {
                 return (
-                  <Box
-                    sx={{
-                      display: "flex",
-                      justifyContent: "space-between",
-                      alignItems: "centet",
-
-                      flexWrap: "wrap",
-                    }}
+                  <Stack
+                    // sx={{
+                    //   display: "flex",
+                    //   justifyContent: "space-between",
+                    //   alignItems: "center",
+                    // }}
+                    direction={{ xs: "column", sm: "row", md:'row' }}
+                      spacing={{ xs: 1, sm: 4, md: 6 }}
+                     
                   >
-                    <Box
-                      sx={{
-                        display: "flex",
-                        justifyContent: "center",
-                        alignItems: "center",
-                        flexDirection: "row",
-                        minWidth: "500px",
-                        marginTop: "100px",
-                      }}
+                    <Stack
+                      direction={{ xs: "column", sm: "row", md:'row' }}
+                      spacing={{ sm: 3, md: 6, sm:4 }}
+                      padding={{sm:1,md:1,sm:1}}
+                     
+                      alignContent="center"
+                      mt={4}
+                     
                     >
                       <Box
                         sx={{
@@ -107,8 +108,9 @@ function ReportTemplateManagement() {
                             width: 160,
                             height: 180,
                           },
-                          marginRight: "100px",
+                          
                         }}
+                        
                       >
                         <Paper
                           elevation={3}
@@ -151,54 +153,58 @@ function ReportTemplateManagement() {
                           <Typography>{data.footer}</Typography>
                         </Paper>
                       </Box>
-                      <Box
-                        sx={{
-                          width: "10vw",
-
-                          display: "flex",
-                          flexDirection: "column",
-                          justifyContent: "center",
-                          alignItems: "center",
-                        }}
+                      <Stack
+                        direction={{ xs: "column", sm: "column", md: "column" }}
+                        spacing={{ xs: 1, sm: 3, md: 3 }}
                       >
-                        <Link to={`/u_control/report-template/edit/${data._id}`} >
+                        <Link
+                          to={`/u_control/report-template/edit/${data._id}`}
+                        >
                           <Button
                             variant="outlined"
                             color="inherit"
                             sx={{
                               width: "100%",
-                              height: "4vh",
+
                               marginTop: "10px",
                             }}
+                            size="small"
                           >
                             Edit
                           </Button>
                         </Link>
-                        <Button
-                          variant="outlined"
-                          color="inherit"
-                          sx={{
-                            width: "100%",
-                            height: "4vh",
-                            marginTop: "10px",
-                          }}
-                        >
-                          Delete
-                        </Button>
-                        <Button
-                          variant="outlined"
-                          color="inherit"
-                          sx={{
-                            width: "100%",
-                            height: "4vh",
-                            marginTop: "10px",
-                          }}
-                        >
-                          Set as Default
-                        </Button>
-                      </Box>
-                    </Box>
-                  </Box>
+                        <Link>
+                          <Button
+                            variant="outlined"
+                            color="inherit"
+                            sx={{
+                              width: "100%",
+
+                              marginTop: "10px",
+                            }}
+                            size="small"
+                          >
+                            Delete
+                          </Button>
+                        </Link>
+                        <Link>
+                          <Button
+                            variant="outlined"
+                            color="inherit"
+                            sx={{
+                              width: "100%",
+
+                              marginTop: "10px",
+                            }}
+                            size="small"
+                            fullWidth
+                          >
+                            Set as Default
+                          </Button>
+                        </Link>
+                      </Stack>
+                    </Stack>
+                  </Stack>
                 );
               })
             : ""}
