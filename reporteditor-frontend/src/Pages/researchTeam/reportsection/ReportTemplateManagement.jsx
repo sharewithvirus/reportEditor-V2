@@ -8,8 +8,11 @@ import { Link } from "react-router-dom";
 import { getTemplate } from "../../../Services/templateServices";
 import { useState } from "react";
 import { useEffect } from "react";
+import DeleteConfirmationModel from "../../../components/DeleteConfirmactionModel";
 function ReportTemplateManagement() {
   const [templatesData, setTemplatesData] = useState([]);
+  const [open, setOpen] = React.useState(false);
+  const handleClose = () => setOpen(false);
   const getData = async () => {
     const res = await getTemplate();
     if (res.status === 200) {
@@ -175,7 +178,7 @@ function ReportTemplateManagement() {
                         </Link>
                         <Link>
                           <Button
-                            variant="outlined"
+                            variant="outlined" 
                             color="inherit"
                             sx={{
                               width: "100%",
@@ -183,6 +186,7 @@ function ReportTemplateManagement() {
                               marginTop: "10px",
                             }}
                             size="small"
+                            onClick={() =>setOpen(true) }
                           >
                             Delete
                           </Button>
@@ -210,6 +214,7 @@ function ReportTemplateManagement() {
             : ""}
         </Stack>
       </Box>
+      <DeleteConfirmationModel open={open}  handleClose={handleClose} />
     </>
   );
 }
