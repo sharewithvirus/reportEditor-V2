@@ -12,7 +12,7 @@ import { Stack } from "@mui/system";
 import FileCopyOutlinedIcon from "@mui/icons-material/FileCopyOutlined";
 import React, { useContext, useEffect, useState } from "react";
 import {useParams, useNavigate} from "react-router-dom";
-import axios from "axios";
+
 import { createTemplate, getTemplateDataById, updateTemplate } from "../../../Services/templateServices";
 import { UserDataContext } from "../../../context/userContext";
 
@@ -35,13 +35,14 @@ function ReportTemplateCreator() {
       const res = await updateTemplate(templateData);
       if(res.status === 200){
         setIsLoading(false);
-        navigate("/u_control/report-template-management")
+        navigate("/u_control/report-template-management");
       }
     }else {
       setIsLoading(true);
       const res = await createTemplate(templateData);
       if(res.status === 200){
         setIsLoading(false);
+        navigate("/u_control/report-template-management")
         console.log(res.status);
     } 
     }

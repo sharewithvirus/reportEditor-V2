@@ -33,11 +33,11 @@ function ReportManagementTable({ reportData, key }) {
   //   }
   // }
 
-  {
-    reportData.reportStatusResearch === "research published"
-      ? (taskFlag = true)
-      : (taskFlag = false);
-  }
+  // {
+  //   reportData.reportStatusResearch === "research published"
+  //     ? (taskFlag = true)
+  //     : (taskFlag = false);
+  // }
   const handleShow = () => {
     setOpen(!open);
   };
@@ -82,8 +82,10 @@ function ReportManagementTable({ reportData, key }) {
                     sx={{
                       display: "flex",
                       justifyContent: "center",
-                      marginLeft: "auto",
-                      marginRight: "auto",
+                      // marginLeft: "auto",
+                      // marginRight: "auto",
+                      
+                      alignItems:"center"
                     }}
                   >
                     <Link
@@ -100,9 +102,11 @@ function ReportManagementTable({ reportData, key }) {
                         )}
                       </IconButton>
                     </Link>
+                    <Link>
                     <IconButton>
                       <SettingsOutlinedIcon onClick={handleShow} />
                     </IconButton>
+                    </Link>
                     <Link to = {`/u_control/edit-report/${reportData._id}`} >
                       <Button
                         variant="outlined"
