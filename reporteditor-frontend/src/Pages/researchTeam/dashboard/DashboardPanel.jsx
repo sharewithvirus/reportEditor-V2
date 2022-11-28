@@ -37,7 +37,7 @@ function DashboardPanel() {
   const handleClose = () => {
        setOpen(false);
   };
-  console.log(getData);
+  // console.log(getData);
   useEffect(() => {
     getApiData();
   }, []);

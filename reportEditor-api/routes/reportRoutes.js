@@ -11,5 +11,4 @@ const {
 router.route("/").get(getReportsList).post(createReport).put(updateReport);
 router.route("/reportData/:id").get(singleReportData);
 // router.route("/:id").delete();
-
 module.exports = router;

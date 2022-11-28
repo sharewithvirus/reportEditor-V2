@@ -27,17 +27,20 @@ export const createReport = async (data) => {
     }
 }
 
-export const updateReportData = async (data, id) => {
-    try {
-        return await axios.patch(`/api/v1/report/${id}`, data)
-    } catch (error) {
-        alert(error.response.data.message)
-        return error.response;
-    }
-}
+// export const updateReportData = async (data, id) => {
+//     try {
+//         return await axios.patch(`/api/v1/report/${id}`, data)
+//     } catch (error) {
+//         alert(error.response.data.message)
+//         return error.response;
+//     }
+// }
 export const updateReport = async (data) => {
      try {
-        return await axios.put(`/api/v1/report/`, {data})
+        // console.log("data in controller..",data);
+      return await axios.put(`/api/v1/report/`, data)
+        // console.log("success");
+        // console.log(res.status);
      } catch (error) {
         alert(error.response.data.message)
         return error.response;

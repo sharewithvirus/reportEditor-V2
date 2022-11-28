@@ -83,7 +83,9 @@ exports.createReport = async (req, res) => {
   exports.updateReport = async (req, res) => {
     try {
       const { _id,  name, baseYear,forecastYear, userList, template} = req.body;
-      await Report.findByIdAndUpdate(_id, req.body);
+      console.log("id coming....",_id);
+      console.log("request body", req.body);
+      await Report.findByIdAndUpdate({_id : _id} , req.body);
           res.status(200).json({
         status: "Success",
         message: "Report Updated successfully",
