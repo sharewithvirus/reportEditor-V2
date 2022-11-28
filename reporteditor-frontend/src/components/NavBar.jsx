@@ -69,7 +69,7 @@ const NavBar = (props) => {
     // getUserDataApi();
   }, []);
 
-  console.log(userData)
+  // console.log(userData)
   React.useEffect(() => {
     // console.log(userData);
     // setUserData(userInfo);
