@@ -95,7 +95,7 @@ function CreateReport() {
     setIsLoading(true);
     const res = await getTemplate();
     if (res.status === 200) {
-      console.log("get details create report", res.data.templateList);
+      // console.log("get details create report", res.data.templateList);
       setTemplatesData(res.data.templateList);
     }
     setIsLoading(false);
@@ -120,16 +120,17 @@ function CreateReport() {
     if (id) {
       setIsLoading(true);
       const reportData = {
-        _id: "",
         baseYear: baseYear,
         forecastYear: forecastYear,
         template: selectedTemplate,
         userList: personName,
         name : reportName,
       };
+      // console.log("updated report data",reportData);
+      // console.log(reportData);
       const res = await updateReport(reportData);
       if (res.status === 200) {
-        console.log("response of report creation", res.status);
+        // console.log("response of updated report", res.status);
         setOpen(true);
         setIsLoading(false);
         navigate("/u_control/");
@@ -147,7 +148,7 @@ function CreateReport() {
   };
   const getReportData = async (x) => {
     const res = await getReportDataById(x);
-    console.log("data of reports",res.data.data.name);
+    // console.log("data of reports",res.data.data.name);
     if (res.status === 200) {
       let obj = {
         _id: id,
@@ -446,6 +447,10 @@ function CreateReport() {
                     marginRight: "50px",
                     width: 132,
                     height: 150,
+                    
+                    display:"flex",
+                    flexDirection:"column",
+                    justifyContent :"space-around"
 
                   },
                 }}
