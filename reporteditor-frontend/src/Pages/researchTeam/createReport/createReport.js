@@ -120,6 +120,7 @@ function CreateReport() {
     if (id) {
       setIsLoading(true);
       const reportData = {
+        _id :id,
         baseYear: baseYear,
         forecastYear: forecastYear,
         template: selectedTemplate,

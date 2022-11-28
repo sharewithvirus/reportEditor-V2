@@ -37,10 +37,12 @@ export const createReport = async (data) => {
 // }
 export const updateReport = async (data) => {
      try {
-        // console.log("data in controller..",data);
-      return await axios.put(`/api/v1/report/`, data)
-        // console.log("success");
-        // console.log(res.status);
+       
+      const res = await axios.put(`/api/v1/report/`, data)
+      
+      console.log("data in controller..",res);
+        console.log("success");
+        return res;
      } catch (error) {
         alert(error.response.data.message)
         return error.response;
