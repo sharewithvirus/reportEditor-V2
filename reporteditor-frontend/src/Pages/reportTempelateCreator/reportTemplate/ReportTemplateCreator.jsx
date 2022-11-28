@@ -10,13 +10,14 @@ import {
 } from "@mui/material";
 import { Stack } from "@mui/system";
 import FileCopyOutlinedIcon from "@mui/icons-material/FileCopyOutlined";
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import {useParams, useNavigate} from "react-router-dom";
 import axios from "axios";
 import { createTemplate, getTemplateDataById, updateTemplate } from "../../../Services/templateServices";
+import { UserDataContext } from "../../../context/userContext";
 
 function ReportTemplateCreator() {
-
+  const { setIsLoading, userInfo } = useContext(UserDataContext);
   const {id} = useParams();
   const navigate = useNavigate();
   const [templateData, setTemplateData] = useState({
@@ -30,13 +31,17 @@ function ReportTemplateCreator() {
   const submitValues = async () => {
     if(id){
       console.log(templateData)
+      setIsLoading(true);
       const res = await updateTemplate(templateData);
       if(res.status === 200){
+        setIsLoading(false);
         navigate("/u_control/report-template-management")
       }
     }else {
+      setIsLoading(true);
       const res = await createTemplate(templateData);
       if(res.status === 200){
+        setIsLoading(false);
         console.log(res.status);
     } 
     }
@@ -46,6 +51,7 @@ function ReportTemplateCreator() {
   };
 
   const getTemplateData = async(x) => {
+    setIsLoading(true);
     const res = await getTemplateDataById(x);
     console.log(res);
     if(res.status === 200){
@@ -59,6 +65,7 @@ function ReportTemplateCreator() {
       }
       setTemplateData(obj)
     }
+    setIsLoading(false);
   }
 
   useEffect(() =>{

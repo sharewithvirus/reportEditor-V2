@@ -79,7 +79,7 @@ function CreateReport() {
       userInfo.department,
       userInfo.teamType
     );
-    console.log(res);
+    // console.log(res);
     if (res.status === 200) {
       setAllAuther(res.data.data);
     }
@@ -113,23 +113,32 @@ function CreateReport() {
     forecastYear: forecastYear,
     template: selectedTemplate,
     userList: personName,
+    name : reportName,
   };
 
   const submitDetail = async () => {
     if (id) {
       setIsLoading(true);
+      const reportData = {
+        _id: "",
+        baseYear: baseYear,
+        forecastYear: forecastYear,
+        template: selectedTemplate,
+        userList: personName,
+        name : reportName,
+      };
       const res = await updateReport(reportData);
       if (res.status === 200) {
         console.log("response of report creation", res.status);
         setOpen(true);
         setIsLoading(false);
-        navigate("/u_control/report-editor");
+        navigate("/u_control/");
       }
     } else {
       setIsLoading(true);
       const res = await createReport(reportData);
       if (res.status === 201) {
-        console.log("response of report creation", res.status);
+        // console.log("response of report creation", res.status);
         setOpen(true);
         setIsLoading(false);
         navigate("/u_control/report-editor/");
@@ -138,19 +147,25 @@ function CreateReport() {
   };
   const getReportData = async (x) => {
     const res = await getReportDataById(x);
-    console.log(res);
+    console.log("data of reports",res.data.data.name);
     if (res.status === 200) {
       let obj = {
-        _id: "",
-        baseYear : res.data.data.baseYear,
-        forecastYear : res.data.data.forecastYear,
+        _id: id,
+        baseYear : new Date(res.data.data.baseYear).getFullYear(),
+        forecastYear :  new Date(res.data.data.forecastYear).getFullYear(),
         template : res.data.data.template,
         userList : res.data.data.userList,
+        name : res.data.data.name,
       };
-      setBaseYear(obj.baseYear);
-      setForecastYear(obj.forecastYear);
+      let d = new Date(res.data.data.baseYear).getFullYear()
+      // console.log(res.data.data.forecastYear);
+      // console.log("data from get api",res);
+      // console.log(res.data.data.baseYear);
+      // console.log(obj.baseYear);
+      setBaseYear((obj.baseYear));
+      setForecastYear((obj.forecastYear));
       setSelectedTemplate(Number(obj.template));
-
+      setReportName(obj.name);
     }
   };
   useEffect(() => {
@@ -189,7 +204,7 @@ function CreateReport() {
           >
             <FileCopyOutlinedIcon />
             <Typography sx={{ fontSize: "20px", fontWeight: "" }}>
-              Create a Report
+              {id?"Edit Report":"Create a Report"}
             </Typography>
           </Stack>
         </Stack>
@@ -494,7 +509,7 @@ function CreateReport() {
             }}
             onClick={submitDetail}
           >
-            Start Report Draft
+            {id?"Update Report Draft":"Start Report Draft"}
           </Button>
         </Stack>
       </Box>

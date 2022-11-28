@@ -37,7 +37,7 @@ export const updateReportData = async (data, id) => {
 }
 export const updateReport = async (data) => {
      try {
-        return await axios.put(`/api/v1/report`, {data})
+        return await axios.put(`/api/v1/report/`, {data})
      } catch (error) {
         alert(error.response.data.message)
         return error.response;
