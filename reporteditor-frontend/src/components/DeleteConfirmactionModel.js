@@ -15,13 +15,15 @@ const style = {
     p: 4,
 };
 
-const DeleteConfirmationModel = ({open, handleClose, handleDelete, handleModelClose, id}) => {
+const DeleteConfirmationModel = ({open, handleClose, handleDelete, handleModelClose, id, }) => {
     return (
         <Modal
         open={open}
         onClose={handleClose}
     >
+
         <Box sx={style}>
+            {id? id : "....."}
             <Typography id="modal-modal-title" variant="h6" component="h2">
                 <Stack display='flex'
                     direction='row'

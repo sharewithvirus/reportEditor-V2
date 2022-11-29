@@ -54,11 +54,20 @@ export const updateNewDepartment = async (data, id) => {
 //         return error.response;
 //      }
 // }
-
+export const updateTemplateStatus = async ( templateId ) => {
+    console.log("id...",templateId);
+         try {
+            return await axios.patch(`/api/v1/template/${templateId}`)
+         } catch (error) {
+            alert(error.response.data.message)
+            return error.response;
+         }
+    }
+    
 export const deleteTemplate = async ( templateId ) => {
-    console.log("Role Id", templateId)
+    console.log("Template Id", templateId)
     try {
-       return await axios.delete(`/api/v1/user/role/delete/${templateId}`)
+       return await axios.delete(`/api/v1/template/${templateId}`)
     } catch (error) {
        alert(error.response.data.message)
        return error.response;
