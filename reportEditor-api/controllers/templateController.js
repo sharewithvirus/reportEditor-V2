@@ -41,14 +41,15 @@ exports.singleTemplateData = async (req, res) => {
 
 exports.createTemplate = async (req, res) => {
   try {
-    const { name, editor,logoAlignment, header, footer, url } = req.body;
+    const { name, editor,logoAlignment, header, footer, url, defaultTemp} = req.body;
     const newTemplate = await Template.create({
       name: name,
       editor: editor,
       logoAlignment: logoAlignment,
       header: header,
       footer: footer,
-      url: url
+      url: url,
+      defaultTemp
     });
     res.status(200).json({
       status: "Success",
@@ -105,3 +106,24 @@ exports.deleteTemplate = async (req, res) => {
     });
   }
 };
+
+exports.defaultTempUpdate = async (req, res) => {
+  try {
+      const { id } = req.params;
+      const newTemp = await Template.findById(id).select("defaultTemp");
+     // await Template.findByIdAndUpdate(newTemp._id, {defaultTemp: !newTemp.defaultTemp});
+      await Template.findByIdAndUpdate(id, {defaultTemp: true});
+
+      await Template.updateMany({_id: {$ne:newTemp._id }}, {"$set":{"defaultTemp": false}});
+      res.status(200).json({
+          status: "success",
+          message: "Default Template updated successfully"
+      })
+  } catch (error) {
+      console.log(error)
+      res.status(500).json({
+          status: "error",
+          message: "Internal Server Error",
+      })
+  }
+}

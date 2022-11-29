@@ -23,6 +23,10 @@ const templateSchema= new mongoose.Schema(
     body: {
       type: String,
     },
+    defaultTemp: {
+      type: Boolean,
+      default:false
+    }
   },
   {
     timestamps: true,
