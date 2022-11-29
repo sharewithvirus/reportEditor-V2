@@ -7,4 +7,3 @@ const industrySchema = new Schema({
         type:String
     },
 
-},{timestamps:})
