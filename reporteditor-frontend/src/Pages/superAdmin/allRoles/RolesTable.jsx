@@ -65,7 +65,7 @@ export default function RolesTable({ rows, changeVisibility, getData }) {
           </TableRow>
         </TableHead>
         <TableBody>
-        {console.log(rows)}
+        {/* {console.log(rows)} */}
           {rows.length > 0 ? 
           rows.map((row, index) => (
             <TableRow

@@ -6,6 +6,7 @@ import Department from "../allDepartment/Department";
 import NavBar from "../../../components/NavBar";
 import UserActivity from "../../usersActivities/UserActivity";
 import { Grid,Box } from "@mui/material";
+import Industries from "../../industries/Industries";
 
 
 function DashboardAdmin() {
@@ -17,6 +18,7 @@ function DashboardAdmin() {
             <UserManagement />
             <Department />
             <Roles />
+            <Industries/>
           </Grid>
           <Grid item xs={12} lg={3}>
             <UserActivity />

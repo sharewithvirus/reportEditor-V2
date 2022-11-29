@@ -26,8 +26,9 @@ function DashboardRoutes() {
       <Routes>
       <Route path='/' element={<NavBar />}>
             <Route path='/a_control'>
-              <Route index element={<DashboardAdmin />} />
+              {/* <Route index element={<DashboardAdmin />} /> */}
             </Route>
+            <Route index element={<DashboardAdmin />} />
             {/* <Route path='/u_control'>
               <Route path='/u_control/create-report' element={<CreateReport />} />
             </Route> */}
