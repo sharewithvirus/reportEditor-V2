@@ -44,7 +44,26 @@ exports.createReport = async (req, res) => {
   };
 
 
-
+  exports.singleReportData = async (req, res) => {
+    try {
+      const { id } = req.params;
+      const report = await Report.findById(id).select(
+        "name userList baseYear forecastYear template"
+      );
+      res.status(200).json({
+        status: "success",
+        message: "Report Data",
+        data: report,
+      });
+    } catch (error) {
+      console.log(error);
+      res.status(500).json({
+        status: "Error",
+        message: "Internal Server Error",
+        error: error,
+      });
+    }
+  };
   exports.getReportsList = async (req, res) => {
     try {
       const reportList = await Report.find({});
@@ -57,6 +76,24 @@ exports.createReport = async (req, res) => {
       res.status(500).json({
         status: "Error",
         message: "Internal Server Error",
+      });
+    }
+  };
+
+  exports.updateReport = async (req, res) => {
+    try {
+      const { _id, name , baseYear , forecastYear , userList , template} = req.body;
+      // console.log(req.body);
+      await Report.findByIdAndUpdate(_id, req.body);
+          res.status(200).json({
+        status: "Success",
+        message: "Report Updated successfully",
+      });
+    } catch (error) {
+      res.status(500).json({
+        Status: "Error",
+        message: "Internal Server Error",
+        error: error,
       });
     }
   };

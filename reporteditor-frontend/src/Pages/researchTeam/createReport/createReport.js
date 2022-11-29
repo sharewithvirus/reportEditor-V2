@@ -2,14 +2,10 @@ import {
   Alert,
   Box,
   Button,
-  Checkbox,
   Chip,
   Divider,
   FormControl,
-  FormControlLabel,
-  FormGroup,
   IconButton,
-  Input,
   InputAdornment,
   InputLabel,
   MenuItem,
@@ -21,19 +17,38 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
-import CloseIcon from "@mui/icons-material/Close";
-import Add from "@mui/icons-material/Add";
-import React, { useEffect, useState } from "react";
-import axios from "axios";
+import AddRoundedIcon from "@mui/icons-material/AddRounded";
+import RemoveRoundedIcon from "@mui/icons-material/RemoveRounded";
+import React, { useEffect, useState, useContext } from "react";
+
 import FileCopyOutlinedIcon from "@mui/icons-material/FileCopyOutlined";
-import { margin } from "@mui/system";
+
 import Select, { SelectChangeEvent } from "@mui/material/Select";
 import ListItemText from "@mui/material/ListItemText";
-import { useNavigate } from "react-router-dom";
+import { UserDataContext } from "../../../context/userContext";
+import { useNavigate, useParams } from "react-router-dom";
+import { getAllUsersByDepartmentAndTeam } from "../../../Services/userService";
 import { getTemplate } from "../../../Services/templateServices";
-import { createReport } from "../../../Services/reportServices";
+import {
+  createReport,
+  getReportDataById,
+  updateReport,
+} from "../../../Services/reportServices";
 function CreateReport() {
-
+  const { setIsLoading, userInfo } = useContext(UserDataContext);
+  const { id } = useParams();
+  const navigate = useNavigate();
+  const [searchField, setSearchField] = useState("");
+  const [allAuther, setAllAuther] = useState([]);
+  const [personName, setPersonName] = React.useState([]);
+  const [reportName, setReportName] = useState("");
+  const [baseYear, setBaseYear] = useState(new Date().getFullYear());
+  const [forecastYear, setForecastYear] = useState(
+    new Date().getFullYear() + 5
+    );
+    const [open, setOpen] = React.useState(false);
+  const [selectedTemplate, setSelectedTemplate] = useState();
+  const [templatesData, setTemplatesData] = useState([]);
   const ITEM_HEIGHT = 40;
   const ITEM_PADDING_TOP = 4;
   const MenuProps = {
@@ -44,145 +59,116 @@ function CreateReport() {
       },
     },
   };
-
-  const navigate = useNavigate();
-  const [searchField, setSearchField] = useState("");
-  const [allAuther, setAllAuther] = useState([
-    {
-      name: "David",
-      id: "1",
-    },
-    {
-      name: "Avon",
-      id: "2",
-    },
-    {
-      name: "Jennifer",
-      id: "3",
-    },
-    {
-      name: "Jhon",
-      id: "4",
-    },
-    {
-      name: "Hetmyer",
-      id: "5",
-    },
-    {
-      name: "Robbinson",
-      id: "6",
-    },
-  ]);
-  const [personName, setPersonName] = React.useState([]);
-  const [reportName, setReportName] = useState("");
   const changeValue = (e) => {
     setReportName(e.target.value);
   };
   const handleChange = (event) => {
     setPersonName(event.target.value);
   };
-  const getAllAuther = async () => {
-    try {
-      const res = await axios.get("api/v1/user");
-      // console.log(res.data.data);
-      console.log("data is ");
-      setAllAuthor(res.data.data);
-      console.log(allAuthor);
-    } catch (error) {
-      console.log(error);
+
+  // const currentYear = new Date().getFullYear();
+
+  const getUserList = async () => {
+    const res = await getAllUsersByDepartmentAndTeam(
+      userInfo.department,
+      userInfo.teamType
+    );
+    // console.log(res);
+    if (res.status === 200) {
+      setAllAuther(res.data.data);
     }
   };
-  const currentYear = new Date().getFullYear();
-  const addYear = (event) => {
-    if (event === "baseyear") {
-      // setBaseYear([...baseYear, baseYear[baseYear.length - 1] + 1]);
-      setBaseYear(baseYear + 1);
-    } else if (event === "forecastyear") {
-      // setForecastYear([
-      //   ...forecastYear,
-      //   forecastYear[forecastYear.length - 1] + 1,
-      // ]);
-      setForecastYear(forecastYear + 1);
-      // console.log("forecast year");
-    }
-  };
-  // const deleteYear = (event, index) => {
-  //   if (event === "baseyear") {
-  //     const deletedArray = baseYear.filter((value, i) => {
-  //       return i !== index;
-  //     });
-  //     setBaseYear(deletedArray);
-  //   } else if (event === "forecast") {
-  //     const deletedArray = forecastYear.filter((value, i) => {
-  //       return i !== index;
-  //     });
-  //     setForecastYear(deletedArray);
-  //   }
-  // };
-  const [baseYear, setBaseYear] = useState(new Date().getFullYear());
-  const [forecastYear, setForecastYear] = useState(
-    new Date().getFullYear() + 5
-  );
-  const [selectedTemplate, setSelectedTemplate] = useState();
+
   useEffect(() => {
-    getAllAuthor();
+    // getAllAuther();
+    getUserList();
   }, []);
- 
-  const [templatesData, setTemplatesData] = useState([]);
+
   const getData = async () => {
+    setIsLoading(true);
     const res = await getTemplate();
     if (res.status === 200) {
-      console.log("get details create report",res.data.templateList);
+      // console.log("get details create report", res.data.templateList);
       setTemplatesData(res.data.templateList);
     }
+    setIsLoading(false);
   };
-  const [open, setOpen] = React.useState(false);
-
-  // const submitDetail = async () => {
-  //   const res = await axios.post("/api/v1/report", {
-  //     name: "Research Topic text 6258",
-  //     reportStatusEditing: "draftRecived",
-  //     reportStatusResearch: "drafting",
-  //     industry: "",
-  //     template: "",
-  //   });
-  //   console.log("function working");
-  //   setOpen(true);
-  //   navigate("/u_control/report-editor");
-  // };
   const handleClick = () => {
     setOpen(true);
   };
   const handleClose = () => {
     setOpen(false);
   };
-  const reportData ={
-    baseYear: {...baseYear},
-    forecastYear:{...forecastYear},
-    template :{...selectedTemplate},
-    userList:{...personName},
-    name:{...reportName}
-    // name: "Research Topic text 000",
-    //     reportStatusEditing: "draftRecived",
-    //     reportStatusResearch: "drafting",
-    //     baseYear:"2022",
-    //     forecastYear:"2025",
-    //     industry: "",
-    //     template: "",
-  }
-  const submitDetail = async() =>{
-    const res = await createReport(reportData);
-    if(res.status === 200)
-    {
-      console.log("response of report creation",res.status);
-      setOpen(true);
-    navigate("/u_control/report-editor");
+  const reportData = {
+    _id: "",
+    baseYear: baseYear,
+    forecastYear: forecastYear,
+    template: selectedTemplate,
+    userList: personName,
+    name: reportName,
+  };
+
+  const submitDetail = async () => {
+    if (id) {
+      setIsLoading(true);
+      const reportData = {
+        _id: id,
+        baseYear: baseYear,
+        forecastYear: forecastYear,
+        template: selectedTemplate,
+        userList: personName,
+        name: reportName,
+      };
+      // console.log("updated report data",reportData);
+      // console.log(reportData);
+      const res = await updateReport(reportData);
+      if (res.status === 200) {
+        // console.log("response of updated report", res.status);
+        setOpen(true);
+        setIsLoading(false);
+        navigate("/u_control/");
+      }
+    } else {
+      setIsLoading(true);
+      const res = await createReport(reportData);
+      if (res.status === 201) {
+        // console.log("response of report creation", res.status);
+        setOpen(true);
+        setIsLoading(false);
+        navigate("/u_control/report-editor/");
+      }
     }
-  }
-  useEffect(() =>{
+  };
+  const getReportData = async (x) => {
+    const res = await getReportDataById(x);
+    // console.log("data of reports",res.data.data.name);
+    if (res.status === 200) {
+      let obj = {
+        _id: id,
+        baseYear: new Date(res.data.data.baseYear).getFullYear(),
+        forecastYear: new Date(res.data.data.forecastYear).getFullYear(),
+        template: res.data.data.template,
+        userList: res.data.data.userList,
+        name: res.data.data.name,
+      };
+      let d = new Date(res.data.data.baseYear).getFullYear();
+      // console.log(res.data.data.forecastYear);
+      // console.log("data from get api",res);
+      // console.log(res.data.data.baseYear);
+      // console.log(obj.baseYear);
+      setBaseYear(obj.baseYear);
+      setForecastYear(obj.forecastYear);
+      setSelectedTemplate(Number(obj.template));
+      setReportName(obj.name);
+    }
+  };
+  useEffect(() => {
     getData();
-  },[])
-  
+    if (id) {
+      getReportData(id);
+    }
+  }, []);
+
   return (
     <>
       <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
@@ -197,400 +183,288 @@ function CreateReport() {
         }}
       >
         <Stack
-          display="flex"
-          direction="row"
-          justifyContent="space-between"
+          flexDirection={{ sm: "row", md: "row" }}
+          justifyContent="start"
           alignItems="center"
+          spacing={0}
           height="8vh"
         >
-          <Stack
-            display="flex"
-            direction="row"
-            justifyContent="start"
-            alignItems="center"
-            spacing={2}
-          >
-            <FileCopyOutlinedIcon />
-            <Typography sx={{ fontSize: "20px", fontWeight: "" }}>
-              Create a Report
-            </Typography>
-          </Stack>
+          <FileCopyOutlinedIcon />
+          <Typography sx={{ fontSize: "20px", fontWeight: "" }}>
+            {id ? "Edit Report" : "Create a Report"}
+          </Typography>
         </Stack>
         <Divider />
-        <Stack
-          display="flex"
-          direction="row"
-          justifyContent="start"
-          alignItems="start"
-          spacing={2}
-          marginTop="30px"
-        >
-          <Typography sx={{ width: "10vw", fontSize: "15px" }}>
-            Report Name
-          </Typography>
-          <Box sx={{}}>
-            <TextareaAutosize
-              aria-label="minimum height"
-              minRows={5}
-              placeholder="ABCD MARKET"
-              style={{ width: "75vw", padding: "15px" }}
-              value={reportName}
-              onChange={(e) => changeValue(e)}
-            />
-
-            {/* <Box
-            sx={{
-              padding: "50px",
-              width: "70vw",
-              textAlign: "center",
-            }}
-            >
-            ABCD MARKET
-          </Box> */}
-          </Box>
-        </Stack>
-        <Stack
-          display="flex"
-          direction="row"
-          justifyContent="start"
-          alignItems="start"
-          spacing={2}
-          marginTop="20px"
-        >
-          <Typography sx={{ width: "10vw", fontSize: "15px" }}>
-            Author Name
-          </Typography>
-          {/* <Box sx={{}}>
-          <Box sx={{width:'100%'}}> */}
-          {/* <FormGroup sx={{ fontSize: "10px" }}>
-              {allAuther.map((x, index) => {
-                return (
-                  <FormControlLabel
-                  control={<Checkbox color="default" size="small" />}
-                  label={
-                    <span style={{ fontSize: "0.7rem" }}>
-                    {x.userName} [me]{" "}
-                    </span>
-                  }
-                  />
-                  );
-                })}
-              </FormGroup> */}
-          <FormControl sx={{ m: 1, width: "80vw" }}>
-            <InputLabel id="demo-multiple-checkbox-label">select</InputLabel>
-            <Select
-              labelId="demo-multiple-checkbox-label"
-              id="demo-multiple-checkbox"
-              multiple
-              value={personName}
-              onChange={handleChange}
-              input={<OutlinedInput label="select" />}
-              // renderValue={(selected) => selected.join(", ")}
-              renderValue={(selected) => (
-                <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5 }}>
-                  {selected.map((value) => (
-                    <Chip key={value} label={value} />
-                  ))}
-                </Box>
-              )}
-              MenuProps={MenuProps}
-              size="medium"
-            >
-              <MenuItem>
-                {/* <TextField
-                  hiddenLabel
-                  id="filled-hidden-label-normal"
-                  size="small"
-                  variant="standard"
-                  sx={{ width: "100%" }}
-                  placeholder="search"
-                  value={searchField}
-                  onChange={(event) => setSearchField(event.target.value)}
-                /> */}
-              </MenuItem>
-              {searchField === ""
-                ? allAuther.map((author, index) => (
-                    <MenuItem key={index} value={author.name}>
-                      <ListItemText primary={author.name} />
-                    </MenuItem>
-                  ))
-                : allAuther.filter((author, index) => {
-                    if (author.name.includes(searchField) === true) {
-                      return (
-                        <MenuItem key={index} value={author.name}>
-                          <ListItemText primary={author.name} />
-                        </MenuItem>
-                      );
-                    } else {
-                      return (
-                        <MenuItem key={index} value={author.name}>
-                          <ListItemText primary={author.name} />
-                        </MenuItem>
-                      );
-                    }
-                  })}
-            </Select>
-          </FormControl>
-          {/* </Box>
-        </Box> */}
-        </Stack>
-        &nbsp;&nbsp; &nbsp;&nbsp;
-
-
-        <Stack
-          display="flex"
-          justifyContent="start"
-          alignItems="start"
-          alignContent="start"
-          spacing={5}
-          marginTop="50px"
-
-          // border="2px solid black"
-        >
+       
           <Stack
-            display="flex"
-            direction="row"
+            flexDirection={{md:"row",}}
             justifyContent="start"
-            alignItems="start"
-            spacing={2}
-
-            //   border="2px solid black"
+            spacing={{sm:2,md:0}}
+            mt={4}
           >
-            <Typography sx={{ width: "10vw", fontSize: "15px" }}>
-              Base Year
+            <Typography sx={{  fontSize: "15px" }}>
+              Report Name
             </Typography>
-            {/* <IconButton color="secondary" onClick={() => addYear("baseyear")}>
-            <Add />
-          </IconButton> */}
-            <FormControl variant="standard">
-              <Input
-                id="input-with-icon-adornment"
-                value={baseYear}
-                size="small"
-                sx={{
-                  width: "8vw",
-                  fontSize: "14px",
-                }}
-                onChange={(e) => setBaseYear(Number(e.target.value))}
-                startAdornment={
-                  <InputAdornment position="end">
-                    <IconButton
-                      color="secondary"
-                      onClick={() => addYear("baseyear")}
-                    >
-                      <Add />
-                    </IconButton>
-                  </InputAdornment>
-                }
+           
+              <TextareaAutosize
+                aria-label="minimum height"
+                minRows={5}
+                placeholder="WRITE NAME"
+                style={{ width: "100%", padding: "0.2rem" }}
+                value={reportName}
+                required
+                onChange={(e) => changeValue(e)}
               />
-            </FormControl>
-            {/* <Box sx={{ marginLeft: "10px",}}>
-            <Box sx={{ display: "flex", justifyContent: "space-between" }}>
-            <FormGroup
-            sx={{
-              display: "flex",
-              justifyContent: "space-between",
-              flexDirection: "row",
-            }}
-              >
-                {baseYear &&
-                  baseYear.map((x, index) => {
-                    return (
-                      <>
-                      <FormControlLabel
-                      control={<Checkbox color="default" size="small" defaultChecked />}
-                      label={
-                        <span style={{ fontSize: "0.7rem" }}>{x}</span>
-                      }
-                      />
-                      {baseYear.length > 1 ? (
-                        <IconButton
-                        onClick={() => deleteYear("baseyear", index)}
-                        >
-                        <CloseIcon sx={{ fontSize: "12px" }} />
-                        </IconButton>
-                        ) : (
-                          ""
-                          )}
-                          </>
-                          );
-                        })}
-                        </FormGroup>
-                        </Box>
-                      </Box> */}
+           
           </Stack>
           <Stack
-            display="flex"
-            direction="row"
+            flexDirection={{md:"row"}}
             justifyContent="start"
             alignItems="start"
-            spacing={2}
-
-            //   border="2px solid black"
+            spacing={{sm:2, md:0}}
+            marginTop="20px"
           >
-            <Typography sx={{ width: "10vw", fontSize: "15px" }}>
-              Forecast Year
+            <Typography sx={{ fontSize: "15px" }}>
+              Author Name
             </Typography>
-            {/* <IconButton color="secondary" onClick={() => addYear("forecast")}>
-            <Add />
-          </IconButton> */}
-            <FormControl variant="standard">
-              <Input
-                id="input-with-icon-adornment"
-                value={forecastYear}
-                size="small"
-                sx={{
-                  width: "8vw",
-                  fontSize: "14px",
-                }}
-                onChange={(e) => setForecastYear(Number(e.target.value))}
-                startAdornment={
-                  <InputAdornment position="end">
-                    <IconButton
-                      color="secondary"
-                      onClick={() => addYear("forecastyear")}
-                    >
-                      <Add />
-                    </IconButton>
-                  </InputAdornment>
-                }
-              />
-            </FormControl>
-            {/* <Box sx={{ marginLeft: "5px" }}>
-            <Box sx={{ display: "flex", justifyContent: "space-around" }}>
-            <FormGroup
-            sx={{
-              display: "flex",
-              justifyContent: "center",
-              flexDirection: "row",
-            }}
-            >
-            {forecastYear &&
-              forecastYear.map((x, index) => {
-                return (
-                  <>
-                  <FormControlLabel
-                  control={
-                    <Checkbox
-                    color="default"
-                    size="small"
-                    defaultChecked
-                    />
-                  }
-                  label={
-                    <span style={{ fontSize: "0.7rem" }}>{x}</span>
-                  }
-                  />
-                  {forecastYear.length > 1 ? (
-                    <IconButton
-                    onClick={() => deleteYear("forecast", index)}
-                    >
-                    <CloseIcon sx={{ fontSize: "12px" }} />
-                    </IconButton>
-                    ) : (
-                      ""
-                      )}
-                      </>
-                      );
+            <FormControl sx={{ m: 1, width: "100%" }}>
+              <InputLabel id="demo-multiple-checkbox-label">select</InputLabel>
+              <Select
+                labelId="demo-multiple-checkbox-label"
+                id="demo-multiple-checkbox"
+                multiple
+                value={personName}
+                onChange={handleChange}
+                required
+                input={<OutlinedInput label="select" />}
+                // renderValue={(selected) => selected.join(", ")}
+                renderValue={(selected) => (
+                  <Box sx={{ display: "flex", flexWrap: "wrap", gap: 0.5 }}>
+                    {selected.map((value) => (
+                      <Chip key={value} label={value} />
+                    ))}
+                  </Box>
+                )}
+                MenuProps={MenuProps}
+                size="medium"
+              >
+                <MenuItem></MenuItem>
+                {searchField === ""
+                  ? allAuther.map((author, index) => (
+                      <MenuItem key={index} value={author.userName}>
+                        <ListItemText primary={author.userName} />
+                      </MenuItem>
+                    ))
+                  : allAuther.filter((author, index) => {
+                      if (author.name.includes(searchField) === true) {
+                        return (
+                          <MenuItem key={index} value={author.userName}>
+                            <ListItemText primary={author.userName} />
+                          </MenuItem>
+                        );
+                      } else {
+                        return (
+                          <MenuItem key={index} value={author.name}>
+                            <ListItemText primary={author.name} />
+                          </MenuItem>
+                        );
+                      }
                     })}
-                    </FormGroup>
-                    </Box>
-                  </Box> */}
+              </Select>
+            </FormControl>
           </Stack>
-        </Stack>
-        <Stack
-          display="flex"
-          direction="row"
-          justifyContent="start"
-          alignItems="start"
-          spacing={2}
-          marginTop="50px"
-        >
-          <Typography sx={{ width: "25vw", fontSize: "15px" }}>
-            Templates
-          </Typography>
-          <Box sx={{}}>
-            <Box
-              sx={{
-                width: "75vw",
-                textAlign: "center",
-              }}
+        
+            <Stack
+              flexDirection={{md:"row",}}
+              justifyContent={{sm:"start", md:"space-around"}}
+              alignItems="start"
+              mt={3}
+              spacing={{ sm:2, md:0}}
             >
-              <Box
-                sx={{
-                  display: "flex",
-                  flexWrap: "wrap",
-                  "& > :not(style)": {
-                    m: 1,
-                    marginRight: "50px",
-                    width: 132,
-                    height: 150,
-                  },
-                }}
-              >
-                {templatesData ?  templatesData.map((value , index) => {
-                  return (
-                    <Paper
-                      elevation={selectedTemplate === index ? 16 : 3}
-                      square
-                      style={
-                        selectedTemplate === index
-                          ? { backgroundColor: "rgba(0, 0, 255, 0.42)" }
-                          : { backgroundColor: "" }
-                      }
-                      onClick={() => setSelectedTemplate(index)}
-                    >
-                      <Stack
-                        flexDirection="column"
-                        justifyContent="space-between"
-                        alignItems="center"
-                        spacing={4}
-                      >
-                        <Typography
-                          sx={{ fontSize: "10px", }}
+              <Typography sx={{fontSize: "15px" }}>
+                Base Year
+              </Typography>
+              <FormControl>
+                <TextField
+                  sx={{
+                    width: "50%",
+                  }}
+                  value={baseYear}
+                  onChange={(e) => setBaseYear(Number(e.target.value))}
+                  size="small"
+                  InputProps={{
+                    startAdornment: (
+                      <InputAdornment position="start">
+                        <IconButton
+                          size="small"
+                          color="success"
+                          onClick={(e) => setBaseYear(baseYear + 1)}
                         >
-                          {value.header}
-                        </Typography>
-                        <Typography
-                          sx={{ fontSize: "10px",color:"green"}}
+                          <AddRoundedIcon />
+                        </IconButton>
+                      </InputAdornment>
+                    ),
+                    endAdornment: (
+                      <InputAdornment position="end">
+                        <IconButton
+                          size="small"
+                          color="error"
+                          onClick={(e) => setBaseYear(baseYear - 1)}
                         >
-                          {value.name}
-                        </Typography>
-                        <Typography
-                          sx={{ fontSize: "10px", }}
+                          <RemoveRoundedIcon />
+                        </IconButton>
+                      </InputAdornment>
+                    ),
+                  }}
+                  variant="outlined"
+                />
+              </FormControl>
+            </Stack>
+            <Stack
+            mt={3}
+              flexDirection={{md:"row"}}
+              justifyContent={{sm:"start", md:"space-around"}}
+              alignItems="start"
+              spacing={{sm:2 , md:0}}
+
+              //   border="2px solid black"
+            >
+              <Typography sx={{ fontSize: "15px" }}>
+                Forecast Year
+              </Typography>
+
+              <FormControl>
+                <TextField
+                  sx={{
+                    width: "50%",
+                  }}
+                  value={forecastYear}
+                  onChange={(e) => setForecastYear(Number(e.target.value))}
+                  size="small"
+                  InputProps={{
+                    startAdornment: (
+                      <InputAdornment position="start">
+                        <IconButton
+                          size="small"
+                          color="success"
+                          onClick={() => setForecastYear(forecastYear + 1)}
                         >
-                          {value.footer}
-                        </Typography>
-                      </Stack>
-                    </Paper>
-                  );
-                }):""}
-              </Box>
-            </Box>
-          </Box>
-        </Stack>
-        <Stack
-          sx={{
-            display: "flex",
-            justifyContent: "center",
-            marginTop: "8vh",
-          }}
-        >
-          <Button
-            variant="contained"
-            sx={{
-              fontSize: "10px",
-              textTransform: "none",
-              marginLeft: "8px",
-              width: "10vw",
-              margin: "auto",
-              backgroundColor: "rgba(15, 154, 173, 1)",
-            }}
-            onClick={submitDetail}
+                          <AddRoundedIcon />
+                        </IconButton>
+                      </InputAdornment>
+                    ),
+                    endAdornment: (
+                      <InputAdornment position="end">
+                        <IconButton
+                          size="small"
+                          color="error"
+                          onClick={() => setForecastYear(forecastYear - 1)}
+                        >
+                          <RemoveRoundedIcon />
+                        </IconButton>
+                      </InputAdornment>
+                    ),
+                  }}
+                  variant="outlined"
+                />
+              </FormControl>
+            </Stack>
+          
+          <Stack
+           flexDirection={{md:"row"}}
+            justifyContent={{sm:'center' , md:"space-between"}}
+            alignItems="start"
+            spacing={{sm:3, md:0}}
+            mt={3}
           >
-            Start Report Draft
-          </Button>
-        </Stack>
+            <Typography sx={{ fontSize: "15px" }}>
+              Templates
+            </Typography>
+                <Box
+                  sx={{
+                    display: "flex",
+                    flexWrap:"wrap",
+                    "& > :not(style)": {
+                      m :{
+                        sm :0.5,
+                        md :4,
+                      },
+                      p:{
+                        sm:0 ,
+                        md:2
+                      },
+                      width:{
+                        sm:125,
+                        md:132
+                      },
+                      height:{
+                        sm:140,
+                        md:150
+                      },
+                      display: "flex",
+                      flexDirection: "column",
+                      justifyContent: "space-around",
+                    },
+                  }}
+                >
+                  {templatesData
+                    ? templatesData.map((value, index) => {
+                        return (
+                          <Paper
+                            elevation={selectedTemplate === index ? 16 : 3}
+                            square
+                            style={
+                              selectedTemplate === index
+                                ? { backgroundColor: "rgba(0, 0, 255, 0.42)" }
+                                : { backgroundColor: "" }
+                            }
+                            onClick={() => setSelectedTemplate(index)}
+                          >
+                            <Stack
+                              flexDirection="column"
+                              justifyContent="space-around"
+                              alignItems="center"
+                              spacing={3}
+                            >
+                              <Typography sx={{ fontSize: "10px" }}>
+                                {value.header}
+                              </Typography>
+                              <Typography
+                                sx={{ fontSize: "10px", color: "green" }}
+                              >
+                                {value.name}
+                              </Typography>
+                              <Typography sx={{ fontSize: "10px" }}>
+                                {value.footer}
+                              </Typography>
+                            </Stack>
+                          </Paper>
+                        );
+                      })
+                    : ""}
+                </Box>
+            
+          </Stack>
+          <Stack
+          mt={4}
+          justifyContent={{md:"center", sm:"center"}}
+          >
+            <Button
+            fullWidth
+              variant="contained"
+              sx={{
+                fontSize: "10px",
+                textTransform: "none",
+                marginLeft: "8px",
+                margin: "auto",
+                backgroundColor: "rgba(15, 154, 173, 1)",
+              }}
+              onClick={submitDetail}
+            >
+              {id ? "Update Report Draft" : "Start Report Draft"}
+            </Button>
+          </Stack>
+     
       </Box>
     </>
   );

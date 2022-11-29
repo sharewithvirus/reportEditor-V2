@@ -8,5 +8,5 @@ router.use("/user/activity", require("./user-activity-router"))
 router.use("/user", require("./user-router"))
 router.use("/report", require("./reportRoutes"))
 router.use("/template", require("./templateRoutes"))
-
+//router.use("/industry", require("./industry-router"))
 module.exports = router;

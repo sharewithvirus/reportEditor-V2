@@ -69,7 +69,7 @@ const NavBar = (props) => {
     // getUserDataApi();
   }, []);
 
-  console.log(userData)
+  // console.log(userData)
   React.useEffect(() => {
     // console.log(userData);
     // setUserData(userInfo);
@@ -249,6 +249,7 @@ const ResearchUserSection = () => {
         <Button
           variant="text"
           sx={{ fontSize: "17px", textTransform: "none", color: "black" }}
+          size="small"
         >
           Reports Management
         </Button>
@@ -257,6 +258,7 @@ const ResearchUserSection = () => {
         <Button
           variant="text"
           sx={{ fontSize: "17px", textTransform: "none", color: "black" }}
+          size="small"
           >
           Reports Templates
         </Button>
@@ -271,6 +273,7 @@ const ResearchUserSection = () => {
             color: "black",
             fontWeight: "600",
           }}
+          size="small"
         >
           Research Team Mode
         </Button>
@@ -283,6 +286,7 @@ const ResearchUserSection = () => {
             textTransform: "none",
             marginRight: "8px",
           }}
+          size="small"
         >
           All Reports
         </Button>
@@ -294,18 +298,23 @@ const ResearchUserSection = () => {
               textTransform: "none",
               marginLeft: "8px",
             }}
+            size="small"
           >
             Create A Report
           </Button>
         </Link>
       </Box>
       <Box sx={{ flexGrow: 1, color: "block !important" }}>
+        <Link to="/u_control">
         <Button
           variant="text"
           sx={{ fontSize: "17px", textTransform: "none", color: "black" }}
+          size="small"
+          
         >
           Dashboard
         </Button>
+        </Link>
       </Box>
     </>
   );

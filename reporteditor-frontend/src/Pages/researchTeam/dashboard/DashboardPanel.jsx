@@ -25,7 +25,7 @@ function DashboardPanel() {
     if(res.status === 200)
     {
       setGetData(res.data.reportsList);
-      console.log("working or not",res);
+      // console.log("working or not",res);
       setOpen(true);
     }
   };
@@ -37,7 +37,7 @@ function DashboardPanel() {
   const handleClose = () => {
        setOpen(false);
   };
-  console.log(getData);
+  // console.log(getData);
   useEffect(() => {
     getApiData();
   }, []);

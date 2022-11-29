@@ -10,12 +10,18 @@ import {
 } from "@mui/material";
 import { Stack } from "@mui/system";
 import FileCopyOutlinedIcon from "@mui/icons-material/FileCopyOutlined";
-import React, { useState } from "react";
-import axios from "axios";
-import { createTemplate } from "../../../Services/templateServices";
+import React, { useContext, useEffect, useState } from "react";
+import {useParams, useNavigate} from "react-router-dom";
+
+import { createTemplate, getTemplateDataById, updateTemplate } from "../../../Services/templateServices";
+import { UserDataContext } from "../../../context/userContext";
 
 function ReportTemplateCreator() {
+  const { setIsLoading, userInfo } = useContext(UserDataContext);
+  const {id} = useParams();
+  const navigate = useNavigate();
   const [templateData, setTemplateData] = useState({
+    _id: '',
     name: "",
     header: "",
     url: "",
@@ -23,14 +29,52 @@ function ReportTemplateCreator() {
     logoAlignment: "",
   });
   const submitValues = async () => {
-    const res = await createTemplate(templateData);
-    if(res.status === 200){
-      console.log(res.status);
-  }
+    if(id){
+      console.log(templateData)
+      setIsLoading(true);
+      const res = await updateTemplate(templateData);
+      if(res.status === 200){
+        setIsLoading(false);
+        navigate("/u_control/report-template-management");
+      }
+    }else {
+      setIsLoading(true);
+      const res = await createTemplate(templateData);
+      if(res.status === 200){
+        setIsLoading(false);
+        navigate("/u_control/report-template-management")
+        console.log(res.status);
+    } 
+    }
   }
   const handleChange = (e) => {
     setTemplateData({ ...templateData, [e.target.name]: e.target.value });
   };
+
+  const getTemplateData = async(x) => {
+    setIsLoading(true);
+    const res = await getTemplateDataById(x);
+    console.log(res);
+    if(res.status === 200){
+      let obj = {
+        _id: id,
+        name: res.data.data.name,
+        header: res.data.data.header,
+        url: "",
+        footer: res.data.data.footer,
+        logoAlignment: "",
+      }
+      setTemplateData(obj)
+    }
+    setIsLoading(false);
+  }
+
+  useEffect(() =>{
+    console.log(id)
+    if(id){
+      getTemplateData(id);
+    }
+  }, [])
   return (
     <>
      
@@ -56,7 +100,7 @@ function ReportTemplateCreator() {
             >
               <FileCopyOutlinedIcon />
               <Typography sx={{ fontSize: "20px", fontWeight: "" }}>
-                Create A Report Template
+                { id ? "Update Report Template" : "Create Report Template"}
               </Typography>
             </Stack>
           </Stack>
@@ -141,9 +185,8 @@ function ReportTemplateCreator() {
           <Stack mt={5}>
             <Button variant="contained" color="info" sx={{ width: "20%" }}
             onClick={submitValues}
-            
             >
-              Create Template
+              { id ? "Update Template" : "Create Template"}
             </Button>
           </Stack>
         </Box>
