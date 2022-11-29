@@ -35,6 +35,20 @@ import {
   updateReport,
 } from "../../../Services/reportServices";
 function CreateReport() {
+  const { setIsLoading, userInfo } = useContext(UserDataContext);
+  const { id } = useParams();
+  const navigate = useNavigate();
+  const [searchField, setSearchField] = useState("");
+  const [allAuther, setAllAuther] = useState([]);
+  const [personName, setPersonName] = React.useState([]);
+  const [reportName, setReportName] = useState("");
+  const [baseYear, setBaseYear] = useState(new Date().getFullYear());
+  const [forecastYear, setForecastYear] = useState(
+    new Date().getFullYear() + 5
+    );
+    const [open, setOpen] = React.useState(false);
+  const [selectedTemplate, setSelectedTemplate] = useState();
+  const [templatesData, setTemplatesData] = useState([]);
   const ITEM_HEIGHT = 40;
   const ITEM_PADDING_TOP = 4;
   const MenuProps = {
@@ -45,14 +59,6 @@ function CreateReport() {
       },
     },
   };
-  const { setIsLoading, userInfo } = useContext(UserDataContext);
-
-  const { id } = useParams();
-  const navigate = useNavigate();
-  const [searchField, setSearchField] = useState("");
-  const [allAuther, setAllAuther] = useState([]);
-  const [personName, setPersonName] = React.useState([]);
-  const [reportName, setReportName] = useState("");
   const changeValue = (e) => {
     setReportName(e.target.value);
   };
@@ -60,12 +66,7 @@ function CreateReport() {
     setPersonName(event.target.value);
   };
 
-  const currentYear = new Date().getFullYear();
-  const [baseYear, setBaseYear] = useState(new Date().getFullYear());
-  const [forecastYear, setForecastYear] = useState(
-    new Date().getFullYear() + 5
-  );
-  const [selectedTemplate, setSelectedTemplate] = useState();
+  // const currentYear = new Date().getFullYear();
 
   const getUserList = async () => {
     const res = await getAllUsersByDepartmentAndTeam(
@@ -83,7 +84,6 @@ function CreateReport() {
     getUserList();
   }, []);
 
-  const [templatesData, setTemplatesData] = useState([]);
   const getData = async () => {
     setIsLoading(true);
     const res = await getTemplate();
@@ -93,7 +93,6 @@ function CreateReport() {
     }
     setIsLoading(false);
   };
-  const [open, setOpen] = React.useState(false);
   const handleClick = () => {
     setOpen(true);
   };

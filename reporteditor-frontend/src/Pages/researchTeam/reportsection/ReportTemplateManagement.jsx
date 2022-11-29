@@ -1,24 +1,83 @@
-import { Button, Divider, IconButton, Paper, Typography } from "@mui/material";
+import {
+  Alert,
+  Button,
+  Divider,
+  IconButton,
+  Paper,
+  Snackbar,
+  Typography,
+} from "@mui/material";
 import { Box, Stack } from "@mui/system";
-import React from "react";
+import React, { useContext } from "react";
 import FileCopyOutlinedIcon from "@mui/icons-material/FileCopyOutlined";
 import AddCircleOutlineOutlinedIcon from "@mui/icons-material/AddCircleOutlineOutlined";
 import DoneOutlineOutlinedIcon from "@mui/icons-material/DoneOutlineOutlined";
-import { Link } from "react-router-dom";
-import { getTemplate } from "../../../Services/templateServices";
+import { Link, useNavigate } from "react-router-dom";
+import {
+  deleteTemplate,
+  getTemplate,
+  updateTemplateStatus,
+} from "../../../Services/templateServices";
 import { useState } from "react";
 import { useEffect } from "react";
 import DeleteConfirmationModel from "../../../components/DeleteConfirmactionModel";
+import { UserDataContext } from "../../../context/userContext";
 function ReportTemplateManagement() {
   const [templatesData, setTemplatesData] = useState([]);
   const [open, setOpen] = React.useState(false);
-  const handleClose = () => setOpen(false);
+  const [deleteModelData, setDeleteModelData] = useState("");
+  const { setIsLoading, userInfo } = useContext(UserDataContext);
+  const [severity, setSeverity] = useState("");
+  const [snacbarMsg, setSnackBarMsg] = useState("");
+  const navigate = useNavigate();
+  // const [defaultTemplate,setDefaultTemplate]=useState(false);
+  const handleClose = () => {
+    setOpen(false);
+    setDeleteModelData("");
+  };
+  const changeDefaultTemplate = async (id) => {
+    console.log(id);
+    setIsLoading(true);
+    const res = await updateTemplateStatus(id);
+    console.log(res);
+    if(res.status)
+    {
+      setSnackBarMsg("Default status changed!");
+      setSeverity("success");
+      setIsLoading(false);
+      getData();
+    }
+  }
+  const handleDelete = async () => {
+    setIsLoading(true);
+    const res = await deleteTemplate(deleteModelData._id);
+    console.log(res);
+    setIsLoading(false);
+    if (res.status == 200) {
+      setSnackBarMsg("Data Deleted !")
+      setSeverity("success")
+      getData();
+      setOpen(false);
+    }
+    else{
+      setSnackBarMsg("Data is not Deleted !");
+      setSeverity("error");
+      getData();
+      setOpen(false);
+    }
+  };
   const getData = async () => {
+    setIsLoading(true);
     const res = await getTemplate();
     if (res.status === 200) {
       // console.log("get details",res.data.templateList);
       setTemplatesData(res.data.templateList);
     }
+    setIsLoading(false);
+  };
+  const handleDeleteModel = (data) => {
+    setDeleteModelData(data);
+    setOpen(true);
   };
   // console.log("templated data to state",templatesData);
   useEffect(() => {
@@ -26,6 +85,11 @@ function ReportTemplateManagement() {
   }, []);
   return (
     <>
+      <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
+        <Alert onClose={handleClose} severity={severity} sx={{ width: "100%" }}>
+          {snacbarMsg ? snacbarMsg :""}
+        </Alert>
+      </Snackbar>
       <Box
         sx={{
           padding: "15px 50px 5px 50px",
@@ -89,18 +153,15 @@ function ReportTemplateManagement() {
                     //   justifyContent: "space-between",
                     //   alignItems: "center",
                     // }}
-                    direction={{ xs: "column", sm: "row", md:'row' }}
-                      spacing={{ xs: 1, sm: 4, md: 6 }}
-                     
+                    direction={{ xs: "column", sm: "row", md: "row" }}
+                    spacing={{ xs: 1, sm: 4, md: 6 }}
                   >
                     <Stack
-                      direction={{ xs: "column", sm: "row", md:'row' }}
-                      spacing={{ sm: 3, md: 6, sm:4 }}
-                      padding={{sm:1,md:1,sm:1}}
-                     
+                      direction={{ xs: "column", sm: "row", md: "row" }}
+                      spacing={{ sm: 3, md: 6, sm: 4 }}
+                      padding={{ sm: 1, md: 1, sm: 1 }}
                       alignContent="center"
                       mt={4}
-                     
                     >
                       <Box
                         sx={{
@@ -111,9 +172,7 @@ function ReportTemplateManagement() {
                             width: 160,
                             height: 180,
                           },
-                          
                         }}
-                        
                       >
                         <Paper
                           elevation={3}
@@ -123,6 +182,8 @@ function ReportTemplateManagement() {
                             flexDirection: "column",
                             justifyContent: "space-around",
                             alignItems: "center",
+                            backgroundColor:`${data.defaultTemp === true ? "rgba(202, 173, 245, 0.66)" : ""}`
+                            
                           }}
                         >
                           <Typography
@@ -137,7 +198,7 @@ function ReportTemplateManagement() {
                               fontSize: "10px",
                             }}
                           >
-                            {index === 0 ? (
+                            {data.defaultTemp === true ? (
                               <DoneOutlineOutlinedIcon
                                 sx={{
                                   fontSize: "15px",
@@ -148,7 +209,7 @@ function ReportTemplateManagement() {
                               ""
                             )}
 
-                            {index === 0 ? "Default" : ""}
+                            {data.defaultTemp === true ? "Default" : ""}
                           </IconButton>
                           <Typography sx={{ fontSize: "10px", color: "green" }}>
                             {data.name}
@@ -178,7 +239,7 @@ function ReportTemplateManagement() {
                         </Link>
                         <Link>
                           <Button
-                            variant="outlined" 
+                            variant="outlined"
                             color="inherit"
                             sx={{
                               width: "100%",
@@ -186,12 +247,15 @@ function ReportTemplateManagement() {
                               marginTop: "10px",
                             }}
                             size="small"
-                            onClick={() =>setOpen(true) }
+                            onClick={() => {
+                              handleDeleteModel(data);
+                            }}
                           >
                             Delete
                           </Button>
                         </Link>
                         <Link>
+                        
                           <Button
                             variant="outlined"
                             color="inherit"
@@ -202,6 +266,8 @@ function ReportTemplateManagement() {
                             }}
                             size="small"
                             fullWidth
+                            
+                            onClick={()=> {changeDefaultTemplate(data._id)}}
                           >
                             Set as Default
                           </Button>
@@ -214,7 +280,11 @@ function ReportTemplateManagement() {
             : ""}
         </Stack>
       </Box>
-      <DeleteConfirmationModel open={open}  handleClose={handleClose} />
+      <DeleteConfirmationModel
+        open={open}
+        handleClose={handleClose}
+        handleDelete={handleDelete}
+      />
     </>
   );
 }
