@@ -22,7 +22,7 @@ exports.singleTemplateData = async (req, res) => {
   try {
     const { id } = req.params;
     const template = await Template.findById(id).select(
-      "name editor header footer body headerLogo"
+      "name editor header footer body headerLogo logoAlignment"
     );
     res.status(200).json({
       status: "success",
