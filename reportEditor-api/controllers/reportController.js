@@ -69,7 +69,7 @@ exports.createReport = async (req, res) => {
       const reportList = await Report.find({});
       res.status(200).json({
         status: "Success",
-        message: "All reports were successfully retrieved.",
+        message: "All reports are successfully retrieved.",
         reportsList: reportList,
       });
     } catch (error) {
