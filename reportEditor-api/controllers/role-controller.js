@@ -9,7 +9,7 @@ exports.createRole = async (req, res) => {
         if(!name, !department, !access) {
             res.status(200).json({
                 status: 'error',
-                message: "All Fields are Require",
+                message: "All Fields are Required",
             })
             return;
         }else{
