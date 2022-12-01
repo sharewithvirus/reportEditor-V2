@@ -1,5 +1,5 @@
-const Report = require("../models/reportModel");
-const SubTopic = require("../models/subTopicModel");
+const Report = require("../model/reportModel");
+const SubTopic = require("../model/subTopicModel");
 const { removeSpaces } = require("./extraFunctions");
 
 exports.getTopicList = async (req, res) => {
@@ -18,65 +18,93 @@ exports.getTopicList = async (req, res) => {
   }
 };
 
+// exports.createSubTopic = async (req, res) => {
+//   try {
+//     console.log("api Hit");
+//     const { subTopicName, reportId, subTopicId } = req.body;
+//     let slug = "";
+//     let index = "";
+//     if (!subTopicName && (!subTopicId || !reportId)) {
+//       res.status(200).json({
+//         status: "Success",
+//         message: "SubTopic name is required Required",
+//       });
+//     }
+//     if (subTopicName && reportId) {
+//       const reportName = await Report.findById(reportId);
+//       slug = `/${removeSpaces(reportName.name)}/${removeSpaces(subTopicName)}`;
+//       index = Number(reportName.subTopics.length + 1);
+//       const newSubTopic = await SubTopic.create({
+//         subTopicsName: subTopicName,
+//         slug: slug,
+//         index: index,
+//         parentReport: reportId,
+//       });
+//       reportName.subTopics.push(newSubTopic._id);
+//       await reportName.save();
+//       res.status(200).json({
+//         status: "Success",
+//         message: "Topic Create Successfully",
+//         SubTopic: newSubTopic,
+//       });
+//     } else if (subTopicName && subTopicId) {
+//       const subTopic = await SubTopic.findById(subTopicId);
+//       const reportName = await Report.findById(subTopic.parentReport);
+//       slug = `${subTopic.slug}/${removeSpaces(subTopicName)}`;
+//       index = `${subTopic.index}.${Number(subTopic.subTopics.length + 1)}`;
+//       const newSubTopic = await SubTopic.create({
+//         subTopicsName: subTopicName,
+//         slug,
+//         index,
+//         parentReport: subTopic.parentReport,
+//         parentSubTopic: subTopic._id,
+//       });
+//       subTopic.subTopics.push(newSubTopic._id);
+//       await subTopic.save();
+//       await reportName.save();
+//       res.status(200).json({
+//         status: "Success",
+//         message: "Topic Create Successfully",
+//         SubTopic: newSubTopic,
+//       });
+//     }
+//   } catch (error) {
+//     console.log(error);
+//     res.status(500).json({
+//       status: "Error",
+//       message: "Internal Server Error",
+//       error: error,
+//     });
+//   }
+// };
+
 exports.createSubTopic = async (req, res) => {
   try {
-    console.log("api Hit");
-    const { subTopicName, reportId, subTopicId } = req.body;
-    let slug = "";
-    let index = "";
-    if (!subTopicName && (!subTopicId || !reportId)) {
+   const { subTopicName, reportId, subTopicId} = req.body;
+    if(!subTopicName && !(reportId || subTopicId)){
       res.status(200).json({
-        status: "Success",
-        message: "SubTopic name is required Required",
-      });
+        status:"Success",
+        message:"SubTopicName is Required"
+      })
     }
-    if (subTopicName && reportId) {
-      const reportName = await Report.findById(reportId);
-      slug = `/${removeSpaces(reportName.name)}/${removeSpaces(subTopicName)}`;
-      index = Number(reportName.subTopics.length + 1);
-      const newSubTopic = await SubTopic.create({
-        subTopicsName: subTopicName,
-        slug: slug,
-        index: index,
-        parentReport: reportId,
-      });
-      reportName.subTopics.push(newSubTopic._id);
-      await reportName.save();
-      res.status(200).json({
-        status: "Success",
-        message: "Topic Create Successfully",
-        SubTopic: newSubTopic,
-      });
-    } else if (subTopicName && subTopicId) {
-      const subTopic = await SubTopic.findById(subTopicId);
-      const reportName = await Report.findById(subTopic.parentReport);
-      slug = `${subTopic.slug}/${removeSpaces(subTopicName)}`;
-      index = `${subTopic.index}.${Number(subTopic.subTopics.length + 1)}`;
-      const newSubTopic = await SubTopic.create({
-        subTopicsName: subTopicName,
-        slug,
-        index,
-        parentReport: subTopic.parentReport,
-        parentSubTopic: subTopic._id,
-      });
-      subTopic.subTopics.push(newSubTopic._id);
-      await subTopic.save();
-      await reportName.save();
-      res.status(200).json({
-        status: "Success",
-        message: "Topic Create Successfully",
-        SubTopic: newSubTopic,
-      });
+    else if (subTopicName && subTopicId){
+       const subTopic = await SubTopic.findById(subTopicId);
+       const newSubTopic = await SubTopic.create({
+        subTopicName: subTopicName
+       });
+       res.status(201).json({
+        status:"Success",
+        message:"SubTopic Doc Created Successfully"
+       })
     }
-  } catch (error) {
-    console.log(error);
-    res.status(500).json({
-      status: "Error",
-      message: "Internal Server Error",
-      error: error,
-    });
+  } catch(error){
+     res.status(500).json({
+      status:"Error",
+      message:"Internal Server Error"
+     })
   }
-};
+}
+
 
 exports.deleteSubTopic = async (req, res) => {
   try {

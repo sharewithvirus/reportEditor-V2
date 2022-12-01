@@ -9,4 +9,5 @@ router.use("/user", require("./user-router"))
 router.use("/report", require("./reportRoutes"))
 router.use("/template", require("./templateRoutes"))
 router.use("/industry", require("./industry-router"))
+router.use("/subtopic", require("./subtopic-router"))
 module.exports = router;
