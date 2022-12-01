@@ -1,31 +1,33 @@
 import React, { useEffect, useContext, useState } from "react";
 import { Stack, Typography, Box, Button } from "@mui/material";
 import FileCopyRoundedIcon from "@mui/icons-material/FileCopyRounded";
-import DepartmentTable from "./DepartmentTable";
-import DepartmentModal from "./DepartmentModal";
 
+import{ UserDataContext } from "../../context/userContext";
+import DeleteConfirmationModel from "../../components/DeleteConfirmactionModel";
 import {
-  getAllDepartment,
-  changeDepartmentStatus,
-  createDepartment,
-  updateNewDepartment,
-  deleteDepartment,
-} from "../../../Services/departmentService";
-import { UserDataContext } from "../../../context/userContext";
-import DeleteConfirmationModel from "../../../components/DeleteConfirmactionModel";
+  getIndustryDataById,
+  getIndustry,
+  getAllIndustry,
+  deleteIndustry,
+  changeIndustryStatus,
+  updateNewIndustry,
+  createIndustry,
+} from "../../Services/industryServices";
+import IndustryModal from "./IndustryModal";
+import IndustryTable from "./IndustryTable";
 
-const Department = () => {
+function Industries() {
   const { setIsLoading } = useContext(UserDataContext);
   const [open, setOpen] = React.useState(false);
-  const [activeDept, setActiveDept] = React.useState("");
-  const [editDept, setEditDept] = React.useState(false);
-  const [departmentList, setDepartmentList] = React.useState([]);
+  const [activeIndustry, setActiveIndustry] = React.useState("");
+  const [editIndustry, setEditIndustry] = React.useState(false);
+  const [industryList, setIndustryList] = React.useState([]);
   const [deleteModelShow, setDeleteModelShow] = React.useState(false);
-  
+
   const handleShow = () => {
-    if (open === true) {
-      setActiveDept("");
-    }
+    // if (open === true) {
+    //   setActiveIndustry("");
+    // }
     setOpen(!open);
   };
   const handleDeleteModelShow = (id) => {
@@ -34,86 +36,95 @@ const Department = () => {
   };
   const handleDelete = async (id) => {
     setIsLoading(true);
-    const res = await deleteDepartment(id);
+    const res = await deleteIndustry(id);
     if (res.status === 200) {
       setOpen(false);
       setDeleteModelShow(false);
-      getDepartment();
+      getIndustry();
     } else if (res.status === 204) {
       setDeleteModelShow(false);
-      alert("Department is assigned to To Users First Remove Users.");
+      alert("Industries List are Open !");
     }
-    setActiveDept("");
+    setActiveIndustry("");
     setIsLoading(false);
   };
-  const getDepartment = async () => {
-    const res = await getAllDepartment();
+
+  const getIndustry = async () => {
+    const res = await getAllIndustry();
     if (res.status === 200) {
-      setDepartmentList(res.data.data);
+      setIndustryList(res.data.data);
     }
   };
 
-  const deptStatusChange = async (id) => {
+  const IndustryStatusChange = async (id) => {
     setIsLoading(true);
-    const res = await changeDepartmentStatus(id);
+    const res = await changeIndustryStatus(id);
     if (res.status === 200) {
-      getDepartment();
+      getIndustry();
     }
     setIsLoading(false);
     return;
   };
 
-  const createNewDepartment = async (data) => {
+  const createNewIndustry = async (data) => {
     setIsLoading(true);
     let res;
-    if (editDept == true) {
-      if (data.name === undefined) {
-        data.name = activeDept.name;
-      }
-      res = await updateNewDepartment(data, activeDept._id);
-    } else {
-      res = await createDepartment(data);
-    }
+    // if (editIndustry == true) {
+    //   if (data.name === undefined) {
+    //     data.name = activeIndustry.name;
+    //   }
+      // res = await updateNewIndustry(data, activeIndustry._id);
+    // } else {
+      res = await createIndustry(data);
+    // }
     if (res.status === 200) {
-      getDepartment();
+      getIndustry();
       setOpen(false);
     }
     setIsLoading(false);
   };
 
-  const createDeptModel = () => {
-    setEditDept(false);
+  const createIndustryModel = () => {
+    setEditIndustry(false);
     handleShow();
   };
 
-  const updateDepartment = async (index) => {
-    const dept = departmentList[index];
-    setActiveDept(dept);
-    setEditDept(true);
+  const updateIndustry = async (index) => {
+    const industry = industryList[index];
+    setActiveIndustry(industry);
+    setEditIndustry(true);
     handleShow();
   };
 
   useEffect(() => {
-    getDepartment();
+    getIndustry();
   }, []);
 
   return (
     <>
-      <DepartmentModal
+      {/* <DepartmentModal
+          handleDeleteModelShow={handleDeleteModelShow}
+          handleClose={handleShow}
+          open={open}
+          edit={edit}
+          industryData={activeIndustry}
+          create={(x) => createNewDepartment(x)}
+        /> */}
+        <IndustryModal
         handleDeleteModelShow={handleDeleteModelShow}
         handleClose={handleShow}
         open={open}
-        edit={editDept}
-        deptData={activeDept}
-        create={(x) => createNewDepartment(x)}
-      />
-      <DeleteConfirmationModel
+        // edit={edit}
+        industryData={activeIndustry}
+        create={(x) => createNewIndustry(x)}
+        />
+      {/* <DeleteConfirmationModel
         open={deleteModelShow}
         handleShow={handleDeleteModelShow}
-        id={activeDept._id}
+        id={activeIndustry._id}
         handleClose={handleDeleteModelShow}
         handleDelete={(x) => handleDelete(x)}
-      />
+      /> */}
       <Box
         sx={{
           // border: "1px solid black",
@@ -129,16 +140,16 @@ const Department = () => {
           alignItems="center"
         >
           <Typography sx={{ fontSize: "20px", fontWeight: "bold" }}>
-            All Team
+            All Industries
           </Typography>
 
           <Button
             variant="contained"
             color="primary"
             sx={{ textTransform: "none" }}
-            onClick={createDeptModel}
+            onClick={createIndustryModel}
           >
-            Create Team
+            Create Industries
           </Button>
         </Stack>
         <Box
@@ -158,19 +169,19 @@ const Department = () => {
               // margin: "20px 50px 20px 50px",
             }}
           >
-            <DepartmentTable
-              rows={departmentList}
-              changeStatus={(x) => {
-                deptStatusChange(x);
-              }}
-              modify={(x) => updateDepartment(x)}
-            />
+            <IndustryTable
+                rows={industryList}
+                changeStatus={(x) => {
+                  IndustryStatusChange(x); 
+                }}
+                // modify={(x) => updateDepartment(x)}
+              />
           </Box>
         </Box>
       </Box>
       {/* {console.log("department id is....",departmentList)} */}
     </>
   );
-};
+}
 
-export default Department;
+export default Industries;

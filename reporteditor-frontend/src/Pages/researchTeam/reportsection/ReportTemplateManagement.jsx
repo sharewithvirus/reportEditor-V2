@@ -182,7 +182,7 @@ function ReportTemplateManagement() {
                             flexDirection: "column",
                             justifyContent: "space-around",
                             alignItems: "center",
-                            backgroundColor:`${data.defaultTemp === true ? "rgba(202, 173, 245, 0.66)" : ""}`
+                            backgroundColor:`${data.defaultTemp === true ? "rgba(0, 45, 227, 0.55)" : ""}`
                             
                           }}
                         >

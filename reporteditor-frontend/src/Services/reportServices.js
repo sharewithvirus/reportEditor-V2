@@ -19,6 +19,7 @@ export const getReportDataById = async (id) => {
     }
 }
 export const createReport = async (data) => {
+    console.log(data);
     try {
         return await axios.post(`/api/v1/report/`, data)
     } catch (error) {

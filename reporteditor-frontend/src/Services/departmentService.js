@@ -37,10 +37,10 @@ export const changeDepartmentStatus = async ( deptId ) => {
      }
 }
 export const deleteDepartment = async ( deptId ) => {
-    console.log("Department Id", deptId)
+    console.log("Industry Id", deptId)
     try {
         if(!deptId){
-            return { status: 200, data: { message: "Select Proper Department to Delete"} }
+            return { status: 200, data: { message: "Select Proper Industry to Delete"} }
         }
        const data = await axios.delete(`/api/v1/admin/department/delete/${deptId}`)
         return data;
