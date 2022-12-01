@@ -21,7 +21,7 @@ const Department = () => {
   const [editDept, setEditDept] = React.useState(false);
   const [departmentList, setDepartmentList] = React.useState([]);
   const [deleteModelShow, setDeleteModelShow] = React.useState(false);
-
+  
   const handleShow = () => {
     if (open === true) {
       setActiveDept("");

@@ -13,6 +13,8 @@ import {
   updateNewIndustry,
   createIndustry,
 } from "../../Services/industryServices";
+import IndustryModal from "./IndustryModal";
+import IndustryTable from "./IndustryTable";
 
 function Industries() {
   const { setIsLoading } = useContext(UserDataContext);
@@ -23,9 +25,9 @@ function Industries() {
   const [deleteModelShow, setDeleteModelShow] = React.useState(false);
 
   const handleShow = () => {
-    if (open === true) {
-      setActiveIndustry("");
-    }
+    // if (open === true) {
+    //   setActiveIndustry("");
+    // }
     setOpen(!open);
   };
   const handleDeleteModelShow = (id) => {
@@ -41,11 +43,12 @@ function Industries() {
       getIndustry();
     } else if (res.status === 204) {
       setDeleteModelShow(false);
-      alert("User List is assigned to To Users First Remove Users.");
+      alert("Industries List are Open !");
     }
     setActiveIndustry("");
     setIsLoading(false);
   };
+
   const getIndustry = async () => {
     const res = await getAllIndustry();
     if (res.status === 200) {
@@ -63,17 +66,17 @@ function Industries() {
     return;
   };
 
-  const createNewDepartment = async (data) => {
+  const createNewIndustry = async (data) => {
     setIsLoading(true);
     let res;
-    if (editIndustry == true) {
-      if (data.name === undefined) {
-        data.name = activeIndustry.name;
-      }
-      res = await updateNewIndustry(data, activeIndustry._id);
-    } else {
+    // if (editIndustry == true) {
+    //   if (data.name === undefined) {
+    //     data.name = activeIndustry.name;
+    //   }
+      // res = await updateNewIndustry(data, activeIndustry._id);
+    // } else {
       res = await createIndustry(data);
-    }
+    // }
     if (res.status === 200) {
       getIndustry();
       setOpen(false);
@@ -107,13 +110,21 @@ function Industries() {
           industryData={activeIndustry}
           create={(x) => createNewDepartment(x)}
         /> */}
-      <DeleteConfirmationModel
+        <IndustryModal
+        handleDeleteModelShow={handleDeleteModelShow}
+        handleClose={handleShow}
+        open={open}
+        // edit={edit}
+        industryData={activeIndustry}
+        create={(x) => createNewIndustry(x)}
+        />
+      {/* <DeleteConfirmationModel
         open={deleteModelShow}
         handleShow={handleDeleteModelShow}
         id={activeIndustry._id}
         handleClose={handleDeleteModelShow}
         handleDelete={(x) => handleDelete(x)}
-      />
+      /> */}
       <Box
         sx={{
           // border: "1px solid black",
@@ -158,13 +169,13 @@ function Industries() {
               // margin: "20px 50px 20px 50px",
             }}
           >
-            {/* <DepartmentTable
-                rows={departmentList}
+            <IndustryTable
+                rows={industryList}
                 changeStatus={(x) => {
-                  industryStatusChange(x); 
+                  IndustryStatusChange(x); 
                 }}
-                modify={(x) => updateDepartment(x)}
-              /> */}
+                // modify={(x) => updateDepartment(x)}
+              />
           </Box>
         </Box>
       </Box>

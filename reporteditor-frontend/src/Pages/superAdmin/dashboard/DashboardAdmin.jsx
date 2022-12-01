@@ -17,8 +17,8 @@ function DashboardAdmin() {
           <Grid item xs={12} lg={9}>
             <UserManagement />
             <Department />
-            <Roles />
             <Industries/>
+            <Roles />
           </Grid>
           <Grid item xs={12} lg={3}>
             <UserActivity />

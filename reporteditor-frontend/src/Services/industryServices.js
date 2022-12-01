@@ -4,7 +4,7 @@ import axios from "axios";
 
 export const getIndustry = async () => {
     try {
-        return await axios.get(`/api/v1/report/`)
+        return await axios.get(`/api/v1/industry/`)
     } catch (error) {
         alert(error.response.data.message)
         return error.response;
@@ -12,7 +12,7 @@ export const getIndustry = async () => {
 }
 export const getAllIndustry = async () => {
     try {
-        return await axios.get(`/api/v1/report/`)
+        return await axios.get(`/api/v1/industry/`)
     } catch (error) {
         alert(error.response.data.message)
         return error.response;
@@ -20,7 +20,7 @@ export const getAllIndustry = async () => {
 }
 export const getIndustryDataById = async (id) => {
     try {
-        return await axios.get(`/api/v1/report/reportData/${id}`)
+        return await axios.get(`/api/v1/industry/industryData/${id}`)
     } catch (error) {
         alert(error.response.data.message)
         return error.response;
@@ -28,7 +28,7 @@ export const getIndustryDataById = async (id) => {
 }
 export const changeIndustryStatus = async (industryId ) => {
     try {
-       return await axios.post(`/api/v1/admin/department/update-status`, {industryId: industryId})
+       return await axios.patch(`/api/v1/industry/update-status/${industryId}`)
     } catch (error) {
        alert(error.response.data.message)
        return error.response;
@@ -36,7 +36,7 @@ export const changeIndustryStatus = async (industryId ) => {
 }
 export const createIndustry = async (data) => {
     try {
-        return await axios.post(`/api/v1/report/`, data)
+        return await axios.post(`/api/v1/industry/`, data)
     } catch (error) {
         alert(error.response.data.message)
         return error.response;
