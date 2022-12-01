@@ -174,7 +174,7 @@ function Industries() {
                 changeStatus={(x) => {
                   IndustryStatusChange(x); 
                 }}
-                // modify={(x) => updateDepartment(x)}
+                // modify={(x) => updateIndustry(x)}
               />
           </Box>
         </Box>

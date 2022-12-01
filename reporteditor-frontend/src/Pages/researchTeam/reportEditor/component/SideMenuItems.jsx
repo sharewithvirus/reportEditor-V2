@@ -6,7 +6,7 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import React, { useEffect, useRef, useState } from "react";
 const valArr=[1,2,3,4];
 function SideMenuItems({ clWidth, itemNo }) {
-  console.log(clWidth);
+  // console.log(clWidth);
   return (
     <>
       <Box
