@@ -4,7 +4,7 @@ const { removeSpaces } = require("./extraFunctions");
 
 exports.getTopicList = async (req, res) => {
   try {
-    const subTopicList = await SubTopic.find({});
+    const subTopicList = await SubTopic.find({}).
     res.status(200).json({
       status: "Success",
       message: "SubTopic List was successfully retrieved",
@@ -80,7 +80,7 @@ exports.getTopicList = async (req, res) => {
 
 exports.createSubTopic = async (req, res) => {
   try {
-   const { subTopicName, reportId, subTopicId} = req.body;
+   const { subTopicName, reportId, chapterName, subTopicId} = req.body;
     if(!subTopicName && !(reportId || subTopicId)){
       res.status(200).json({
         status:"Success",
