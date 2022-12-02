@@ -1,9 +1,7 @@
 import {
   Button,
   ButtonGroup,
-  
   Grid,
-  
   Paper,
   Stack,
   Typography,
@@ -121,16 +119,16 @@ function ReportEditor() {
             }}
           >
             <Stack
-              sx={{
-                display: "flex",
-                flexDirection: "row",
-                justifyContent: "space-between",
-                marginTop: "20px",
-              }}
+             
+               flexDirection={{md:"row",sm:"row"}}
+               justifyContent="space-between"
+               mt={2}
             >
               <Stack
+              
                 sx={{
                   marginRight: "100px",
+                  
                 }}
               >
                 <Typography
