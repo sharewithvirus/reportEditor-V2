@@ -44,12 +44,19 @@ function ReportTemplateCreator() {
         navigate("/u_control/report-template-management");
       }
     } else {
-      setIsLoading(true);
+      if(templateData.header === " " || templateData.name === "" || templateData.footer)
+      {
+        alert("Name Header and Footer CAN NOT  be Empty !")
+      }
+      else
+      {
+        setIsLoading(true);
       const res = await createTemplate(templateData);
       if (res.status === 200) {
         setIsLoading(false);
         navigate("/u_control/report-template-management");
         // console.log(res.status);
+      }
       }
     }
   };

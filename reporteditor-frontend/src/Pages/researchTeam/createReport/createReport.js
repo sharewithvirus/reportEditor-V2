@@ -130,12 +130,20 @@ function CreateReport() {
       }
     } else {
       setIsLoading(true);
-      const res = await createReport(reportData);
+      
+      if(reportData.name == "" || reportData.userList == "")
+      {
+        setIsLoading(false);
+        alert("required field should not be empty !")
+      }
+      else{
+        const res = await createReport(reportData);
       if (res.status === 201) {
         // console.log("response of report creation", res.status);
         setOpen(true);
         setIsLoading(false);
         navigate("/u_control/report-editor/");
+      }
       }
     }
   };
