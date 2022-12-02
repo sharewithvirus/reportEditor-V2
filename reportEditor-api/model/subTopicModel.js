@@ -6,6 +6,9 @@ const subTopicModel = new mongoose.Schema(
     subTopicsName: {
       type: String,
     },
+    chapterName: {
+       type: String,
+    },
     slug: {
       type: String,
     },
