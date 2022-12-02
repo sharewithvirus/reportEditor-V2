@@ -1,21 +1,12 @@
 import {
   Button,
   ButtonGroup,
-  Checkbox,
-  Collapse,
-  FormControlLabel,
-  FormGroup,
   Grid,
-  List,
-  ListItemButton,
-  ListItemIcon,
-  ListItemText,
-  ListSubheader,
   Paper,
-  Radio,
   Stack,
   Typography,
 } from "@mui/material";
+
 import { Box } from "@mui/system";
 import React, { useEffect, useRef, useState } from "react";
 import { styled } from "@mui/material/styles";
@@ -23,6 +14,7 @@ import AddBoxIcon from "@mui/icons-material/AddBox";
 import FileCopyOutlinedIcon from "@mui/icons-material/FileCopyOutlined";
 import SideBar from "./component/SideBar";
 import { Link } from "react-router-dom";
+import Editor from "./component/Editor";
 const Item = styled(Paper)(({ theme }) => ({
   ...theme.typography.body2,
   padding: theme.spacing(2),
@@ -56,10 +48,9 @@ function ReportEditor() {
     // console.log("on mouse leave", ref.current.clientWidth);
   };
   useEffect(() => {
-    console.log("v"+ref.current.clientWidth);
+    // console.log("v" + ref.current.clientWidth);
     setTimeout(() => {
       setWidth(ref.current.clientWidth);
-      
     }, 230);
   }, [expanSidePanel]);
 
@@ -128,16 +119,16 @@ function ReportEditor() {
             }}
           >
             <Stack
-              sx={{
-                display: "flex",
-                flexDirection: "row",
-                justifyContent: "space-between",
-                marginTop: "20px",
-              }}
+             
+               flexDirection={{md:"row",sm:"row"}}
+               justifyContent="space-between"
+               mt={2}
             >
               <Stack
+              
                 sx={{
                   marginRight: "100px",
+                  
                 }}
               >
                 <Typography
@@ -176,17 +167,17 @@ function ReportEditor() {
                 </Typography>
               </Stack>
               <Stack>
-                <Link to = "/u_control/report-preview" >
-                <Button
-                  color="inherit"
-                  variant="outlined"
-                  size="small"
-                  sx={{
-                    height: "3vh",
-                  }}
+                <Link to="/u_control/report-preview">
+                  <Button
+                    color="inherit"
+                    variant="outlined"
+                    size="small"
+                    sx={{
+                      height: "3vh",
+                    }}
                   >
-                  Preview
-                </Button>
+                    Preview
+                  </Button>
                 </Link>
               </Stack>
             </Stack>
@@ -205,7 +196,9 @@ function ReportEditor() {
                   border: "5px solid",
                   height: "100vh",
                 }}
-              ></Stack>
+              >
+               <Editor/>
+              </Stack>
               <Stack
                 sx={{
                   width: "40%",
@@ -237,7 +230,9 @@ function ReportEditor() {
                     margin: "10px auto",
                     height: "20vh",
                   }}
-                ></Stack>
+                >
+
+                </Stack>
                 <Stack
                   sx={{
                     width: "80%",
@@ -283,6 +278,7 @@ function ReportEditor() {
                     </Button>
                   </ButtonGroup>
                 </Stack>
+
                 <Stack
                   sx={{
                     padding: "10px",

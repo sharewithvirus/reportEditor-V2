@@ -4,9 +4,23 @@ import DriveFileRenameOutlineOutlinedIcon from "@mui/icons-material/DriveFileRen
 import AddCircleOutlineOutlinedIcon from "@mui/icons-material/AddCircleOutlineOutlined";
 import DeleteIcon from "@mui/icons-material/Delete";
 import React, { useEffect, useRef, useState } from "react";
+import { getSubtopic } from "../../../../Services/chapterServices";
 const valArr=[1,2,3,4];
 function SideMenuItems({ clWidth, itemNo }) {
-  console.log(clWidth);
+  const [subtopic , setSubtopic] = useState();
+  const getSubtopicData = async() =>{
+    const res = await getSubtopic();
+    // console.log("status...",res);
+    if(res.status === 200)
+    {
+      setSubtopic(res.data.topicList)
+      console.log("name....", res.data.topicList);
+    }
+  }
+  useEffect(() =>{
+    getSubtopicData();
+  },[])
+  // console.log(clWidth);
   return (
     <>
       <Box
@@ -46,9 +60,9 @@ function SideMenuItems({ clWidth, itemNo }) {
           </Stack>
         </Stack>
         <Stack>
-            {valArr.map((element,index)=>{
+            {subtopic ? subtopic.map((element,index)=>{
                 <SideMenuItems clWidth={clWidth} itemNo={index}/>
-            })}
+            }):""}
         </Stack>
         </Stack>
       </Box>
