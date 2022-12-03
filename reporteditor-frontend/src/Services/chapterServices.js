@@ -26,7 +26,15 @@ export const getSubtopicsById = async (id) => {
         return error.response;
     }
 }
-export const createSubtopics = async (data) => {
+export const getSubtopicsByReportId = async (id) => {
+    try {
+        return await axios.get(`/api/v1/subtopic/${id}`)
+    } catch (error) {
+        alert(error.response.data.message)
+        return error.response;
+    }
+}
+export const saveSubtopics = async (data) => {
     try {
         return await axios.post(`/api/v1/subtopic/`, data)
     } catch (error) {
@@ -34,8 +42,6 @@ export const createSubtopics = async (data) => {
         return error.response;
     }
 }
-
-
 export const updateSubtopics = async (data) => {
      try {
        

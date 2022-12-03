@@ -138,11 +138,12 @@ function CreateReport() {
       }
       else{
         const res = await createReport(reportData);
+        // console.log(res.data.newReport._id)
       if (res.status === 201) {
         // console.log("response of report creation", res.status);
         setOpen(true);
         setIsLoading(false);
-        navigate("/u_control/report-editor/");
+        navigate(`/u_control/report-editor/${res.data.newReport._id}`);
       }
       }
     }

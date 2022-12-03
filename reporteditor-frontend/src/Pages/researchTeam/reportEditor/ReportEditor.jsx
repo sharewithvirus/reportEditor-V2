@@ -2,19 +2,24 @@ import {
   Button,
   ButtonGroup,
   Grid,
+  IconButton,
   Paper,
   Stack,
   Typography,
 } from "@mui/material";
 
 import { Box } from "@mui/system";
-import React, { useEffect, useRef, useState } from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
 import { styled } from "@mui/material/styles";
-import AddBoxIcon from "@mui/icons-material/AddBox";
+import {useParams} from 'react-router-dom';
 import FileCopyOutlinedIcon from "@mui/icons-material/FileCopyOutlined";
 import SideBar from "./component/SideBar";
 import { Link } from "react-router-dom";
 import Editor from "./component/Editor";
+import { getSubtopicsByReportId, saveSubtopics } from "../../../Services/chapterServices";
+import AddOutlinedIcon from "@mui/icons-material/AddOutlined";
+import EditorModal from "./component/EditorModal";
+import { UserDataContext } from "../../../context/userContext";
 const Item = styled(Paper)(({ theme }) => ({
   ...theme.typography.body2,
   padding: theme.spacing(2),
@@ -24,36 +29,42 @@ const Item = styled(Paper)(({ theme }) => ({
   border: "1px solid",
 }));
 function ReportEditor() {
-  const [open, setOpen] = React.useState(true);
+  const {setIsLoading} = useContext(UserDataContext);
+  const {id} = useParams();
+  const [topicData , setTopicData]=useState();
+  const [open, setOpen] = useState(false);
+  const handleShow = () => setOpen(!open);
+  const handleClose = () => setOpen(false);
   const [expanSidePanel, setExpandSidePanel] = React.useState({
-    left: 1,
-    right: 11,
+    left: 4,
+    right: 8,
   });
   const ref = useRef(null);
-
+  
   const [width, setWidth] = useState(0);
   // useEffect(() => {
   //   setWidth(ref.current.clientWidth);
   //   console.log(ref.current.parentElement.clientWidth);
   // }, []);
-  const handleMouseEnter = () => {
-    setExpandSidePanel({ left: 4, right: 8 });
-    // setWidth(ref.current.clientWidth);
-    // console.log("on mouse enter", ref.current.clientWidth);
-  };
-  const handleMouseLeave = () => {
-    setExpandSidePanel({ left: 1, right: 11 });
-    // console.log("value" + ref.current.clientWidth);
-    // setWidth(ref.current.clientWidth);
-    // console.log("on mouse leave", ref.current.clientWidth);
-  };
+  // const handleMouseEnter = () => {
+  //   setExpandSidePanel({ left: 4, right: 8 });
+  //   // setWidth(ref.current.clientWidth);
+  //   // console.log("on mouse enter", ref.current.clientWidth);
+  // };
+  // const handleMouseLeave = () => {
+  //   setExpandSidePanel({ left: 1, right: 11 });
+  //   // console.log("value" + ref.current.clientWidth);
+  //   // setWidth(ref.current.clientWidth);
+  //   // console.log("on mouse leave", ref.current.clientWidth);
+  // };
+
   useEffect(() => {
     // console.log("v" + ref.current.clientWidth);
     setTimeout(() => {
-      setWidth(ref.current.clientWidth);
-    }, 230);
+      // setWidth(ref.current.clientWidth);
+    }, 150);
   }, [expanSidePanel]);
-
+  
   const [active, setActive] = React.useState({
     first: "transparent",
     second: "transparent",
@@ -71,9 +82,22 @@ function ReportEditor() {
   const handleClick = () => {
     setOpen(!open);
   };
-
+  const saveTopicsData = async (data) => {
+    setIsLoading(true);
+   const res = await saveSubtopics(data);
+   if(res.status === 200)
+   {
+    handleShow();
+    setIsLoading(false);
+    console.log("success");
+   }
+  };
+  const getReportChaptersData = async (id) => {
+    const res = await getSubtopicsByReportId(id);
+  }
   return (
     <>
+        <EditorModal open={open} handleOpen={handleShow} handleClose={handleShow} saveData={saveTopicsData} reportId={id}/>
       <Box
         sx={{
           padding: "0px 36px 5px 30px",
@@ -90,25 +114,80 @@ function ReportEditor() {
               transition: "0.3s",
               zIndex: "50",
             }}
-            onMouseEnter={handleMouseEnter}
-            onMouseLeave={handleMouseLeave}
+            // onMouseEnter={handleMouseEnter}
+            // onMouseLeave={handleMouseLeave}
           >
             <Stack
-              ref={ref}
+              // ref={ref}
+              justifyContent="center"
+              alignItems="center"
+            >
+              <Button onClick={()=>handleShow()}>
+                <Typography>ADD Chapter</Typography>
+                <AddOutlinedIcon />
+              </Button>
+            </Stack>
+            <Stack
+              justifyContent="center"
+              alignItems="center"
               sx={{
-                display: "flex",
-                justifyContent: "center",
-                alignItems: "center",
+                overflowY: "auto",
+                height: "600px",
               }}
             >
-              <Typography
+              {/* {width && <SideBar scrWidth={width} />} */}
+              <SideBar />
+            </Stack>
+
+            <Stack 
+            mt={2}
+            >
+              <Stack
                 sx={{
-                  marginBottom: "25px",
+                  display: "flex",
+                  alignContent: "center",
+                  justifyContent: "center",
+                  alignItems: "center",
                 }}
               >
-                Indexing
-              </Typography>
-              {width && <SideBar scrWidth={width} />}
+                <Typography
+                  variant="body2"
+                  sx={{
+                    fontSize: "8px",
+                  }}
+                >
+                  Author: Vikas
+                  <br />
+                  Base Year: 2020
+                  <br />
+                  Forecast Year: 2028
+                  <br />
+                  Template Two
+                </Typography>
+              </Stack>
+
+              <Button
+                size="small"
+                variant="contained"
+                color="info"
+                sx={{
+                  fontSize: "0.5rem",
+                  marginTop: "10px",
+                }}
+              >
+                Forward to Editin
+              </Button>
+              <Button
+                size="small"
+                variant="contained"
+                color="inherit"
+                sx={{
+                  fontSize: "0.5rem",
+                  marginTop: "10px",
+                }}
+              >
+                Finish Research Draft
+              </Button>
             </Stack>
           </Grid>
           <Grid
@@ -119,16 +198,15 @@ function ReportEditor() {
             }}
           >
             <Stack
-             
-               flexDirection={{md:"row",sm:"row"}}
-               justifyContent="space-between"
-               mt={2}
+              flexDirection={{ md: "row", sm: "row" }}
+              justifyContent="space-between"
+              mt={2}
+              pl={2}
+              pr={2}
             >
               <Stack
-              
                 sx={{
                   marginRight: "100px",
-                  
                 }}
               >
                 <Typography
@@ -197,7 +275,7 @@ function ReportEditor() {
                   height: "100vh",
                 }}
               >
-               <Editor/>
+                <Editor saveTopicsData={saveTopicsData} />
               </Stack>
               <Stack
                 sx={{
@@ -230,9 +308,7 @@ function ReportEditor() {
                     margin: "10px auto",
                     height: "20vh",
                   }}
-                >
-
-                </Stack>
+                ></Stack>
                 <Stack
                   sx={{
                     width: "80%",
