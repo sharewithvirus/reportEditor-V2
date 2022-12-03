@@ -47,7 +47,7 @@ const reportModel = new mongoose.Schema(
     template: {
       type:String,
     },
-    
+    subTopics:[String]
   },
   {
     timestamps: true,
