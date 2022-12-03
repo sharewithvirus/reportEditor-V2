@@ -3,7 +3,7 @@ const Report = require("./reportModel");
 
 const subTopicModel = new mongoose.Schema(
   {
-    subTopicsName: {
+    subTopicName: {
       type: String,
     },
     chapterName: {
@@ -23,12 +23,12 @@ const subTopicModel = new mongoose.Schema(
       type: mongoose.Schema.Types.ObjectId,
       ref: "SubTopic",
     },
-    subTopics: [
-      {
+     subTopics: [
+       {
         type: mongoose.Schema.Types.ObjectId,
         ref: "SubTopic",
       },
-    ],
+     ],   
     htmlData: {
       type: String,
     },
