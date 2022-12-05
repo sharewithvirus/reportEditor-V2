@@ -19,6 +19,7 @@ function SideBar() {
           flexDirection: "column",
           justifyContent: "space-between",
         }}
+        mt={15}
       >
         <Stack>
           {SubtopicsData.map((element, index) => {
