@@ -43,13 +43,16 @@ function SideMenuItems({ clWidth, itemNo , item, preIndex }) {
                 flexDirection="row"
                 // justifyContent="space-between"
                 alignItems="center"
-                sx={{width:"90%"}}
+                
+               
                 >
                     {/* <Typography>{clWidth>200 ? `chapter ${preIndex}`:{preIndex}} </Typography> */}
                     {/* <Typography>{preIndex} </Typography> */}
                     <Typography>Chapter.{preIndex} </Typography>
 
-                    <Box>
+                    <Box 
+                   
+                    >
                         <IconButton>
                             <SpellcheckOutlinedIcon/>
                         </IconButton>
@@ -88,10 +91,12 @@ function SideMenuItems({ clWidth, itemNo , item, preIndex }) {
                 flexDirection="row"
                 // justifyContent="space-between"
                 alignItems="center"
-                sx={{width:"90%"}}
+                
                 >
                     <Typography>Chapter {preIndex}</Typography>
-                    <Box>
+                    <Box
+                   
+                    >
                         <IconButton>
                             <SpellcheckOutlinedIcon/>
                         </IconButton>

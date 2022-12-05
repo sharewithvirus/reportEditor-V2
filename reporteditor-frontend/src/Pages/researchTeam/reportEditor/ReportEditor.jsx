@@ -1,9 +1,11 @@
 import {
+  Alert,
   Button,
   ButtonGroup,
   Grid,
   IconButton,
   Paper,
+  Snackbar,
   Stack,
   Typography,
 } from "@mui/material";
@@ -35,7 +37,10 @@ function ReportEditor() {
   const [open, setOpen] = useState(false);
   const handleShow = () => setOpen(!open);
   const handleClose = () => setOpen(false);
-  const [expanSidePanel, setExpandSidePanel] = React.useState({
+  const [openSnack , setopenSnack] = useState(false)
+  const [severity , setSeverity] = useState("success");
+  const [snackMsg , setSnackMsg] = useState("");
+  const [expanSidePanel, setExpandSidePanel] = useState({
     left: 4,
     right: 8,
   });
@@ -79,14 +84,17 @@ function ReportEditor() {
       setActive({ third: "grey", first: "transparent", second: "transparent" });
     }
   };
-  const handleClick = () => {
-    setOpen(!open);
+  const handleSnack = () => {
+    setopenSnack(!openSnack);
   };
   const saveTopicsData = async (data) => {
     setIsLoading(true);
    const res = await saveSubtopics(data);
    if(res.status === 200)
    {
+    setSeverity("success");
+    setSnackMsg("Chapter Added Successfully !");
+    setopenSnack(true);
     handleShow();
     setIsLoading(false);
     console.log("success");
@@ -95,8 +103,16 @@ function ReportEditor() {
   const getReportChaptersData = async (id) => {
     const res = await getSubtopicsByReportId(id);
   }
+  console.log(snackMsg);
+  console.log(severity);
   return (
+
     <>
+     <Snackbar open={openSnack} autoHideDuration={5000} onClose={handleSnack}>
+        <Alert onClose={handleSnack} severity="success" sx={{ width: '100%' }}>
+          {snackMsg}
+        </Alert>
+      </Snackbar>
         <EditorModal open={open} handleOpen={handleShow} handleClose={handleShow} saveData={saveTopicsData} reportId={id}/>
       <Box
         sx={{
@@ -130,6 +146,7 @@ function ReportEditor() {
             <Stack
               justifyContent="center"
               alignItems="center"
+              mt={8}
               sx={{
                 overflowY: "auto",
                 height: "600px",
@@ -153,7 +170,7 @@ function ReportEditor() {
                 <Typography
                   variant="body2"
                   sx={{
-                    fontSize: "8px",
+                    fontSize: "10px",
                   }}
                 >
                   Author: Vikas
