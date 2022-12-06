@@ -13,13 +13,13 @@ function SideBar() {
         sx={{
           //   backgroundColor: "rgba(0, 0, 0, 0.3)",
           width: "100%",
-          minHeight: "100vh",
+          height:"500px",
           borderTop: "1px solid",
           display: "flex",
           flexDirection: "column",
           justifyContent: "space-between",
+          overflowY:"auto"
         }}
-        mt={15}
       >
         <Stack>
           {SubtopicsData.map((element, index) => {

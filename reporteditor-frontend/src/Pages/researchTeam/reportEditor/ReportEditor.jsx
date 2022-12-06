@@ -7,18 +7,22 @@ import {
   Paper,
   Snackbar,
   Stack,
+  TextField,
   Typography,
 } from "@mui/material";
 
 import { Box } from "@mui/system";
 import React, { useContext, useEffect, useRef, useState } from "react";
 import { styled } from "@mui/material/styles";
-import {useParams} from 'react-router-dom';
+import { useParams } from "react-router-dom";
 import FileCopyOutlinedIcon from "@mui/icons-material/FileCopyOutlined";
 import SideBar from "./component/SideBar";
 import { Link } from "react-router-dom";
 import Editor from "./component/Editor";
-import { getSubtopicsByReportId, saveSubtopics } from "../../../Services/chapterServices";
+import {
+  getSubtopicsByReportId,
+  saveSubtopics,
+} from "../../../Services/chapterServices";
 import AddOutlinedIcon from "@mui/icons-material/AddOutlined";
 import EditorModal from "./component/EditorModal";
 import { UserDataContext } from "../../../context/userContext";
@@ -31,21 +35,21 @@ const Item = styled(Paper)(({ theme }) => ({
   border: "1px solid",
 }));
 function ReportEditor() {
-  const {setIsLoading} = useContext(UserDataContext);
-  const {id} = useParams();
-  const [topicData , setTopicData]=useState();
+  const { setIsLoading } = useContext(UserDataContext);
+  const { id } = useParams();
+  const [topicData, setTopicData] = useState();
   const [open, setOpen] = useState(false);
   const handleShow = () => setOpen(!open);
   const handleClose = () => setOpen(false);
-  const [openSnack , setopenSnack] = useState(false)
-  const [severity , setSeverity] = useState("success");
-  const [snackMsg , setSnackMsg] = useState("");
+  const [openSnack, setopenSnack] = useState(false);
+  const [severity, setSeverity] = useState("success");
+  const [snackMsg, setSnackMsg] = useState("");
   const [expanSidePanel, setExpandSidePanel] = useState({
     left: 4,
     right: 8,
   });
   const ref = useRef(null);
-  
+
   const [width, setWidth] = useState(0);
   // useEffect(() => {
   //   setWidth(ref.current.clientWidth);
@@ -69,7 +73,7 @@ function ReportEditor() {
       // setWidth(ref.current.clientWidth);
     }, 150);
   }, [expanSidePanel]);
-  
+
   const [active, setActive] = React.useState({
     first: "transparent",
     second: "transparent",
@@ -89,31 +93,35 @@ function ReportEditor() {
   };
   const saveTopicsData = async (data) => {
     setIsLoading(true);
-   const res = await saveSubtopics(data);
-   if(res.status === 200)
-   {
-    setSeverity("success");
-    setSnackMsg("Chapter Added Successfully !");
-    setopenSnack(true);
-    handleShow();
-    setIsLoading(false);
-    console.log("success");
-   }
+    const res = await saveSubtopics(data);
+    if (res.status === 200) {
+      setSeverity("success");
+      setSnackMsg("Chapter Added Successfully !");
+      setopenSnack(true);
+      handleShow();
+      setIsLoading(false);
+      console.log("success");
+    }
   };
   const getReportChaptersData = async (id) => {
     const res = await getSubtopicsByReportId(id);
-  }
+  };
   console.log(snackMsg);
   console.log(severity);
   return (
-
     <>
-     <Snackbar open={openSnack} autoHideDuration={5000} onClose={handleSnack}>
-        <Alert onClose={handleSnack} severity="success" sx={{ width: '100%' }}>
+      <Snackbar open={openSnack} autoHideDuration={5000} onClose={handleSnack}>
+        <Alert onClose={handleSnack} severity="success" sx={{ width: "100%" }}>
           {snackMsg}
         </Alert>
       </Snackbar>
-        <EditorModal open={open} handleOpen={handleShow} handleClose={handleShow} saveData={saveTopicsData} reportId={id}/>
+      <EditorModal
+        open={open}
+        handleOpen={handleShow}
+        handleClose={handleShow}
+        saveData={saveTopicsData}
+        reportId={id}
+      />
       <Box
         sx={{
           padding: "0px 36px 5px 30px",
@@ -123,63 +131,43 @@ function ReportEditor() {
           <Grid
             item
             md={expanSidePanel.left}
-            sx={{
-              minHeight: "100vh",
-              backgroundColor: "rgba(0, 0, 0, 0.12)",
-              paddingTop: "30px",
-              transition: "0.3s",
-              zIndex: "50",
-            }}
+            display="flex"
+            justifyContent="start"
+            flexDirection="column"
             // onMouseEnter={handleMouseEnter}
             // onMouseLeave={handleMouseLeave}
           >
-            <Stack
-              // ref={ref}
-              justifyContent="center"
-              alignItems="center"
-            >
-              <Button onClick={()=>handleShow()}>
+
+            <Stack mt={5}>
+              <Button onClick={() => handleShow()}>
                 <Typography>ADD Chapter</Typography>
                 <AddOutlinedIcon />
               </Button>
             </Stack>
-            <Stack
-              justifyContent="center"
-              alignItems="center"
-              mt={8}
-              sx={{
-                overflowY: "auto",
-                height: "600px",
-              }}
+            <Box 
+            sx={{
+              display:"flex",
+              flexDirection:"column",
+              justifyContent:"space-between"
+            }}
             >
-              {/* {width && <SideBar scrWidth={width} />} */}
-              <SideBar />
-            </Stack>
-
-            <Stack 
-            mt={2}
-            >
-              <Stack
-                sx={{
-                  display: "flex",
-                  alignContent: "center",
-                  justifyContent: "center",
-                  alignItems: "center",
-                }}
-              >
-                <Typography
-                  variant="body2"
-                  sx={{
-                    fontSize: "10px",
-                  }}
-                >
-                  Author: Vikas
-                  <br />
-                  Base Year: 2020
-                  <br />
-                  Forecast Year: 2028
-                  <br />
-                  Template Two
+            <SideBar />
+            <Stack mt={8}>
+              <Stack alignContent="center"
+             
+             alignItems="center"
+             >
+                <Typography variant="body2">
+                Author: Vikas
+                </Typography>
+                <Typography variant="body2">
+                  Base Year : 2022
+                </Typography>
+                <Typography variant="body2">
+                  Forecast Year : 2025
+                </Typography>
+                <Typography variant="body2">
+                  Template : 2
                 </Typography>
               </Stack>
 
@@ -206,6 +194,7 @@ function ReportEditor() {
                 Finish Research Draft
               </Button>
             </Stack>
+          </Box>
           </Grid>
           <Grid
             item
@@ -305,18 +294,17 @@ function ReportEditor() {
                   sx={{
                     marginTop: "10px",
                   }}
+                  alignItems="center"
                 >
-                  <Button
-                    variant="outlined"
-                    color="inherit"
-                    size="small"
-                    sx={{
-                      width: "70%",
-                      margin: "auto",
-                    }}
-                  >
-                    Search Here
-                  </Button>
+                 <TextField placeholder="search here" variant="outlined" 
+                //  size="small"
+                 sx={{
+                  width:"40ch",
+                 textAlign:"center",
+                 
+                 }}
+                
+                 />
                 </Stack>
                 <Stack
                   sx={{

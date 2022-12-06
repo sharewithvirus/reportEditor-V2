@@ -42,9 +42,7 @@ function SideMenuItems({ clWidth, itemNo , item, preIndex }) {
                 <Stack
                 flexDirection="row"
                 // justifyContent="space-between"
-                alignItems="center"
-                
-               
+                alignItems="center"             
                 >
                     {/* <Typography>{clWidth>200 ? `chapter ${preIndex}`:{preIndex}} </Typography> */}
                     {/* <Typography>{preIndex} </Typography> */}
@@ -93,7 +91,7 @@ function SideMenuItems({ clWidth, itemNo , item, preIndex }) {
                 alignItems="center"
                 
                 >
-                    <Typography>Chapter {preIndex}</Typography>
+                    <Typography>Chapter.{preIndex}</Typography>
                     <Box
                    
                     >
