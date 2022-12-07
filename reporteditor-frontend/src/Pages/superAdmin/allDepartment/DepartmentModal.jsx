@@ -1,6 +1,17 @@
 import React, { useState, useEffect } from "react";
 // import Modal from '@mui/material/Modal';
-import { Box, Stack, TextField, Grid, Radio, FormControlLabel, RadioGroup } from "@mui/material";
+import {
+  Box,
+  Stack,
+  TextField,
+  Grid,
+  Radio,
+  FormControlLabel,
+  RadioGroup,
+  OutlinedInput,
+  Checkbox,
+  ListItemText,
+} from "@mui/material";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import Modal from "@mui/material/Modal";
@@ -30,17 +41,23 @@ export default function DepartmentModal(props) {
     description: props.deptData.description,
     deptId: props.deptData._id,
     teamType: props.deptData.teamType,
+    industries: "",
   });
+
+  const [industries, setIndustries] = useState(props.deptData.industries);
+
   const onInputChange = (e) => {
     const { name, value } = e.target;
     setData({ ...data, [name]: value });
   };
 
   const handleSubmit = async () => {
-    await props.create(data);
+    let finalData = data;
+    finalData.industries = industries;
+    await props.create(finalData);
     setData("");
   };
-  
+
   return (
     <div>
       <Modal
@@ -66,30 +83,30 @@ export default function DepartmentModal(props) {
             <hr />
           </Typography>
           <Box>
-              <Stack lg={4} item xs={12}>
+            <Stack lg={4} item xs={12}>
               <Box my={0} mx={0}>
-              <FormControl>
-                <RadioGroup
-                  row
-                  aria-labelledby="demo-row-radio-buttons-group-label"
-                  name="teamType"
-                  value={data.teamType}
-                  onChange={onInputChange}
-                >
-                  <FormControlLabel
-                    value="research-team"
-                    control={<Radio />}
-                    label="Research Team"
-                  />
-                  <FormControlLabel
-                    value="editing-team"
-                    control={<Radio />}
-                    label="Editing Team"
-                  />
-                </RadioGroup>
-              </FormControl>
-            </Box>
-              </Stack>
+                <FormControl>
+                  <RadioGroup
+                    row
+                    aria-labelledby="demo-row-radio-buttons-group-label"
+                    name="teamType"
+                    value={data.teamType}
+                    onChange={onInputChange}
+                  >
+                    <FormControlLabel
+                      value="research-team"
+                      control={<Radio />}
+                      label="Research Team"
+                    />
+                    <FormControlLabel
+                      value="editing-team"
+                      control={<Radio />}
+                      label="Editing Team"
+                    />
+                  </RadioGroup>
+                </FormControl>
+              </Box>
+            </Stack>
             <Grid container spacing={2}>
               <Grid lg={4} item xs={12}>
                 <FormControl fullWidth sx={{ m: 1 }}>
@@ -129,6 +146,28 @@ export default function DepartmentModal(props) {
                       onChange={onInputChange}
                       size="large"
                     />
+                    <FormControl sx={{ m: 1, width: 300 }}>
+                      <InputLabel id="demo-multiple-checkbox-label">
+                        Tag
+                      </InputLabel>
+                      <Select
+                        labelId="demo-multiple-checkbox-label"
+                        id="demo-multiple-checkbox"
+                        multiple
+                        value={personName}
+                        onChange={handleChange}
+                        input={<OutlinedInput label="Tag" />}
+                        renderValue={(selected) => selected.join(", ")}
+                        MenuProps={MenuProps}
+                      >
+                        {names.map((name) => (
+                          <MenuItem key={name} value={name}>
+                            <Checkbox checked={personName.indexOf(name) > -1} />
+                            <ListItemText primary={name} />
+                          </MenuItem>
+                        ))}
+                      </Select>
+                    </FormControl>
                   </Box>
                 </FormControl>
               </Grid>
