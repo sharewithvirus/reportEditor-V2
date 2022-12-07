@@ -233,16 +233,19 @@ const getAllIndustryList = async () =>{
            
           </Stack>
           <Stack
-            flexDirection={{md:"row"}}
-            justifyContent="start"
+            flexDirection={{md:"row",}}
+            justifyContent="space-between"
             alignItems="start"
             spacing={{sm:2, md:0}}
             marginTop="20px"
           >
+            <Stack
+            flexDirection='row' 
+            >
             <Typography sx={{ fontSize: "15px" }}>
               Author Name
             </Typography>
-            <FormControl sx={{ m: 1, width: "100%" }}>
+            <FormControl sx={{ m: 1, }}>
               <InputLabel id="demo-multiple-checkbox-label">select</InputLabel>
               <Select
                 labelId="demo-multiple-checkbox-label"
@@ -287,6 +290,59 @@ const getAllIndustryList = async () =>{
                     })}
               </Select>
             </FormControl>
+            </Stack>
+            <Stack
+             flexDirection='row'
+            >
+            <Typography sx={{ fontSize: "15px" }}>
+              Author Name
+            </Typography>
+            <FormControl sx={{ m: 1, }}>
+              <InputLabel id="demo-multiple-checkbox-label">select</InputLabel>
+              <Select
+                labelId="demo-multiple-checkbox-label"
+                id="demo-multiple-checkbox"
+                multiple
+                value={personName}
+                onChange={handleChange}
+                required
+                input={<OutlinedInput label="select" />}
+                // renderValue={(selected) => selected.join(", ")}
+                renderValue={(selected) => (
+                  <Box sx={{ display: "flex", flexWrap: "wrap", gap: 0.5 }}>
+                    {selected.map((value) => (
+                      <Chip key={value} label={value} />
+                    ))}
+                  </Box>
+                )}
+                MenuProps={MenuProps}
+                size="medium"
+              >
+                <MenuItem></MenuItem>
+                {searchField === ""
+                  ? allAuther.map((author, index) => (
+                      <MenuItem key={index} value={author.userName}>
+                        <ListItemText primary={author.userName} />
+                      </MenuItem>
+                    ))
+                  : allAuther.filter((author, index) => {
+                      if (author.name.includes(searchField) === true) {
+                        return (
+                          <MenuItem key={index} value={author.userName}>
+                            <ListItemText primary={author.userName} />
+                          </MenuItem>
+                        );
+                      } else {
+                        return (
+                          <MenuItem key={index} value={author.name}>
+                            <ListItemText primary={author.name} />
+                          </MenuItem>
+                        );
+                      }
+                    })}
+              </Select>
+            </FormControl>
+            </Stack>
           </Stack>
         
             <Stack
