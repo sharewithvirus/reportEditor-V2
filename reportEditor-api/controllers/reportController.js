@@ -97,3 +97,54 @@ exports.createReport = async (req, res) => {
       });
     }
   };
+
+  exports.getSingleReport = async (req, res) => {
+    try {
+      console.log("Single Report Route Hit");
+      const { id } = req.params;
+      console.log(id);
+      const reportData = await Report.findById(id).populate({
+        path: "subTopics",
+        populate: {
+          path: "subTopics",
+          populate: {
+            path: "subTopics",
+            populate: {
+              path: "subTopics",
+              populate: {
+                path: "subTopics",
+                populate: {
+                  path: "subTopics",
+                  populate: {
+                    path: "subTopics",
+                    populate: {
+                      path: "subTopics",
+                      populate: {
+                        path: "subTopics",
+                        populate: {
+                          path: "subTopics",
+                          populate: {
+                            path: "subTopics",
+                          },
+                        },
+                      },
+                    },
+                  },
+                },
+              },
+            },
+          },
+        },
+      });
+      res.status(200).send({
+        status: "Success",
+        message: "Report has been successfully retrieved",
+        reportData: reportData,
+      });
+    } catch (error) {
+      res.status(500).json({
+        status: "Error",
+        message: "Internal Server Error",
+      });
+    }
+  };

@@ -7,10 +7,10 @@ import { Stack } from '@mui/system';
 import { TextField } from '@mui/material';
 import { useState } from 'react';
 
-function EditorModal({ handleOpen, handleClose , open,saveData,reportId}) {
+function EditorModal({ handleOpen, handleClose , open , saveData , reportId }) {
     const [data,setData]=useState({
-        subTopicName:"",
-        reportId:reportId,
+        subTopicName : "",
+        reportId : reportId,
     })
     const changeValues = (e) =>{
         setData({...data,subTopicName : e.target.value})
