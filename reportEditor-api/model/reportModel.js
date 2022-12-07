@@ -45,9 +45,15 @@ const reportModel = new mongoose.Schema(
       default: null,
     },
     template: {
-      type:String,
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Template"
     },
-    subTopics:[String]
+    subTopics:[
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "SubTopic",
+      },
+    ]
   },
   {
     timestamps: true,

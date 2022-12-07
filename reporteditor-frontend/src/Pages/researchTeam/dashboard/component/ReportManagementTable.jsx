@@ -89,6 +89,14 @@ function ReportManagementTable({ reportData, key }) {
                     }}
                   >
                     <Link
+                      to={`/u_control/report-editor/${reportData._id}`}
+                      style={{
+                        textDecoration: "none",
+                      }}
+                    >
+                      Open Editor
+                    </Link>
+                    <Link
                       to="submit-report"
                       style={{
                         textDecoration: "none",

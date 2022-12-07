@@ -7,7 +7,7 @@ import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import React, { useEffect, useRef, useState } from "react";
 import { getSubtopic, saveSubtopics } from "../../../../Services/chapterServices";
 import EditorModal from "./EditorModal";
-function SideMenuItems({ clWidth, itemNo , item, preIndex }) {
+function SideMenuItems({ clWidth, itemNo , item, preIndex,data}) {
   const [open, setOpen] = React.useState(false);
   const handleShow = () => setOpen(!open);
   const handleClose = () => setOpen(false);
@@ -26,7 +26,7 @@ function SideMenuItems({ clWidth, itemNo , item, preIndex }) {
     // getSubtopicData();
   },[])
   // console.log(clWidth);
-  if(item.length>1)
+  if(data.length>1)
   
   {
    return ( 
@@ -46,7 +46,7 @@ function SideMenuItems({ clWidth, itemNo , item, preIndex }) {
                 >
                     {/* <Typography>{clWidth>200 ? `chapter ${preIndex}`:{preIndex}} </Typography> */}
                     {/* <Typography>{preIndex} </Typography> */}
-                    <Typography>Chapter.{preIndex} </Typography>
+                    <Typography>{data.name} </Typography>
 
                     <Box 
                    
@@ -91,7 +91,7 @@ function SideMenuItems({ clWidth, itemNo , item, preIndex }) {
                 alignItems="center"
                 
                 >
-                    <Typography>Chapter.{preIndex}</Typography>
+                    <Typography>{data.name}.{preIndex}</Typography>
                     <Box
                    
                     >

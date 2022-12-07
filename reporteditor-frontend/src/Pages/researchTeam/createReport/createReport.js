@@ -34,15 +34,17 @@ import {
   getReportDataById,
   updateReport,
 } from "../../../Services/reportServices";
+import { getAllIndustry } from "../../../Services/industryServices";
 function CreateReport() {
   const { setIsLoading, userInfo } = useContext(UserDataContext);
   const { id } = useParams();
   const navigate = useNavigate();
   const [searchField, setSearchField] = useState("");
   const [allAuther, setAllAuther] = useState([]);
-  const [personName, setPersonName] = React.useState([]);
+  const [personName, setPersonName] = useState([]);
   const [reportName, setReportName] = useState("");
   const [baseYear, setBaseYear] = useState(new Date().getFullYear());
+  const [industryList, setIndustryList] = useState()
   const [forecastYear, setForecastYear] = useState(
     new Date().getFullYear() + 5
     );
@@ -78,10 +80,18 @@ function CreateReport() {
       setAllAuther(res.data.data);
     }
   };
-
+const getAllIndustryList = async () =>{
+  const res = await getAllIndustry();
+  if(res.status === 200 )
+  {
+    // console.log("..",res.data.data);
+    setIndustryList(res.data.data)
+  }
+}
   useEffect(() => {
     // getAllAuther();
     getUserList();
+    getAllIndustryList();
   }, []);
 
   const getData = async () => {
@@ -161,13 +171,9 @@ function CreateReport() {
         name: res.data.data.name,
       };
       let d = new Date(res.data.data.baseYear).getFullYear();
-      // console.log(res.data.data.forecastYear);
-      // console.log("data from get api",res);
-      // console.log(res.data.data.baseYear);
-      // console.log(obj.baseYear);
       setBaseYear(obj.baseYear);
       setForecastYear(obj.forecastYear);
-      setSelectedTemplate(Number(obj.template));
+      setSelectedTemplate(obj.template);
       setReportName(obj.name);
     }
   };
@@ -420,14 +426,14 @@ function CreateReport() {
                     ? templatesData.map((value, index) => {
                         return (
                           <Paper
-                            elevation={selectedTemplate === index ? 16 : 3}
+                            elevation={selectedTemplate === value._id ? 16 : 3}
                             square
                             style={
-                              selectedTemplate === index
+                              selectedTemplate === value._id
                                 ? { backgroundColor: "rgba(0, 0, 255, 0.42)" }
                                 : { backgroundColor: "" }
                             }
-                            onClick={() => setSelectedTemplate(index)}
+                            onClick={() => setSelectedTemplate(value._id)}
                           >
                             <Stack
                               flexDirection="column"

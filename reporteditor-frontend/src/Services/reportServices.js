@@ -58,4 +58,16 @@ export const deleteReport = async (reportId) => {
        alert(error.response.data.message)
        return error.response;
     }
+    
 }
+
+// export const getReportData = async (reportId) => {
+//     // console.log("Role Id", reportId)
+//     try {
+//        return await axios.get(`/api/v1/report/reportData/${reportId}`)
+//     } catch (error) {
+//        alert(error.response.data.message)
+//        return error.response;
+//     }
+    
+// }

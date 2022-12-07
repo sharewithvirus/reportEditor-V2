@@ -13,8 +13,8 @@ import {
 
 import { Box } from "@mui/system";
 import React, { useContext, useEffect, useRef, useState } from "react";
+import { useParams } from "react-router-dom"; 
 import { styled } from "@mui/material/styles";
-import { useParams } from "react-router-dom";
 import FileCopyOutlinedIcon from "@mui/icons-material/FileCopyOutlined";
 import SideBar from "./component/SideBar";
 import { Link } from "react-router-dom";
@@ -26,6 +26,7 @@ import {
 import AddOutlinedIcon from "@mui/icons-material/AddOutlined";
 import EditorModal from "./component/EditorModal";
 import { UserDataContext } from "../../../context/userContext";
+import { getReportDataById } from "../../../Services/reportServices";
 const Item = styled(Paper)(({ theme }) => ({
   ...theme.typography.body2,
   padding: theme.spacing(2),
@@ -35,22 +36,23 @@ const Item = styled(Paper)(({ theme }) => ({
   border: "1px solid",
 }));
 function ReportEditor() {
-  const { setIsLoading } = useContext(UserDataContext);
   const { id } = useParams();
-  const [topicData, setTopicData] = useState();
+  const { setIsLoading } = useContext(UserDataContext);
+  const [reportData, setReportData] = useState();
   const [open, setOpen] = useState(false);
   const handleShow = () => setOpen(!open);
   const handleClose = () => setOpen(false);
   const [openSnack, setopenSnack] = useState(false);
   const [severity, setSeverity] = useState("success");
   const [snackMsg, setSnackMsg] = useState("");
+  const [width, setWidth] = useState(0);
+  const [active, setActive] = useState();
   const [expanSidePanel, setExpandSidePanel] = useState({
     left: 4,
     right: 8,
   });
   const ref = useRef(null);
 
-  const [width, setWidth] = useState(0);
   // useEffect(() => {
   //   setWidth(ref.current.clientWidth);
   //   console.log(ref.current.parentElement.clientWidth);
@@ -67,27 +69,22 @@ function ReportEditor() {
   //   // console.log("on mouse leave", ref.current.clientWidth);
   // };
 
+  const getReportData = async () => {
+    const res = await getReportDataById(id);
+    // console.log("....report",res.data.reportData);
+    setReportData(res.data.reportData);
+  }
+console.log("..rdata",reportData);
   useEffect(() => {
+    // console.log(id)
+    getReportData();
     // console.log("v" + ref.current.clientWidth);
-    setTimeout(() => {
-      // setWidth(ref.current.clientWidth);
-    }, 150);
+    // setTimeout(() => {
+    //   // setWidth(ref.current.clientWidth);
+    // }, 150);
   }, [expanSidePanel]);
 
-  const [active, setActive] = React.useState({
-    first: "transparent",
-    second: "transparent",
-    third: "transparent",
-  });
-  const changeActiveBtn = (e) => {
-    if (e === 1) {
-      setActive({ first: "grey", second: "transparent", third: "transparent" });
-    } else if (e === 2) {
-      setActive({ second: "grey", third: "transparent", first: "transparent" });
-    } else if (e === 3) {
-      setActive({ third: "grey", first: "transparent", second: "transparent" });
-    }
-  };
+ 
   const handleSnack = () => {
     setopenSnack(!openSnack);
   };
@@ -103,9 +100,9 @@ function ReportEditor() {
       console.log("success");
     }
   };
-  const getReportChaptersData = async (id) => {
-    const res = await getSubtopicsByReportId(id);
-  };
+  // const getReportChaptersData = async (id) => {
+  //   const res = await getSubtopicsByReportId(id);
+  // };
   console.log(snackMsg);
   console.log(severity);
   return (
@@ -151,7 +148,7 @@ function ReportEditor() {
               justifyContent:"space-between"
             }}
             >
-            <SideBar />
+            <SideBar reportData={reportData} />
             <Stack mt={8}>
               <Stack alignContent="center"
              
@@ -161,10 +158,10 @@ function ReportEditor() {
                 Author: Vikas
                 </Typography>
                 <Typography variant="body2">
-                  Base Year : 2022
+                  Base Year : {reportData ? reportData.baseYear :""}
                 </Typography>
                 <Typography variant="body2">
-                  Forecast Year : 2025
+                  Forecast Year :{reportData ? reportData.forecastYear :""}
                 </Typography>
                 <Typography variant="body2">
                   Template : 2
@@ -239,7 +236,7 @@ function ReportEditor() {
                     }}
                   />
                   <Typography sx={{ fontSize: "16px", fontWeight: "" }}>
-                    ABCD Market
+                  {reportData ? reportData.name:""}
                   </Typography>
                 </Stack>
                 <Typography
@@ -299,7 +296,7 @@ function ReportEditor() {
                  <TextField placeholder="search here" variant="outlined" 
                 //  size="small"
                  sx={{
-                  width:"40ch",
+                  width: "90%", 
                  textAlign:"center",
                  
                  }}
@@ -316,44 +313,37 @@ function ReportEditor() {
                 ></Stack>
                 <Stack
                   sx={{
-                    width: "80%",
+                    width: "90%",
                     margin: "10px  auto",
                     display: "flex",
                     flexDirection: "row",
                     justifyContent: "center",
                   }}
                 >
-                  <ButtonGroup size="small" sx={{}}>
+                  <ButtonGroup size="small" sx={{
+                    width:"100%"
+                  }}>
                     <Button
                       variant="contained"
-                      color="inherit"
-                      sx={{
-                        width: "120px",
-                        backgroundColor: `${active.first}`,
-                      }}
-                      onClick={() => changeActiveBtn(1)}
+                      color={active === 'images'? "info":"inherit"}
+                      sx={{width:"33%"}}
+                      onClick={() => setActive("images")}
                     >
                       Images
                     </Button>
                     <Button
+                     sx={{width:"33%"}}
                       variant="contained"
-                      color="inherit"
-                      sx={{
-                        width: "120px",
-                        backgroundColor: `${active.second}`,
-                      }}
-                      onClick={() => changeActiveBtn(2)}
+                      color={active === 'tables'? "info":"inherit"}
+                      onClick={() => setActive("tables")}
                     >
                       Tables
                     </Button>
                     <Button
+                     sx={{width:"33%"}}
                       variant="contained"
-                      color="inherit"
-                      sx={{
-                        width: "120px",
-                        backgroundColor: `${active.third}`,
-                      }}
-                      onClick={() => changeActiveBtn(3)}
+                      color={active === 'charts'? "info":"inherit"}
+                      onClick={() => setActive("charts")}
                     >
                       Charts
                     </Button>
