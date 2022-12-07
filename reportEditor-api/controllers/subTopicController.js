@@ -19,107 +19,7 @@ exports.getTopicList = async (req, res) => {
   }
 };
 
-// exports.createSubTopic = async (req, res) => {
-//   try {
-//     //console.log("api Hit");
-//     const { subTopicName, reportId, subTopicId } = req.body;
-  
-//     if (!subTopicName && (!subTopicId || !reportId)) {
-//       res.status(200).json({
-//         status: "Success",
-//         message: "SubTopic name is required Required",
-//       });
-//     }
-//     if (subTopicName && reportId) {
-//       const reportName = await Report.findById(reportId);
-//       const newSubTopic = await SubTopic.create({
-//         subTopicName: subTopicName,
-//         parentReport: reportId,
-//       });
-     
-//       reportName.subTopics.push(newSubTopic._id); 
-//       //console.log(reportName);
-//       console.log(reportName.subTopics);
 
-//       await reportName.save();
-//       const reportDocs = await SubTopic.findById(reportId).populate({
-//         path:"subTopics"
-//       });
-//       res.status(200).json({
-//         status: "Success",
-//         message: "Topic Create Successfully",
-//         SubTopic: newSubTopic,
-//       });
-//     } else if (subTopicName && subTopicId) {
-//       const subTopic = await SubTopic.findById(subTopicId);
-//       const reportName = await Report.findById(subTopic.parentReport);
-//       const newSubTopic = await SubTopic.create({
-//         subTopicsName: subTopicName,
-//         parentReport: subTopic.parentReport,
-//         parentSubTopic: subTopic._id,
-//       });
-//       subTopic.subTopics.push(newSubTopic._id);
-//       await subTopic.save();
-//       await reportName.save();
-//       res.status(200).json({
-//         status: "Success",
-//         message: "Topic Create Successfully",
-//         SubTopic: newSubTopic,
-//       });
-//     }
-//   } catch (error) {
-//     console.log(error);
-//     res.status(500).json({
-//       status: "Error",
-//       message: "Internal Server Error",
-//       error: error,
-//     });
-//   }
-// };
-
-// exports.createSubTopic = async (req, res) => {
-//   try {
-//    const { subTopicName, reportId, subTopicId} = req.body;
-//     if(!subTopicName && !(reportId || subTopicId)){
-//       res.status(200).json({
-//         status:"Success",
-//         message:"SubTopicName is Required"
-//       })
-//     }
-//     if (subTopicName && reportId){
-//        const subTopic = await Report.findById(reportId);
-//        const newSubTopic = await SubTopic.create(
-//        { subTopicName:subTopicName}
-//        );
-//        res.status(201).json({
-//         status:"Success",
-//         message:"SubTopic Doc Created Successfully",
-//         data:newSubTopic
-//        })
-//     }
-//   } catch(error){
-//      res.status(500).json({
-//       status:"Error",
-//       message:"Internal Server Error"
-//      })
-//   }
-// }
-
-exports.getTopicList = async (req, res) => {
-  try {
-    const subTopicList = await SubTopic.find({});
-    res.status(200).json({
-      status: "Success",
-      message: "SubTopic List was successfully retrieved",
-      topicList: subTopicList,
-    });
-  } catch (error) {
-    res.status(500).json({
-      status: "Error",
-      message: "Internal Server Error",
-    });
-  }
-};
 
 exports.createSubTopic = async (req, res) => {
   try {
@@ -242,3 +142,56 @@ exports.updateSubTopic = async (req, res) => {
     });
   }
 };
+
+
+exports.getSingleReport = async (req, res) => {
+  try {
+    console.log("Single Report Route Hit");
+    const { id } = req.params;
+    console.log(id);
+    const reportData = await Report.findById(id).populate({
+      path: "subTopics",
+      populate: {
+        path: "subTopics",
+        populate: {
+          path: "subTopics",
+          populate: {
+            path: "subTopics",
+            populate: {
+              path: "subTopics",
+              populate: {
+                path: "subTopics",
+                populate: {
+                  path: "subTopics",
+                  populate: {
+                    path: "subTopics",
+                    populate: {
+                      path: "subTopics",
+                      populate: {
+                        path: "subTopics",
+                        populate: {
+                          path: "subTopics",
+                        },
+                      },
+                    },
+                  },
+                },
+              },
+            },
+          },
+        },
+      },
+    });
+    res.status(200).send({
+      status: "Success",
+      message: "Report has been successfully retrieved",
+      reportData: reportData,
+    });
+  } catch (error) {
+    res.status(500).json({
+      status: "Error",
+      message: "Internal Server Error",
+    });
+  }
+};
+

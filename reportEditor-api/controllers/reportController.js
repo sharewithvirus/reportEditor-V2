@@ -1,4 +1,3 @@
-
 const fs = require("fs");
 const path = require("path");
 const pdf = require("html-pdf");
@@ -148,3 +147,4 @@ exports.createReport = async (req, res) => {
       });
     }
   };
+
