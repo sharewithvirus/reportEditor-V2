@@ -45,7 +45,26 @@ export default function DepartmentModal(props) {
   });
 
   const [industries, setIndustries] = useState(props.deptData.industries);
+  const [demoIndus, setDemoIndus] = useState([]);
+  const indus = [
+    {
+      name: "Education",
+      id: "14dfdf85df85df85df8",
+    },
+    {
+      name: "Cyber Cell",
+      id: "14dfdf85df85df85dfd",
+    },
+    {
+      name: "Widgets",
+      id: "14dfdf85df85df85df8",
+    },
+  ];
+  const handleChange = (e) =>{
+const arr = industries;
 
+    // setIndustries(e.target.value);
+  }
   const onInputChange = (e) => {
     const { name, value } = e.target;
     setData({ ...data, [name]: value });
@@ -154,16 +173,19 @@ export default function DepartmentModal(props) {
                         labelId="demo-multiple-checkbox-label"
                         id="demo-multiple-checkbox"
                         multiple
-                        value={personName}
+                        value={indus}
                         onChange={handleChange}
                         input={<OutlinedInput label="Tag" />}
-                        renderValue={(selected) => selected.join(", ")}
-                        MenuProps={MenuProps}
+                        // renderValue={(selected) => selected.join(',')}
+                        // MenuProps={MenuProps}
                       >
-                        {names.map((name) => (
-                          <MenuItem key={name} value={name}>
-                            <Checkbox checked={personName.indexOf(name) > -1} />
-                            <ListItemText primary={name} />
+                       
+                        {indus.map((industry, index) => (
+                          <MenuItem key={industry.id} value={industry.name}>
+                            <Checkbox
+                              checked
+                            />
+                            <ListItemText primary={industry.name} />
                           </MenuItem>
                         ))}
                       </Select>
