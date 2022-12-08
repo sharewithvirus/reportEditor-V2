@@ -291,9 +291,7 @@ const getAllIndustryList = async () =>{
               </Select>
             </FormControl>
             </Stack>
-            <Stack
-             flexDirection='row'
-            >
+            <Stack>
             <Typography sx={{ fontSize: "15px" }}>
               Author Name
             </Typography>

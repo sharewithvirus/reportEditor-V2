@@ -11,6 +11,7 @@ import {
   OutlinedInput,
   Checkbox,
   ListItemText,
+  Chip,
 } from "@mui/material";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
@@ -49,21 +50,30 @@ export default function DepartmentModal(props) {
   const indus = [
     {
       name: "Education",
-      id: "14dfdf85df85df85df8",
+      _id: "14dfdf85df85df85df8",
     },
     {
       name: "Cyber Cell",
-      id: "14dfdf85df85df85dfd",
+      _id: "14dfdf85df85df85dfd",
     },
     {
       name: "Widgets",
-      id: "14dfdf85df85df85df8",
+      _id: "14dfdf85df85df85df2",
     },
   ];
   const handleChange = (e) =>{
-const arr = industries;
-
-    // setIndustries(e.target.value);
+    setDemoIndus(e.target.value)
+    let check = false;
+    for (let i = 0; i < demoIndus.length; i++) {
+      const element = demoIndus[i];
+      console.log("For Loop Elemet:-", element)
+      console.log("Targeted Id", e.target.value)
+      if(element._id == e.target.value._id){
+        check = true;
+      }
+      console.log(check)
+    }
+    // console.log(check);
   }
   const onInputChange = (e) => {
     const { name, value } = e.target;
@@ -165,31 +175,35 @@ const arr = industries;
                       onChange={onInputChange}
                       size="large"
                     />
-                    <FormControl sx={{ m: 1, width: 300 }}>
-                      <InputLabel id="demo-multiple-checkbox-label">
-                        Tag
+                    <FormControl 
+                    sx={{marginTop:"15px",width:"20vw"}}
+                    >
+                      <InputLabel>
+                       Industries
                       </InputLabel>
                       <Select
-                        labelId="demo-multiple-checkbox-label"
-                        id="demo-multiple-checkbox"
                         multiple
-                        value={indus}
+                        value={demoIndus}
                         onChange={handleChange}
-                        input={<OutlinedInput label="Tag" />}
-                        // renderValue={(selected) => selected.join(',')}
-                        // MenuProps={MenuProps}
+                        input={<OutlinedInput label="Industries" />}
+                        renderValue={(selected) => (
+                          <Box sx={{ display: "flex", flexWrap: "wrap", gap: 0.5 }}>
+                            {selected.map((value) => {
+                              return(
+                              <Chip label={value.name} />
+                            )
+                            })}
+                          </Box>
+                        )}
                       >
-                       
                         {indus.map((industry, index) => (
-                          <MenuItem key={industry.id} value={industry.name}>
-                            <Checkbox
-                              checked
-                            />
-                            <ListItemText primary={industry.name} />
+                          <MenuItem key={industry._id} value={industry} name={industry.name}>
+                            {industry.name}
                           </MenuItem>
                         ))}
                       </Select>
                     </FormControl>
+                    
                   </Box>
                 </FormControl>
               </Grid>
