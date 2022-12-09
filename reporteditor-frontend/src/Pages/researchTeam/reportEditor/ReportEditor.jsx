@@ -2,15 +2,16 @@ import {
   Alert,
   Button,
   ButtonGroup,
-  Grid,
-  IconButton,
-  Paper,
+  Grid, Paper,
   Snackbar,
   Stack,
   TextField,
-  Typography,
+  Typography
 } from "@mui/material";
 
+import AddOutlinedIcon from "@mui/icons-material/AddOutlined";
+import FileCopyOutlinedIcon from "@mui/icons-material/FileCopyOutlined";
+import { styled } from "@mui/material/styles";
 import { Box } from "@mui/system";
 import React, { useContext, useEffect, useRef, useState } from "react";
 import moment from 'moment'
@@ -24,15 +25,13 @@ import { saveSubtopics, updateSubtopics } from "../../../Services/chapterService
 import AddOutlinedIcon from "@mui/icons-material/AddOutlined";
 import EditorModal from "./component/EditorModal";
 import { UserDataContext } from "../../../context/userContext";
+
 import { getReportDataById } from "../../../Services/reportServices";
-const Item = styled(Paper)(({ theme }) => ({
-  ...theme.typography.body2,
-  padding: theme.spacing(2),
-  textAlign: "center",
-  height: "3vh",
-  color: theme.palette.text.secondary,
-  border: "1px solid",
-}));
+import Editor from "./component/Editor";
+import EditorModal from "./component/EditorModal";
+import ReportEditiorFile from './component/ReportEditorFile';
+import SideBar from "./component/SideBar";
+
 function ReportEditor() {
   const { id } = useParams();
   const { setIsLoading } = useContext(UserDataContext);
@@ -156,7 +155,6 @@ useEffect(()=>{
                     Forecast Year :{reportData ? reportData.forecastYear : ""}
                   </Typography>
                 </Stack>
-
                 <Button
                   size="small"
                   variant="contained"
@@ -301,6 +299,7 @@ useEffect(()=>{
                     height: "20vh",
                   }}
                 ></Stack>
+
                 <Stack
                   sx={{
                     width: "90%",
@@ -310,56 +309,10 @@ useEffect(()=>{
                     justifyContent: "center",
                   }}
                 >
-                  <ButtonGroup
-                    size="small"
-                    sx={{
-                      width: "100%",
-                    }}
-                  >
-                    <Button
-                      variant="contained"
-                      color={active === "images" ? "info" : "inherit"}
-                      sx={{ width: "33%" }}
-                      onClick={() => setActive("images")}
-                    >
-                      Images
-                    </Button>
-                    <Button
-                      sx={{ width: "33%" }}
-                      variant="contained"
-                      color={active === "tables" ? "info" : "inherit"}
-                      onClick={() => setActive("tables")}
-                    >
-                      Tables
-                    </Button>
-                    <Button
-                      sx={{ width: "33%" }}
-                      variant="contained"
-                      color={active === "charts" ? "info" : "inherit"}
-                      onClick={() => setActive("charts")}
-                    >
-                      Charts
-                    </Button>
-                  </ButtonGroup>
+                  <ReportEditiorFile />
                 </Stack>
 
-                <Stack
-                  sx={{
-                    padding: "10px",
-                  }}
-                >
-                  <Grid
-                    container
-                    spacing={{ xs: 2, md: 3 }}
-                    columns={{ xs: 4, sm: 8, md: 12 }}
-                  >
-                    {Array.from(Array(6)).map((_, index) => (
-                      <Grid item sm={4} md={4} key={index}>
-                        <Item square color="inherit"></Item>
-                      </Grid>
-                    ))}
-                  </Grid>
-                </Stack>
+
               </Stack>
             </Stack>
           </Grid>
