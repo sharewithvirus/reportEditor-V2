@@ -13,16 +13,13 @@ import {
 
 import { Box } from "@mui/system";
 import React, { useContext, useEffect, useRef, useState } from "react";
-import { useParams } from "react-router-dom"; 
+import { useParams } from "react-router-dom";
 import { styled } from "@mui/material/styles";
 import FileCopyOutlinedIcon from "@mui/icons-material/FileCopyOutlined";
 import SideBar from "./component/SideBar";
 import { Link } from "react-router-dom";
 import Editor from "./component/Editor";
-import {
-  getSubtopicsByReportId,
-  saveSubtopics,
-} from "../../../Services/chapterServices";
+import { saveSubtopics } from "../../../Services/chapterServices";
 import AddOutlinedIcon from "@mui/icons-material/AddOutlined";
 import EditorModal from "./component/EditorModal";
 import { UserDataContext } from "../../../context/userContext";
@@ -42,49 +39,24 @@ function ReportEditor() {
   const [open, setOpen] = useState(false);
   const handleShow = () => setOpen(!open);
   const handleClose = () => setOpen(false);
+  const [activeTopicData, setActiveTopicData] = useState({});
+  const [updatedTime,setUpdatedTime] = useState("");
   const [openSnack, setopenSnack] = useState(false);
   const [severity, setSeverity] = useState("success");
   const [snackMsg, setSnackMsg] = useState("");
   const [width, setWidth] = useState(0);
   const [active, setActive] = useState();
+  const date = new Date();
   const [expanSidePanel, setExpandSidePanel] = useState({
     left: 4,
     right: 8,
   });
   const ref = useRef(null);
-
-  // useEffect(() => {
-  //   setWidth(ref.current.clientWidth);
-  //   console.log(ref.current.parentElement.clientWidth);
-  // }, []);
-  // const handleMouseEnter = () => {
-  //   setExpandSidePanel({ left: 4, right: 8 });
-  //   // setWidth(ref.current.clientWidth);
-  //   // console.log("on mouse enter", ref.current.clientWidth);
-  // };
-  // const handleMouseLeave = () => {
-  //   setExpandSidePanel({ left: 1, right: 11 });
-  //   // console.log("value" + ref.current.clientWidth);
-  //   // setWidth(ref.current.clientWidth);
-  //   // console.log("on mouse leave", ref.current.clientWidth);
-  // };
-
   const getReportData = async () => {
     const res = await getReportDataById(id);
-    // console.log("....report",res.data.reportData);
     setReportData(res.data.reportData);
-  }
-console.log("..rdata",reportData);
-  useEffect(() => {
-    // console.log(id)
-    getReportData();
-    // console.log("v" + ref.current.clientWidth);
-    // setTimeout(() => {
-    //   // setWidth(ref.current.clientWidth);
-    // }, 150);
-  }, [expanSidePanel]);
+  };
 
- 
   const handleSnack = () => {
     setopenSnack(!openSnack);
   };
@@ -96,15 +68,23 @@ console.log("..rdata",reportData);
       setSnackMsg("Chapter Added Successfully !");
       setopenSnack(true);
       handleShow();
+      getReportData();
       setIsLoading(false);
       console.log("success");
     }
   };
-  // const getReportChaptersData = async (id) => {
-  //   const res = await getSubtopicsByReportId(id);
-  // };
-  console.log(snackMsg);
-  console.log(severity);
+const ativeDataSet = (data) =>{
+  const H = new Date(data.updatedAt).getHours();
+  const M =  new Date(data.updatedAt).getMinutes();
+  const meridiem = H > 12 ? "PM" :"AM";
+  console.log(typeof H);
+  setActiveTopicData(data);
+  setUpdatedTime(`${H} : ${M} ${meridiem}`);
+}
+
+useEffect(()=>{
+  getReportData();
+},[])
   return (
     <>
       <Snackbar open={openSnack} autoHideDuration={5000} onClose={handleSnack}>
@@ -131,67 +111,66 @@ console.log("..rdata",reportData);
             display="flex"
             justifyContent="start"
             flexDirection="column"
-            // onMouseEnter={handleMouseEnter}
-            // onMouseLeave={handleMouseLeave}
           >
-
             <Stack mt={5}>
               <Button onClick={() => handleShow()}>
                 <Typography>ADD Chapter</Typography>
                 <AddOutlinedIcon />
               </Button>
             </Stack>
-            <Box 
-            sx={{
-              display:"flex",
-              flexDirection:"column",
-              justifyContent:"space-between"
-            }}
+            <Box
+              sx={{
+                display: "flex",
+                flexDirection: "column",
+                justifyContent: "space-between",
+              }}
             >
-            <SideBar reportData={reportData} />
-            <Stack mt={8}>
-              <Stack alignContent="center"
-             
-             alignItems="center"
-             >
-                <Typography variant="body2">
-                Author: Vikas
-                </Typography>
-                <Typography variant="body2">
-                  Base Year : {reportData ? reportData.baseYear :""}
-                </Typography>
-                <Typography variant="body2">
-                  Forecast Year :{reportData ? reportData.forecastYear :""}
-                </Typography>
-                <Typography variant="body2">
-                  Template : 2
-                </Typography>
-              </Stack>
+              {reportData ? (
+                <SideBar
+                  subTopicList={
+                    reportData.subTopics ? reportData.subTopics : ""
+                  }
+                  getReportData={getReportData}
+                  ativeDataSet = {(x)=>ativeDataSet(x)}
+                />
+              ) : (
+                ""
+              )}
+              <Stack mt={8}>
+                <Stack alignContent="center" alignItems="center">
+                  <Typography variant="body2">Author: Vikas</Typography>
+                  <Typography variant="body2">
+                    Base Year : {reportData ? reportData.baseYear : ""}
+                  </Typography>
+                  <Typography variant="body2">
+                    Forecast Year :{reportData ? reportData.forecastYear : ""}
+                  </Typography>
+                </Stack>
 
-              <Button
-                size="small"
-                variant="contained"
-                color="info"
-                sx={{
-                  fontSize: "0.5rem",
-                  marginTop: "10px",
-                }}
-              >
-                Forward to Editin
-              </Button>
-              <Button
-                size="small"
-                variant="contained"
-                color="inherit"
-                sx={{
-                  fontSize: "0.5rem",
-                  marginTop: "10px",
-                }}
-              >
-                Finish Research Draft
-              </Button>
-            </Stack>
-          </Box>
+                <Button
+                  size="small"
+                  variant="contained"
+                  color="info"
+                  sx={{
+                    fontSize: "0.5rem",
+                    marginTop: "10px",
+                  }}
+                >
+                  Forward to Editin
+                </Button>
+                <Button
+                  size="small"
+                  variant="contained"
+                  color="inherit"
+                  sx={{
+                    fontSize: "0.5rem",
+                    marginTop: "10px",
+                  }}
+                >
+                  Finish Research Draft
+                </Button>
+              </Stack>
+            </Box>
           </Grid>
           <Grid
             item
@@ -217,7 +196,9 @@ console.log("..rdata",reportData);
                     fontSize: "12px",
                   }}
                 >
-                  <b>Last Saved :</b> <span> 12:00 PM</span>
+                  <b>Last Saved :</b> <span>{updatedTime ? updatedTime:""} </span>
+
+               
                 </Typography>
               </Stack>
               <Stack display="flex" justifyContent="center" alignItems="center">
@@ -236,7 +217,7 @@ console.log("..rdata",reportData);
                     }}
                   />
                   <Typography sx={{ fontSize: "16px", fontWeight: "" }}>
-                  {reportData ? reportData.name:""}
+                    {reportData ? reportData.name : ""}
                   </Typography>
                 </Stack>
                 <Typography
@@ -244,7 +225,7 @@ console.log("..rdata",reportData);
                     fontSize: "12px",
                   }}
                 >
-                  <b>Editing :</b> <span> Chapter 1</span>
+                  <b>Editing : </b> <span> {activeTopicData? activeTopicData.subTopicName:""}</span>
                 </Typography>
               </Stack>
               <Stack>
@@ -278,7 +259,7 @@ console.log("..rdata",reportData);
                   height: "100vh",
                 }}
               >
-                <Editor saveTopicsData={saveTopicsData} />
+                <Editor  />
               </Stack>
               <Stack
                 sx={{
@@ -293,15 +274,14 @@ console.log("..rdata",reportData);
                   }}
                   alignItems="center"
                 >
-                 <TextField placeholder="search here" variant="outlined" 
-                //  size="small"
-                 sx={{
-                  width: "90%", 
-                 textAlign:"center",
-                 
-                 }}
-                
-                 />
+                  <TextField
+                    placeholder="search here"
+                    variant="outlined"
+                    sx={{
+                      width: "90%",
+                      textAlign: "center",
+                    }}
+                  />
                 </Stack>
                 <Stack
                   sx={{
@@ -320,29 +300,32 @@ console.log("..rdata",reportData);
                     justifyContent: "center",
                   }}
                 >
-                  <ButtonGroup size="small" sx={{
-                    width:"100%"
-                  }}>
+                  <ButtonGroup
+                    size="small"
+                    sx={{
+                      width: "100%",
+                    }}
+                  >
                     <Button
                       variant="contained"
-                      color={active === 'images'? "info":"inherit"}
-                      sx={{width:"33%"}}
+                      color={active === "images" ? "info" : "inherit"}
+                      sx={{ width: "33%" }}
                       onClick={() => setActive("images")}
                     >
                       Images
                     </Button>
                     <Button
-                     sx={{width:"33%"}}
+                      sx={{ width: "33%" }}
                       variant="contained"
-                      color={active === 'tables'? "info":"inherit"}
+                      color={active === "tables" ? "info" : "inherit"}
                       onClick={() => setActive("tables")}
                     >
                       Tables
                     </Button>
                     <Button
-                     sx={{width:"33%"}}
+                      sx={{ width: "33%" }}
                       variant="contained"
-                      color={active === 'charts'? "info":"inherit"}
+                      color={active === "charts" ? "info" : "inherit"}
                       onClick={() => setActive("charts")}
                     >
                       Charts

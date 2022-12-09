@@ -1,7 +1,7 @@
 import React, { useRef, useState } from "react";
 import { CKEditor } from "@ckeditor/ckeditor5-react";
 import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
-function Editor({getData,saveTopics,saveTopicsData}) {
+function Editor({ getData, saveTopics, saveTopicsData, activeTopic, setActiveTopic}) {
     const [subTopicsData, setSubTopicsData] = useState();
     const editor = useRef(null);
 
@@ -33,9 +33,9 @@ function Editor({getData,saveTopics,saveTopicsData}) {
         onChange={(event, editor) => {
           const data = editor.getData();
           console.log({ event, editor, data });
-          setSubTopicsData(data);
-          saveTopicsData(data);
-
+          // setSubTopicsData(data);
+          // saveTopicsData(data);
+          
         }}
       />
     </>

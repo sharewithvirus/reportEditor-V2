@@ -62,17 +62,18 @@ export default function DepartmentModal(props) {
     },
   ];
   const handleChange = (e) =>{
-    setDemoIndus(e.target.value)
-    let check = false;
-    for (let i = 0; i < demoIndus.length; i++) {
-      const element = demoIndus[i];
-      console.log("For Loop Elemet:-", element)
-      console.log("Targeted Id", e.target.value)
-      if(element._id == e.target.value._id){
-        check = true;
-      }
-      console.log(check)
-    }
+    setDemoIndus(e.target.value);
+    console.log(e.target.value);
+    // let check = false;
+    // for (let i = 0; i < demoIndus.length; i++) {
+    //   const element = demoIndus[i];
+    //   console.log("For Loop Elemet:-", element)
+    //   console.log("Targeted Id", e.target.value)
+    //   if(element._id == e.target.value._id){
+    //     check = true;
+    //   }
+    //   console.log(check)
+    // }
     // console.log(check);
   }
   const onInputChange = (e) => {
@@ -137,7 +138,7 @@ export default function DepartmentModal(props) {
               </Box>
             </Stack>
             <Grid container spacing={2}>
-              <Grid lg={4} item xs={12}>
+              <Grid lg={4} item xs={12} md={12}>
                 <FormControl fullWidth sx={{ m: 1 }}>
                   <Box
                     component="form"
@@ -175,36 +176,57 @@ export default function DepartmentModal(props) {
                       onChange={onInputChange}
                       size="large"
                     />
+                    
+                  </Box>
+                  <Grid container >
+                    <Grid item xs={12} sm ={12} md={12}>
                     <FormControl 
-                    sx={{marginTop:"15px",width:"20vw"}}
+                    sx={{marginTop:"15px",
+                    minHeight:"100%"
+                  }}
+                  fullWidth
                     >
                       <InputLabel>
                        Industries
                       </InputLabel>
                       <Select
                         multiple
+                        sx={{sm:{
+                          widht:"50vw",
+                        },md:{
+                          width:"20vw"
+                        }}}
                         value={demoIndus}
                         onChange={handleChange}
                         input={<OutlinedInput label="Industries" />}
                         renderValue={(selected) => (
                           <Box sx={{ display: "flex", flexWrap: "wrap", gap: 0.5 }}>
                             {selected.map((value) => {
-                              return(
-                              <Chip label={value.name} />
-                            )
+                              
+                                for (const item of indus) {
+                                  if(item._id === value)
+                                  { 
+                                    return (
+                                      <Chip label={item.name} value={value} />
+                                    )
+                                  }
+                                }
+                                
+                           
                             })}
                           </Box>
                         )}
                       >
                         {indus.map((industry, index) => (
-                          <MenuItem key={industry._id} value={industry} name={industry.name}>
+                          <MenuItem key={industry._id} value={industry._id} name={industry.name}>
                             {industry.name}
                           </MenuItem>
                         ))}
                       </Select>
                     </FormControl>
-                    
-                  </Box>
+
+                    </Grid>
+                  </Grid>
                 </FormControl>
               </Grid>
             </Grid>

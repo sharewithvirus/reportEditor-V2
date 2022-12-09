@@ -7,10 +7,11 @@ import { Stack } from '@mui/system';
 import { TextField } from '@mui/material';
 import { useState } from 'react';
 
-function EditorModal({ handleOpen, handleClose , open , saveData , reportId }) {
+function EditorModal({ handleOpen, handleClose , open , saveData , reportId, subTopicid }) {
     const [data,setData]=useState({
         subTopicName : "",
-        reportId : reportId,
+        reportId : "",
+        subTopicId : ""
     })
     const changeValues = (e) =>{
         setData({...data,subTopicName : e.target.value})
@@ -26,10 +27,31 @@ function EditorModal({ handleOpen, handleClose , open , saveData , reportId }) {
         boxShadow: 24,
         p: 4,
       };
+
+      const handleSubmit = async (e)=>{
+        e.preventDefault();
+        if(subTopicid){
+          data.reportId = reportId
+          data.subTopicId = subTopicid
+        }else{
+          data.reportId = reportId
+        }
+        // console.log(data)
+       const res = await saveData(data);
+       if(res.status === 200)
+       {
+        setData({
+          subTopicName : "",
+        reportId : "",
+        subTopicId : ""
+        });
+       }
+
+        handleClose()
+      }
       
     return (
         <div>
-          
           <Modal
             open={open}
             onClose={handleClose}
@@ -58,7 +80,7 @@ function EditorModal({ handleOpen, handleClose , open , saveData , reportId }) {
                 sx={{
                     marginRight:"5px"
                 }}
-                onClick={()=>{saveData(data); handleClose()}}
+                onClick={handleSubmit}
                 >SAVE</Button>
                 <Button
                 variant='outlined'
