@@ -20,7 +20,7 @@ import FileCopyOutlinedIcon from "@mui/icons-material/FileCopyOutlined";
 import SideBar from "./component/SideBar";
 import { Link } from "react-router-dom";
 import Editor from "./component/Editor";
-import { saveSubtopics } from "../../../Services/chapterServices";
+import { saveSubtopics, updateSubtopics } from "../../../Services/chapterServices";
 import AddOutlinedIcon from "@mui/icons-material/AddOutlined";
 import EditorModal from "./component/EditorModal";
 import { UserDataContext } from "../../../context/userContext";
@@ -41,7 +41,6 @@ function ReportEditor() {
   const handleShow = () => setOpen(!open);
   const handleClose = () => setOpen(false);
   const [activeTopicData, setActiveTopicData] = useState({});
-  const [updatedTime,setUpdatedTime] = useState("");
   const [openSnack, setopenSnack] = useState(false);
   const [severity, setSeverity] = useState("success");
   const [snackMsg, setSnackMsg] = useState("");
@@ -79,17 +78,15 @@ function ReportEditor() {
       setopenSnack(true);
     }
   };
-  const saveHtmlData = (data) =>{
+  const saveHtmlData = async (data) =>{
     console.log(data);
+    const res = await updateSubtopics(data);
+    if(res.status === 200){
+      getReportData();
+    }
   }
 const ativeDataSet = (data) =>{
-  // const H = new Date(data.updatedAt).getHours();
-  // const M =  new Date(data.updatedAt).getMinutes();
-  // const meridiem = H > 12 ? "PM" :"AM";
-  // console.log(typeof H);
-  console.log(data.htmlData);
   setActiveTopicData(data);
-  setUpdatedTime(moment(data.updatedAt).format('Do MMM YYYY  , h:mm:ss A'));
 }
 
 useEffect(()=>{
@@ -141,7 +138,10 @@ useEffect(()=>{
                     reportData.subTopics ? reportData.subTopics : ""
                   }
                   getReportData={getReportData}
-                  ativeDataSet = {(x)=>ativeDataSet(x)}
+                  ativeDataSet = {(x) => {
+                    // console.log(x)
+                    ativeDataSet(x)
+                    }}
                 />
               ) : (
                 ""
@@ -206,7 +206,7 @@ useEffect(()=>{
                     fontSize: "12px",
                   }}
                 >
-                  <b>Last Saved :</b> <span>{updatedTime ? updatedTime:""} </span>
+                  <b>Last Saved :</b> <span>{activeTopicData ? moment(activeTopicData.updatedAt).format('Do MMM YYYY  , h:mm:ss A'):""} </span>
 
                
                 </Typography>
@@ -269,7 +269,7 @@ useEffect(()=>{
                   height: "100vh",
                 }}
               >
-                <Editor activeTopicData = {activeTopicData} saveHtmlData = {(x)=>saveHtmlData(x)} />
+                <Editor activeTopicData = {activeTopicData ? activeTopicData : ''} saveHtmlData = {(x)=>saveHtmlData(x)} />
               </Stack>
               <Stack
                 sx={{

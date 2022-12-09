@@ -47,7 +47,7 @@ export const updateSubtopics = async (data) => {
        
       const res = await axios.put(`/api/v1/subtopic/`, data)
       
-    //   console.log("data in controller..",res);
+      console.log("data in controller..",res);
         // console.log("success");  
         return res;
      } catch (error) {
@@ -65,3 +65,4 @@ export const deleteChapters = async (subtopicId) => {
        return error.response;
     }
 }
+
