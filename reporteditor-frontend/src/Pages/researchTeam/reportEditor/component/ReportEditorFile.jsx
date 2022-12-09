@@ -1,5 +1,5 @@
 import {
-    Button, Grid, IconButton, MenuItem, Paper, Stack, TextField
+    Button, Grid, MenuItem, Paper, Stack, TextField
 } from "@mui/material";
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
@@ -9,7 +9,7 @@ import Tab from '@mui/material/Tab';
 import Tabs from '@mui/material/Tabs';
 import Typography from '@mui/material/Typography';
 import PropTypes from 'prop-types';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import SwipeableViews from 'react-swipeable-views';
 import ChartFormGen from "./ChartFormGen";
 
@@ -80,8 +80,20 @@ export default function FullWidthTabs() {
             label: 'Bar',
         },
         {
+            value: 'radar',
+            label: 'Radar',
+        },
+        {
             value: 'stacked',
             label: 'Stacked',
+        },
+        {
+            value: 'line',
+            label: 'Line',
+        },
+        {
+            value: 'area',
+            label: 'Area',
         },
         {
             value: 'multibar',
@@ -91,8 +103,8 @@ export default function FullWidthTabs() {
             value: 'donut',
             label: 'Donut',
         }, {
-            value: 'brandline',
-            label: 'Brandline',
+            value: 'barandline',
+            label: 'Barandline',
         }
     ];
     const theme = useTheme();
@@ -103,6 +115,13 @@ export default function FullWidthTabs() {
     const handleClose = () => setOpen(false);
 
     const [chartType, setChartType] = useState("pie");
+    const initialValues = {
+        series: "",
+        label: "",
+        categories: "",
+    }
+    const [formChartData, setFormChartData] = useState(initialValues)
+    const [show, setShow] = useState(false);
 
     const handleChange = (event, newValue) => {
         setValue(newValue);
@@ -111,28 +130,48 @@ export default function FullWidthTabs() {
 
     const SeletFormChange = (event) => {
         setChartType(event.target.value);
+        setShow(false)
+        setFormChartData(initialValues)
+        console.log("formChartData", formChartData)
         if (event.target.value === "pie") {
-            return setChartFormValues(["series", "label"])
+            setChartFormValues(["series", "label"])
         }
         else if (event.target.value === "bar") {
-            return setChartFormValues(["series", "categories", "options"])
+            setChartFormValues(["series", "categories"]);
+        }
+        else if (event.target.value === "radar") {
+            return setChartFormValues(["series", "categories"])
+        }
+        else if (event.target.value === "stacked") {
+            return setChartFormValues(["series", "categories"])
+        }
+        else if (event.target.value === "line") {
+            return setChartFormValues(["series", "categories"])
+        }
+        else if (event.target.value === "area") {
+            return setChartFormValues(["series", "categories"])
+        }
+        else if (event.target.value === "radar") {
+            return setChartFormValues(["series", "categories"])
+        }
+        else if (event.target.value === "multibar") {
+            return setChartFormValues(["series", "categories"])
+        }
+        else if (event.target.value === "donut") {
+            return setChartFormValues(["series", "categories"])
+        }
+        else if (event.target.value === "barandline") {
+            return setChartFormValues(["series", "categories"])
         }
     };
-
-    // console.log("chartFormValues", chartFormValues)
-    // const handleCtypeChange = (event) => {
-    //     if (event.target.vlaue == "pie") {
-    //         return (
-    //             <>
-    //                 <p>pie form</p>
-    //             </>
-    //         )
-    //     }
-    // }
 
     const handleChangeIndex = (index) => {
         setValue(index);
     };
+
+    useEffect(() => {
+        console.log("renderkkkk")
+    }, [formChartData])
 
     return (
         <>
@@ -216,9 +255,7 @@ export default function FullWidthTabs() {
                         ))}
                     </TextField>
 
-                    <ChartFormGen chartFormValues={chartFormValues} chartType={chartType} />
-
-
+                    <ChartFormGen formChartData={formChartData} setFormChartData={setFormChartData} show={show} setShow={setShow} chartFormValues={chartFormValues} initialValues={initialValues} chartType={chartType} />
                 </Box>
 
             </Modal>

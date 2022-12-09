@@ -1,28 +1,12 @@
-import AddCircleIcon from '@mui/icons-material/AddCircle';
-import { IconButton, TextField } from '@mui/material';
-import React, { useState } from 'react';
+import { TextField } from '@mui/material';
+import React from 'react';
+import GenChart from './GenChart';
 
-const ChartFormGen = ({ chartFormValues, chartType }) => {
-    // console.log("chartFormValues", chartFormValues);
-
-    const initialValues = {
-        series: [],
-        label: [],
-        categories: [],
-    }
-
-    const [formChartData, setFormChartData] = useState(null)
-    const [formChartData2, setFormChartData2] = useState(initialValues)
-
-    const addChartFormValues = (e) => {
-        console.log("formChartDataSE", formChartData.series)
-        const { series, label } = formChartData
-        console.log("formChartData2", formChartData2)
-        setFormChartData2({ ...formChartData2, series: [...series, formChartData.series] })
-    }
+const ChartFormGen = ({ chartFormValues, initialValues, chartType, formChartData, setFormChartData, show, setShow }) => {
 
     const handleFormValueChange = (e) => {
-        console.log(e.target.name, "=", e.target.value)
+        setShow(false)
+        console.log("formChartDataName", formChartData)
         setFormChartData({ ...formChartData, [e.target.name]: e.target.value })
     }
 
@@ -33,16 +17,14 @@ const ChartFormGen = ({ chartFormValues, chartType }) => {
                     (item, index) => {
                         return (
                             <div key={index}>
-                                <TextField id={chartType} label={item} name={item} variant="outlined" onChange={e => handleFormValueChange(e)} />
+                                <TextField id={chartType} label={item} name={item} variant="outlined" onChange={e => handleFormValueChange(e)}
+                                    value={item === 'series' ? formChartData.series : item === "label" ? formChartData.label : formChartData.categories} />
                             </div>
                         )
                     }
                 )
             }
-
-            <IconButton aria-label="delete" onClick={e => addChartFormValues(e)}>
-                <AddCircleIcon />
-            </IconButton>
+            <GenChart formChartData={formChartData} setFormChartData={setFormChartData} initialValues={initialValues} show={show} setShow={setShow} chartType={chartType} />
         </>
     )
 }
