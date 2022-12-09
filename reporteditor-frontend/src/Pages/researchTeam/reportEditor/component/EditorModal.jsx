@@ -8,31 +8,32 @@ import { TextField } from '@mui/material';
 import { useState } from 'react';
 
 function EditorModal({ handleOpen, handleClose , open , saveData , reportId, subTopicid }) {
+  const style = {
+      position: 'absolute',
+      top: '50%',
+      left: '50%',
+      transform: 'translate(-50%, -50%)',
+      width: 400,
+      bgcolor: 'background.paper',
+      border: '2px solid #000',
+      boxShadow: 24,
+      p: 4,
+    };
     const [data,setData]=useState({
         subTopicName : "",
         reportId : "",
-        subTopicId : ""
+        subTopicId : "",
+        htmlData : ""
     })
     const changeValues = (e) =>{
         setData({...data,subTopicName : e.target.value})
     }
-    const style = {
-        position: 'absolute',
-        top: '50%',
-        left: '50%',
-        transform: 'translate(-50%, -50%)',
-        width: 400,
-        bgcolor: 'background.paper',
-        border: '2px solid #000',
-        boxShadow: 24,
-        p: 4,
-      };
-
       const handleSubmit = async (e)=>{
         e.preventDefault();
         if(subTopicid){
           data.reportId = reportId
           data.subTopicId = subTopicid
+          data.htmlData = ""
         }else{
           data.reportId = reportId
         }
@@ -41,9 +42,10 @@ function EditorModal({ handleOpen, handleClose , open , saveData , reportId, sub
        if(res.status === 200)
        {
         setData({
-          subTopicName : "",
+        subTopicName : "",
         reportId : "",
-        subTopicId : ""
+        subTopicId : "",
+        htmlData : ""
         });
        }
 

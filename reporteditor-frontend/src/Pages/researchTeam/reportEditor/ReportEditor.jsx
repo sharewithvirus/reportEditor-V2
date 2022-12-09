@@ -13,6 +13,7 @@ import {
 
 import { Box } from "@mui/system";
 import React, { useContext, useEffect, useRef, useState } from "react";
+import moment from 'moment'
 import { useParams } from "react-router-dom";
 import { styled } from "@mui/material/styles";
 import FileCopyOutlinedIcon from "@mui/icons-material/FileCopyOutlined";
@@ -65,21 +66,30 @@ function ReportEditor() {
     const res = await saveSubtopics(data);
     if (res.status === 200) {
       setSeverity("success");
-      setSnackMsg("Chapter Added Successfully !");
+      setSnackMsg("Added Successfully !");
       setopenSnack(true);
       handleShow();
       getReportData();
       setIsLoading(false);
       console.log("success");
     }
+    else{
+      setSeverity("error");
+      setSnackMsg("Something went Wrong !");
+      setopenSnack(true);
+    }
   };
+  const saveHtmlData = (data) =>{
+    console.log(data);
+  }
 const ativeDataSet = (data) =>{
-  const H = new Date(data.updatedAt).getHours();
-  const M =  new Date(data.updatedAt).getMinutes();
-  const meridiem = H > 12 ? "PM" :"AM";
-  console.log(typeof H);
+  // const H = new Date(data.updatedAt).getHours();
+  // const M =  new Date(data.updatedAt).getMinutes();
+  // const meridiem = H > 12 ? "PM" :"AM";
+  // console.log(typeof H);
+  console.log(data.htmlData);
   setActiveTopicData(data);
-  setUpdatedTime(`${H} : ${M} ${meridiem}`);
+  setUpdatedTime(moment(data.updatedAt).format('Do MMM YYYY  , h:mm:ss A'));
 }
 
 useEffect(()=>{
@@ -88,7 +98,7 @@ useEffect(()=>{
   return (
     <>
       <Snackbar open={openSnack} autoHideDuration={5000} onClose={handleSnack}>
-        <Alert onClose={handleSnack} severity="success" sx={{ width: "100%" }}>
+        <Alert onClose={handleSnack} severity={severity} sx={{ width: "100%" }}>
           {snackMsg}
         </Alert>
       </Snackbar>
@@ -259,7 +269,7 @@ useEffect(()=>{
                   height: "100vh",
                 }}
               >
-                <Editor  />
+                <Editor activeTopicData = {activeTopicData} saveHtmlData = {(x)=>saveHtmlData(x)} />
               </Stack>
               <Stack
                 sx={{
