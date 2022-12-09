@@ -14,11 +14,18 @@ import FileCopyOutlinedIcon from "@mui/icons-material/FileCopyOutlined";
 import { styled } from "@mui/material/styles";
 import { Box } from "@mui/system";
 import React, { useContext, useEffect, useRef, useState } from "react";
-import { Link, useParams } from "react-router-dom";
+import moment from 'moment'
+import { useParams } from "react-router-dom";
+import { styled } from "@mui/material/styles";
+import FileCopyOutlinedIcon from "@mui/icons-material/FileCopyOutlined";
+import SideBar from "./component/SideBar";
+import { Link } from "react-router-dom";
+import Editor from "./component/Editor";
+import { saveSubtopics, updateSubtopics } from "../../../Services/chapterServices";
+import AddOutlinedIcon from "@mui/icons-material/AddOutlined";
+import EditorModal from "./component/EditorModal";
 import { UserDataContext } from "../../../context/userContext";
-import {
-  saveSubtopics
-} from "../../../Services/chapterServices";
+
 import { getReportDataById } from "../../../Services/reportServices";
 import Editor from "./component/Editor";
 import EditorModal from "./component/EditorModal";
@@ -32,48 +39,22 @@ function ReportEditor() {
   const [open, setOpen] = useState(false);
   const handleShow = () => setOpen(!open);
   const handleClose = () => setOpen(false);
+  const [activeTopicData, setActiveTopicData] = useState({});
   const [openSnack, setopenSnack] = useState(false);
   const [severity, setSeverity] = useState("success");
   const [snackMsg, setSnackMsg] = useState("");
   const [width, setWidth] = useState(0);
-  const [active, setActive] = useState("images");
+  const [active, setActive] = useState();
+  const date = new Date();
   const [expanSidePanel, setExpandSidePanel] = useState({
     left: 4,
     right: 8,
   });
   const ref = useRef(null);
-
-  // useEffect(() => {
-  //   setWidth(ref.current.clientWidth);
-  //   console.log(ref.current.parentElement.clientWidth);
-  // }, []);
-  // const handleMouseEnter = () => {
-  //   setExpandSidePanel({ left: 4, right: 8 });
-  //   // setWidth(ref.current.clientWidth);
-  //   // console.log("on mouse enter", ref.current.clientWidth);
-  // };
-  // const handleMouseLeave = () => {
-  //   setExpandSidePanel({ left: 1, right: 11 });
-  //   // console.log("value" + ref.current.clientWidth);
-  //   // setWidth(ref.current.clientWidth);
-  //   // console.log("on mouse leave", ref.current.clientWidth);
-  // };
-
   const getReportData = async () => {
     const res = await getReportDataById(id);
-    // console.log("....report",res.data.reportData);
     setReportData(res.data.reportData);
-  }
-  console.log("..rdata", reportData);
-  useEffect(() => {
-    // console.log(id)
-    getReportData();
-    // console.log("v" + ref.current.clientWidth);
-    // setTimeout(() => {
-    //   // setWidth(ref.current.clientWidth);
-    // }, 150);
-  }, [expanSidePanel]);
-
+  };
 
   const handleSnack = () => {
     setopenSnack(!openSnack);
@@ -83,22 +64,37 @@ function ReportEditor() {
     const res = await saveSubtopics(data);
     if (res.status === 200) {
       setSeverity("success");
-      setSnackMsg("Chapter Added Successfully !");
+      setSnackMsg("Added Successfully !");
       setopenSnack(true);
       handleShow();
+      getReportData();
       setIsLoading(false);
       console.log("success");
     }
+    else{
+      setSeverity("error");
+      setSnackMsg("Something went Wrong !");
+      setopenSnack(true);
+    }
   };
-  // const getReportChaptersData = async (id) => {
-  //   const res = await getSubtopicsByReportId(id);
-  // };
-  console.log(snackMsg);
-  console.log(severity);
+  const saveHtmlData = async (data) =>{
+    console.log(data);
+    const res = await updateSubtopics(data);
+    if(res.status === 200){
+      getReportData();
+    }
+  }
+const ativeDataSet = (data) =>{
+  setActiveTopicData(data);
+}
+
+useEffect(()=>{
+  getReportData();
+},[])
   return (
     <>
       <Snackbar open={openSnack} autoHideDuration={5000} onClose={handleSnack}>
-        <Alert onClose={handleSnack} severity="success" sx={{ width: "100%" }}>
+        <Alert onClose={handleSnack} severity={severity} sx={{ width: "100%" }}>
           {snackMsg}
         </Alert>
       </Snackbar>
@@ -121,10 +117,7 @@ function ReportEditor() {
             display="flex"
             justifyContent="start"
             flexDirection="column"
-          // onMouseEnter={handleMouseEnter}
-          // onMouseLeave={handleMouseLeave}
           >
-
             <Stack mt={5}>
               <Button onClick={() => handleShow()}>
                 <Typography>ADD Chapter</Typography>
@@ -135,29 +128,33 @@ function ReportEditor() {
               sx={{
                 display: "flex",
                 flexDirection: "column",
-                justifyContent: "space-between"
+                justifyContent: "space-between",
               }}
             >
-              <SideBar reportData={reportData} />
+              {reportData ? (
+                <SideBar
+                  subTopicList={
+                    reportData.subTopics ? reportData.subTopics : ""
+                  }
+                  getReportData={getReportData}
+                  ativeDataSet = {(x) => {
+                    // console.log(x)
+                    ativeDataSet(x)
+                    }}
+                />
+              ) : (
+                ""
+              )}
               <Stack mt={8}>
-                <Stack alignContent="center"
-
-                  alignItems="center"
-                >
-                  <Typography variant="body2">
-                    Author: Vikas
-                  </Typography>
+                <Stack alignContent="center" alignItems="center">
+                  <Typography variant="body2">Author: Vikas</Typography>
                   <Typography variant="body2">
                     Base Year : {reportData ? reportData.baseYear : ""}
                   </Typography>
                   <Typography variant="body2">
                     Forecast Year :{reportData ? reportData.forecastYear : ""}
                   </Typography>
-                  <Typography variant="body2">
-                    Template : 2
-                  </Typography>
                 </Stack>
-
                 <Button
                   size="small"
                   variant="contained"
@@ -207,7 +204,9 @@ function ReportEditor() {
                     fontSize: "12px",
                   }}
                 >
-                  <b>Last Saved :</b> <span> 12:00 PM</span>
+                  <b>Last Saved :</b> <span>{activeTopicData ? moment(activeTopicData.updatedAt).format('Do MMM YYYY  , h:mm:ss A'):""} </span>
+
+               
                 </Typography>
               </Stack>
               <Stack display="flex" justifyContent="center" alignItems="center">
@@ -234,7 +233,7 @@ function ReportEditor() {
                     fontSize: "12px",
                   }}
                 >
-                  <b>Editing :</b> <span> Chapter 1</span>
+                  <b>Editing : </b> <span> {activeTopicData? activeTopicData.subTopicName:""}</span>
                 </Typography>
               </Stack>
               <Stack>
@@ -268,7 +267,7 @@ function ReportEditor() {
                   height: "100vh",
                 }}
               >
-                <Editor saveTopicsData={saveTopicsData} />
+                <Editor activeTopicData = {activeTopicData ? activeTopicData : ''} saveHtmlData = {(x)=>saveHtmlData(x)} />
               </Stack>
               <Stack
                 sx={{
@@ -283,14 +282,13 @@ function ReportEditor() {
                   }}
                   alignItems="center"
                 >
-                  <TextField placeholder="search here" variant="outlined"
-                    //  size="small"
+                  <TextField
+                    placeholder="search here"
+                    variant="outlined"
                     sx={{
                       width: "90%",
                       textAlign: "center",
-
                     }}
-
                   />
                 </Stack>
                 <Stack

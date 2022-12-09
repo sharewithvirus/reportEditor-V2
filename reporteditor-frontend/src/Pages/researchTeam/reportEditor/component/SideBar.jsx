@@ -3,21 +3,10 @@ import { Box } from "@mui/system";
 import React from "react";
 
 import SideMenuItems from "./SideMenuItems";
-const SubtopicsData = [
-  [1],
-  [1, 2],
-  [
-    [1, 2, 3],
-    [1, 2, 3],
-  ],
-  [1],
-  [1, 2, [1, 2, [1, 2, [1, 2, 3]]], 4],
-];
-function SideBar({ reportData }) {
-  // console.log("j");
-  // console.log(scrWidth);
-  // console.log("...kkkk",reportData);
-  // console.log( reportData.subTopics);
+
+
+function SideBar({ subTopicList ,ativeDataSet }) {
+ 
   return (
     <>
       <Box
@@ -28,27 +17,28 @@ function SideBar({ reportData }) {
           borderTop: "1px solid",
           display: "flex",
           flexDirection: "column",
-          justifyContent: "space-between",
+          justifyContent: "start",
           overflowY: "auto",
+          // backgroundColor:"red"
         }}
       >
-        <Stack>
-          {reportData ? (
-            <SideMenuItems data={reportData.subTopics} preIndex={1} />
-          ) : (
-            ""
-          )}
-        </Stack>
-        {/* {reportData
-          ? reportData.map((reportData, index) => {
+        {/* <Stack>
+          {subTopicList ?
+           <SideMenuItems preIndex={1} itemList={subTopicList}/>
+           :""
+          }
+        </Stack> */}
+        {subTopicList
+          ? subTopicList.map((item, index) => {
               return (
                 <SideMenuItems
-                  data={reportData.subTopics}
-                  preIndex={index + 1}
+                  index={Number(index+1)} item={item}
+                  preIndex={index+1}
+                  ativeDataSet = {(x) =>ativeDataSet(x)}
                 />
               );
             })
-          : ""} */}
+          : ""}
       </Box>
     </>
   );

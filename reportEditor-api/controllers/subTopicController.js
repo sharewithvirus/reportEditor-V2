@@ -127,6 +127,7 @@ exports.createSubTopic = async (req, res) => {
     const { subTopicName, reportId, subTopicId } = req.body;
     let slug = "";
     let index = "";
+    console.log(subTopicName, reportId, subTopicId)
     if (!subTopicName && (!subTopicId || !reportId)) {
       res.status(200).json({
         status: "Success",
@@ -136,9 +137,10 @@ exports.createSubTopic = async (req, res) => {
     if (subTopicName && reportId) {
       const reportName = await Report.findById(reportId);
       slug = `/${removeSpaces(reportName.name)}/${removeSpaces(subTopicName)}`;
+      console.log(slug);
       index = Number(reportName.subTopics.length + 1);
       const newSubTopic = await SubTopic.create({
-        subTopicsName: subTopicName,
+        subTopicName: subTopicName,
         slug: slug,
         index: index,
         parentReport: reportId,
@@ -151,12 +153,13 @@ exports.createSubTopic = async (req, res) => {
         SubTopic: newSubTopic,
       });
     } else if (subTopicName && subTopicId) {
+      console.log(subTopicName, subTopicId)
       const subTopic = await SubTopic.findById(subTopicId);
       const reportName = await Report.findById(subTopic.parentReport);
       slug = `${subTopic.slug}/${removeSpaces(subTopicName)}`;
       index = `${subTopic.index}.${Number(subTopic.subTopics.length + 1)}`;
       const newSubTopic = await SubTopic.create({
-        subTopicsName: subTopicName,
+        subTopicName: subTopicName,
         slug,
         index,
         parentReport: subTopic.parentReport,
