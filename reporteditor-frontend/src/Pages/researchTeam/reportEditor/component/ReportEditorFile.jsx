@@ -1,5 +1,5 @@
 import {
-    Button, Grid, IconButton, MenuItem, Paper, Stack, TextField
+    Button, Grid, MenuItem, Paper, Stack, TextField
 } from "@mui/material";
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
@@ -9,9 +9,10 @@ import Tab from '@mui/material/Tab';
 import Tabs from '@mui/material/Tabs';
 import Typography from '@mui/material/Typography';
 import PropTypes from 'prop-types';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import SwipeableViews from 'react-swipeable-views';
 import ChartFormGen from "./ChartFormGen";
+import ImageUpload from "./ImageUpload";
 
 const Item = styled(Paper)(({ theme }) => ({
     ...theme.typography.body2,
@@ -80,8 +81,20 @@ export default function FullWidthTabs() {
             label: 'Bar',
         },
         {
+            value: 'radar',
+            label: 'Radar',
+        },
+        {
             value: 'stacked',
             label: 'Stacked',
+        },
+        {
+            value: 'line',
+            label: 'Line',
+        },
+        {
+            value: 'area',
+            label: 'Area',
         },
         {
             value: 'multibar',
@@ -91,18 +104,30 @@ export default function FullWidthTabs() {
             value: 'donut',
             label: 'Donut',
         }, {
-            value: 'brandline',
-            label: 'Brandline',
+            value: 'barandline',
+            label: 'Barandline',
         }
     ];
     const theme = useTheme();
     const [value, setValue] = React.useState(0);
     const [open, setOpen] = useState(false);
+    const [openImage, setOpenImage] = useState(false);
     const handleOpen = () => setOpen(true);
+    const handleOpenImage = () => setOpenImage(true);
+
     const [chartFormValues, setChartFormValues] = useState(["series", "label"])
     const handleClose = () => setOpen(false);
+    const handleCloseImage = () => setOpenImage(false);
+
 
     const [chartType, setChartType] = useState("pie");
+
+    const [formChartData, setFormChartData] = useState({
+        series: "",
+        label: "",
+        categories: "",
+    })
+    const [show, setShow] = useState(false);
 
     const handleChange = (event, newValue) => {
         setValue(newValue);
@@ -111,28 +136,52 @@ export default function FullWidthTabs() {
 
     const SeletFormChange = (event) => {
         setChartType(event.target.value);
+        setShow(false)
+        setFormChartData({
+            series: "",
+            label: "",
+            categories: ""
+        })
+        console.log("formChartData", formChartData)
         if (event.target.value === "pie") {
-            return setChartFormValues(["series", "label"])
+            setChartFormValues(["series", "label"])
         }
         else if (event.target.value === "bar") {
-            return setChartFormValues(["series", "categories", "options"])
+            setChartFormValues(["series", "categories"]);
+        }
+        else if (event.target.value === "radar") {
+            return setChartFormValues(["series", "categories"])
+        }
+        else if (event.target.value === "stacked") {
+            return setChartFormValues(["series", "categories"])
+        }
+        else if (event.target.value === "line") {
+            return setChartFormValues(["series", "categories"])
+        }
+        else if (event.target.value === "area") {
+            return setChartFormValues(["series", "label"])
+        }
+        else if (event.target.value === "radar") {
+            return setChartFormValues(["series", "categories"])
+        }
+        else if (event.target.value === "multibar") {
+            setChartFormValues(["series", "categories"])
+        }
+        else if (event.target.value === "donut") {
+            return setChartFormValues(["series", "label"])
+        }
+        else if (event.target.value === "barandline") {
+            return setChartFormValues(["series", "categories"])
         }
     };
-
-    // console.log("chartFormValues", chartFormValues)
-    // const handleCtypeChange = (event) => {
-    //     if (event.target.vlaue == "pie") {
-    //         return (
-    //             <>
-    //                 <p>pie form</p>
-    //             </>
-    //         )
-    //     }
-    // }
 
     const handleChangeIndex = (index) => {
         setValue(index);
     };
+
+    useEffect(() => {
+        console.log("renderkkkk")
+    }, [formChartData])
 
     return (
         <>
@@ -170,6 +219,9 @@ export default function FullWidthTabs() {
                                 ))}
                             </Grid>
                         </Stack>
+                        <Button onClick={handleOpenImage}>
+                            <Typography>ADD IMAGES</Typography>
+                        </Button>
                     </TabPanel>
                     <TabPanel value={value} index={1} dir={theme.direction}>
                         Item Two
@@ -216,11 +268,19 @@ export default function FullWidthTabs() {
                         ))}
                     </TextField>
 
-                    <ChartFormGen chartFormValues={chartFormValues} chartType={chartType} />
-
-
+                    <ChartFormGen formChartData={formChartData} setFormChartData={setFormChartData} setChartFormValues={setChartFormValues} show={show} setShow={setShow} chartFormValues={chartFormValues} chartType={chartType} />
                 </Box>
 
+            </Modal>
+            <Modal
+                open={openImage}
+                onClose={handleCloseImage}
+                aria-labelledby="modal-modal-title"
+                aria-describedby="modal-modal-description"
+            >
+                <Box sx={style}>
+                    <ImageUpload />
+                </Box>
             </Modal>
         </>
     );
