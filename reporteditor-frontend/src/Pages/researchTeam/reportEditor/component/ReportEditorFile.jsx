@@ -12,6 +12,7 @@ import PropTypes from 'prop-types';
 import React, { useEffect, useState } from 'react';
 import SwipeableViews from 'react-swipeable-views';
 import ChartFormGen from "./ChartFormGen";
+import ImageUpload from "./ImageUpload";
 
 const Item = styled(Paper)(({ theme }) => ({
     ...theme.typography.body2,
@@ -110,9 +111,14 @@ export default function FullWidthTabs() {
     const theme = useTheme();
     const [value, setValue] = React.useState(0);
     const [open, setOpen] = useState(false);
+    const [openImage, setOpenImage] = useState(false);
     const handleOpen = () => setOpen(true);
+    const handleOpenImage = () => setOpenImage(true);
+
     const [chartFormValues, setChartFormValues] = useState(["series", "label"])
     const handleClose = () => setOpen(false);
+    const handleCloseImage = () => setOpenImage(false);
+
 
     const [chartType, setChartType] = useState("pie");
 
@@ -213,6 +219,9 @@ export default function FullWidthTabs() {
                                 ))}
                             </Grid>
                         </Stack>
+                        <Button onClick={handleOpenImage}>
+                            <Typography>ADD IMAGES</Typography>
+                        </Button>
                     </TabPanel>
                     <TabPanel value={value} index={1} dir={theme.direction}>
                         Item Two
@@ -262,6 +271,16 @@ export default function FullWidthTabs() {
                     <ChartFormGen formChartData={formChartData} setFormChartData={setFormChartData} setChartFormValues={setChartFormValues} show={show} setShow={setShow} chartFormValues={chartFormValues} chartType={chartType} />
                 </Box>
 
+            </Modal>
+            <Modal
+                open={openImage}
+                onClose={handleCloseImage}
+                aria-labelledby="modal-modal-title"
+                aria-describedby="modal-modal-description"
+            >
+                <Box sx={style}>
+                    <ImageUpload />
+                </Box>
             </Modal>
         </>
     );
