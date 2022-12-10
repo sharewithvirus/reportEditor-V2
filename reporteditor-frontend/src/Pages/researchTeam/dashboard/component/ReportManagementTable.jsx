@@ -17,7 +17,7 @@ import ListAltRoundedIcon from "@mui/icons-material/ListAltRounded";
 import { Link } from "react-router-dom";
 import UpdateModal from "../UpdateModal";
 import { useState } from "react";
-function ReportManagementTable({ reportData, key }) {
+function ReportManagementTable({ reportData}) {
   const [open, setOpen] = React.useState(false);
   const [taskStatus, setTaskstatus] = useState([
     {
@@ -104,8 +104,8 @@ function ReportManagementTable({ reportData, key }) {
                       </IconButton>
                     </Link>
                     <Link>
-                      <IconButton>
-                        <SettingsOutlinedIcon onClick={handleShow} />
+                      <IconButton onClick={handleShow} >
+                        <SettingsOutlinedIcon  />
                       </IconButton>
                     </Link>
                       <Link

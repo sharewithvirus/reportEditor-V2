@@ -8,10 +8,7 @@ import {
   TextField,
   Typography
 } from "@mui/material";
-
 import AddOutlinedIcon from "@mui/icons-material/AddOutlined";
-import FileCopyOutlinedIcon from "@mui/icons-material/FileCopyOutlined";
-import { styled } from "@mui/material/styles";
 import { Box } from "@mui/system";
 import React, { useContext, useEffect, useRef, useState } from "react";
 import moment from 'moment'
@@ -20,23 +17,19 @@ import { styled } from "@mui/material/styles";
 import FileCopyOutlinedIcon from "@mui/icons-material/FileCopyOutlined";
 import SideBar from "./component/SideBar";
 import { Link } from "react-router-dom";
-import Editor from "./component/Editor";
+// import Editor from "./component/Editor";
 import { saveSubtopics, updateSubtopics } from "../../../Services/chapterServices";
-import AddOutlinedIcon from "@mui/icons-material/AddOutlined";
-import EditorModal from "./component/EditorModal";
 import { UserDataContext } from "../../../context/userContext";
-
 import { getReportDataById } from "../../../Services/reportServices";
 import Editor from "./component/Editor";
 import EditorModal from "./component/EditorModal";
 import ReportEditiorFile from './component/ReportEditorFile';
-import SideBar from "./component/SideBar";
-
 function ReportEditor() {
   const { id } = useParams();
   const { setIsLoading } = useContext(UserDataContext);
   const [reportData, setReportData] = useState();
   const [open, setOpen] = useState(false);
+  const [editorState, setEditorState] = useState(false);
   const handleShow = () => setOpen(!open);
   const handleClose = () => setOpen(false);
   const [activeTopicData, setActiveTopicData] = useState({});
@@ -52,10 +45,18 @@ function ReportEditor() {
   });
   const ref = useRef(null);
   const getReportData = async () => {
+    setIsLoading(true)
     const res = await getReportDataById(id);
-    setReportData(res.data.reportData);
+    if(res.status === 200)
+    {
+      if(res.data.reportData.subTopics.length == 0){
+        setOpen(true);
+        setEditorState(true);
+      }
+      setIsLoading(false)
+      setReportData(res.data.reportData);
+    }
   };
-
   const handleSnack = () => {
     setopenSnack(!openSnack);
   };
@@ -87,7 +88,6 @@ function ReportEditor() {
 const ativeDataSet = (data) =>{
   setActiveTopicData(data);
 }
-
 useEffect(()=>{
   getReportData();
 },[])
@@ -136,7 +136,8 @@ useEffect(()=>{
                   subTopicList={
                     reportData.subTopics ? reportData.subTopics : ""
                   }
-                  getReportData={getReportData}
+                  getReportDataText={getReportData}
+                  
                   ativeDataSet = {(x) => {
                     // console.log(x)
                     ativeDataSet(x)
@@ -205,8 +206,6 @@ useEffect(()=>{
                   }}
                 >
                   <b>Last Saved :</b> <span>{activeTopicData ? moment(activeTopicData.updatedAt).format('Do MMM YYYY  , h:mm:ss A'):""} </span>
-
-               
                 </Typography>
               </Stack>
               <Stack display="flex" justifyContent="center" alignItems="center">
@@ -267,7 +266,7 @@ useEffect(()=>{
                   height: "100vh",
                 }}
               >
-                <Editor activeTopicData = {activeTopicData ? activeTopicData : ''} saveHtmlData = {(x)=>saveHtmlData(x)} />
+                <Editor activeTopicData = {activeTopicData ? activeTopicData : ''} saveHtmlData = {(x)=>saveHtmlData(x)} editorState={editorState} />
               </Stack>
               <Stack
                 sx={{
@@ -311,8 +310,6 @@ useEffect(()=>{
                 >
                   <ReportEditiorFile />
                 </Stack>
-
-
               </Stack>
             </Stack>
           </Grid>
