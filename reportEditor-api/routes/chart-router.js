@@ -11,7 +11,13 @@ const { createPieChart,
         createStackChart,
         getStackChart,
         createRadarChart,
-        getRadarChart
+        getRadarChart,
+        createAreaChart,
+        getAreaChart,
+        createMultibarChart,
+        getMultibarChart,
+        createBarLineChart,
+        getBarLineChart
       } = require("../controllers/chartController");
 
 //PIE-Chart Routes
@@ -33,10 +39,14 @@ router.route("/stack-chart").post(createStackChart).get(getStackChart);
 router.route("/radar-chart").post(createRadarChart).get(getRadarChart);
 
 //Area-Chart Routes
+router.route("/area-chart").post(createAreaChart).get(getAreaChart);
 
 //MultiBar-Chart Routes
+router.route("/multibar-chart").post(createMultibarChart).get(getMultibarChart);
 
 //BarAndLine-Chart Routes
+router.route("/barline-chart").post(createBarLineChart).get(getBarLineChart);
+
 
 
 module.exports = router;

@@ -1,6 +1,9 @@
 const pieAndDonutModel = require("../model/pieAndDonutModel");
 const lineAndBarModel = require("../model/lineAndBarModel");
 const stackAndRadarModel = require("../model/stackAndRadarModel");
+const areaModel = require("../model/areaModel");
+const multibarModel = require("../model/multibarModel");
+const barLineModel = require("../model/barLineModel");
 
 
 //(1) PIE-CHART Methods
@@ -104,7 +107,7 @@ exports.createBarChart = async (req,res) => {
        const { reportId,chartType,name,series } = req.body;
        const newBarChart = await lineAndBarModel.create(req.body);
        res.status(201).json({
-        status:"Succes",
+        status:"Success",
         message:"Bar-Chart created Successfully",
         data:newBarChart
        })
@@ -141,7 +144,7 @@ exports.createLineChart = async (req,res) => {
        const { reportId,chartType,name,series } = req.body;
        const newBarChart = await lineAndBarModel.create(req.body);
        res.status(201).json({
-        status:"Succes",
+        status:"Success",
         message:"Line-Chart created Successfully",
         data:newBarChart
        })
@@ -177,7 +180,7 @@ exports.createStackChart = async (req,res) => {
        const { reportId,chartType,name,series,labels } = req.body;
        const newStackChart = await stackAndRadarModel.create(req.body);
        res.status(201).json({
-        status:"Succes",
+        status:"Success",
         message:"Stacked-Bar Chart created Successfully",
         data:newStackChart
        })
@@ -213,7 +216,7 @@ exports.createRadarChart = async (req,res) => {
        const { reportId,chartType,chartName,series,labels } = req.body;
        const newRadarChart = await stackAndRadarModel.create(req.body);
        res.status(201).json({
-        status:"Succes",
+        status:"Success",
         message:"Radar Chart created Successfully",
         data:newRadarChart
        })
@@ -243,3 +246,110 @@ exports.getRadarChart = async (req, res) => {
     }
 }
 
+//AREA-CHART Methods
+exports.createAreaChart = async (req,res) => {
+    try{
+       const { reportId,chartType,chartName,series,labels } = req.body;
+       const newAreaChart = await areaModel.create(req.body);
+       res.status(201).json({
+        status:"Success",
+        message:"Area Chart created Successfully",
+        data:newAreaChart
+       })
+    } catch(error){
+        console.log(error);
+        res.status(500).json({
+            status:"Error",
+            message:"Internal Server Error"
+        })
+    }
+}
+
+exports.getAreaChart = async (req, res) => {
+    try {
+        const chartDocs = await areaModel.find({chartType:"area"});
+        res.status(200).json({
+            status:"Success",
+            message:"Area Chart fetched Successfully",
+            data:chartDocs
+        })
+    } catch(error){
+        console.log(error);
+        res.status(500).json({
+            status:"Error",
+            message:"Internal Server Error"
+        })
+    }
+}
+
+//MULTI-BAR-CHART
+exports.createMultibarChart = async (req,res) => {
+    try{
+       const { reportId,chartType,chartName,series,categories } = req.body;
+       const newMultibarChart = await multibarModel.create(req.body);
+       res.status(201).json({
+        status:"Succes",
+        message:"Multibar Chart created Successfully",
+        data:newMultibarChart
+       })
+    } catch(error){
+        console.log(error);
+        res.status(500).json({
+            status:"Error",
+            message:"Internal Server Error"
+        })
+    }
+}
+
+exports.getMultibarChart = async (req, res) => {
+    try {
+        const chartDocs = await multibarModel.find({chartType:"multibar"});
+        res.status(200).json({
+            status:"Success",
+            message:"Multibar Chart fetched Successfully",
+            data:chartDocs
+        })
+    } catch(error){
+        console.log(error);
+        res.status(500).json({
+            status:"Error",
+            message:"Internal Server Error"
+        })
+    }
+}
+
+//BAR&LINE-CHART or Line&Column Combo Chart Methods
+exports.createBarLineChart = async (req,res) => {
+    try{
+       const { reportId,chartType,chartName,series,labels } = req.body;
+       const newBarLineChart = await barLineModel.create(req.body);
+       res.status(201).json({
+        status:"Success",
+        message:"Bar&Line Chart created Successfully",
+        data:newBarLineChart
+       })
+    } catch(error){
+        console.log(error);
+        res.status(500).json({
+            status:"Error",
+            message:"Internal Server Error"
+        })
+    }
+}
+
+exports.getBarLineChart = async (req, res) => {
+    try {
+        const chartDocs = await barLineModel.find({});
+        res.status(200).json({
+            status:"Success",
+            message:"Bar&Line Chart fetched Successfully",
+            data:chartDocs
+        })
+    } catch(error){
+        console.log(error);
+        res.status(500).json({
+            status:"Error",
+            message:"Internal Server Error"
+        })
+    }
+}
