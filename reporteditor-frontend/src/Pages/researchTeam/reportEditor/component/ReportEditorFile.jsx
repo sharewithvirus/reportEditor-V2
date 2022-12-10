@@ -115,12 +115,12 @@ export default function FullWidthTabs() {
     const handleClose = () => setOpen(false);
 
     const [chartType, setChartType] = useState("pie");
-    const initialValues = {
+
+    const [formChartData, setFormChartData] = useState({
         series: "",
         label: "",
         categories: "",
-    }
-    const [formChartData, setFormChartData] = useState(initialValues)
+    })
     const [show, setShow] = useState(false);
 
     const handleChange = (event, newValue) => {
@@ -131,7 +131,11 @@ export default function FullWidthTabs() {
     const SeletFormChange = (event) => {
         setChartType(event.target.value);
         setShow(false)
-        setFormChartData(initialValues)
+        setFormChartData({
+            series: "",
+            label: "",
+            categories: ""
+        })
         console.log("formChartData", formChartData)
         if (event.target.value === "pie") {
             setChartFormValues(["series", "label"])
@@ -149,16 +153,16 @@ export default function FullWidthTabs() {
             return setChartFormValues(["series", "categories"])
         }
         else if (event.target.value === "area") {
-            return setChartFormValues(["series", "categories"])
+            return setChartFormValues(["series", "label"])
         }
         else if (event.target.value === "radar") {
             return setChartFormValues(["series", "categories"])
         }
         else if (event.target.value === "multibar") {
-            return setChartFormValues(["series", "categories"])
+            setChartFormValues(["series", "categories"])
         }
         else if (event.target.value === "donut") {
-            return setChartFormValues(["series", "categories"])
+            return setChartFormValues(["series", "label"])
         }
         else if (event.target.value === "barandline") {
             return setChartFormValues(["series", "categories"])
@@ -255,7 +259,7 @@ export default function FullWidthTabs() {
                         ))}
                     </TextField>
 
-                    <ChartFormGen formChartData={formChartData} setFormChartData={setFormChartData} show={show} setShow={setShow} chartFormValues={chartFormValues} initialValues={initialValues} chartType={chartType} />
+                    <ChartFormGen formChartData={formChartData} setFormChartData={setFormChartData} setChartFormValues={setChartFormValues} show={show} setShow={setShow} chartFormValues={chartFormValues} chartType={chartType} />
                 </Box>
 
             </Modal>
