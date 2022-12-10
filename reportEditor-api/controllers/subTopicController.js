@@ -4,12 +4,11 @@ const { removeSpaces } = require("./extraFunctions");
 
 exports.getTopicList = async (req, res) => {
   try {
-    const subTopicList = await SubTopic.find({});
+    const subTopicList = await SubTopic.find({ deletedAt: null });
     res.status(200).json({
       status: "Success",
       message: "SubTopic List is successfully retrieved",
       topicList: subTopicList,
-
     });
   } catch (error) {
     res.status(500).json({
@@ -23,7 +22,7 @@ exports.getTopicList = async (req, res) => {
 //   try {
 //     //console.log("api Hit");
 //     const { subTopicName, reportId, subTopicId } = req.body;
-  
+
 //     if (!subTopicName && (!subTopicId || !reportId)) {
 //       res.status(200).json({
 //         status: "Success",
@@ -36,8 +35,8 @@ exports.getTopicList = async (req, res) => {
 //         subTopicName: subTopicName,
 //         parentReport: reportId,
 //       });
-     
-//       reportName.subTopics.push(newSubTopic._id); 
+
+//       reportName.subTopics.push(newSubTopic._id);
 //       //console.log(reportName);
 //       console.log(reportName.subTopics);
 
@@ -107,7 +106,7 @@ exports.getTopicList = async (req, res) => {
 
 exports.getTopicList = async (req, res) => {
   try {
-    const subTopicList = await SubTopic.find({});
+    const subTopicList = await SubTopic.find({ deletedAt: null });
     res.status(200).json({
       status: "Success",
       message: "SubTopic List was successfully retrieved",
@@ -127,7 +126,7 @@ exports.createSubTopic = async (req, res) => {
     const { subTopicName, reportId, subTopicId } = req.body;
     let slug = "";
     let index = "";
-    console.log(subTopicName, reportId, subTopicId)
+    console.log(subTopicName, reportId, subTopicId);
     if (!subTopicName && (!subTopicId || !reportId)) {
       res.status(200).json({
         status: "Success",
@@ -144,6 +143,7 @@ exports.createSubTopic = async (req, res) => {
         slug: slug,
         index: index,
         parentReport: reportId,
+        htmlData: "",
       });
       reportName.subTopics.push(newSubTopic._id);
       await reportName.save();
@@ -153,7 +153,7 @@ exports.createSubTopic = async (req, res) => {
         SubTopic: newSubTopic,
       });
     } else if (subTopicName && subTopicId) {
-      console.log(subTopicName, subTopicId)
+      console.log(subTopicName, subTopicId);
       const subTopic = await SubTopic.findById(subTopicId);
       const reportName = await Report.findById(subTopic.parentReport);
       slug = `${subTopic.slug}/${removeSpaces(subTopicName)}`;
@@ -164,6 +164,7 @@ exports.createSubTopic = async (req, res) => {
         index,
         parentReport: subTopic.parentReport,
         parentSubTopic: subTopic._id,
+        htmlData: "",
       });
       subTopic.subTopics.push(newSubTopic._id);
       await subTopic.save();
@@ -187,7 +188,11 @@ exports.createSubTopic = async (req, res) => {
 exports.deleteSubTopic = async (req, res) => {
   try {
     const { id } = req.params;
-    const subTopic = await SubTopic.findByIdAndDelete(id);
+    const subTopic = await SubTopic.findByIdAndUpdate(
+      { _id: id },
+      { deletedAt: Date.now() },
+      { New: true }
+    );
     console.log(subTopic);
     if (subTopic.parentSubTopic) {
       const preSubTopic = await SubTopic.findById(subTopic.parentSubTopic);
@@ -235,6 +240,31 @@ exports.updateSubTopic = async (req, res) => {
     res.status(200).json({
       status: "Success",
       message: "Topic Updated Successfully",
+      topic: subTopic,
+    });
+  } catch (error) {
+    res.status(500).json({
+      status: "Error",
+      message: "Internal Server Error",
+      error: error,
+    });
+  }
+};
+
+exports.updateSubTopicData = async (req, res) => {
+  try {
+    console.log(req.body);
+    const { id, subTopicName } = req.body;
+    const subTopic = await SubTopic.findByIdAndUpdate(
+      id,
+      {
+        subTopicName
+      },
+      { new: true }
+    );
+    res.status(200).json({
+      status: "Success",
+      message: "SubTopic Updated Successfully",
       topic: subTopic,
     });
   } catch (error) {

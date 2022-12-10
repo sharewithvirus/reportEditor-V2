@@ -1,7 +1,7 @@
 import React, { useRef, useState } from "react";
 import { CKEditor } from "@ckeditor/ckeditor5-react";
 import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
-function Editor({ getData, saveTopics, saveTopicsData, activeTopicData, setActiveTopic , saveHtmlData}) {
+function Editor({ getData, saveTopics, saveTopicsData, activeTopicData, editorState , saveHtmlData}) {
     const [subTopicsData, setSubTopicsData] = useState();
     const editor = useRef(null);
 //   let config = {
@@ -28,7 +28,9 @@ const save = async (id,htmlData) =>{
   }
   // console.log(data);
   console.log(data);
-  const res = await saveHtmlData(data);
+  setTimeout(async (data) => {
+    const res = await saveHtmlData(data);
+  }, 3000);
   // console.log(res);
 }
   return (

@@ -29,8 +29,8 @@ function App() {
 
   const getUserDataApi = async () => {
     const res = await userDashboard();
-    console.log("Status", res.status)
-    console.log("Error", res)
+    // console.log("Status", res.status)
+    // console.log("Error", res)
     if (res === "User Not found") {
       isAuthenticated(false);
       setIsLoading(false);

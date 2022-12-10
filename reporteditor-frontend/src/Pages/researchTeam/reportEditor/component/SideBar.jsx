@@ -4,9 +4,10 @@ import React from "react";
 
 import SideMenuItems from "./SideMenuItems";
 
-
-function SideBar({ subTopicList ,ativeDataSet }) {
- 
+function SideBar({ subTopicList, ativeDataSet, getReportDataText }) {
+  // console.log(getReportDataText);
+  // console.log(subTopicList);
+  const h = 'dfvgevihshdusk'
   return (
     <>
       <Box
@@ -28,17 +29,20 @@ function SideBar({ subTopicList ,ativeDataSet }) {
            :""
           }
         </Stack> */}
-        {subTopicList
-          ? subTopicList.map((item, index) => {
-              return (
-                <SideMenuItems
-                  index={Number(index+1)} item={item}
+        {subTopicList && subTopicList.length > 0  &&
+          subTopicList.map((item, index) => {
+            return (
+              <SideMenuItems
+              h={'h'}
+                index={Number(index + 1)}
+                item={item}
                   preIndex={index+1}
-                  ativeDataSet = {(x) =>ativeDataSet(x)}
-                />
-              );
-            })
-          : ""}
+                ativeDataSet={(x) => ativeDataSet(x)}
+                  getReportDataText1 = {getReportDataText}
+                
+              />
+            );
+          })}
       </Box>
     </>
   );
