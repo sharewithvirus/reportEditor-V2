@@ -1,31 +1,30 @@
 import AddCircleIcon from '@mui/icons-material/AddCircle';
 import { IconButton, TextField } from '@mui/material';
-import React, { useState } from 'react';
+import React, { useEffect } from 'react';
+import GenChart from './GenChart';
 
-const ChartFormGen = ({ chartFormValues, chartType }) => {
-    // console.log("chartFormValues", chartFormValues);
-
-    const initialValues = {
-        series: [],
-        label: [],
-        categories: [],
-    }
-
-    const [formChartData, setFormChartData] = useState(null)
-    const [formChartData2, setFormChartData2] = useState(initialValues)
-
-    const addChartFormValues = (e) => {
-        console.log("formChartDataSE", formChartData.series)
-        const { series, label } = formChartData
-        console.log("formChartData2", formChartData2)
-        setFormChartData2({ ...formChartData2, series: [...series, formChartData.series] })
-    }
+const ChartFormGen = ({ setChartFormValues, chartFormValues, chartType, formChartData, setFormChartData, show, setShow }) => {
 
     const handleFormValueChange = (e) => {
-        console.log(e.target.name, "=", e.target.value)
+        setShow(false)
+        // console.log("formChartDataName", formChartData)
         setFormChartData({ ...formChartData, [e.target.name]: e.target.value })
     }
 
+
+    const addSeriesField = () => {
+        setChartFormValues([...chartFormValues, `series${chartFormValues.length - 1}`])
+
+        // setFormChartData({ ...formChartData, formChartData["series"]})
+        // setChartFormValues([...chartFormValues, "series1"])
+        console.log("Add Field2", chartFormValues);
+    }
+
+    useEffect(() => {
+        console.log("formData", formChartData)
+    }, [formChartData, setFormChartData])
+
+    console.log("chartFormValues", chartFormValues);
     return (
         <>
             {
@@ -33,16 +32,18 @@ const ChartFormGen = ({ chartFormValues, chartType }) => {
                     (item, index) => {
                         return (
                             <div key={index}>
-                                <TextField id={chartType} label={item} name={item} variant="outlined" onChange={e => handleFormValueChange(e)} />
+                                <TextField id={chartType} label={item} name={item} variant="outlined" onChange={e => handleFormValueChange(e)}
+                                    value={item === 'series' ? formChartData.series : item === "label" ? formChartData.label : item === "series1" ? formChartData.series1 : item === 'categories' ? formChartData.categories : ""} />
+
+                                {item === 'series' && chartType === 'bar' ? <IconButton aria-label="add" onClick={addSeriesField}>
+                                    <AddCircleIcon />
+                                </IconButton> : ""}
                             </div>
                         )
                     }
                 )
             }
-
-            <IconButton aria-label="delete" onClick={e => addChartFormValues(e)}>
-                <AddCircleIcon />
-            </IconButton>
+            <GenChart formChartData={formChartData} setFormChartData={setFormChartData} show={show} setShow={setShow} chartType={chartType} />
         </>
     )
 }
