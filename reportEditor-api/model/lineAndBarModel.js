@@ -1,8 +1,9 @@
-const mongoose = require("mongoose");
+const mongoose = require("mongoose"),
+  Schema = mongoose.Schema;
 
 const lineAndBarSchema = new mongoose.Schema({
     reportId:{
-        type:mongoose.Schema.Types.ObjectId,
+        type:Schema.ObjectId,
         ref:"Report"
     },
     chartType:{

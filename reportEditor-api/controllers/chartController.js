@@ -11,7 +11,7 @@ const { findByIdAndUpdate } = require("../model/subTopicModel");
  exports.createPieChart = async (req, res) => {
     try{
        const { reportId,chartType,name,labels,series } = req.body; //labels = name of each slice ,series = value of each slice
-       if(labels.length == series.length)
+       if(labels.length === series.length)
          {
            const newPieChart = await pieAndDonutModel.create(req.body);
            res.status(201).json({
@@ -77,7 +77,7 @@ exports.updatePieChart = async (req,res) => {
 exports.deletePieChart = async (req,res) => {
     try{
       const { id } = req.params;
-      const deletedDoc = await pieAndDonutModel.findByIdAndUpdate({_id:id},{isDeleted:true, deletedAt:true},{new:true});
+      const deletedDoc = await pieAndDonutModel.findByIdAndUpdate({_id:id},{isDeleted:true, deletedAt:Date.now()});
       res.status(200).json({
         status:"Success",
         message:"Pie Chart Deleted Successfully",
@@ -213,10 +213,11 @@ exports.getBarChart = async (req, res) => {
     }
 }
 
-exports.updateBarChart = async (req,res) => {
+
+exports.updatePieChart = async (req,res) => {
     try{
        const { id } = req.params;
-       const {  reportId,chartType,name,series} = req.body;
+       const { reportId,chartType,name,labels,series} = req.body;
        const updatedDoc = await pieAndDonutModel.findByIdAndUpdate({_id:id},req.body,{new:true});
        //console.log(updatedDoc)
        res.status(200).json({
@@ -236,10 +237,11 @@ exports.updateBarChart = async (req,res) => {
 exports.deletePieChart = async (req,res) => {
     try{
       const { id } = req.params;
-      const deletedDoc = await pieAndDonutModel.findByIdAndDelete({_id:id});
+      const deletedDoc = await pieAndDonutModel.findByIdAndUpdate({_id:id},{isDeleted:true, deletedAt:true},{new:true});
       res.status(200).json({
         status:"Success",
-        message:"Pie Chart Deleted Successfully"
+        message:"Pie Chart Deleted Successfully",
+        data:deletedDoc
       })
     } catch(error){
         console.log(error);
@@ -287,6 +289,7 @@ exports.getLineChart = async (req, res) => {
     }
 }
 
+
 exports.updatePieChart = async (req,res) => {
     try{
        const { id } = req.params;
@@ -310,10 +313,11 @@ exports.updatePieChart = async (req,res) => {
 exports.deletePieChart = async (req,res) => {
     try{
       const { id } = req.params;
-      const deletedDoc = await pieAndDonutModel.findByIdAndDelete({_id:id});
+      const deletedDoc = await pieAndDonutModel.findByIdAndUpdate({_id:id},{isDeleted:true, deletedAt:true},{new:true});
       res.status(200).json({
         status:"Success",
-        message:"Pie Chart Deleted Successfully"
+        message:"Pie Chart Deleted Successfully",
+        data:deletedDoc
       })
     } catch(error){
         console.log(error);
@@ -323,8 +327,6 @@ exports.deletePieChart = async (req,res) => {
         })
     }
 }
-
-
 //STACKED-BAR-CHART Methods
 exports.createStackChart = async (req,res) => {
     try{
@@ -361,6 +363,7 @@ exports.getStackChart = async (req, res) => {
     }
 }
 
+
 exports.updatePieChart = async (req,res) => {
     try{
        const { id } = req.params;
@@ -384,10 +387,11 @@ exports.updatePieChart = async (req,res) => {
 exports.deletePieChart = async (req,res) => {
     try{
       const { id } = req.params;
-      const deletedDoc = await pieAndDonutModel.findByIdAndDelete({_id:id});
+      const deletedDoc = await pieAndDonutModel.findByIdAndUpdate({_id:id},{isDeleted:true, deletedAt:true},{new:true});
       res.status(200).json({
         status:"Success",
-        message:"Pie Chart Deleted Successfully"
+        message:"Pie Chart Deleted Successfully",
+        data:deletedDoc
       })
     } catch(error){
         console.log(error);
@@ -435,6 +439,7 @@ exports.getRadarChart = async (req, res) => {
     }
 }
 
+
 exports.updatePieChart = async (req,res) => {
     try{
        const { id } = req.params;
@@ -458,10 +463,11 @@ exports.updatePieChart = async (req,res) => {
 exports.deletePieChart = async (req,res) => {
     try{
       const { id } = req.params;
-      const deletedDoc = await pieAndDonutModel.findByIdAndDelete({_id:id});
+      const deletedDoc = await pieAndDonutModel.findByIdAndUpdate({_id:id},{isDeleted:true, deletedAt:true},{new:true});
       res.status(200).json({
         status:"Success",
-        message:"Pie Chart Deleted Successfully"
+        message:"Pie Chart Deleted Successfully",
+        data:deletedDoc
       })
     } catch(error){
         console.log(error);
@@ -509,6 +515,7 @@ exports.getAreaChart = async (req, res) => {
     }
 }
 
+
 exports.updatePieChart = async (req,res) => {
     try{
        const { id } = req.params;
@@ -532,10 +539,11 @@ exports.updatePieChart = async (req,res) => {
 exports.deletePieChart = async (req,res) => {
     try{
       const { id } = req.params;
-      const deletedDoc = await pieAndDonutModel.findByIdAndDelete({_id:id});
+      const deletedDoc = await pieAndDonutModel.findByIdAndUpdate({_id:id},{isDeleted:true, deletedAt:true},{new:true});
       res.status(200).json({
         status:"Success",
-        message:"Pie Chart Deleted Successfully"
+        message:"Pie Chart Deleted Successfully",
+        data:deletedDoc
       })
     } catch(error){
         console.log(error);
@@ -545,8 +553,6 @@ exports.deletePieChart = async (req,res) => {
         })
     }
 }
-
-
 //MULTI-BAR-CHART
 exports.createMultibarChart = async (req,res) => {
     try{
@@ -606,10 +612,11 @@ exports.updatePieChart = async (req,res) => {
 exports.deletePieChart = async (req,res) => {
     try{
       const { id } = req.params;
-      const deletedDoc = await pieAndDonutModel.findByIdAndDelete({_id:id});
+      const deletedDoc = await pieAndDonutModel.findByIdAndUpdate({_id:id},{isDeleted:true, deletedAt:true},{new:true});
       res.status(200).json({
         status:"Success",
-        message:"Pie Chart Deleted Successfully"
+        message:"Pie Chart Deleted Successfully",
+        data:deletedDoc
       })
     } catch(error){
         console.log(error);
@@ -619,7 +626,6 @@ exports.deletePieChart = async (req,res) => {
         })
     }
 }
-
 
 //BAR&LINE-CHART or Line&Column Combo Chart Methods
 exports.createBarLineChart = async (req,res) => {
@@ -657,6 +663,7 @@ exports.getBarLineChart = async (req, res) => {
     }
 }
 
+
 exports.updatePieChart = async (req,res) => {
     try{
        const { id } = req.params;
@@ -680,10 +687,11 @@ exports.updatePieChart = async (req,res) => {
 exports.deletePieChart = async (req,res) => {
     try{
       const { id } = req.params;
-      const deletedDoc = await pieAndDonutModel.findByIdAndDelete({_id:id});
+      const deletedDoc = await pieAndDonutModel.findByIdAndUpdate({_id:id},{isDeleted:true, deletedAt:true},{new:true});
       res.status(200).json({
         status:"Success",
-        message:"Pie Chart Deleted Successfully"
+        message:"Pie Chart Deleted Successfully",
+        data:deletedDoc
       })
     } catch(error){
         console.log(error);
