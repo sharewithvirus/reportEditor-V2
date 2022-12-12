@@ -79,7 +79,6 @@ function ReportEditor() {
     }
   };
   const saveHtmlData = async (data) =>{
-    console.log(data);
     const res = await updateSubtopics(data);
     if(res.status === 200){
       getReportData();

@@ -17,28 +17,25 @@ import ListAltRoundedIcon from "@mui/icons-material/ListAltRounded";
 import { Link } from "react-router-dom";
 import UpdateModal from "../UpdateModal";
 import { useState } from "react";
-function ReportManagementTable({ reportData}) {
-  const [open, setOpen] = React.useState(false);
+function ReportManagementTable({ reportData }) {
+  const [open, setOpen] = useState(false);
   const [taskStatus, setTaskstatus] = useState([
-    {
-      drafting: false,
-      forwardedtoEditing: false,
-      editingVersionDone: false,
-      researchPublished: false,
-    },
+    reportData.reportStatusEditing.length >= 1 ? true : false,
+    reportData.reportStatusEditing.length >= 2 ? true : false,
+    reportData.reportStatusEditing.length >= 3 ? true : false,
+    reportData.reportStatusEditing.length >= 4 ? true : false,
   ]);
-  let taskFlag = true;
-  // for (var i = 0; i < taskStatus.length; i++) {
-  //   if (taskStatus[i] === false) {
-  //     taskFlag = false;
-  //   }
-  // }
-
-  // {
-  //   reportData.reportStatusResearch === "research published"
-  //     ? (taskFlag = true)
-  //     : (taskFlag = false);
-  // }
+  // console.log(reportData.reportStatusEditing);
+  let taskFlag = false;
+  taskStatus.forEach(element => {
+    if(element === false)
+    {
+      taskFlag = false;
+    }
+    else{
+      taskFlag = true;
+    }
+  });
   const handleShow = () => {
     setOpen(!open);
   };
@@ -63,9 +60,6 @@ function ReportManagementTable({ reportData}) {
                   ? reportData.userList
                   : "Author: Nikhil, Vikas, Uttareshwa"}
               </Typography>
-              {/* <Typography variant="caption" display="block">
-                Author: Nikhil, Vikas, Uttareshwa
-              </Typography> */}
             </Grid>
             <Grid
               item
@@ -73,7 +67,7 @@ function ReportManagementTable({ reportData}) {
               md={2}
               sx={{ paddingTop: 3, alignItems: "center" }}
             >
-              <StatusTable completedTask={taskStatus} taskType={"research"} />
+              <StatusTable completedTask={taskStatus} taskType={"research"}/>
             </Grid>
             <Grid item sm={12} md={3}>
               <Grid container spacing={8} sx={{ alignItems: "center" }}>
@@ -83,8 +77,6 @@ function ReportManagementTable({ reportData}) {
                     sx={{
                       display: "flex",
                       justifyContent: "center",
-                      // marginLeft: "auto",
-                      // marginRight: "auto",
 
                       alignItems: "center",
                     }}
@@ -104,29 +96,26 @@ function ReportManagementTable({ reportData}) {
                       </IconButton>
                     </Link>
                     <Link>
-                      <IconButton onClick={handleShow} >
-                        <SettingsOutlinedIcon  />
+                      <IconButton onClick={handleShow}>
+                        <SettingsOutlinedIcon />
                       </IconButton>
                     </Link>
-                      <Link
-                        to={`/u_control/report-editor/${reportData._id}`}
-                        style={{
-                          textDecoration: "none",
-                        }}
-                      >
-                        <IconButton
-                        color="info"
-                        >
-                          <ListAltRoundedIcon />
-                        </IconButton>
-                      </Link>
+                    <Link
+                      to={`/u_control/report-editor/${reportData._id}`}
+                      style={{
+                        textDecoration: "none",
+                      }}
+                    >
+                      <IconButton color="info">
+                        <ListAltRoundedIcon />
+                      </IconButton>
+                    </Link>
                     <Link to={`/u_control/edit-report/${reportData._id}`}>
                       <Button
                         variant="outlined"
                         color="secondary"
                         size="small"
-                        paddingY="0px"
-                        sx={{ fontSize: "10px" }}
+                        sx={{ fontSize: "10px", paddingY: "0px" }}
                       >
                         Edit Report
                       </Button>

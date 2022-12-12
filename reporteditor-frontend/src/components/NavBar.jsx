@@ -13,7 +13,15 @@ import { UserDataContext } from "../context/userContext";
 import { userDashboard, userLogout } from "../Services/authService";
 
 const NavBar = (props) => {
-  const { setIsAdmin, userRole, userInfo, setIsLoading, setIsAuthenticated, setUserRole, setUserInfo } = React.useContext(UserDataContext);
+  const {
+    setIsAdmin,
+    userRole,
+    userInfo,
+    setIsLoading,
+    setIsAuthenticated,
+    setUserRole,
+    setUserInfo,
+  } = React.useContext(UserDataContext);
   const [anchorElNav, setAnchorElNav] = React.useState(null);
   const [anchorElUser, setAnchorElUser] = React.useState(null);
   const [userData, setUserData] = React.useState(userInfo.role);
@@ -37,7 +45,7 @@ const NavBar = (props) => {
   const handelLogOut = async () => {
     setIsLoading(true);
     const res = await userLogout(userInfo._id);
-    if(res.status === 200){
+    if (res.status === 200) {
       setIsAdmin(false);
       setIsAuthenticated(false);
       setIsLoading(false);
@@ -73,7 +81,7 @@ const NavBar = (props) => {
   React.useEffect(() => {
     // console.log(userData);
     // setUserData(userInfo);
-  }, [userData, userInfo])
+  }, [userData, userInfo]);
   return (
     <>
       <AppBar
@@ -88,26 +96,29 @@ const NavBar = (props) => {
         position="static"
       >
         <Container maxWidth="xll" sx={{ color: "black" }}>
-          <Toolbar disableGutters sx={{display:'flex', justifyContent:"space-between"}}>
+          <Toolbar
+            disableGutters
+            sx={{ display: "flex", justifyContent: "space-between" }}
+          >
             {/* <AdbIcon sx={{ display: { xs: 'none', md: 'flex' }, mr: 1 }} /> */}
-          <Link to='/'>
-            <Typography
-              variant="h6"
-              noWrap
-              component="a"
-              sx={{
-                mr: 2,
-                display: { xs: "none", md: "flex" },
-                fontFamily: "monospace",
-                fontWeight: 700,
-                letterSpacing: ".3rem",
-                color: "inherit",
-                textDecoration: "none",
-                color: "black",
-              }}
-            >
-              <img src={Logo} alt="logo" />
-            </Typography>
+            <Link to="/">
+              <Typography
+                variant="h6"
+                noWrap
+                component="a"
+                sx={{
+                  mr: 2,
+                  display: { xs: "none", md: "flex" },
+                  fontFamily: "monospace",
+                  fontWeight: 700,
+                  letterSpacing: ".3rem",
+                  color: "inherit",
+                  textDecoration: "none",
+                  color: "black",
+                }}
+              >
+                <img src={Logo} alt="logo" />
+              </Typography>
             </Link>
 
             {/* <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}> */}
@@ -177,12 +188,14 @@ const NavBar = (props) => {
               </Button>
             ))} */}
             </Box>
-            {userData == 'admin' ? (
+            {userData == "admin" ? (
               <AdminSection />
-            ) : userData == 'user' ? (
+            ) : userData == "user" ? (
               <ResearchUserSection />
-            ) : ''}
-            <Box sx={{ flexGrow: 0,  }}>
+            ) : (
+              ""
+            )}
+            <Box sx={{ flexGrow: 0 }}>
               <Button
                 variant="text"
                 color="primary"
@@ -253,16 +266,18 @@ const ResearchUserSection = () => {
         >
           Reports Management
         </Button>
-        <Link to='/u_control/report-template-management'  style={{ textDecoration: "none" }}>
-
-        <Button
-          variant="text"
-          sx={{ fontSize: "17px", textTransform: "none", color: "black" }}
-          size="small"
+        <Link
+          to="/u_control/report-template-management"
+          style={{ textDecoration: "none" }}
+        >
+          <Button
+            variant="text"
+            sx={{ fontSize: "17px", textTransform: "none", color: "black" }}
+            size="small"
           >
-          Reports Templates
-        </Button>
-          </Link>
+            Reports Templates
+          </Button>
+        </Link>
       </Box>
       <Box sx={{ flexGrow: 1, color: "block !important" }}>
         <Button
@@ -304,16 +319,15 @@ const ResearchUserSection = () => {
           </Button>
         </Link>
       </Box>
-      <Box sx={{ flexGrow:1, color: "block !important" }}>
+      <Box sx={{ flexGrow: 1, color: "block !important" }}>
         <Link to="/u_control">
-        <Button
-          variant="text"
-          sx={{ fontSize: "17px", textTransform: "none", color: "black" }}
-          size="small"
-          
-        >
-          Dashboard
-        </Button>
+          <Button
+            variant="text"
+            sx={{ fontSize: "17px", textTransform: "none", color: "black" }}
+            size="small"
+          >
+            Dashboard
+          </Button>
         </Link>
       </Box>
     </>

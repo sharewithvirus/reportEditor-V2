@@ -22,7 +22,7 @@ function StatusTable({ completedTask, taskType }) {
         {taskType === "research"
           ? taskStatus.map((task, index) => {
               return (
-                <Grid item sm={12} md={12}>
+                <Grid item sm={12} md={12} key={index}>
                   <Box
                     sx={{
                       display: "flex",
