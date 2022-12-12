@@ -175,6 +175,9 @@ export default function FullWidthTabs() {
       series: formChartData.series,
       categories: formChartData.categories ? formChartData.categories : "",
     };
+
+
+    
     const res = await createCharts(data);
     {
         if(res.status === 201)

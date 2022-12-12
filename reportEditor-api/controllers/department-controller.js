@@ -19,7 +19,7 @@ exports.createDepartment = async (req, res) => {
             return;
         }else{
             const newDepartment = await Department.create({name, teamType, description});
-            res.status(200).json({
+            res.status(201).json({
                 status: 'success',
                 message: "Department Created Successfully",
                 data: newDepartment,
