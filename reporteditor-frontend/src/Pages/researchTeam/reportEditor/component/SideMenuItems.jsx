@@ -75,8 +75,6 @@ function SideMenuItems({ clWidth, item, preIndex, index , getReportDataText1 , a
     }
   }
   const handleUpdate = (id) =>{
-    console.log("...working");
-    console.log("editId",id);
     setEditId(id);
     handleShow();
   }
@@ -124,7 +122,7 @@ function SideMenuItems({ clWidth, item, preIndex, index , getReportDataText1 , a
               </AccordionSummary>
               <AccordionDetails>
                 {item.subTopics.map((item,index) => {
-                     return <SideMenuItems item={item} preIndex={`${Number(index+1)}.${Number(index+1)}`} index={Number(index+1)} ativeDataSet = {(x) =>ativeDataSet(x)} getReportDataText1={getReportDataText1}/>
+                     return <SideMenuItems key={index} item={item} preIndex={`${Number(index+1)}.${Number(index+1)}`} index={Number(index+1)} ativeDataSet = {(x) =>ativeDataSet(x)} getReportDataText1={getReportDataText1}/>
                 })}
               </AccordionDetails>
             </Accordion>

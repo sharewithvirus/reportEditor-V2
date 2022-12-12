@@ -40,12 +40,10 @@ function EditorModal({
     subTopicId: "",
     htmlData: "",
   });
-  console.log(item);
-  // console.log(editId);
+
   const changeValues = (e) => {
     setData({ ...data, subTopicName: e.target.value });
   };
-  // console.log()
   const [editedTopicData,setEditedTopic] = useState({
     subTopicName: "",
     id : "",
@@ -83,9 +81,8 @@ function EditorModal({
       subTopicId: "",
       htmlData: "",
     });
-    console.log("close button");
-    setDelId("");
-    setEditId("");
+    {delId ? setDelId("") : <></>};
+    {editId ? setEditId("") : <></>};
     handleClose();
   };
 
@@ -148,7 +145,6 @@ function EditorModal({
           >
             {delId ? (
               <>
-              {console.log(delId)}
                 <Button variant="outlined" sx={{ marginRight: "10px" }}
                 onClick={()=>deleteTopic(delId)}
                 >
@@ -181,7 +177,7 @@ function EditorModal({
                   sx={{
                     marginLeft: "10px",
                   }}
-                  // onClick={() => close()}
+                 
                   onClick={() => close()}
                 >
                   CANCEL
@@ -205,7 +201,7 @@ function EditorModal({
                   sx={{
                     marginLeft: "10px",
                   }}
-                  // onClick={() => close()}
+             
                   onClick={() => close()}
                 >
                   CANCEL
