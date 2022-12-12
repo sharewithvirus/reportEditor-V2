@@ -4,6 +4,7 @@ const stackAndRadarModel = require("../model/stackAndRadarModel");
 const areaModel = require("../model/areaModel");
 const multibarModel = require("../model/multibarModel");
 const barLineModel = require("../model/barLineModel");
+const { findByIdAndUpdate } = require("../model/subTopicModel");
 
 
 //(1) PIE-CHART Methods
@@ -49,6 +50,44 @@ exports.getPieChart = async (req, res) => {
         res.status(500).json({
             status:"Error",
             message:"Internal Server Error"
+        })
+    }
+}
+
+exports.updatePieChart = async (req,res) => {
+    try{
+       const { id } = req.params;
+       const { reportId,chartType,name,labels,series} = req.body;
+       const updatedDoc = await pieAndDonutModel.findByIdAndUpdate({_id:id},req.body,{new:true});
+       //console.log(updatedDoc)
+       res.status(200).json({
+        status:"Success",
+        messsage:"Pie Chart is Updated Successfully",
+        data:updatedDoc
+       })
+    } catch(error){
+        console.log(error);
+       res.status(500).json({
+        status:"Error",
+        message:"Internal Server Error"
+       }) 
+    }
+}
+
+exports.deletePieChart = async (req,res) => {
+    try{
+      const { id } = req.params;
+      const deletedDoc = await pieAndDonutModel.findByIdAndUpdate({_id:id},{isDeleted:true, deletedAt:true},{new:true});
+      res.status(200).json({
+        status:"Success",
+        message:"Pie Chart Deleted Successfully",
+        data:deletedDoc
+      })
+    } catch(error){
+        console.log(error);
+        res.status(500).json({
+         status:"Error",
+         message:"Internal Server Error"
         })
     }
 }
@@ -100,8 +139,45 @@ exports.getDonutChart = async (req, res) => {
     }
 }
 
+exports.updateDonutChart = async (req,res) => {
+    try{
+       const { id } = req.params;
+       const { reportId,chartType,name,labels,series} = req.body;
+       const updatedDoc = await pieAndDonutModel.findByIdAndUpdate(id,req.body,{new:true});
+       //console.log(updatedDoc)
+       res.status(200).json({
+        status:"Success",
+        messsage:"Donut Chart is Updated Successfully",
+        data:updatedDoc
+       })
+    } catch(error){
+        console.log(error);
+       res.status(500).json({
+        status:"Error",
+        message:"Internal Server Error"
+       }) 
+    }
+}
 
-//BAR-CHART Methods
+exports.deleteDonutChart = async (req,res) => {
+    try{
+      const { id } = req.params;
+       await pieAndDonutModel.findByIdAndUpdate(id, { isDeleted:true, deletedAt: Date.now() });
+      res.status(200).json({
+        status:"Success",
+        message:"Donut Chart Deleted Successfully"
+      })
+    } catch(error){
+        console.log(error);
+        res.status(500).json({
+         status:"Error",
+         message:"Internal Server Error"
+        })
+    }
+}
+
+
+//(3)BAR-CHART Methods
 exports.createBarChart = async (req,res) => {
     try{
        const { reportId,chartType,name,series } = req.body;
@@ -133,6 +209,43 @@ exports.getBarChart = async (req, res) => {
         res.status(500).json({
             status:"Error",
             message:"Internal Server Error"
+        })
+    }
+}
+
+exports.updateBarChart = async (req,res) => {
+    try{
+       const { id } = req.params;
+       const {  reportId,chartType,name,series} = req.body;
+       const updatedDoc = await pieAndDonutModel.findByIdAndUpdate({_id:id},req.body,{new:true});
+       //console.log(updatedDoc)
+       res.status(200).json({
+        status:"Success",
+        messsage:"Pie Chart is Updated Successfully",
+        data:updatedDoc
+       })
+    } catch(error){
+        console.log(error);
+       res.status(500).json({
+        status:"Error",
+        message:"Internal Server Error"
+       }) 
+    }
+}
+
+exports.deletePieChart = async (req,res) => {
+    try{
+      const { id } = req.params;
+      const deletedDoc = await pieAndDonutModel.findByIdAndDelete({_id:id});
+      res.status(200).json({
+        status:"Success",
+        message:"Pie Chart Deleted Successfully"
+      })
+    } catch(error){
+        console.log(error);
+        res.status(500).json({
+         status:"Error",
+         message:"Internal Server Error"
         })
     }
 }
@@ -174,6 +287,44 @@ exports.getLineChart = async (req, res) => {
     }
 }
 
+exports.updatePieChart = async (req,res) => {
+    try{
+       const { id } = req.params;
+       const { reportId,chartType,name,labels,series} = req.body;
+       const updatedDoc = await pieAndDonutModel.findByIdAndUpdate({_id:id},req.body,{new:true});
+       //console.log(updatedDoc)
+       res.status(200).json({
+        status:"Success",
+        messsage:"Pie Chart is Updated Successfully",
+        data:updatedDoc
+       })
+    } catch(error){
+        console.log(error);
+       res.status(500).json({
+        status:"Error",
+        message:"Internal Server Error"
+       }) 
+    }
+}
+
+exports.deletePieChart = async (req,res) => {
+    try{
+      const { id } = req.params;
+      const deletedDoc = await pieAndDonutModel.findByIdAndDelete({_id:id});
+      res.status(200).json({
+        status:"Success",
+        message:"Pie Chart Deleted Successfully"
+      })
+    } catch(error){
+        console.log(error);
+        res.status(500).json({
+         status:"Error",
+         message:"Internal Server Error"
+        })
+    }
+}
+
+
 //STACKED-BAR-CHART Methods
 exports.createStackChart = async (req,res) => {
     try{
@@ -209,6 +360,44 @@ exports.getStackChart = async (req, res) => {
         })
     }
 }
+
+exports.updatePieChart = async (req,res) => {
+    try{
+       const { id } = req.params;
+       const { reportId,chartType,name,labels,series} = req.body;
+       const updatedDoc = await pieAndDonutModel.findByIdAndUpdate({_id:id},req.body,{new:true});
+       //console.log(updatedDoc)
+       res.status(200).json({
+        status:"Success",
+        messsage:"Pie Chart is Updated Successfully",
+        data:updatedDoc
+       })
+    } catch(error){
+        console.log(error);
+       res.status(500).json({
+        status:"Error",
+        message:"Internal Server Error"
+       }) 
+    }
+}
+
+exports.deletePieChart = async (req,res) => {
+    try{
+      const { id } = req.params;
+      const deletedDoc = await pieAndDonutModel.findByIdAndDelete({_id:id});
+      res.status(200).json({
+        status:"Success",
+        message:"Pie Chart Deleted Successfully"
+      })
+    } catch(error){
+        console.log(error);
+        res.status(500).json({
+         status:"Error",
+         message:"Internal Server Error"
+        })
+    }
+}
+
 
 //RADAR-CHART Methods
 exports.createRadarChart = async (req,res) => {
@@ -246,6 +435,44 @@ exports.getRadarChart = async (req, res) => {
     }
 }
 
+exports.updatePieChart = async (req,res) => {
+    try{
+       const { id } = req.params;
+       const { reportId,chartType,name,labels,series} = req.body;
+       const updatedDoc = await pieAndDonutModel.findByIdAndUpdate({_id:id},req.body,{new:true});
+       //console.log(updatedDoc)
+       res.status(200).json({
+        status:"Success",
+        messsage:"Pie Chart is Updated Successfully",
+        data:updatedDoc
+       })
+    } catch(error){
+        console.log(error);
+       res.status(500).json({
+        status:"Error",
+        message:"Internal Server Error"
+       }) 
+    }
+}
+
+exports.deletePieChart = async (req,res) => {
+    try{
+      const { id } = req.params;
+      const deletedDoc = await pieAndDonutModel.findByIdAndDelete({_id:id});
+      res.status(200).json({
+        status:"Success",
+        message:"Pie Chart Deleted Successfully"
+      })
+    } catch(error){
+        console.log(error);
+        res.status(500).json({
+         status:"Error",
+         message:"Internal Server Error"
+        })
+    }
+}
+
+
 //AREA-CHART Methods
 exports.createAreaChart = async (req,res) => {
     try{
@@ -281,6 +508,44 @@ exports.getAreaChart = async (req, res) => {
         })
     }
 }
+
+exports.updatePieChart = async (req,res) => {
+    try{
+       const { id } = req.params;
+       const { reportId,chartType,name,labels,series} = req.body;
+       const updatedDoc = await pieAndDonutModel.findByIdAndUpdate({_id:id},req.body,{new:true});
+       //console.log(updatedDoc)
+       res.status(200).json({
+        status:"Success",
+        messsage:"Pie Chart is Updated Successfully",
+        data:updatedDoc
+       })
+    } catch(error){
+        console.log(error);
+       res.status(500).json({
+        status:"Error",
+        message:"Internal Server Error"
+       }) 
+    }
+}
+
+exports.deletePieChart = async (req,res) => {
+    try{
+      const { id } = req.params;
+      const deletedDoc = await pieAndDonutModel.findByIdAndDelete({_id:id});
+      res.status(200).json({
+        status:"Success",
+        message:"Pie Chart Deleted Successfully"
+      })
+    } catch(error){
+        console.log(error);
+        res.status(500).json({
+         status:"Error",
+         message:"Internal Server Error"
+        })
+    }
+}
+
 
 //MULTI-BAR-CHART
 exports.createMultibarChart = async (req,res) => {
@@ -318,6 +583,44 @@ exports.getMultibarChart = async (req, res) => {
     }
 }
 
+exports.updatePieChart = async (req,res) => {
+    try{
+       const { id } = req.params;
+       const { reportId,chartType,name,labels,series} = req.body;
+       const updatedDoc = await pieAndDonutModel.findByIdAndUpdate({_id:id},req.body,{new:true});
+       //console.log(updatedDoc)
+       res.status(200).json({
+        status:"Success",
+        messsage:"Pie Chart is Updated Successfully",
+        data:updatedDoc
+       })
+    } catch(error){
+        console.log(error);
+       res.status(500).json({
+        status:"Error",
+        message:"Internal Server Error"
+       }) 
+    }
+}
+
+exports.deletePieChart = async (req,res) => {
+    try{
+      const { id } = req.params;
+      const deletedDoc = await pieAndDonutModel.findByIdAndDelete({_id:id});
+      res.status(200).json({
+        status:"Success",
+        message:"Pie Chart Deleted Successfully"
+      })
+    } catch(error){
+        console.log(error);
+        res.status(500).json({
+         status:"Error",
+         message:"Internal Server Error"
+        })
+    }
+}
+
+
 //BAR&LINE-CHART or Line&Column Combo Chart Methods
 exports.createBarLineChart = async (req,res) => {
     try{
@@ -350,6 +653,43 @@ exports.getBarLineChart = async (req, res) => {
         res.status(500).json({
             status:"Error",
             message:"Internal Server Error"
+        })
+    }
+}
+
+exports.updatePieChart = async (req,res) => {
+    try{
+       const { id } = req.params;
+       const { reportId,chartType,name,labels,series} = req.body;
+       const updatedDoc = await pieAndDonutModel.findByIdAndUpdate({_id:id},req.body,{new:true});
+       //console.log(updatedDoc)
+       res.status(200).json({
+        status:"Success",
+        messsage:"Pie Chart is Updated Successfully",
+        data:updatedDoc
+       })
+    } catch(error){
+        console.log(error);
+       res.status(500).json({
+        status:"Error",
+        message:"Internal Server Error"
+       }) 
+    }
+}
+
+exports.deletePieChart = async (req,res) => {
+    try{
+      const { id } = req.params;
+      const deletedDoc = await pieAndDonutModel.findByIdAndDelete({_id:id});
+      res.status(200).json({
+        status:"Success",
+        message:"Pie Chart Deleted Successfully"
+      })
+    } catch(error){
+        console.log(error);
+        res.status(500).json({
+         status:"Error",
+         message:"Internal Server Error"
         })
     }
 }

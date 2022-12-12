@@ -17,11 +17,15 @@ const { createPieChart,
         createMultibarChart,
         getMultibarChart,
         createBarLineChart,
-        getBarLineChart
+        getBarLineChart,
+        updatePieChart,
+        deletePieChart
       } = require("../controllers/chartController");
 
 //PIE-Chart Routes
-router.route("/pie-chart").post(createPieChart).get(getPieChart);
+router.route("/pie-chart").post(createPieChart).get(getPieChart).patch(deletePieChart);
+router.route("/pie-chart/:id").patch(updatePieChart);
+
 
 //Donut-Chart Routes
 router.route("/donut-chart").post(createDonutChart).get(getDonutChart);
