@@ -46,9 +46,7 @@ export const updateSubtopics = async (data) => {
      try {
        
       const res = await axios.put(`/api/v1/subtopic/`, data)
-      
-      console.log("data in controller..",res);
-        // console.log("success");  
+    
         return res;
      } catch (error) {
         alert(error.response.data.message)

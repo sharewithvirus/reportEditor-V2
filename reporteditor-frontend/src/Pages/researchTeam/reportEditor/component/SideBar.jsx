@@ -36,6 +36,7 @@ function SideBar({ subTopicList, ativeDataSet, getReportDataText }) {
               h={'h'}
                 index={Number(index + 1)}
                 item={item}
+                key = {item}
                   preIndex={index+1}
                 ativeDataSet={(x) => ativeDataSet(x)}
                   getReportDataText1 = {getReportDataText}

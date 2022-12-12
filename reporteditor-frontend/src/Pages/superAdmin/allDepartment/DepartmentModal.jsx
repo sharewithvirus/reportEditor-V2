@@ -191,11 +191,12 @@ export default function DepartmentModal(props) {
                       </InputLabel>
                       <Select
                         multiple
-                        sx={{sm:{
-                          widht:"50vw",
-                        },md:{
-                          width:"20vw"
-                        }}}
+                        // sx={{sm:{
+                        //   widht:"50vw",
+                        // },md:{
+                        //   width:"20vw"
+                        // }}}
+                        sx={{width:"20vw"}}
                         value={demoIndus}
                         onChange={handleChange}
                         input={<OutlinedInput label="Industries" />}

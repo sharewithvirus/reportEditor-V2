@@ -19,8 +19,6 @@ import DashboardRoutes from "./Pages/Routes/DashboardRoutes";
 import Dashboard from "./Pages/researchTeam/dashboard/Dashboard";
 
 import NavBar from "./components/NavBar";
-import CreateReport from "./Pages/researchTeam/reportsection/component/CreateReport";
-
 function App() {
   const { isAuthenticated, setUserInfo, setIsAuthenticated, setIsLoading, updateAdminData } =
     useContext(UserDataContext);
