@@ -16,11 +16,11 @@ import DeleteConfirmationModel from "../../../components/DeleteConfirmactionMode
 
 const Department = () => {
   const { setIsLoading } = useContext(UserDataContext);
-  const [open, setOpen] = React.useState(false);
-  const [activeDept, setActiveDept] = React.useState("");
-  const [editDept, setEditDept] = React.useState(false);
-  const [departmentList, setDepartmentList] = React.useState([]);
-  const [deleteModelShow, setDeleteModelShow] = React.useState(false);
+  const [open, setOpen] = useState(false);
+  const [activeDept, setActiveDept] = useState("");
+  const [editDept, setEditDept] = useState(false);
+  const [departmentList, setDepartmentList] = useState([]);
+  const [deleteModelShow, setDeleteModelShow] = useState(false);
   
   const handleShow = () => {
     if (open === true) {
@@ -41,7 +41,7 @@ const Department = () => {
       getDepartment();
     } else if (res.status === 204) {
       setDeleteModelShow(false);
-      alert("Department is assigned to To Users First Remove Users.");
+      alert("Department is assigned to Users First Remove Users.");
     }
     setActiveDept("");
     setIsLoading(false);

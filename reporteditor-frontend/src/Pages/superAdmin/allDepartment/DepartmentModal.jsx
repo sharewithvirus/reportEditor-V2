@@ -1,6 +1,18 @@
 import React, { useState, useEffect } from "react";
 // import Modal from '@mui/material/Modal';
-import { Box, Stack, TextField, Grid, Radio, FormControlLabel, RadioGroup } from "@mui/material";
+import {
+  Box,
+  Stack,
+  TextField,
+  Grid,
+  Radio,
+  FormControlLabel,
+  RadioGroup,
+  OutlinedInput,
+  Checkbox,
+  ListItemText,
+  Chip,
+} from "@mui/material";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import Modal from "@mui/material/Modal";
@@ -30,17 +42,52 @@ export default function DepartmentModal(props) {
     description: props.deptData.description,
     deptId: props.deptData._id,
     teamType: props.deptData.teamType,
+    industries: "",
   });
+
+  const [industries, setIndustries] = useState(props.deptData.industries);
+  const [demoIndus, setDemoIndus] = useState([]);
+  const indus = [
+    {
+      name: "Education",
+      _id: "14dfdf85df85df85df8",
+    },
+    {
+      name: "Cyber Cell",
+      _id: "14dfdf85df85df85dfd",
+    },
+    {
+      name: "Widgets",
+      _id: "14dfdf85df85df85df2",
+    },
+  ];
+  const handleChange = (e) =>{
+    setDemoIndus(e.target.value);
+    console.log(e.target.value);
+    // let check = false;
+    // for (let i = 0; i < demoIndus.length; i++) {
+    //   const element = demoIndus[i];
+    //   console.log("For Loop Elemet:-", element)
+    //   console.log("Targeted Id", e.target.value)
+    //   if(element._id == e.target.value._id){
+    //     check = true;
+    //   }
+    //   console.log(check)
+    // }
+    // console.log(check);
+  }
   const onInputChange = (e) => {
     const { name, value } = e.target;
     setData({ ...data, [name]: value });
   };
 
   const handleSubmit = async () => {
-    await props.create(data);
+    let finalData = data;
+    finalData.industries = industries;
+    await props.create(finalData);
     setData("");
   };
-  
+
   return (
     <div>
       <Modal
@@ -66,32 +113,32 @@ export default function DepartmentModal(props) {
             <hr />
           </Typography>
           <Box>
-              <Stack lg={4} item xs={12}>
+            <Stack lg={4} item xs={12}>
               <Box my={0} mx={0}>
-              <FormControl>
-                <RadioGroup
-                  row
-                  aria-labelledby="demo-row-radio-buttons-group-label"
-                  name="teamType"
-                  value={data.teamType}
-                  onChange={onInputChange}
-                >
-                  <FormControlLabel
-                    value="research-team"
-                    control={<Radio />}
-                    label="Research Team"
-                  />
-                  <FormControlLabel
-                    value="editing-team"
-                    control={<Radio />}
-                    label="Editing Team"
-                  />
-                </RadioGroup>
-              </FormControl>
-            </Box>
-              </Stack>
+                <FormControl>
+                  <RadioGroup
+                    row
+                    aria-labelledby="demo-row-radio-buttons-group-label"
+                    name="teamType"
+                    value={data.teamType}
+                    onChange={onInputChange}
+                  >
+                    <FormControlLabel
+                      value="research-team"
+                      control={<Radio />}
+                      label="Research Team"
+                    />
+                    <FormControlLabel
+                      value="editing-team"
+                      control={<Radio />}
+                      label="Editing Team"
+                    />
+                  </RadioGroup>
+                </FormControl>
+              </Box>
+            </Stack>
             <Grid container spacing={2}>
-              <Grid lg={4} item xs={12}>
+              <Grid lg={4} item xs={12} md={12}>
                 <FormControl fullWidth sx={{ m: 1 }}>
                   <Box
                     component="form"
@@ -129,7 +176,57 @@ export default function DepartmentModal(props) {
                       onChange={onInputChange}
                       size="large"
                     />
+                    
                   </Box>
+                  <Grid container >
+                    <Grid item xs={12} sm ={12} md={12}>
+                    <FormControl 
+                    sx={{marginTop:"15px",
+                    minHeight:"100%"
+                  }}
+                  fullWidth
+                    >
+                      <InputLabel>
+                       Industries
+                      </InputLabel>
+                      <Select
+                        multiple
+                        sx={{sm:{
+                          widht:"50vw",
+                        },md:{
+                          width:"20vw"
+                        }}}
+                        value={demoIndus}
+                        onChange={handleChange}
+                        input={<OutlinedInput label="Industries" />}
+                        renderValue={(selected) => (
+                          <Box sx={{ display: "flex", flexWrap: "wrap", gap: 0.5 }}>
+                            {selected.map((value) => {
+                              
+                                for (const item of indus) {
+                                  if(item._id === value)
+                                  { 
+                                    return (
+                                      <Chip label={item.name} value={value} />
+                                    )
+                                  }
+                                }
+                                
+                           
+                            })}
+                          </Box>
+                        )}
+                      >
+                        {indus.map((industry, index) => (
+                          <MenuItem key={industry._id} value={industry._id} name={industry.name}>
+                            {industry.name}
+                          </MenuItem>
+                        ))}
+                      </Select>
+                    </FormControl>
+
+                    </Grid>
+                  </Grid>
                 </FormControl>
               </Grid>
             </Grid>

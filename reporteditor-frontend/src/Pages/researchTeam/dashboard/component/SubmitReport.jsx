@@ -14,7 +14,7 @@ function SubmitReport() {
         }}
       >
         <Stack
-          display="flex"
+          
           direction="row"
           justifyContent="center"
           alignItems="center"
@@ -34,7 +34,7 @@ function SubmitReport() {
             </Typography>
           </Stack>
           <Stack
-            display="flex"
+           
             direction="row"
             justifyContent="center"
             alignItems="center"
@@ -75,7 +75,8 @@ function SubmitReport() {
               flexDirection: "row",
               justifyContent: "center",
               alignItem: "center",
-            }}
+            }} 
+            
           >
             <Stack
               sx={{
@@ -177,7 +178,7 @@ function SubmitReport() {
           </Stack>
         </Stack>
         {/* button */}
-        <Stack
+        {/* <Stack
         sx={{
           display:"flex",
           alignItems:"center",
@@ -204,7 +205,7 @@ function SubmitReport() {
           >
             GO TO EDITOR DASHBOARD
           </Button>
-        </Stack>
+        </Stack> */}
       </Box>
     </>
   );

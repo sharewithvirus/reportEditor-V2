@@ -13,10 +13,11 @@ import React from "react";
 import StatusTable from "./StatusTable";
 import SettingsOutlinedIcon from "@mui/icons-material/SettingsOutlined";
 import NoteAltOutlinedIcon from "@mui/icons-material/NoteAltOutlined";
+import ListAltRoundedIcon from "@mui/icons-material/ListAltRounded";
 import { Link } from "react-router-dom";
 import UpdateModal from "../UpdateModal";
 import { useState } from "react";
-function ReportManagementTable({ reportData, key }) {
+function ReportManagementTable({ reportData}) {
   const [open, setOpen] = React.useState(false);
   const [taskStatus, setTaskstatus] = useState([
     {
@@ -84,18 +85,10 @@ function ReportManagementTable({ reportData, key }) {
                       justifyContent: "center",
                       // marginLeft: "auto",
                       // marginRight: "auto",
-                      
-                      alignItems:"center"
+
+                      alignItems: "center",
                     }}
                   >
-                    <Link
-                      to={`/u_control/report-editor/${reportData._id}`}
-                      style={{
-                        textDecoration: "none",
-                      }}
-                    >
-                      Open Editor
-                    </Link>
                     <Link
                       to="submit-report"
                       style={{
@@ -111,11 +104,23 @@ function ReportManagementTable({ reportData, key }) {
                       </IconButton>
                     </Link>
                     <Link>
-                    <IconButton>
-                      <SettingsOutlinedIcon onClick={handleShow} />
-                    </IconButton>
+                      <IconButton onClick={handleShow} >
+                        <SettingsOutlinedIcon  />
+                      </IconButton>
                     </Link>
-                    <Link to = {`/u_control/edit-report/${reportData._id}`} >
+                      <Link
+                        to={`/u_control/report-editor/${reportData._id}`}
+                        style={{
+                          textDecoration: "none",
+                        }}
+                      >
+                        <IconButton
+                        color="info"
+                        >
+                          <ListAltRoundedIcon />
+                        </IconButton>
+                      </Link>
+                    <Link to={`/u_control/edit-report/${reportData._id}`}>
                       <Button
                         variant="outlined"
                         color="secondary"

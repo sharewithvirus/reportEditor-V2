@@ -13,6 +13,12 @@ const departmentSchema = new Schema({
         enum: [ 'research-team', 'editing-team' ],
         required:true
     },
+    industries: [
+        {
+            type: Schema.ObjectId,
+            ref: 'Industry'
+        }
+    ],
     deletedAt:{
         type: Date,
         default: null

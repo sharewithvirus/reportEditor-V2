@@ -67,15 +67,11 @@ function CreateReport() {
   const handleChange = (event) => {
     setPersonName(event.target.value);
   };
-
-  // const currentYear = new Date().getFullYear();
-
   const getUserList = async () => {
     const res = await getAllUsersByDepartmentAndTeam(
       userInfo.department,
       userInfo.teamType
     );
-    // console.log(res);
     if (res.status === 200) {
       setAllAuther(res.data.data);
     }
@@ -84,12 +80,10 @@ const getAllIndustryList = async () =>{
   const res = await getAllIndustry();
   if(res.status === 200 )
   {
-    // console.log("..",res.data.data);
     setIndustryList(res.data.data)
   }
 }
   useEffect(() => {
-    // getAllAuther();
     getUserList();
     getAllIndustryList();
   }, []);
@@ -98,7 +92,6 @@ const getAllIndustryList = async () =>{
     setIsLoading(true);
     const res = await getTemplate();
     if (res.status === 200) {
-      // console.log("get details create report", res.data.templateList);
       setTemplatesData(res.data.templateList);
     }
     setIsLoading(false);
@@ -129,11 +122,10 @@ const getAllIndustryList = async () =>{
         userList: personName,
         name: reportName,
       };
-      // console.log("updated report data",reportData);
-      // console.log(reportData);
+
       const res = await updateReport(reportData);
       if (res.status === 200) {
-        // console.log("response of updated report", res.status);
+
         setOpen(true);
         setIsLoading(false);
         navigate("/u_control/");
@@ -148,9 +140,9 @@ const getAllIndustryList = async () =>{
       }
       else{
         const res = await createReport(reportData);
-        // console.log(res.data.newReport._id)
+        
       if (res.status === 201) {
-        // console.log("response of report creation", res.status);
+       
         setOpen(true);
         setIsLoading(false);
         navigate(`/u_control/report-editor/${res.data.newReport._id}`);
@@ -160,7 +152,7 @@ const getAllIndustryList = async () =>{
   };
   const getReportData = async (x) => {
     const res = await getReportDataById(x);
-    // console.log("data of reports",res.data.data.name);
+    
     if (res.status === 200) {
       let obj = {
         _id: id,
@@ -233,7 +225,7 @@ const getAllIndustryList = async () =>{
            
           </Stack>
           <Stack
-            flexDirection={{md:"row"}}
+            flexDirection={{md:"row", sm:"column"}}
             justifyContent="start"
             alignItems="start"
             spacing={{sm:2, md:0}}
@@ -242,17 +234,18 @@ const getAllIndustryList = async () =>{
             <Typography sx={{ fontSize: "15px" }}>
               Author Name
             </Typography>
-            <FormControl sx={{ m: 1, width: "100%" }}>
+            <FormControl sx={{ m: 1, width:"100%"}}>
               <InputLabel id="demo-multiple-checkbox-label">select</InputLabel>
               <Select
                 labelId="demo-multiple-checkbox-label"
                 id="demo-multiple-checkbox"
                 multiple
+                fullWidth
                 value={personName}
                 onChange={handleChange}
                 required
                 input={<OutlinedInput label="select" />}
-                // renderValue={(selected) => selected.join(", ")}
+                
                 renderValue={(selected) => (
                   <Box sx={{ display: "flex", flexWrap: "wrap", gap: 0.5 }}>
                     {selected.map((value) => (
@@ -263,7 +256,7 @@ const getAllIndustryList = async () =>{
                 MenuProps={MenuProps}
                 size="medium"
               >
-                <MenuItem></MenuItem>
+                
                 {searchField === ""
                   ? allAuther.map((author, index) => (
                       <MenuItem key={index} value={author.userName}>
@@ -288,10 +281,49 @@ const getAllIndustryList = async () =>{
               </Select>
             </FormControl>
           </Stack>
-        
+          <Stack
+            flexDirection={{md:"row", sm:"column"}}
+            justifyContent="start"
+            alignItems="start"
+            spacing={{sm:2, md:0}}
+            marginTop="20px"
+          >
+            <Typography sx={{ fontSize: "15px" }}>
+              All Industries
+            </Typography>
+            <FormControl sx={{ m: 1, width:"100%"}}>
+              <InputLabel id="demo-multiple-checkbox-label">select</InputLabel>
+              <Select
+                labelId="demo-multiple-checkbox-label"
+                id="demo-multiple-checkbox"
+                multiple
+                fullWidth
+                value={personName}
+                onChange={handleChange}
+                required
+                input={<OutlinedInput label="select" />}
+                
+                renderValue={(selected) => (
+                  <Box sx={{ display: "flex", flexWrap: "wrap", gap: 0.5 }}>
+                    {selected.map((value) => (
+                      <Chip key={value} label={value} />
+                    ))}
+                  </Box>
+                )}
+                MenuProps={MenuProps}
+                size="medium"
+              > 
+              {allAuther.map((author, index) => (
+                      <MenuItem key={index} value={author.userName}>
+                        <ListItemText primary={author.userName} />
+                      </MenuItem>
+                    )) }
+              </Select>
+            </FormControl>
+          </Stack>
             <Stack
               flexDirection={{md:"row",}}
-              justifyContent={{sm:"start", md:"space-around"}}
+              justifyContent={{sm:"start", md:"space-evenly"}}
               alignItems="start"
               mt={3}
               spacing={{ sm:2, md:0}}
@@ -302,7 +334,7 @@ const getAllIndustryList = async () =>{
               <FormControl>
                 <TextField
                   sx={{
-                    width: "50%",
+                    width: "55%",
                   }}
                   value={baseYear}
                   onChange={(e) => setBaseYear(Number(e.target.value))}
@@ -338,11 +370,9 @@ const getAllIndustryList = async () =>{
             <Stack
             mt={3}
               flexDirection={{md:"row"}}
-              justifyContent={{sm:"start", md:"space-around"}}
+              justifyContent={{sm:"start", md:"space-evenly"}}
               alignItems="start"
               spacing={{sm:2 , md:0}}
-
-              //   border="2px solid black"
             >
               <Typography sx={{ fontSize: "15px" }}>
                 Forecast Year
@@ -351,7 +381,7 @@ const getAllIndustryList = async () =>{
               <FormControl>
                 <TextField
                   sx={{
-                    width: "50%",
+                    width: "55%",
                   }}
                   value={forecastYear}
                   onChange={(e) => setForecastYear(Number(e.target.value))}
