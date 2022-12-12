@@ -25,7 +25,6 @@ function ReportManagementTable({ reportData }) {
     reportData.reportStatusEditing.length >= 3 ? true : false,
     reportData.reportStatusEditing.length >= 4 ? true : false,
   ]);
-  // console.log(reportData.reportStatusEditing);
   let taskFlag = false;
   taskStatus.forEach(element => {
     if(element === false)
