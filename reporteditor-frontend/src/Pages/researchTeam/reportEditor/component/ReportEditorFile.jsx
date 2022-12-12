@@ -161,9 +161,6 @@ export default function FullWidthTabs() {
         else if (event.target.value === "area") {
             return setChartFormValues(["series", "label"])
         }
-        else if (event.target.value === "radar") {
-            return setChartFormValues(["series", "categories"])
-        }
         else if (event.target.value === "multibar") {
             setChartFormValues(["series", "categories"])
         }

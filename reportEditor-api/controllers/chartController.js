@@ -1,3 +1,4 @@
+const chartModel = require("../model/chartModel");
 const pieAndDonutModel = require("../model/pieAndDonutModel");
 const lineAndBarModel = require("../model/lineAndBarModel");
 const stackAndRadarModel = require("../model/stackAndRadarModel");
@@ -5,6 +6,87 @@ const areaModel = require("../model/areaModel");
 const multibarModel = require("../model/multibarModel");
 const barLineModel = require("../model/barLineModel");
 const { findByIdAndUpdate } = require("../model/subTopicModel");
+
+//Create All Chart With ChartType
+exports.createChart = async (req, res) => {
+    try{
+        const {chartType,reportId,name,label,series,categories} = req.body;
+           const newChart = await chartModel.create(req.body);
+           res.status(201).json({
+            status:"Success",
+            message:`${chartType} Chart created Successfully`,
+            data:newChart
+           })
+    } catch(error){
+        console.log(error);
+        res.status(500).json({
+            status:"Error",
+            message:"Internal Server Error"
+        })
+    }
+}
+
+//Get All Chart with ChartType value
+exports.getChart = async (req, res) => {
+    try {
+        const { chartType } = req.body;
+        const chartDocs = await chartModel.find({chartType});
+        res.status(200).json({
+            status:"Success",
+            message:`${chartType}-Chart fetched Successfully`,
+            data:chartDocs
+        })
+    } catch(error){
+        console.log(error);
+        res.status(500).json({
+            status:"Error",
+            message:"Internal Server Error"
+        })
+    }
+}
+
+exports.updateChart = async (req,res) => {
+    try{
+       const { id } = req.params;
+       const { reportId,chartType,name,label,series,categories } = req.body;
+       const updatedDoc = await chartModel.findByIdAndUpdate({_id:id},req.body,{new:true});
+       res.status(200).json({
+        status:"Success",
+        messsage:`${chartType} Chart is Updated Successfully`,
+        data:updatedDoc
+       })
+    } catch(error){
+        console.log(error);
+       res.status(500).json({
+        status:"Error",
+        message:"Internal Server Error"
+       }) 
+    }
+}
+
+exports.deleteChart = async (req,res) => {
+    try{
+      const { id } = req.params;
+      const getChart = await chartModel.findOne({_id:id, isDeleted:false});
+      if (!getChart) {
+        return res.status(404).json({ status: false, message: `Chart Not found` })  
+    }
+      const deletedDoc = await chartModel.findByIdAndUpdate(id, {$set: {isDeleted:true,deletedAt:Date.now()}}, {new:true});
+      res.status(200).json({
+        status:"Success",
+        message:`Chart Deleted Successfully`,
+        data:deletedDoc
+      })
+    } catch(error){
+        console.log(error);
+        res.status(500).json({
+         status:"Error",
+         message:"Internal Server Error"
+        })
+    }
+}
+
+
 
 
 //(1) PIE-CHART Methods
@@ -77,7 +159,11 @@ exports.updatePieChart = async (req,res) => {
 exports.deletePieChart = async (req,res) => {
     try{
       const { id } = req.params;
-      const deletedDoc = await pieAndDonutModel.findByIdAndUpdate({_id:id},{isDeleted:true, deletedAt:Date.now()});
+      const getPiechart = await pieAndDonutModel.findOne({_id:id, isDeleted:false});
+      if (!getPiechart) {
+        return res.status(404).json({ status: false, message: 'Pie Chart Not found' })  
+    }
+      const deletedDoc = await pieAndDonutModel.findByIdAndUpdate(id, {$set: {isDeleted:true,deletedAt:Date.now()}}, {new:true});
       res.status(200).json({
         status:"Success",
         message:"Pie Chart Deleted Successfully",

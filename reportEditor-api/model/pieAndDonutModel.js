@@ -1,7 +1,8 @@
 const mongoose = require("mongoose");
 const Report = require("./reportModel");
+const Schema = mongoose.Schema;
 
-const pieAndDonutSchema = new mongoose.Schema({
+const pieAndDonutSchema = new Schema({
 reportId:{
     type:mongoose.Schema.Types.ObjectId,
     ref:Report
@@ -19,12 +20,12 @@ labels:{
 series:{
     type:[Number]
 },
-isDeleted: {
-    type: Boolean,
-    default: false
-  },
+isDeleted:{
+    type:Boolean,
+    default:false
+},
 deletedAt: {
-    type: Date,
+    type: Boolean,
     default: null,
   }
 },

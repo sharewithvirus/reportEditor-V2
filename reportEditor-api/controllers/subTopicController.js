@@ -191,7 +191,7 @@ exports.deleteSubTopic = async (req, res) => {
     const subTopic = await SubTopic.findByIdAndUpdate(
       { _id: id },
       { deletedAt: Date.now() },
-      { New: true }
+      { new: true }
     );
     console.log(subTopic);
     if (subTopic.parentSubTopic) {

@@ -19,12 +19,22 @@ const { createPieChart,
         createBarLineChart,
         getBarLineChart,
         updatePieChart,
-        deletePieChart
+        deletePieChart,
+        createChart,
+        getChart,
+        updateChart,
+        deleteChart
       } = require("../controllers/chartController");
 
+//All Charts Route In a Single Model
+router.route("/").post(createChart).get(getChart);
+router.route("/:id").patch(updateChart).delete(deleteChart);
+
+
+
 //PIE-Chart Routes
-router.route("/pie-chart").post(createPieChart).get(getPieChart).patch(deletePieChart);
-router.route("/pie-chart/:id").patch(updatePieChart);
+router.route("/pie-chart").post(createPieChart).get(getPieChart);
+router.route("/pie-chart/:id").patch(updatePieChart).delete(deletePieChart);
 
 
 //Donut-Chart Routes
