@@ -259,13 +259,6 @@ const ResearchUserSection = () => {
   return (
     <>
       <Box sx={{ flexGrow: 2, color: "block !important" }}>
-        <Button
-          variant="text"
-          sx={{ fontSize: "17px", textTransform: "none", color: "black" }}
-          size="small"
-        >
-          Reports Management
-        </Button>
         <Link
           to="/u_control/report-template-management"
           style={{ textDecoration: "none" }}
