@@ -43,14 +43,20 @@ exports.getAllChart = async (req, res) => {
     }
 }
 
-//Get All Chart with ChartId value
-exports.getChart = async (req, res) => {
+
+// all charts by report id code by javed
+exports.getAllChart = async (req, res) => {
     try {
+        // const { chartType } = req.body;
         const { id } = req.params;
-        const chartDocs = await chartModel.findById(id);
+        console.log("api hitt", req.body);
+        const chartDocs = await chartModel.find({reportId: id})
+        // .select(
+        //     " reportId chartType name series label isDeleted deletedAt createdAt updatedAt "
+        // );
         res.status(200).json({
             status:"Success",
-            message:`Chart fetched Successfully`,
+            message:`All Chart fetched Successfully`,
             data:chartDocs
         })
     } catch(error){
@@ -61,7 +67,6 @@ exports.getChart = async (req, res) => {
         })
     }
 }
-
 
 exports.updateChart = async (req,res) => {
     try{

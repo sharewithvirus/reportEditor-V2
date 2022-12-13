@@ -12,7 +12,6 @@ import {
 
 import FileCopyOutlinedIcon from "@mui/icons-material/FileCopyOutlined";
 import ReportManagementTable from "./component/ReportManagementTable";
-import axios from "axios";
 import { useEffect } from "react";
 import { useState } from "react";
 import { getReport } from "../../../Services/reportServices";
@@ -20,24 +19,24 @@ import { getReport } from "../../../Services/reportServices";
 function DashboardPanel() {
   const [getData, setGetData] = useState([]);
   const url = "/api/v1/report";
+  const [value, setValue] = useState(0);
+
   const getApiData = async () => {
     const res = await getReport();
-    if(res.status === 200)
-    {
+    if (res.status === 200) {
       setGetData(res.data.reportsList);
-      // console.log("working or not",res);
       setOpen(true);
     }
   };
-  const [open, setOpen] = React.useState(false);
+  const [open, setOpen] = useState(false);
   // const handleClick = () => {
   //   setOpen(true);
   // };
 
   const handleClose = () => {
-       setOpen(false);
+    setOpen(false);
   };
-  // console.log(getData);
+
   useEffect(() => {
     getApiData();
   }, []);
@@ -56,9 +55,15 @@ function DashboardPanel() {
       >
         <Stack
           display="flex"
-          direction="row"
+          direction={{
+            md: "row",
+          }}
           justifyContent="space-between"
           alignItems="center"
+          spacing={{
+            md: 0,
+            sm: 2,
+          }}
         >
           <Stack
             display="flex"
@@ -78,17 +83,26 @@ function DashboardPanel() {
             direction="row"
             justifyContent="start"
             alignItems="center"
-            spacing={5}
+            spacing={{
+              md: 5,
+              sm: 2,
+            }}
           >
             <Typography sx={{ fontSize: "18px", fontWeight: "" }}>
               Showing
             </Typography>
-            <Select sx={{ width: "10vw", height: "30px" }} value={1}>
-              <MenuItem value={1}>Showing all</MenuItem>
-              <MenuItem value={2}>Drafting</MenuItem>
-              <MenuItem value={3}>Forwaded to Editing</MenuItem>
-              <MenuItem value={4}>Editing version Done</MenuItem>
-              <MenuItem value={5}>Research Published</MenuItem>
+            <Select
+              sx={{ width: "60%", height: "30px" }}
+              value={value}
+              onChange={(e) => {
+                setValue(e.target.value);
+              }}
+            >
+              <MenuItem value={0}>Showing all</MenuItem>
+              <MenuItem value={1}>Drafting</MenuItem>
+              <MenuItem value={2}>Forwaded to Editing</MenuItem>
+              <MenuItem value={3}>Editing version Done</MenuItem>
+              <MenuItem value={4}>Research Published</MenuItem>
             </Select>
           </Stack>
         </Stack>
@@ -100,26 +114,75 @@ function DashboardPanel() {
             }
           }
         >
-          {/* <Box
-            sx={{
-              borderRadius: "5px",
-              // padding: "50px",
-              margin: "50px",
-            }}
-          >
-            
-          </Box> */}
-          {getData
+          {value === 4
+            ? getData
+              ? getData.map((data, index) => {
+                  if (data.reportStatusResearch.length === value) {
+                    return (
+                      <>
+                        <ReportManagementTable reportData={data} key={index} />
+                      </>
+                    );
+                  }
+                })
+              : ""
+            : value === 3
+            ? getData
+              ? getData.map((data, index) => {
+                  if (data.reportStatusResearch.length === value) {
+                    return (
+                      <>
+                        <ReportManagementTable reportData={data} key={index} />
+                      </>
+                    );
+                  }
+                })
+              : ""
+            : value === 2
+            ? ( getData
+              ? getData.map((data, index) => {
+                console.log(value);
+                  if (data.reportStatusResearch.length === value) {
+                    return (
+                      <>
+                        <ReportManagementTable reportData={data} key={index} />
+                      </>
+                    );
+                  }
+                })
+              : "")
+            : value === 1
+            ? (getData
+              ? getData.map((data, index) => {
+                console.log(value);
+                  if (data.reportStatusResearch.length === value) {
+                    return (
+                      <>
+                        <ReportManagementTable reportData={data} key={index} />
+                      </>
+                    );
+                  }
+                })
+              : "")
+            : (getData
             ? getData.map((data, index) => {
                 return (
-                  <ReportManagementTable
-                    taskStatus={[true, true, true, true]}
-                    reportData={data}
-                    key={index}
-                  />
+                  <>
+                    <ReportManagementTable reportData={data} key={index} />
+                  </>
                 );
               })
-            : ""}
+            : "")}
+          {/* {getData
+            ? getData.map((data, index) => {
+                
+                return (
+                  <>
+                    <ReportManagementTable reportData={data} key={index} />
+                  </>
+                );
+              })
+            : ""} */}
           {/* <p> {getData ? getData[3].name : "not coming"} </p> */}
           {/* <ReportManagementTable taskStatus={[true,true,false,false]}/>
           <ReportManagementTable taskStatus={[true,false,false,false]}/> */}

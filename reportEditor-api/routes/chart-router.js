@@ -24,12 +24,22 @@ const { createPieChart,
         getChart,
         updateChart,
         deleteChart,
+<<<<<<< HEAD
         getAllChart,
       } = require("../controllers/chartController");
 
 //All Charts Route In a Single Model
 router.route("/").post(createChart).get(getAllChart);
 router.route("/:id").get(getChart).patch(updateChart).delete(deleteChart);
+=======
+        getAllChart
+      } = require("../controllers/chartController");
+
+//All Charts Route In a Single Model
+router.route("/").post(createChart).get(getChart);
+router.route("/:id").patch(updateChart).delete(deleteChart);
+router.route("/:id").get(getAllChart);
+>>>>>>> 17884e7b2cddecb5a3be96b565608fa563558454
 
 
 
