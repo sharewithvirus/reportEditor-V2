@@ -13,7 +13,7 @@ const GenChart = ({
   saveChartsData,
 }) => {
   // console.log("chartType", chartType);
-  console.log("formChartData", formChartData);
+  console.log("formChartData", formChartData.series?.split(",").map((item1) => parseInt(item1)));
 
   const [inputValue, setInputValue] = useState(null);
 

@@ -195,7 +195,9 @@ export default function FullWidthTabs() {
         const res = await createCharts(data);
         {
           if (res.status === 201) {
-            console.log("chart added");
+            console.log("chart added", res.data);
+            console.log("chart added", res.data.data);
+
             setSeverity("success");
             setSnackMsg("Added Successfully !");
             setopenSnack(true);
@@ -280,8 +282,8 @@ if(id){
                 columns={{ xs: 4, sm: 8, md: 12 }}
               >
                 {chartList ? chartList.map((chart, index) => (
-                  <Grid item sm={4} md={4} key={index}>
-                    <Item square color="inherit">
+                  <Grid item sm={12} md={12} key={index}>
+                    <Item square color="inherit" sx={{height: "150px",paddingLeft:"0px",paddingRight:"8px"}}>
                         <ShowCharts chartType={chart.chartType} formChartData={chart} />
                     </Item>
                   </Grid>

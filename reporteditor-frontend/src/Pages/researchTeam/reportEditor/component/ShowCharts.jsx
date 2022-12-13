@@ -1,19 +1,22 @@
 import React, { useEffect, useState } from "react";
 import ReactApexChart from "react-apexcharts";
 
-function ShowCharts({formChartData,chartType,}) {
-  const [inputValue, setInputValue] = useState(null);
-  const [show,setShow] = useState(true);
+function ShowCharts({formChartData, chartType}) {
+  const [inputValue, setInputValue] = useState(formChartData);
+
   const addChartFormValues = () => {
-    // setShow(true);
     setInputValue(formChartData);
-    setTimeout(() => {}, 2000);
+    setTimeout(() => {}, 0);
   };
 
   useEffect(() => {
     // console.log("formChartData", formChartData)
     // console.log("inputValue", inputValue)
-  }, [formChartData, show, addChartFormValues]);
+  }, [formChartData, addChartFormValues]);
+
+  console.log("inputValue", inputValue);
+  console.log("chartType", chartType);
+
 
   let chartData;
 
@@ -22,7 +25,7 @@ function ShowCharts({formChartData,chartType,}) {
       series: inputValue?.series?.split(",").map((item1) => parseInt(item1)),
       options: {
         chart: {
-          width: 380,
+          width: 50,
           type: "pie",
         },
         labels: inputValue?.label?.split(","),
@@ -31,7 +34,7 @@ function ShowCharts({formChartData,chartType,}) {
             breakpoint: 480,
             options: {
               chart: {
-                width: 200,
+                width: 50,
               },
               legend: {
                 position: "bottom",
@@ -54,7 +57,7 @@ function ShowCharts({formChartData,chartType,}) {
       options: {
         chart: {
           type: "bar",
-          height: 350,
+          height: 50,
         },
         plotOptions: {
           bar: {
@@ -80,11 +83,11 @@ function ShowCharts({formChartData,chartType,}) {
       ],
       options: {
         chart: {
-          height: 400,
+          height: 125,
           type: "radar",
         },
         title: {
-          text: "Basic Radar Chart",
+          text: "",
         },
         xaxis: {
           categories: inputValue?.categories?.split(","),
@@ -101,7 +104,7 @@ function ShowCharts({formChartData,chartType,}) {
       ],
       options: {
         chart: {
-          height: 350,
+          height: 50,
           type: "line",
           zoom: {
             enabled: false,
@@ -139,7 +142,7 @@ function ShowCharts({formChartData,chartType,}) {
       options: {
         chart: {
           type: "area",
-          height: 350,
+          height: 50,
           zoom: {
             enabled: false,
           },
@@ -207,7 +210,7 @@ function ShowCharts({formChartData,chartType,}) {
         labels: inputValue?.label?.split(","),
         responsive: [
           {
-            breakpoint: 480,
+            breakpoint: 50,
             options: {
               chart: {
                 width: 200,
@@ -224,16 +227,12 @@ function ShowCharts({formChartData,chartType,}) {
 
   return (
     <div>
-      {show ? (
         <ReactApexChart
           options={chartData.options}
           series={chartData.series}
           type={chartType}
-          width={380}
+          width={200}
         />
-      ) : (
-        ""
-      )}
     </div>
   );
 }
