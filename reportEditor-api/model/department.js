@@ -1,6 +1,5 @@
 const mongoose = require('mongoose');
-const Schema = mongoose.Schema;
-//const Industry = require("./industryModel");
+const { Schema } = mongoose;
 
 const departmentSchema = new Schema({
     name: {
