@@ -23,6 +23,7 @@ import ChartFormGen from "./ChartFormGen";
 import ImageUpload from "./ImageUpload";
 import CloseIcon from "@mui/icons-material/Close";
 import ShowCharts from "./ShowCharts";
+import TableUpload from "./TableUpload";
 const Item = styled(Paper)(({ theme }) => ({
   ...theme.typography.body2,
   padding: theme.spacing(2),
@@ -119,14 +120,17 @@ export default function FullWidthTabs() {
   const [value, setValue] = useState(0);
   const [open, setOpen] = useState(false);
   const [openImage, setOpenImage] = useState(false);
+  const [openTable, setOpenTable] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleOpenImage = () => setOpenImage(true);
+  const handleOpenTable = () => setOpenTable(true);
   const [openSnack, setopenSnack] = useState(false);
   const [severity, setSeverity] = useState("success");
   const [snackMsg, setSnackMsg] = useState("");
   const [chartFormValues, setChartFormValues] = useState(["series", "label"]);
   const handleClose = () => setOpen(false);
   const handleCloseImage = () => setOpenImage(false);
+  const handleCloseTable = () => setOpenTable(false);
   const [chartList , setChartList] = useState([])
   const [chartType, setChartType] = useState("pie");
 
@@ -272,7 +276,9 @@ if(id){
             </Button>
           </TabPanel>
           <TabPanel value={value} index={1} dir={theme.direction}>
-            Item Two
+            <Button onClick={handleOpenTable} sx={{mt:"20px"}} >
+                <Typography>ADD TABLE</Typography>
+              </Button>
           </TabPanel>
           <TabPanel value={value} index={2} dir={theme.direction}>
             <Stack>
@@ -356,6 +362,17 @@ if(id){
       >
         <Box sx={style}>
           <ImageUpload />
+        </Box>
+      </Modal>
+
+      <Modal
+        open={openTable}
+        onClose={handleCloseTable}
+        aria-labelledby="modal-modal-title"
+        aria-describedby="modal-modal-description"
+      >
+        <Box sx={style}>
+          <TableUpload />
         </Box>
       </Modal>
     </>
