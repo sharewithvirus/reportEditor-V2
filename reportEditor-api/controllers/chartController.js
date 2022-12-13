@@ -25,13 +25,15 @@ exports.createChart = async (req, res) => {
         })
     }
 }
-//Get All Chart 
-exports.getAllChart = async (req, res) => {
+
+//Get All Chart with ChartType value
+exports.getChart = async (req, res) => {
     try {
-        const chartDocs = await chartModel.find({});
+        const { chartType } = req.body;
+        const chartDocs = await chartModel.find({chartType});
         res.status(200).json({
             status:"Success",
-            message:`All Chart fetched Successfully`,
+            message:`${chartType}-Chart fetched Successfully`,
             data:chartDocs
         })
     } catch(error){
@@ -42,7 +44,6 @@ exports.getAllChart = async (req, res) => {
         })
     }
 }
-
 
 // all charts by report id code by javed
 exports.getAllChart = async (req, res) => {
