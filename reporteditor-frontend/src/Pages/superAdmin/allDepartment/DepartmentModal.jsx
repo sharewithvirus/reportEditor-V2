@@ -42,7 +42,7 @@ export default function DepartmentModal(props) {
     description: props.deptData.description,
     deptId: props.deptData._id,
     teamType: props.deptData.teamType,
-    industries: "",
+    industries: [],
   });
 
   const [industries, setIndustries] = useState(props.deptData.industries);
