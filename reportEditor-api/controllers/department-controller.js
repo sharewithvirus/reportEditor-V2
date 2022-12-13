@@ -1,5 +1,6 @@
 const User = require("../model/user");
 const Department = require("../model/department");
+//const Industry = require("../model/industryModel");
 // const { hashPassword, comparePassword } = require("../helpers/bcrypt");
 
 exports.createDepartment = async (req, res) => {
@@ -35,7 +36,11 @@ exports.createDepartment = async (req, res) => {
 
 exports.getAllDepartments = async (req, res) => {
     try {
-        const allDepartments = await Department.find({ deletedAt: null}).sort({ _id : -1});
+        const allDepartments = await Department.find({})
+                                                .populate({
+                                                    path:"industries",
+                                                    select:"name"
+                                                });
         res.status(200).json({
             status: 'success',
             message: 'Department List Fetched Successfully',

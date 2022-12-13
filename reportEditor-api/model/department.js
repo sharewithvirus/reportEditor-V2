@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
+//const Industry = require("./industryModel");
 
 const departmentSchema = new Schema({
     name: {
@@ -15,7 +16,7 @@ const departmentSchema = new Schema({
     },
     industries: [
         {
-            type: Schema.ObjectId,
+            type: Schema.Types.ObjectId,
             ref: 'Industry'
         }
     ],
