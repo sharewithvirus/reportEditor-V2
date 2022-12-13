@@ -1,24 +1,11 @@
-import AddCircleIcon from "@mui/icons-material/AddCircle";
-import { Button, IconButton } from "@mui/material";
-import { Stack } from "@mui/system";
 import React, { useEffect, useState } from "react";
 import ReactApexChart from "react-apexcharts";
 
-const GenChart = ({
-  formChartData,
-  setFormChartData,
-  show,
-  setShow,
-  chartType,
-  saveChartsData,
-}) => {
-  // console.log("chartType", chartType);
-  console.log("formChartData", formChartData);
-
+function ShowCharts({formChartData,chartType,}) {
   const [inputValue, setInputValue] = useState(null);
-
+  const [show,setShow] = useState(true);
   const addChartFormValues = () => {
-    setShow(true);
+    // setShow(true);
     setInputValue(formChartData);
     setTimeout(() => {}, 2000);
   };
@@ -236,57 +223,19 @@ const GenChart = ({
   }
 
   return (
-    <>
-      <div id="chart">
-        {show ? (
-          <ReactApexChart
-            options={chartData.options}
-            series={chartData.series}
-            type={chartType}
-            width={380}
-          />
-        ) : (
-          ""
-        )}
-        <Stack justifyContent="space-between" flexDirection={"row"}>
-          <IconButton
-            aria-label="delete"
-            onClick={addChartFormValues}
-            disabled={show ? true : false}
-          >
-            Click To Preview <AddCircleIcon />
-          </IconButton>
-          <Stack
-          flexDirection="row"
-          justifyContent="space-between"
-          sx={{marginRight:"10px"}}
-          
-          >
-            <Button
-              variant="contained"
-              color="warning"
-              size="small"
-              //   onChange={()=>{saveChartValues()}}
-              onClick={()=>saveChartsData()}
-              disabled={show ? false : true}
-            >
-              SAVE CHART
-            </Button>
-            <Button
-            variant="contained"
-            size="small"
-            sx={{marginLeft:"10px"}}
-            color="error"
-            disabled={show ? false : true}
-            onClick={()=>setShow(false)}
-            >
-                CANCEL
-            </Button>
-          </Stack>
-        </Stack>
-      </div>
-    </>
+    <div>
+      {show ? (
+        <ReactApexChart
+          options={chartData.options}
+          series={chartData.series}
+          type={chartType}
+          width={380}
+        />
+      ) : (
+        ""
+      )}
+    </div>
   );
-};
+}
 
-export default GenChart;
+export default ShowCharts;

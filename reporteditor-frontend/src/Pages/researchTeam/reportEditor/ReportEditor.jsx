@@ -2,28 +2,32 @@ import {
   Alert,
   Button,
   ButtonGroup,
-  Grid, Paper,
+  Grid,
+  Paper,
   Snackbar,
   Stack,
   TextField,
-  Typography
+  Typography,
 } from "@mui/material";
 import AddOutlinedIcon from "@mui/icons-material/AddOutlined";
 import { Box } from "@mui/system";
 import React, { useContext, useEffect, useRef, useState } from "react";
-import moment from 'moment'
+import moment from "moment";
 import { useParams } from "react-router-dom";
 import { styled } from "@mui/material/styles";
 import FileCopyOutlinedIcon from "@mui/icons-material/FileCopyOutlined";
 import SideBar from "./component/SideBar";
 import { Link } from "react-router-dom";
 // import Editor from "./component/Editor";
-import { saveSubtopics, updateSubtopics } from "../../../Services/chapterServices";
+import {
+  saveSubtopics,
+  updateSubtopics,
+} from "../../../Services/chapterServices";
 import { UserDataContext } from "../../../context/userContext";
 import { getReportDataById } from "../../../Services/reportServices";
 import Editor from "./component/Editor";
 import EditorModal from "./component/EditorModal";
-import ReportEditiorFile from './component/ReportEditorFile';
+import ReportEditiorFile from "./component/ReportEditorFile";
 function ReportEditor() {
   const { id } = useParams();
   const { setIsLoading } = useContext(UserDataContext);
@@ -45,15 +49,14 @@ function ReportEditor() {
   });
   const ref = useRef(null);
   const getReportData = async () => {
-    setIsLoading(true)
+    setIsLoading(true);
     const res = await getReportDataById(id);
-    if(res.status === 200)
-    {
-      if(res.data.reportData.subTopics.length == 0){
+    if (res.status === 200) {
+      if (res.data.reportData.subTopics.length == 0) {
         setOpen(true);
         setEditorState(true);
       }
-      setIsLoading(false)
+      setIsLoading(false);
       setReportData(res.data.reportData);
     }
   };
@@ -71,25 +74,24 @@ function ReportEditor() {
       getReportData();
       setIsLoading(false);
       console.log("success");
-    }
-    else{
+    } else {
       setSeverity("error");
       setSnackMsg("Something went Wrong !");
       setopenSnack(true);
     }
   };
-  const saveHtmlData = async (data) =>{
+  const saveHtmlData = async (data) => {
     const res = await updateSubtopics(data);
-    if(res.status === 200){
+    if (res.status === 200) {
       getReportData();
     }
-  }
-const ativeDataSet = (data) =>{
-  setActiveTopicData(data);
-}
-useEffect(()=>{
-  getReportData();
-},[])
+  };
+  const ativeDataSet = (data) => {
+    setActiveTopicData(data);
+  };
+  useEffect(() => {
+    getReportData();
+  }, []);
   return (
     <>
       <Snackbar open={openSnack} autoHideDuration={5000} onClose={handleSnack}>
@@ -112,10 +114,12 @@ useEffect(()=>{
         <Grid container spacing={0}>
           <Grid
             item
-            md={expanSidePanel.left}
+            md={4}
             display="flex"
             justifyContent="start"
             flexDirection="column"
+            pb={3}
+            sx={{}}
           >
             <Stack mt={5}>
               <Button onClick={() => handleShow()}>
@@ -128,6 +132,8 @@ useEffect(()=>{
                 display: "flex",
                 flexDirection: "column",
                 justifyContent: "space-between",
+                height:"700px",
+                backgroundColor:"rgba(0,0,0,0.3)"
               }}
             >
               {reportData ? (
@@ -136,11 +142,10 @@ useEffect(()=>{
                     reportData.subTopics ? reportData.subTopics : ""
                   }
                   getReportDataText={getReportData}
-                  
-                  ativeDataSet = {(x) => {
+                  ativeDataSet={(x) => {
                     // console.log(x)
-                    ativeDataSet(x)
-                    }}
+                    ativeDataSet(x);
+                  }}
                 />
               ) : (
                 ""
@@ -182,7 +187,7 @@ useEffect(()=>{
           </Grid>
           <Grid
             item
-            md={expanSidePanel.right}
+            md={8}
             sx={{
               minHeight: "100vh",
             }}
@@ -204,18 +209,21 @@ useEffect(()=>{
                     fontSize: "12px",
                   }}
                 >
-                  <b>Last Saved :</b> <span>{activeTopicData ? moment(activeTopicData.updatedAt).format('Do MMM YYYY  , h:mm:ss A'):""} </span>
+                  <b>Last Saved :</b>{" "}
+                  <span>
+                    {activeTopicData
+                      ? moment(activeTopicData.updatedAt).format(
+                          "Do MMM YYYY  , h:mm:ss A"
+                        )
+                      : ""}{" "}
+                  </span>
                 </Typography>
               </Stack>
               <Stack display="flex" justifyContent="center" alignItems="center">
                 <Stack
-                  sx={{
-                    display: "flex",
-                    flexDirection: "row",
-                    justifyContent: "center",
-
-                    alignContent: "center",
-                  }}
+                  flexDirection="row"
+                  justifyContent="center"
+                  alignContent="center"
                 >
                   <FileCopyOutlinedIcon
                     sx={{
@@ -231,7 +239,11 @@ useEffect(()=>{
                     fontSize: "12px",
                   }}
                 >
-                  <b>Editing : </b> <span> {activeTopicData? activeTopicData.subTopicName:""}</span>
+                  <b>Editing : </b>{" "}
+                  <span>
+                    {" "}
+                    {activeTopicData ? activeTopicData.subTopicName : ""}
+                  </span>
                 </Typography>
               </Stack>
               <Stack>
@@ -252,8 +264,6 @@ useEffect(()=>{
             <Stack
               sx={{
                 marginTop: "20px",
-
-                minHeight: "100vh",
                 display: "flex",
                 flexDirection: "row",
               }}
@@ -261,17 +271,23 @@ useEffect(()=>{
               <Stack
                 sx={{
                   width: "60%",
-                  border: "5px solid",
-                  height: "100vh",
+                  border: "2px solid",
+                  height: "700px",
+                  overflowY: "auto",
+                  position: "relative",
                 }}
               >
-                <Editor activeTopicData = {activeTopicData ? activeTopicData : ''} saveHtmlData = {(x)=>saveHtmlData(x)} editorState={editorState} />
+                <Editor
+                  activeTopicData={activeTopicData ? activeTopicData : ""}
+                  saveHtmlData={(x) => saveHtmlData(x)}
+                  editorState={editorState}
+                />
               </Stack>
               <Stack
                 sx={{
                   width: "40%",
-                  border: "5px solid",
-                  height: "100vh",
+                  border: "2px solid",
+                  height: "700px",
                 }}
               >
                 <Stack
@@ -289,15 +305,6 @@ useEffect(()=>{
                     }}
                   />
                 </Stack>
-                <Stack
-                  sx={{
-                    border: "1px solid",
-                    width: "90%",
-                    margin: "10px auto",
-                    height: "20vh",
-                  }}
-                ></Stack>
-
                 <Stack
                   sx={{
                     width: "90%",

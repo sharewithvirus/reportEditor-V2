@@ -29,7 +29,7 @@ const ChartFormGen = ({ setChartFormValues, chartFormValues, saveChartsData , ch
                 chartFormValues.map(
                     (item, index) => {
                         return (
-                            <div key={index}>
+                            <div key={index} style={{marginTop:"10px"}} >
                                 <TextField id={chartType} label={item} name={item} variant="outlined" onChange={e => handleFormValueChange(e)}
                                     value={item === 'series' ? formChartData.series : item === "label" ? formChartData.label : item === "series1" ? formChartData.series1 : item === 'categories' ? formChartData.categories : ""} />
 

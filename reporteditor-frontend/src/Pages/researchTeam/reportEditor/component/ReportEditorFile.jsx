@@ -1,4 +1,12 @@
-import { Button, Grid, IconButton, MenuItem, Paper, Stack, TextField } from "@mui/material";
+import {
+  Button,
+  Grid,
+  IconButton,
+  MenuItem,
+  Paper,
+  Stack,
+  TextField,
+} from "@mui/material";
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
 import Modal from "@mui/material/Modal";
@@ -10,10 +18,11 @@ import PropTypes from "prop-types";
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import SwipeableViews from "react-swipeable-views";
-import { createCharts } from "../../../../Services/chartServices";
+import { createCharts, getAllCharts } from "../../../../Services/chartServices";
 import ChartFormGen from "./ChartFormGen";
 import ImageUpload from "./ImageUpload";
-import CloseIcon from '@mui/icons-material/Close';
+import CloseIcon from "@mui/icons-material/Close";
+import ShowCharts from "./ShowCharts";
 const Item = styled(Paper)(({ theme }) => ({
   ...theme.typography.body2,
   padding: theme.spacing(2),
@@ -112,11 +121,13 @@ export default function FullWidthTabs() {
   const [openImage, setOpenImage] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleOpenImage = () => setOpenImage(true);
-
+  const [openSnack, setopenSnack] = useState(false);
+  const [severity, setSeverity] = useState("success");
+  const [snackMsg, setSnackMsg] = useState("");
   const [chartFormValues, setChartFormValues] = useState(["series", "label"]);
   const handleClose = () => setOpen(false);
   const handleCloseImage = () => setOpenImage(false);
-
+  const [chartList , setChartList] = useState([])
   const [chartType, setChartType] = useState("pie");
 
   const [formChartData, setFormChartData] = useState({
@@ -175,28 +186,49 @@ export default function FullWidthTabs() {
       series: formChartData.series,
       categories: formChartData.categories ? formChartData.categories : "",
     };
-
-
-    
-    const res = await createCharts(data);
+    if(formChartData.name ==="")
     {
-        if(res.status === 201)
+        alert("Please Enter Chart Name")
+    }
+    else
+    {
+        const res = await createCharts(data);
         {
+          if (res.status === 201) {
             console.log("chart added");
+            setSeverity("success");
+            setSnackMsg("Added Successfully !");
+            setopenSnack(true);
             setFormChartData({
-                name: "",
-                series: "",
-                label: "",
-                categories: "",
-              });
-              setShow(false);
+              name: "",
+              series: "",
+              label: "",
+              categories: "",
+            });
+            setShow(false);
+            handleClose();
+          }
         }
     }
-  };
+};
+const getChartsData = async (id) =>{
+    const res = await getAllCharts(id);
+    {
+        if(res.status === 200)
+        {
+            console.log(res.data.data);
+            setChartList(res.data.data);
+        }
+    }
+}
   useEffect(() => {
-    console.log("renderkkkk");
+    // console.log("renderkkkk");
   }, [formChartData]);
-
+useEffect(()=>{
+if(id){
+    getChartsData(id);
+}
+},[])
   return (
     <>
       <Box sx={{ bgcolor: "background.paper", width: "100%" }}>
@@ -247,14 +279,16 @@ export default function FullWidthTabs() {
                 spacing={{ xs: 2, md: 3 }}
                 columns={{ xs: 4, sm: 8, md: 12 }}
               >
-                {Array.from(Array(6)).map((_, index) => (
+                {chartList ? chartList.map((chart, index) => (
                   <Grid item sm={4} md={4} key={index}>
-                    <Item square color="inherit"></Item>
+                    <Item square color="inherit">
+                        <ShowCharts chartType={chart.chartType} formChartData={chart} />
+                    </Item>
                   </Grid>
-                ))}
+                )):""}
               </Grid>
             </Stack>
-            <Button onClick={handleOpen}>
+            <Button onClick={handleOpen} sx={{mt:"20px"}} >
               <Typography>ADD Charts</Typography>
             </Button>
           </TabPanel>
@@ -266,10 +300,16 @@ export default function FullWidthTabs() {
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
       >
-       
-
         <Box sx={style}>
-          <Stack flexDirection={"row"} justifyContent="space-between">
+          <Stack 
+          flexDirection={"row"}
+          justifyContent="end"
+          >
+            <IconButton onClick={()=>handleClose()}>
+              <CloseIcon />
+            </IconButton>
+          </Stack>
+          <Stack flexDirection={"row"} justifyContent="space-between" mt={2} >
             <TextField
               id="outlined-select-chart"
               select
@@ -284,7 +324,15 @@ export default function FullWidthTabs() {
                 </MenuItem>
               ))}
             </TextField>
-            <TextField label="Chart Name" value={formChartData.name} size="small" onChange={(e)=>setFormChartData({...formChartData, name : e.target.value})} disabled={show ? true : false} />
+            <TextField
+              label="Chart Name"
+              value={formChartData.name}
+              size="small"
+              onChange={(e) =>
+                setFormChartData({ ...formChartData, name: e.target.value })
+              }
+              disabled={show ? true : false}
+            />
           </Stack>
           <ChartFormGen
             formChartData={formChartData}
@@ -294,14 +342,9 @@ export default function FullWidthTabs() {
             setShow={setShow}
             chartFormValues={chartFormValues}
             chartType={chartType}
-            saveChartsData ={()=>saveChartsData()}
+            saveChartsData={() => saveChartsData()}
           />
-        <IconButton
-        >
-            <CloseIcon/>
-        </IconButton>
         </Box>
-       
       </Modal>
       <Modal
         open={openImage}
