@@ -41,7 +41,22 @@ exports.getAllIndustry = async (req,res) => {
         })
     }
 }
-
+exports.getAllIndustryByStatus = async (req,res) => {
+    try{
+       
+      const industryList = await IndustryModel.find({status : true});
+      res.status(200).json({
+        status:"Success",
+        message:"All Industry List are retrieved Successfully!",
+        data:industryList
+      })
+    } catch(error){
+        res.status(500).json({
+            status:"error",
+            message:"Internal Server Error"
+        })
+    }
+}
 exports.updateIndustry = async (req,res) => {
     try{
      const { id } = req.params;
