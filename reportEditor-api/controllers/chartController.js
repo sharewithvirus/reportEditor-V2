@@ -25,15 +25,13 @@ exports.createChart = async (req, res) => {
         })
     }
 }
-
-//Get All Chart with ChartType value
-exports.getChart = async (req, res) => {
+//Get All Chart 
+exports.getAllChart = async (req, res) => {
     try {
-        const { chartType } = req.body;
-        const chartDocs = await chartModel.find({chartType});
+        const chartDocs = await chartModel.find({});
         res.status(200).json({
             status:"Success",
-            message:`${chartType}-Chart fetched Successfully`,
+            message:`All Chart fetched Successfully`,
             data:chartDocs
         })
     } catch(error){
@@ -44,6 +42,26 @@ exports.getChart = async (req, res) => {
         })
     }
 }
+
+//Get All Chart with ChartId value
+exports.getChart = async (req, res) => {
+    try {
+        const { id } = req.params;
+        const chartDocs = await chartModel.findById(id);
+        res.status(200).json({
+            status:"Success",
+            message:`Chart fetched Successfully`,
+            data:chartDocs
+        })
+    } catch(error){
+        console.log(error);
+        res.status(500).json({
+            status:"Error",
+            message:"Internal Server Error"
+        })
+    }
+}
+
 
 exports.updateChart = async (req,res) => {
     try{
