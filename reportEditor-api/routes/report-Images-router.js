@@ -2,7 +2,7 @@ const express = require("express");
 const router = express.Router();
 const multer = require("multer");
 const upload = multer({ dest: "temp/" });
-const { getAllImagesByReportId, uploadImageToReport, getAllImagesByReportId } = require("../controllers/reportImages-controller");
+const { getAllImagesByReportId, uploadImageToReport } = require("../controllers/reportImages-controller");
 
 //All Charts Route In a Single Model
 // router.route("/:id").get(getImageById);
