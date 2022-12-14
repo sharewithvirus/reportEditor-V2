@@ -256,7 +256,7 @@ function CreateReport() {
             >
               {searchField === ""
                 ? allAuther.map((author, index) => (
-                    <MenuItem key={index} value={author.userName}>
+                    <MenuItem key={author._id} value={author.userName}>
                       <ListItemText primary={author.userName} />
                     </MenuItem>
                   ))
