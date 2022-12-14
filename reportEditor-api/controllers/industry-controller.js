@@ -1,5 +1,5 @@
 const IndustryModel = require("../model/industryModel");
-
+const Department = require("../model/department");1 
 exports.createIndustry = async (req,res) => {
     try{
       const {name, status} = req.body;
@@ -28,7 +28,7 @@ exports.createIndustry = async (req,res) => {
 
 exports.getAllIndustry = async (req,res) => {
     try{
-      const industryList = await IndustryModel.find({});
+      const industryList = await IndustryModel.find({ deletedAt: null });
       res.status(200).json({
         status:"Success",
         message:"All Industry List are retrieved Successfully!",
@@ -41,6 +41,31 @@ exports.getAllIndustry = async (req,res) => {
         })
     }
 }
+
+exports.getAllIndustryByDepartmentId = async (req,res) => {
+    try{
+        const {departmentId} = req.params;
+        const departmentText = await Department.findById(departmentId);
+        const industryList = await IndustryModel.find({
+            '_id': { 
+              $in: departmentText.industries
+            },
+            status: true,
+            deletedAt: null
+          });
+      res.status(200).json({
+        status:"Success",
+        message:"All Industry List are retrieved Successfully!",
+        data:industryList
+      })
+    } catch(error){
+        res.status(500).json({
+            status:"error",
+            message:"Internal Server Error"
+        })
+    }
+}
+
 exports.getAllIndustryByStatus = async (req,res) => {
     try{
        

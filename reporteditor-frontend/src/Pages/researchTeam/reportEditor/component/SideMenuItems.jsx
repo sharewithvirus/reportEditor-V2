@@ -12,7 +12,7 @@ import { UserDataContext } from "../../../../context/userContext";
 import { useContext } from "react";
 import { useParams } from "react-router-dom";
 
-function SideMenuItems({ clWidth, item, preIndex, index , getReportDataText1 , ativeDataSet,active}) {
+function SideMenuItems({ clWidth, item, preIndex, index2 , getReportDataText1 , ativeDataSet,active}) {
   // console.log(getReportDataText1);
   const { setIsLoading } = useContext(UserDataContext);
   const { id } = useParams();
@@ -102,7 +102,7 @@ function SideMenuItems({ clWidth, item, preIndex, index , getReportDataText1 , a
                 >
                     <Typography
                     onClick={() =>ativeDataSet(item)}
-                    >{preIndex ? `${preIndex}.${index}: `: `${index}: `}{`${item.subTopicName}`} </Typography>
+                    >{preIndex !== 'null' ? `${preIndex}.${index2}: `: `${index2}: `}{`${item.subTopicName}`} </Typography>
                     <Box
                     
                     >
@@ -121,8 +121,8 @@ function SideMenuItems({ clWidth, item, preIndex, index , getReportDataText1 , a
                 </Stack>
               </AccordionSummary>
               <AccordionDetails>
-                {item.subTopics.map((item,index) => {
-                     return <SideMenuItems key={index} item={item} preIndex={`${Number(index+1)}.${Number(index+1)}`} index={Number(index+1)} ativeDataSet = {(x) =>ativeDataSet(x)} getReportDataText1={getReportDataText1}/>
+                {item.subTopics.map((item, index) => {
+                     return <SideMenuItems key={index2} item={item} preIndex={preIndex !== "null" ? `${preIndex}.${index2}` : `${index2}`} index2={Number(index+1)} ativeDataSet = {(x) =>ativeDataSet(x)} getReportDataText1={getReportDataText1}/>
                 })}
               </AccordionDetails>
             </Accordion>
@@ -150,7 +150,7 @@ function SideMenuItems({ clWidth, item, preIndex, index , getReportDataText1 , a
                     <Typography
                      onClick={()=> ativeDataSet(item)}
                
-                    >{preIndex ? `${preIndex}.${index}: `: `${index}: `}{`${item.subTopicName}`}</Typography>
+                    >{preIndex === "null" ? `${index2}: ` : `${preIndex}.${index2}: `}{`${item.subTopicName}`}</Typography>
                     <Box
                     >
                       <ButtonGroup>

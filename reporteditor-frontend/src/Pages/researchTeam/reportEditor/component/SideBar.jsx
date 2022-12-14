@@ -34,10 +34,10 @@ function SideBar({ subTopicList, ativeDataSet, getReportDataText }) {
             return (
               <SideMenuItems
               h={'h'}
-                index={Number(index + 1)}
+              index2={Number(index + 1)}
                 item={item}
                 key = {item}
-                  preIndex={index+1}
+                  preIndex='null'
                 ativeDataSet={(x) => ativeDataSet(x)}
                   getReportDataText1 = {getReportDataText}
                 

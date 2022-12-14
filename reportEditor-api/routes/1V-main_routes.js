@@ -11,6 +11,10 @@ router.use("/template", require("./templateRoutes"));
 router.use("/industry", require("./industry-router"));
 router.use("/subtopic", require("./subtopic-router"));
 router.use("/chart", require("./chart-router"));
+<<<<<<< HEAD
 router.use("/table", require("./table-router"));
+=======
+router.use("/report-image", require("./report-Images-router"));
+>>>>>>> 6684024ccf757f5bf934f16aa696b70437ae5cd7
 
 module.exports = router;

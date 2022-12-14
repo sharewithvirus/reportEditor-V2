@@ -312,9 +312,8 @@ function ReportEditor() {
                 />
               </Stack>
               <Stack
+              mt={2}
                 sx={{
-                  width: "90%",
-                  margin: "10px  auto",
                   display: "flex",
                   flexDirection: "row",
                   justifyContent: "center",

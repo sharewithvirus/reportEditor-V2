@@ -1,26 +1,33 @@
 const User = require("../model/user");
 const Role = require("../model/role")
-const Department = require("../model/department");
-// const { hashPassword, comparePassword } = require("../helpers/bcrypt");
+const ReportImage = require("../model/reportImages");
+const {uploadImg, deleteFile, getFileStream} = require("../config/s3Config");
+const Report = require("../model/reportModel");
 
-exports.createRole = async (req, res) => {
+exports.uploadImageToReport = async (req, res) => {
     try {
-        const { name, department, access } = req.body;
-        if(!name, !department, !access) {
+        const { reportId } = req.params;
+        const { imageName } = req.body;
+        const file = req.file;
+        if(!reportId, !file) {
             res.status(200).json({
                 status: 'error',
-                message: "All Fields are Required",
+                message: "Report and Image is Required",
             })
             return;
         }else{
-            const newRole = await Role.create({name, department, access});
+            const report = await Report.findById(reportId);
+            const result = await uploadImg(file);
+            const newReportImage = await ReportImage.create({reportId, name: imageName, key: result?.Key, imgUrl: result.Location})
+            report.reportImages.push(newReportImage._id);
+            await report.save();
             res.status(200).json({
                 status: 'success',
-                message: "Role Created Successfully",
-                data: newRole,
+                message: "Image Updated Successfully",
             })
         }
     } catch (error) {
+        console.log(error);
         res.status(500).json({
             status: "error",
             message: "Internal Server Error",
@@ -28,18 +35,14 @@ exports.createRole = async (req, res) => {
     }
 }
 
-exports.getAllRole = async (req, res) => {
+exports.getAllImagesByReportId = async (req, res) => {
     try {
-        const allRole = await Role.find({ deletedAt: null })
-        .populate({
-            path: "department",
-            select: "name"
-        })
-        .sort({ _id : -1}); 
+        const {reportId} = req.params;
+        const allReportImg = await ReportImage.find({ reportId, deletedAt: null });
         res.status(200).json({
             status: 'success',
-            message: 'Role List Fetched Successfully',
-            data: allRole,
+            message: 'Reports Fetched Successfully',
+            data: allReportImg,
         })
     } catch (error) {
         console.log(error)
@@ -95,12 +98,11 @@ exports.updateRole = async (req, res) => {
     }
 }
 
-// i javed akhtar start code from here
-
 exports.roleDelete = async (req, res) => {
     try {
         const { roleId } = req.params;
-        await Role.findByIdAndUpdate({_id: roleId}, {deletedAt:new Date()});    
+        console.log("Role Id", roleId)
+        await Role.findByIdAndUpdate({_id: roleId}, {isDeleted:true});    
         res.status(200).json({
             status: "success",
             message: "Role Status updated successfully"

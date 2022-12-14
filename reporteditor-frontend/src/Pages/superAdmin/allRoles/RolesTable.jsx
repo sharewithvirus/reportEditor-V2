@@ -10,8 +10,9 @@ import Button from "@mui/material/Button";
 import Switch from "@mui/material/Switch";
 import Roles from "./Roles";
 import { UserDataContext } from "../../../context/userContext";
-import DeleteConfirmationModel from '../../../components/DeleteConfirmactionModel'
+
 import { deleteRole } from '../../../Services/roleService'
+import DeleteConfirmationModel from "../../../components/DeleteConfirmactionModel";
 
 const label = { inputProps: { "aria-label": "Switch demo" } };
 
@@ -43,6 +44,13 @@ export default function RolesTable({ rows, changeVisibility, getData }) {
   }
 
   return (
+    <>
+    <DeleteConfirmationModel 
+    open ={open} 
+    id ={setActiveRoleId}
+    handleClose = {(x)=>handleClose(x)}
+     handleDelete = {()=>handleDelete()}
+    />
     <TableContainer component={Paper}>
       <Table sx={{ minWidth: 650 }} aria-label="simple table">
         <TableHead>
@@ -88,7 +96,7 @@ export default function RolesTable({ rows, changeVisibility, getData }) {
                   variant="outlined"
                   color="primary"
                   sx={{ textTransform: "none" }}
-                   onClick={() =>  handleClose(row._id)}
+                   onClick={() => handleClose(row._id)}
                 >
                   Delete
                 </Button>
@@ -109,5 +117,6 @@ export default function RolesTable({ rows, changeVisibility, getData }) {
         </TableBody>
       </Table>
     </TableContainer>
+    </>
   );
 }

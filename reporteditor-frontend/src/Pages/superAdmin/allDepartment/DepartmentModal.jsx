@@ -45,25 +45,9 @@ export default function DepartmentModal(props) {
     teamType: props.deptData.teamType,
     industries: industries,
   });
-
-  const [demoIndus, setDemoIndus] = useState([]);
-  console.log(props.industryList);
-  const indus = [
-    {
-      name: "Education",
-      _id: "14dfdf85df85df85df8",
-    },
-    {
-      name: "Cyber Cell",
-      _id: "14dfdf85df85df85dfd",
-    },
-    {
-      name: "Widgets",
-      _id: "14dfdf85df85df85df2",
-    },
-  ];
+ 
   const handleChange = (e) =>{
-    setDemoIndus(e.target.value);
+   
     setIndustries(e.target.value);
     console.log(e.target.value);
     // let check = false;
@@ -204,8 +188,7 @@ export default function DepartmentModal(props) {
                         input={<OutlinedInput label="Industries" />}
                         renderValue={(selected) => (
                           <Box sx={{ display: "flex", flexWrap: "wrap", gap: 0.5 }}>
-                            {selected.map((value) => {
-                              
+                            {selected.map((value) => {                     
                                 for (const item of props.industryList) {
                                   if(item._id === value)
                                   { 
@@ -213,9 +196,7 @@ export default function DepartmentModal(props) {
                                       <Chip label={item.name} value={value} />
                                     )
                                   }
-                                }
-                                
-                           
+                                }                          
                             })}
                           </Box>
                         )}
