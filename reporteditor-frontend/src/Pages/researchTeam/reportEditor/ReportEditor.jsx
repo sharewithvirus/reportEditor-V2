@@ -278,6 +278,7 @@ function ReportEditor() {
                 height: "700px",
                 borderLeft: " 1px solid",
                 borderRight: " 1px solid",
+                overflow:'auto'
               }}
             >
               <Editor

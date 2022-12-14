@@ -5,7 +5,7 @@ import { Box, Button, Container, Paper, Stack, TextField, Typography } from "@mu
 import React, { useCallback, useState } from "react";
 import { useDropzone } from "react-dropzone";
 
-const ImageUpload = () => {
+const ImageUpload = ({postImage,open}) => {
     const [inputImage, setInputImage] = useState(null);
     const [imageAvailable, setImageAvailable] = useState(false);
     const [imageName, setImageName] = useState("");
@@ -40,9 +40,14 @@ const ImageUpload = () => {
     };
     // =========================uploadImage=========================================
 
-    const uploadImage = () => {
+    const uploadImage = async () => {
         // inputImage variable is providing static image URL
-        console.log(inputImage);
+        const data ={
+            imgUrl:inputImage,
+            name:imageName,
+        }
+        console.log(data);
+        await postImage(data);
     };
     // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     return (
