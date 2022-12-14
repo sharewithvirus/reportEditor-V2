@@ -141,7 +141,7 @@ function DashboardPanel() {
             : value === 2
             ? ( getData
               ? getData.map((data, index) => {
-                console.log(value);
+                // console.log(value);
                   if (data.reportStatusResearch.length === value) {
                     return (
                       <>
@@ -154,7 +154,7 @@ function DashboardPanel() {
             : value === 1
             ? (getData
               ? getData.map((data, index) => {
-                console.log(value);
+                // console.log(value);
                   if (data.reportStatusResearch.length === value) {
                     return (
                       <>
