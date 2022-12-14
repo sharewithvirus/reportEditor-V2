@@ -120,7 +120,7 @@ function DashboardPanel() {
                   if (data.reportStatusResearch.length === value) {
                     return (
                       <>
-                        <ReportManagementTable reportData={data} key={index} />
+                        <ReportManagementTable reportData={data} key={`${index + data._id }`} />
                       </>
                     );
                   }

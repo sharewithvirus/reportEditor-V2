@@ -11,12 +11,10 @@ function ShowCharts({formChartData, chartType}) {
   };
 
   useEffect(() => {
-    // console.log("formChartData", formChartData)
-    // console.log("inputValue", inputValue)
   }, [formChartData, addChartFormValues]);
 
-  console.log("inputValue", inputValue);
-  console.log("chartType", chartType);
+  // console.log("inputValue", inputValue);
+  // console.log("chartType", chartType);
 
 
   let chartData;
@@ -129,7 +127,7 @@ function ShowCharts({formChartData, chartType}) {
         },
         grid: {
           row: {
-            colors: ["#f3f3f3", "transparent"], // takes an array which will be repeated on columns
+            colors: ["#f3f3f3", "transparent"], 
             opacity: 0.5,
           },
         },
