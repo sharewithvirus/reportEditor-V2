@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import ReactApexChart from "react-apexcharts";
 
+
 function ShowCharts({formChartData, chartType}) {
   const [inputValue, setInputValue] = useState(formChartData);
 
@@ -27,6 +28,9 @@ function ShowCharts({formChartData, chartType}) {
         chart: {
           width: 50,
           type: "pie",
+        },
+        title: {
+          text:inputValue.name,
         },
         labels: inputValue?.label?.split(","),
         responsive: [
@@ -59,6 +63,9 @@ function ShowCharts({formChartData, chartType}) {
           type: "bar",
           height: 50,
         },
+        title: {
+          text:inputValue.name,
+        },
         plotOptions: {
           bar: {
             borderRadius: 4,
@@ -87,7 +94,7 @@ function ShowCharts({formChartData, chartType}) {
           type: "radar",
         },
         title: {
-          text: "",
+          text:inputValue.name,
         },
         xaxis: {
           categories: inputValue?.categories?.split(","),
@@ -117,7 +124,7 @@ function ShowCharts({formChartData, chartType}) {
           curve: "straight",
         },
         title: {
-          text: "Chart Name",
+          text:inputValue.name,
           align: "left",
         },
         grid: {
@@ -155,13 +162,13 @@ function ShowCharts({formChartData, chartType}) {
         },
 
         title: {
-          text: "Fundamental Analysis of Stocks",
+          text: inputValue.name,
           align: "left",
         },
-        subtitle: {
-          text: "Price Movements",
-          align: "left",
-        },
+        // subtitle: {
+        //   text: "Price Movements",
+        //   align: "left",
+        // },
         labels: inputValue?.label?.split(","),
         yaxis: {
           opposite: true,
@@ -231,7 +238,8 @@ function ShowCharts({formChartData, chartType}) {
           options={chartData.options}
           series={chartData.series}
           type={chartType}
-          width={200}
+          width={chartType == 'pie'? 270:250}
+        
         />
     </div>
   );

@@ -13,6 +13,7 @@ import {
 } from "../../../Services/departmentService";
 import { UserDataContext } from "../../../context/userContext";
 import DeleteConfirmationModel from "../../../components/DeleteConfirmactionModel";
+import { getAllIndustry, getIndustryStatusTrue } from "../../../Services/industryServices";
 
 const Department = () => {
   const { setIsLoading } = useContext(UserDataContext);
@@ -21,7 +22,7 @@ const Department = () => {
   const [editDept, setEditDept] = useState(false);
   const [departmentList, setDepartmentList] = useState([]);
   const [deleteModelShow, setDeleteModelShow] = useState(false);
-  
+  const [allIndustries, setAllIndustries] = useState([])
   const handleShow = () => {
     if (open === true) {
       setActiveDept("");
@@ -86,6 +87,15 @@ const Department = () => {
     handleShow();
   };
 
+  const getAllIndustries = async () =>{
+    const res = await getIndustryStatusTrue();
+    if(res.status === 200)
+    {
+      console.log("industries",res);
+      setAllIndustries(res.data.data);
+
+    }
+  }
   const updateDepartment = async (index) => {
     const dept = departmentList[index];
     setActiveDept(dept);
@@ -95,6 +105,7 @@ const Department = () => {
 
   useEffect(() => {
     getDepartment();
+    getAllIndustries();
   }, []);
 
   return (
@@ -106,6 +117,7 @@ const Department = () => {
         edit={editDept}
         deptData={activeDept}
         create={(x) => createNewDepartment(x)}
+        industryList = {allIndustries}
       />
       <DeleteConfirmationModel
         open={deleteModelShow}
