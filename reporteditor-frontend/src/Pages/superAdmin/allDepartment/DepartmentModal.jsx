@@ -46,24 +46,11 @@ export default function DepartmentModal(props) {
     industries: industries,
   });
 
-  const [demoIndus, setDemoIndus] = useState([]);
-  console.log(props.industryList);
-  const indus = [
-    {
-      name: "Education",
-      _id: "14dfdf85df85df85df8",
-    },
-    {
-      name: "Cyber Cell",
-      _id: "14dfdf85df85df85dfd",
-    },
-    {
-      name: "Widgets",
-      _id: "14dfdf85df85df85df2",
-    },
-  ];
+ 
+ 
+ 
   const handleChange = (e) =>{
-    setDemoIndus(e.target.value);
+   
     setIndustries(e.target.value);
     console.log(e.target.value);
     // let check = false;

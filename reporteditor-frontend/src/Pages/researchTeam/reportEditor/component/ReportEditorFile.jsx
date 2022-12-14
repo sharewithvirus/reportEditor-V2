@@ -292,12 +292,12 @@ export default function FullWidthTabs() {
                   ? chartList.map((chart, index) => (
                       <Grid
                         item
-                        sm={12}
+                        sm={3}
                         md={12}
                         key={index}
                         sx={{
-                          border: `${active === index ? "3px" : "1px"} solid ${
-                            active === index ? "green" : "black"
+                          border: `${active === index ? "3px" : "3px"} solid ${
+                            active === index ? "green" : "grey"
                           }`,
                           padding: "0px",
                           position: "relative",

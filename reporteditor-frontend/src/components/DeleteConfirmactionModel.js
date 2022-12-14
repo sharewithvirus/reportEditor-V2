@@ -23,7 +23,7 @@ const DeleteConfirmationModel = ({open, handleClose, handleDelete, handleModelCl
     >
 
         <Box sx={style}>
-            {id? id : "....."}
+       
             <Typography id="modal-modal-title" variant="h6" component="h2">
                 <Stack display='flex'
                     direction='row'
