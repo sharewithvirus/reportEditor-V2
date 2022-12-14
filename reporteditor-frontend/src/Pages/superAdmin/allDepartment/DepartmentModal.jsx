@@ -45,9 +45,6 @@ export default function DepartmentModal(props) {
     teamType: props.deptData.teamType,
     industries: industries,
   });
-
- 
- 
  
   const handleChange = (e) =>{
    
@@ -191,8 +188,7 @@ export default function DepartmentModal(props) {
                         input={<OutlinedInput label="Industries" />}
                         renderValue={(selected) => (
                           <Box sx={{ display: "flex", flexWrap: "wrap", gap: 0.5 }}>
-                            {selected.map((value) => {
-                              
+                            {selected.map((value) => {                     
                                 for (const item of props.industryList) {
                                   if(item._id === value)
                                   { 
@@ -200,9 +196,7 @@ export default function DepartmentModal(props) {
                                       <Chip label={item.name} value={value} />
                                     )
                                   }
-                                }
-                                
-                           
+                                }                          
                             })}
                           </Box>
                         )}

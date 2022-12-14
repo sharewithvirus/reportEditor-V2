@@ -10,7 +10,7 @@ import Switch from '@mui/material/Switch';
 import React from 'react';
 import { Rewind } from 'react-bootstrap-icons';
 
-function IndustryTable({rows , changeStatus}) {
+function IndustryTable({rows , changeStatus,modify}) {
     const label = { inputProps: { 'aria-label': 'Switch demo' } };
     const [open, setOpen] = React.useState(false);
       const handleOpen = () => setOpen(true);
@@ -22,7 +22,7 @@ function IndustryTable({rows , changeStatus}) {
               <TableRow>
                 <TableCell align="center" sx={{fontWeight:'bold'}}>Industry Name</TableCell>         
                 {/* <TableCell align="center" sx={{fontWeight:'bold'}}>Team Type</TableCell>          */}
-                <TableCell align="center" sx={{fontWeight:'bold'}}>Description</TableCell>
+                {/* <TableCell align="center" sx={{fontWeight:'bold'}}>Description</TableCell> */}
                 <TableCell align="center" sx={{fontWeight:'bold'}}>Action</TableCell>
                 <TableCell align="center" sx={{fontWeight:'bold'}}>Status</TableCell>
               </TableRow>
@@ -34,10 +34,11 @@ function IndustryTable({rows , changeStatus}) {
                   sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
                 >
                   <TableCell align="center">{row.name}</TableCell>
-                  <TableCell align="center">Description</TableCell>
+                  {/* <TableCell align="center">Description</TableCell> */}
                   <TableCell align="center">
                     <Button
                     variant='outlined'
+                    onClick={() => modify(index)}
                     >
                         EDIT
                     </Button>

@@ -25,9 +25,9 @@ function Industries() {
   const [deleteModelShow, setDeleteModelShow] = React.useState(false);
 
   const handleShow = () => {
-    // if (open === true) {
-    //   setActiveIndustry("");
-    // }
+    if (open === true) {
+      setActiveIndustry("");
+    }
     setOpen(!open);
   };
   const handleDeleteModelShow = (id) => {
@@ -69,18 +69,21 @@ function Industries() {
   const createNewIndustry = async (data) => {
     setIsLoading(true);
     let res;
-    // if (editIndustry == true) {
-    //   if (data.name === undefined) {
-    //     data.name = activeIndustry.name;
-    //   }
-      // res = await updateNewIndustry(data, activeIndustry._id);
-    // } else {
-      res = await createIndustry(data);
-    // }
+    // console.log("....",editIndustry);
+    if (editIndustry === true) {
+      if (data.name === undefined) {
+        data.name = activeIndustry.name;
+      }
+      res = await updateNewIndustry(data, activeIndustry._id);
+      console.log(res);
+    } else {
+      // res = await createIndustry(data);
+    }
     if (res.status === 200) {
       getIndustry();
       setOpen(false);
     }
+    setActiveIndustry("");
     setIsLoading(false);
   };
 
@@ -101,34 +104,24 @@ function Industries() {
   }, []);
 
   return (
-    <>
-      {/* <DepartmentModal
-          handleDeleteModelShow={handleDeleteModelShow}
-          handleClose={handleShow}
-          open={open}
-          edit={edit}
-          industryData={activeIndustry}
-          create={(x) => createNewDepartment(x)}
-        /> */}
-        <IndustryModal
+    <>    <IndustryModal
         handleDeleteModelShow={handleDeleteModelShow}
         handleClose={handleShow}
         open={open}
-        // edit={edit}
+        edit={setEditIndustry}
         industryData={activeIndustry}
         create={(x) => createNewIndustry(x)}
         />
-      {/* <DeleteConfirmationModel
+      <DeleteConfirmationModel
         open={deleteModelShow}
         handleShow={handleDeleteModelShow}
         id={activeIndustry._id}
         handleClose={handleDeleteModelShow}
         handleDelete={(x) => handleDelete(x)}
-      /> */}
+      />
       <Box
         sx={{
-          // border: "1px solid black",
-          // borderRadius: "5px",
+          
           padding: "5px 0px 5px 0px",
           margin: "5px 50px 5px 50px",
         }}
@@ -161,12 +154,10 @@ function Industries() {
           <Box
             sx={{
               borderRadius: "5px",
-              // padding: "50px",
+              
               margin: "10px",
               marginY: "20px",
-              // borderRadius: "5px",
-              // // padding: "",
-              // margin: "20px 50px 20px 50px",
+              
             }}
           >
             <IndustryTable
@@ -174,12 +165,11 @@ function Industries() {
                 changeStatus={(x) => {
                   IndustryStatusChange(x); 
                 }}
-                // modify={(x) => updateIndustry(x)}
+                modify = {(x)=>updateIndustry(x)}
               />
           </Box>
         </Box>
       </Box>
-      {/* {console.log("department id is....",departmentList)} */}
     </>
   );
 }
