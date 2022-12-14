@@ -11,7 +11,7 @@ import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
 
 
-function IndustryModal({open,handleClose,handleDeleteModelShow,industryData,create,}) {
+function IndustryModal({open,handleClose,handleDeleteModelShow,industryData,create,edit}) {
     const [data, setData] = useState({
       name: industryData.name,
     });
@@ -61,30 +61,6 @@ function IndustryModal({open,handleClose,handleDeleteModelShow,industryData,crea
             <hr />
           </Typography>
           <Box>
-              {/* <Stack lg={4} item xs={12}>
-              <Box my={0} mx={0}>
-              <FormControl>
-                <RadioGroup
-                  row
-                  aria-labelledby="demo-row-radio-buttons-group-label"
-                  name="industryType"
-                //   value={data.teamType}
-                //   onChange={onInputChange}
-                >
-                  <FormControlLabel
-                    value="research-team"
-                    control={<Radio />}
-                    label="Research Team"
-                  />
-                  <FormControlLabel
-                    value="editing-team"
-                    control={<Radio />}
-                    label="Editing Team"
-                  />
-                </RadioGroup>
-              </FormControl>
-            </Box>
-              </Stack> */}
             <Grid container spacing={2}>
               <Grid lg={4} item xs={12}>
                 <FormControl fullWidth sx={{ m: 1 }}>
@@ -107,23 +83,7 @@ function IndustryModal({open,handleClose,handleDeleteModelShow,industryData,crea
                       onChange={onInputChange}
                       defaultValue={industryData.name ? industryData.name : ""}
                       size="large"
-                    />
-                    {/* <TextField
-                      color="primary"
-                      label="Industry Description"
-                      id="outlined-multiline-flexible"
-                      fullWidth
-                      multiline
-                      maxRows={10}
-                      margin="normal"
-                      placeholder="Add Industry Description"
-                      name="description"
-                    //   defaultValue={
-                    //     props.deptData ? props.deptData.description : ""
-                    //   }
-                      onChange={onInputChange}
-                      size="large"
-                    /> */}
+                    />          
                   </Box>
                 </FormControl>
               </Grid>
@@ -144,20 +104,20 @@ function IndustryModal({open,handleClose,handleDeleteModelShow,industryData,crea
               Cancel
             </Button>
 
-            {/* {props.edit ? (
+            {edit ? (
               <Button
                 variant="outlined"
                 color="primary"
                 sx={{ textTransform: "none" }}
                 onClick={() => {
-                  props.handleDeleteModelShow(props.deptData._id);
+                  handleDeleteModelShow(industryData._id);
                 }}
               >
                 Delete
               </Button>
             ) : (
               ""
-            )} */}
+            )}
             <Button
               variant="outlined"
               color="primary"

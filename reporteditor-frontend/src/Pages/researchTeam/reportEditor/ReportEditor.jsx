@@ -14,11 +14,9 @@ import { Box } from "@mui/system";
 import React, { useContext, useEffect, useRef, useState } from "react";
 import moment from "moment";
 import { useParams } from "react-router-dom";
-import { styled } from "@mui/material/styles";
 import FileCopyOutlinedIcon from "@mui/icons-material/FileCopyOutlined";
 import SideBar from "./component/SideBar";
 import { Link } from "react-router-dom";
-// import Editor from "./component/Editor";
 import {
   saveSubtopics,
   updateSubtopics,
@@ -156,9 +154,9 @@ function ReportEditor() {
                   fontSize: "12px",
                 }}
               >
-                <b>Editing : </b>{" "}
+                <b>Editing : </b>
                 <span>
-                  {" "}
+                  
                   {activeTopicData ? activeTopicData.subTopicName : ""}
                 </span>
               </Typography>
@@ -227,7 +225,7 @@ function ReportEditor() {
                   }
                   getReportDataText={getReportData}
                   ativeDataSet={(x) => {
-                    // console.log(x)
+                   
                     ativeDataSet(x);
                   }}
                 />

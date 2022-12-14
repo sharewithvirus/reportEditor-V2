@@ -4,7 +4,6 @@ const TableUpload = () => {
   const [rows, setRows] = useState([{}]);
   const [columnsArray, setColumnsArray] = useState(["id"]);
 
-
   const handleAddRow = () => {
     const item = {};
     setRows([...rows, item]);
@@ -55,7 +54,10 @@ const TableUpload = () => {
                   <th className="text-center"> # </th>
                   {columnsArray.map((column, index) => (
                     <th className="text-center" key={index}>
-                      {column}  <span onClick={() => handleRemoveSpecificColumn(index)}>x</span>
+                      {column}{" "}
+                      <span onClick={() => handleRemoveSpecificColumn(index)}>
+                        x
+                      </span>
                     </th>
                   ))}
                   <th />
@@ -77,7 +79,6 @@ const TableUpload = () => {
                         />
                       </td>
                     ))}
-
                     <td>
                       <button
                         className="btn btn-outline-danger btn-sm"

@@ -12,6 +12,7 @@ import {
   changeIndustryStatus,
   updateNewIndustry,
   createIndustry,
+  updateIndustry,
 } from "../../Services/industryServices";
 import IndustryModal from "./IndustryModal";
 import IndustryTable from "./IndustryTable";
@@ -77,7 +78,7 @@ function Industries() {
       res = await updateNewIndustry(data, activeIndustry._id);
       console.log(res);
     } else {
-      // res = await createIndustry(data);
+      res = await createIndustry(data);
     }
     if (res.status === 200) {
       getIndustry();
@@ -92,7 +93,7 @@ function Industries() {
     handleShow();
   };
 
-  const updateIndustry = async (index) => {
+  const handleUpdateIndustry = async (index) => {
     const industry = industryList[index];
     setActiveIndustry(industry);
     setEditIndustry(true);
@@ -165,7 +166,7 @@ function Industries() {
                 changeStatus={(x) => {
                   IndustryStatusChange(x); 
                 }}
-                modify = {(x)=>updateIndustry(x)}
+                modify = {(x)=> handleUpdateIndustry(x)}
               />
           </Box>
         </Box>

@@ -75,7 +75,7 @@ export const createIndustry = async (data) => {
 export const updateIndustry = async (data) => {
      try {
        
-      const res = await axios.put(`/api/v1/report/`, data)
+      const res = await axios.put(`/api/v1/industry/`, data)
       
     //   console.log("data in controller..",res);
         // console.log("success");  
@@ -87,7 +87,7 @@ export const updateIndustry = async (data) => {
 }
 export const updateNewIndustry = async (data, id) => {
     try {
-        return await axios.patch(`/api/v1/admin/department/update/${id}`, data)
+        return await axios.patch(`/api/v1/industry/${id}`, data)
     } catch (error) {
         alert(error.response.data.message)
         return error.response;
@@ -96,7 +96,7 @@ export const updateNewIndustry = async (data, id) => {
 export const deleteIndustry = async (industryId) => {
     // console.log("Role Id", reportId)
     try {
-       return await axios.delete(`/api/v1/report/${industryId}`)
+       return await axios.delete(`/api/v1/industry/${industryId}`)
     } catch (error) {
        alert(error.response.data.message)
        return error.response;

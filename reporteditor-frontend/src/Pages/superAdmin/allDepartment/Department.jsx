@@ -91,7 +91,7 @@ const Department = () => {
     const res = await getIndustryStatusTrue();
     if(res.status === 200)
     {
-      console.log("industries",res);
+      
       setAllIndustries(res.data.data);
 
     }
