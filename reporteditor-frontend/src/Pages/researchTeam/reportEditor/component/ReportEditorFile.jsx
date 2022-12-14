@@ -24,6 +24,7 @@ import ImageUpload from "./ImageUpload";
 import CloseIcon from "@mui/icons-material/Close";
 import ShowCharts from "./ShowCharts";
 import TableUpload from "./TableUpload";
+
 const Item = styled(Paper)(({ theme }) => ({
   ...theme.typography.body2,
   padding: theme.spacing(2),
@@ -43,6 +44,19 @@ const style = {
   boxShadow: 24,
   p: 4,
 };
+const tableStyle ={
+  position: "absolute",
+  top: "50%",
+  left: "50%",
+  transform: "translate(-50%, -50%)",
+  width: 800,
+  bgcolor: "background.paper",
+  border: "1px solid #777",
+  boxShadow: 24,
+  minHeight:"450px",
+  p:3,
+  borderRadius:"10px"
+}
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
 
@@ -371,7 +385,7 @@ if(id){
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
       >
-        <Box sx={style}>
+        <Box sx={tableStyle}>
           <TableUpload />
         </Box>
       </Modal>
