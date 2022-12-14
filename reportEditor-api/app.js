@@ -70,31 +70,3 @@ app.use((err, req, res, next) => {
 });
 
 module.exports = app;
-
-
-[
-  {
-      "id": "1",
-      "name": "ROHIT",
-      "salary": "10",
-      "PROFESSION": "FRONTEND"
-  },
-  {
-      "id": "2",
-      "name": "sHIVAM",
-      "salary": "20",
-      "PROFESSION": "DESIGNER"
-  },
-  {
-      "id": "3",
-      "name": "javed",
-      "salary": "30",
-      "PROFESSION": "REACT"
-  },
-  {
-      "id": "4",
-      "name": "TARIQ",
-      "salary": "40",
-      "PROFESSION": "BACKEND"
-  }
-]
