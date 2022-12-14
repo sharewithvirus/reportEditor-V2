@@ -11,24 +11,18 @@ import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
 
 
-function IndustryModal({open,handleClose,handleDeleteModelShow,industryData,create}) {
+function IndustryModal({open,handleClose,handleDeleteModelShow,industryData,create,}) {
     const [data, setData] = useState({
       name: industryData.name,
-    //   description: props.deptData.description,
-    //   deptId: props.deptData._id,
-    //   teamType: props.deptData.teamType,
     });
     const onInputChange = async (e) => {
       const { name, value } = e.target;
       setData({ ...data, [name]: value });
-    //   await create(data);
-    //   setData("");
     };
-    
     const handleSubmit = async () => {
     await create(data);
     setData("");
-    handleClose()
+    handleClose();
     //   
     };
     const style = {
@@ -111,7 +105,7 @@ function IndustryModal({open,handleClose,handleDeleteModelShow,industryData,crea
                       name="name"
                       margin="normal"
                       onChange={onInputChange}
-                    //   defaultValue={props.deptData ? props.deptData.name : ""}
+                      defaultValue={industryData.name ? industryData.name : ""}
                       size="large"
                     />
                     {/* <TextField
@@ -170,7 +164,8 @@ function IndustryModal({open,handleClose,handleDeleteModelShow,industryData,crea
               sx={{ textTransform: "none" }}
               onClick={handleSubmit}
             >
-              Save
+              {industryData.name?"Update":"Save"}
+              
             </Button>
           </Stack>
         </Box>
