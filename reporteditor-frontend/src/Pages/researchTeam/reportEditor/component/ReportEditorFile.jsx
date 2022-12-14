@@ -134,6 +134,8 @@ export default function FullWidthTabs() {
   const [chartType, setChartType] = useState("pie");
   const [active, setActive] = useState(-1);
   const [copyText, setCopyText] = useState("");
+  const [chartList,setChartList] = useState([]);
+  const handleCloseTable = () => setOpenTable(false)
   const [formChartData, setFormChartData] = useState({
     name: "",
     series: "",
@@ -141,8 +143,6 @@ export default function FullWidthTabs() {
     categories: "",
   });
   const [show, setShow] = useState(false);
- 
-
   const copyToClipboard = (copyText) => {
     copy(`<div id='${copyText}'><div/>`);
     alert(`copied value <div id='${copyText}'><div/>`);
@@ -213,6 +213,7 @@ export default function FullWidthTabs() {
             label: "",
             categories: "",
           });
+          getChartsData(id);
           setShow(false);
           handleClose();
         }

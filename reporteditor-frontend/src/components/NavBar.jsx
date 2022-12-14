@@ -11,6 +11,7 @@ import AdbIcon from "@mui/icons-material/Adb";
 
 import { UserDataContext } from "../context/userContext";
 import { userDashboard, userLogout } from "../Services/authService";
+import { useMediaQuery, useTheme } from "@mui/material";
 
 const NavBar = (props) => {
   const {
@@ -256,9 +257,18 @@ const AdminSection = () => {
 };
 
 const ResearchUserSection = () => {
+  const theme = useTheme();
+  const isMatch = useMediaQuery(theme.breakpoints.down("md"));
   return (
     <>
       <Box sx={{ flexGrow: 2, color: "block !important" }}>
+        {/* <Button
+          variant="text"
+          sx={{ fontSize: "17px", textTransform: "none", color: "black" }}
+          size="small"
+        >
+          Reports Management
+        </Button> */}
         <Link
           to="/u_control/report-template-management"
           style={{ textDecoration: "none" }}
@@ -272,22 +282,25 @@ const ResearchUserSection = () => {
           </Button>
         </Link>
       </Box>
-      <Box sx={{ flexGrow: 1, color: "block !important" }}>
-        <Button
-          variant="text"
-          sx={{
-            fontSize: "17px",
-            textTransform: "none",
-            color: "black",
-            fontWeight: "600",
-          }}
-          size="small"
-        >
-          Research Team Mode
-        </Button>
-      </Box>
+      {isMatch === false ? 
+       <Box sx={{ flexGrow: 1, color: "block !important" }}>
+       <Button
+         variant="text"
+         sx={{
+           fontSize: "17px",
+           textTransform: "none",
+           color: "black",
+           fontWeight: "600",
+         }}
+         size="small"
+       >
+         Research Team Mode
+       </Button>
+     </Box>
+      : ""}
+     
       <Box sx={{ flexGrow: 2, color: "block !important" }}>
-        <Button
+        {/* <Button
           variant="contained"
           sx={{
             fontSize: "10px",
@@ -297,7 +310,7 @@ const ResearchUserSection = () => {
           size="small"
         >
           All Reports
-        </Button>
+        </Button> */}
         <Link to="/u_control/create-report" style={{ textDecoration: "none" }}>
           <Button
             variant="contained"

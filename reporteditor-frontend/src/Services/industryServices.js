@@ -18,6 +18,14 @@ export const getAllIndustry = async () => {
         return error.response;
     }
 }
+export const getIndustryStatusTrue = async () => {
+    try {
+        return await axios.get(`/api/v1/industry/getByStatus`)
+    } catch (error) {
+        alert(error.response.data.message)
+        return error.response;
+    }
+}
 export const getIndustryDataById = async (id) => {
     try {
         return await axios.get(`/api/v1/industry/industryData/${id}`)
