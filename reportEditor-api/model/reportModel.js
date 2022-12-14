@@ -53,7 +53,26 @@ const reportModel = new mongoose.Schema(
         type: mongoose.Schema.Types.ObjectId,
         ref: "SubTopic",
       },
-    ]
+    ],
+    reportImages:[
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Images",
+      },
+    ],
+    reportTables:[
+      {
+        // type: mongoose.Schema.Types.ObjectId,
+        // ref: "Images",
+        type: String,
+      }
+    ],
+    reportCharts:[
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Chart",
+      },
+    ],
   },
   {
     timestamps: true,
