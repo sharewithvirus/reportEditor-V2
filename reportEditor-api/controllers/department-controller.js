@@ -6,6 +6,7 @@ const Industry = require("../model/industryModel");
 exports.createDepartment = async (req, res) => {
     try {
         const { name, teamType, description,industries } = req.body;
+        console.log(industries);
         if(!name){
             res.status(200).json({
                 status: 'error',
@@ -19,11 +20,11 @@ exports.createDepartment = async (req, res) => {
             })
             return;
         }else{
-            const newDepartment = await Department.create({name, teamType, description,industries});
+            // const newDepartment = await Department.create({name, teamType, description,industries});
             res.status(201).json({
                 status: 'success',
                 message: "Department Created Successfully",
-                data: newDepartment,
+                // data: newDepartment,
             })
         }
     } catch (error) {
@@ -36,7 +37,7 @@ exports.createDepartment = async (req, res) => {
 
 exports.getAllDepartments = async (req, res) => {
     try {
-        const allDepartments = await Department.find({}).populate("industries");
+        const allDepartments = await Department.find({ deletedAt: null }).populate("industries");
         res.status(200).json({
             status: 'success',
             message: 'Department List Fetched Successfully',

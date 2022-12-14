@@ -43,6 +43,7 @@ function ReportEditor() {
   const [width, setWidth] = useState(0);
   const [active, setActive] = useState();
   const date = new Date();
+  const [drawer,setDrawer]=useState(false)
   const [expanSidePanel, setExpandSidePanel] = useState({
     left: 4,
     right: 8,
@@ -111,29 +112,112 @@ function ReportEditor() {
           padding: "0px 36px 5px 30px",
         }}
       >
-        <Grid container spacing={0}>
+        <Grid container spacing={0} mt={5}>
           <Grid
             item
             md={4}
+            sm={2}
             display="flex"
-            justifyContent="start"
+            justifyContent="end"
             flexDirection="column"
-            pb={3}
-            sx={{}}
+            alignItems="center"
           >
-            <Stack mt={5}>
-              <Button onClick={() => handleShow()}>
-                <Typography>ADD Chapter</Typography>
-                <AddOutlinedIcon />
-              </Button>
+            <Button onClick={() => handleShow()}>
+              <Typography>ADD Chapter</Typography>
+              <AddOutlinedIcon />
+            </Button>
+          </Grid>
+          <Grid
+            item
+            md={5}
+            sm={5}
+            display="flex"
+            justifyContent="center"
+            flexDirection="column"
+            alignItems="center"
+          >
+            <Stack display="flex" justifyContent="center" alignItems="center">
+              <Stack
+                flexDirection="row"
+                justifyContent="center"
+                alignContent="center"
+              >
+                <FileCopyOutlinedIcon
+                  sx={{
+                    fontSize: "22px",
+                  }}
+                />
+                <Typography sx={{ fontSize: "16px", fontWeight: "" }}>
+                  {reportData ? reportData.name : ""}
+                </Typography>
+              </Stack>
+              <Typography
+                sx={{
+                  fontSize: "12px",
+                }}
+              >
+                <b>Editing : </b>{" "}
+                <span>
+                  {" "}
+                  {activeTopicData ? activeTopicData.subTopicName : ""}
+                </span>
+              </Typography>
             </Stack>
+          </Grid>
+          <Grid
+            item
+            md={3}
+            sm={5}
+            display="flex"
+            justifyContent="space-between"
+            flexDirection="row"
+          >
+            <Stack>
+              <Typography
+                sx={{
+                  fontSize: "12px",
+                }}
+              >
+                <b>Last Saved :</b>{" "}
+                <span>
+                  {activeTopicData
+                    ? moment(activeTopicData.updatedAt).format(
+                        "Do MMM YYYY  , h:mm:ss A"
+                      )
+                    : ""}{" "}
+                </span>
+              </Typography>
+            </Stack>
+            <Stack>
+              <Link to="/u_control/report-preview">
+                <Button
+                  color="inherit"
+                  variant="outlined"
+                  size="small"
+                  sx={{
+                    height: "3vh",
+                  }}
+                >
+                  Preview
+                </Button>
+              </Link>
+            </Stack>
+          </Grid>
+        </Grid>
+        <Grid
+          container
+          sx={{
+            border: "1px solid",
+          }}
+        >
+          <Grid item md={4} sm={3}>
             <Box
               sx={{
                 display: "flex",
                 flexDirection: "column",
                 justifyContent: "space-between",
-                height:"700px",
-                backgroundColor:"rgba(0,0,0,0.3)"
+                height: "700px",
+                // backgroundColor: "rgba(0,0,0,0.3)",
               }}
             >
               {reportData ? (
@@ -185,139 +269,59 @@ function ReportEditor() {
               </Stack>
             </Box>
           </Grid>
-          <Grid
-            item
-            md={8}
-            sx={{
-              minHeight: "100vh",
-            }}
-          >
-            <Stack
-              flexDirection={{ md: "row", sm: "row" }}
-              justifyContent="space-between"
-              mt={2}
-              pl={2}
-              pr={2}
-            >
-              <Stack
-                sx={{
-                  marginRight: "100px",
-                }}
-              >
-                <Typography
-                  sx={{
-                    fontSize: "12px",
-                  }}
-                >
-                  <b>Last Saved :</b>{" "}
-                  <span>
-                    {activeTopicData
-                      ? moment(activeTopicData.updatedAt).format(
-                          "Do MMM YYYY  , h:mm:ss A"
-                        )
-                      : ""}{" "}
-                  </span>
-                </Typography>
-              </Stack>
-              <Stack display="flex" justifyContent="center" alignItems="center">
-                <Stack
-                  flexDirection="row"
-                  justifyContent="center"
-                  alignContent="center"
-                >
-                  <FileCopyOutlinedIcon
-                    sx={{
-                      fontSize: "22px",
-                    }}
-                  />
-                  <Typography sx={{ fontSize: "16px", fontWeight: "" }}>
-                    {reportData ? reportData.name : ""}
-                  </Typography>
-                </Stack>
-                <Typography
-                  sx={{
-                    fontSize: "12px",
-                  }}
-                >
-                  <b>Editing : </b>{" "}
-                  <span>
-                    {" "}
-                    {activeTopicData ? activeTopicData.subTopicName : ""}
-                  </span>
-                </Typography>
-              </Stack>
-              <Stack>
-                <Link to="/u_control/report-preview">
-                  <Button
-                    color="inherit"
-                    variant="outlined"
-                    size="small"
-                    sx={{
-                      height: "3vh",
-                    }}
-                  >
-                    Preview
-                  </Button>
-                </Link>
-              </Stack>
-            </Stack>
-            <Stack
+          <Grid item md={5} sm={9}>
+            <Box
               sx={{
-                marginTop: "20px",
                 display: "flex",
-                flexDirection: "row",
+                flexDirection: "column",
+                justifyContent: "space-between",
+                height: "700px",
+                borderLeft: " 1px solid",
+                borderRight: " 1px solid",
+              }}
+            >
+              <Editor
+                activeTopicData={activeTopicData ? activeTopicData : ""}
+                saveHtmlData={(x) => saveHtmlData(x)}
+                editorState={editorState}
+              />
+            </Box>
+          </Grid>
+          <Grid item md={3} sm={12}>
+            <Box
+              sx={{
+                display: "flex",
+                flexDirection: "column",
+                justifyContent: "start",
+                height: "700px",
               }}
             >
               <Stack
                 sx={{
-                  width: "60%",
-                  border: "2px solid",
-                  height: "700px",
-                  overflowY: "auto",
-                  position: "relative",
+                  marginTop: "10px",
                 }}
+                alignItems="center"
               >
-                <Editor
-                  activeTopicData={activeTopicData ? activeTopicData : ""}
-                  saveHtmlData={(x) => saveHtmlData(x)}
-                  editorState={editorState}
+                <TextField
+                  placeholder="search here"
+                  variant="outlined"
+                  sx={{
+                    width: "90%",
+                    textAlign: "center",
+                  }}
                 />
               </Stack>
               <Stack
+              mt={2}
                 sx={{
-                  width: "40%",
-                  border: "2px solid",
-                  height: "700px",
+                  display: "flex",
+                  flexDirection: "row",
+                  justifyContent: "center",
                 }}
               >
-                <Stack
-                  sx={{
-                    marginTop: "10px",
-                  }}
-                  alignItems="center"
-                >
-                  <TextField
-                    placeholder="search here"
-                    variant="outlined"
-                    sx={{
-                      width: "90%",
-                      textAlign: "center",
-                    }}
-                  />
-                </Stack>
-                <Stack
-                  sx={{
-                    width: "90%",
-                    margin: "10px  auto",
-                    display: "flex",
-                    flexDirection: "row",
-                    justifyContent: "center",
-                  }}
-                >
-                  <ReportEditiorFile />
-                </Stack>
+                <ReportEditiorFile />
               </Stack>
-            </Stack>
+            </Box>
           </Grid>
         </Grid>
       </Box>
