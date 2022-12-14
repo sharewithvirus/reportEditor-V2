@@ -11,5 +11,6 @@ router.use("/template", require("./templateRoutes"));
 router.use("/industry", require("./industry-router"));
 router.use("/subtopic", require("./subtopic-router"));
 router.use("/chart", require("./chart-router"));
+router.use("/table", require("./table-router"));
 
 module.exports = router;
