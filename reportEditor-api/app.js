@@ -7,7 +7,7 @@ const logger = require('morgan');
 const { dbConnect } = require("./config/dbConfig")
 
 var app = express();
-console.log(`GMI Backend is Listening On Port ${process.env.PORT}`);
+// console.log(`GMI Backend is Listening On Port ${process.env.PORT}`);
 dbConnect()
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -63,7 +63,8 @@ app.put("*", (req, res) => {
 app.use((err, req, res, next) => {
   // set locals, only providing error in development
   res.locals.message = err.message;
-  res.locals.error = req.app.get('env') === 'development' ? err : console.log(err);
+  res.locals.error = req.app.get('env') === 'development' ? err : console.log(err
+    );
   // render the error page
   res.status(err.status || 500);
   res.render('error');
