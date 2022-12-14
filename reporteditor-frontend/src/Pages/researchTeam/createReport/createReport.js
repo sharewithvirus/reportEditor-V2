@@ -34,7 +34,10 @@ import {
   getReportDataById,
   updateReport,
 } from "../../../Services/reportServices";
-import { getAllIndustry } from "../../../Services/industryServices";
+import {
+  getAllIndustry,
+  getAllIndustrybyDeptId,
+} from "../../../Services/industryServices";
 function CreateReport() {
   const { setIsLoading, userInfo } = useContext(UserDataContext);
   const { id } = useParams();
@@ -43,8 +46,11 @@ function CreateReport() {
   const [allAuther, setAllAuther] = useState([]);
   const [personName, setPersonName] = useState([]);
   const [reportName, setReportName] = useState("");
+  const [industries, setIndustries] = useState([]);
   const [baseYear, setBaseYear] = useState(new Date().getFullYear());
-  const [forecastYear, setForecastYear] = useState(new Date().getFullYear() + 5);
+  const [forecastYear, setForecastYear] = useState(
+    new Date().getFullYear() + 5
+  );
   const [industryList, setIndustryList] = useState();
   const [open, setOpen] = React.useState(false);
   const [selectedTemplate, setSelectedTemplate] = useState();
@@ -65,6 +71,9 @@ function CreateReport() {
   const handleChange = (event) => {
     setPersonName(event.target.value);
   };
+  const handleIndustyChange = (e) => {
+    setIndustries(e.target.value);
+  };
   const getUserList = async () => {
     const res = await getAllUsersByDepartmentAndTeam(
       userInfo.department,
@@ -75,12 +84,14 @@ function CreateReport() {
     }
   };
   const getAllIndustryList = async () => {
-    const res = await getAllIndustry();
+    const res = await getAllIndustrybyDeptId(userInfo.department);
+    console.log(res);
     if (res.status === 200) {
       setIndustryList(res.data.data);
     }
   };
   useEffect(() => {
+    console.log(userInfo);
     getUserList();
     getAllIndustryList();
   }, []);
@@ -282,25 +293,37 @@ function CreateReport() {
               id="demo-multiple-checkbox"
               multiple
               fullWidth
-              value={personName}
-              onChange={handleChange}
+              value={industries}
+              onChange={handleIndustyChange}
               required
               input={<OutlinedInput label="select" />}
               renderValue={(selected) => (
+                // <Box sx={{ display: "flex", flexWrap: "wrap", gap: 0.5 }}>
+                //   {selected.map((value) => (
+                //     <Chip key={value} label={value} />
+                //   ))}
+                // </Box>
+
                 <Box sx={{ display: "flex", flexWrap: "wrap", gap: 0.5 }}>
-                  {selected.map((value) => (
-                    <Chip key={value} label={value} />
-                  ))}
+                  {selected.map((value) => {
+                    for (const item of industryList) {
+                      if (item._id === value) {
+                        return <Chip label={item.name} value={value} />;
+                      }
+                    }
+                  })}
                 </Box>
               )}
               MenuProps={MenuProps}
               size="medium"
             >
-              {allAuther.map((author, index) => (
-                <MenuItem key={index} value={author.userName}>
-                  <ListItemText primary={author.userName} />
-                </MenuItem>
-              ))}
+              {industryList
+                ? industryList.map((item, index) => (
+                    <MenuItem key={`${item._id}${index}`} value={item._id}>
+                      <ListItemText primary={item.name} />
+                    </MenuItem>
+                  ))
+                : ""}
             </Select>
           </FormControl>
         </Stack>

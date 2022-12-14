@@ -238,7 +238,7 @@ function ShowCharts({formChartData, chartType}) {
           options={chartData.options}
           series={chartData.series}
           type={chartType}
-          width={chartType == 'pie'? 270:250}
+          width={chartType == 'pie'? '100%':'90%'}
         
         />
     </div>
