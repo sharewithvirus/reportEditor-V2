@@ -19,6 +19,7 @@ import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import SwipeableViews from "react-swipeable-views";
 import { createCharts, getAllCharts } from "../../../../Services/chartServices";
+import { uploadImage, getAllReportImages } from "../../../../Services/reportImagesServices";
 import ChartFormGen from "./ChartFormGen";
 import ImageUpload from "./ImageUpload";
 import CloseIcon from "@mui/icons-material/Close";
