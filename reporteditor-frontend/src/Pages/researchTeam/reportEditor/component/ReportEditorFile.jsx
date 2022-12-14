@@ -23,7 +23,9 @@ import { uploadImage, getAllReportImages } from "../../../../Services/reportImag
 import ChartFormGen from "./ChartFormGen";
 import ImageUpload from "./ImageUpload";
 import CloseIcon from "@mui/icons-material/Close";
+import copy from "copy-to-clipboard";
 import ShowCharts from "./ShowCharts";
+import TableUpload from "./TableUpload";
 const Item = styled(Paper)(({ theme }) => ({
   ...theme.typography.body2,
   padding: theme.spacing(2),
@@ -120,17 +122,21 @@ export default function FullWidthTabs() {
   const [value, setValue] = useState(0);
   const [open, setOpen] = useState(false);
   const [openImage, setOpenImage] = useState(false);
+  const [openTable, setOpenTable] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleOpenImage = () => setOpenImage(true);
+  const handleOpenTable = () => setOpenTable(true);
   const [openSnack, setopenSnack] = useState(false);
   const [severity, setSeverity] = useState("success");
   const [snackMsg, setSnackMsg] = useState("");
   const [chartFormValues, setChartFormValues] = useState(["series", "label"]);
   const handleClose = () => setOpen(false);
   const handleCloseImage = () => setOpenImage(false);
-  const [chartList , setChartList] = useState([])
   const [chartType, setChartType] = useState("pie");
-
+  const [active, setActive] = useState(-1);
+  const [copyText, setCopyText] = useState("");
+  const [chartList,setChartList] = useState([]);
+  const handleCloseTable = () => setOpenTable(false)
   const [formChartData, setFormChartData] = useState({
     name: "",
     series: "",
@@ -138,7 +144,10 @@ export default function FullWidthTabs() {
     categories: "",
   });
   const [show, setShow] = useState(false);
-
+  const copyToClipboard = (copyText) => {
+    copy(`<div id='${copyText}'><div/>`);
+    alert(`copied value <div id='${copyText}'><div/>`);
+  };
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
@@ -187,51 +196,48 @@ export default function FullWidthTabs() {
       series: formChartData.series,
       categories: formChartData.categories ? formChartData.categories : "",
     };
-    if(formChartData.name ==="")
-    {
-        alert("Please Enter Chart Name")
-    }
-    else
-    {
-        const res = await createCharts(data);
-        {
-          if (res.status === 201) {
-            console.log("chart added", res.data);
-            console.log("chart added", res.data.data);
+    if (formChartData.name === "") {
+      alert("Please Enter Chart Name");
+    } else {
+      const res = await createCharts(data);
+      {
+        if (res.status === 201) {
+          console.log("chart added", res.data);
+          console.log("chart added", res.data.data);
 
-            setSeverity("success");
-            setSnackMsg("Added Successfully !");
-            setopenSnack(true);
-            setFormChartData({
-              name: "",
-              series: "",
-              label: "",
-              categories: "",
-            });
-            setShow(false);
-            handleClose();
-          }
+          setSeverity("success");
+          setSnackMsg("Added Successfully !");
+          setopenSnack(true);
+          setFormChartData({
+            name: "",
+            series: "",
+            label: "",
+            categories: "",
+          });
+          getChartsData(id);
+          setShow(false);
+          handleClose();
         }
+      }
     }
-};
-const getChartsData = async (id) =>{
+  };
+  const getChartsData = async (id) => {
     const res = await getAllCharts(id);
     {
-        if(res.status === 200)
-        {
-            console.log(res.data.data);
-            setChartList(res.data.data);
-        }
+      if (res.status === 200) {
+        console.log(res.data.data);
+        setChartList(res.data.data);
+      }
     }
-}
+  };
   useEffect(() => {
     // console.log("renderkkkk");
   }, [formChartData]);
-useEffect(()=>{
-if(id){
-    getChartsData(id);
-}
-},[])
+  useEffect(() => {
+    if (id) {
+      getChartsData(id);
+    }
+  }, []);
   return (
     <>
       <Box sx={{ bgcolor: "background.paper", width: "100%" }}>
@@ -273,27 +279,65 @@ if(id){
             </Button>
           </TabPanel>
           <TabPanel value={value} index={1} dir={theme.direction}>
-            Item Two
+            <Button onClick={handleOpenTable} sx={{mt:"20px"}} >
+                <Typography>ADD TABLE</Typography>
+              </Button>
           </TabPanel>
           <TabPanel value={value} index={2} dir={theme.direction}>
-            <Stack>
-              <Grid
-                container
-                spacing={{ xs: 2, md: 3 }}
-                columns={{ xs: 4, sm: 8, md: 12 }}
-              >
-                {chartList ? chartList.map((chart, index) => (
-                  <Grid item sm={12} md={12} key={index}>
-                    <Item square color="inherit" sx={{height: "150px",paddingLeft:"0px",paddingRight:"8px"}}>
-                        <ShowCharts chartType={chart.chartType} formChartData={chart} />
-                    </Item>
-                  </Grid>
-                )):""}
-              </Grid>
-            </Stack>
-            <Button onClick={handleOpen} sx={{mt:"20px"}} >
+            <Button onClick={handleOpen} sx={{ mt: "20px" }}>
               <Typography>ADD Charts</Typography>
             </Button>
+            <Stack sx={{ height: "450px" }}>
+              <Grid container columns={{ xs: 4, sm: 8, md: 12 }}>
+                {chartList
+                  ? chartList.map((chart, index) => (
+                      <Grid
+                        item
+                        sm={3}
+                        md={12}
+                        key={index}
+                        sx={{
+                          border: `${active === index ? "3px" : "3px"} solid ${
+                            active === index ? "green" : "grey"
+                          }`,
+                          padding: "0px",
+                          position: "relative",
+                          paddingTop: "5px",
+                          transition: "0.3s",
+                        }}
+                        onMouseEnter={() => {
+                          setActive(index);
+                        }}
+                        onMouseLeave={() => {
+                          setActive(-1);
+                        }}
+                        mt={1}
+                      >
+                        <ShowCharts
+                          chartType={chart.chartType}
+                          formChartData={chart}
+                        />
+                        <Button
+                          size="small"
+                          variant="contained"
+                          color="warning"
+                          sx={{
+                            fontSize: "10px",
+                            position: "absolute",
+                            bottom: "1px",
+                            right: "1px",
+                            display: `${active === index ? "block" : "none"}`,
+                            transition: "0.3s",
+                          }}
+                          onClick={()=>copyToClipboard(chart._id)}
+                        >
+                          Copy
+                        </Button>
+                      </Grid>
+                    ))
+                  : ""}
+              </Grid>
+            </Stack>
           </TabPanel>
         </SwipeableViews>
       </Box>
@@ -304,15 +348,12 @@ if(id){
         aria-describedby="modal-modal-description"
       >
         <Box sx={style}>
-          <Stack 
-          flexDirection={"row"}
-          justifyContent="end"
-          >
-            <IconButton onClick={()=>handleClose()}>
+          <Stack flexDirection={"row"} justifyContent="end">
+            <IconButton onClick={() => handleClose()}>
               <CloseIcon />
             </IconButton>
           </Stack>
-          <Stack flexDirection={"row"} justifyContent="space-between" mt={2} >
+          <Stack flexDirection={"row"} justifyContent="space-between" mt={2}>
             <TextField
               id="outlined-select-chart"
               select
@@ -357,6 +398,17 @@ if(id){
       >
         <Box sx={style}>
           <ImageUpload />
+        </Box>
+      </Modal>
+
+      <Modal
+        open={openTable}
+        onClose={handleCloseTable}
+        aria-labelledby="modal-modal-title"
+        aria-describedby="modal-modal-description"
+      >
+        <Box sx={style}>
+          <TableUpload />
         </Box>
       </Modal>
     </>

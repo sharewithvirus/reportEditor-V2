@@ -37,32 +37,21 @@ const style = {
 };
 
 export default function DepartmentModal(props) {
+  const [industries, setIndustries] = useState([]);
   const [data, setData] = useState({
     name: props.deptData.name,
     description: props.deptData.description,
     deptId: props.deptData._id,
     teamType: props.deptData.teamType,
-    industries: "",
+    industries: industries,
   });
 
-  const [industries, setIndustries] = useState(props.deptData.industries);
-  const [demoIndus, setDemoIndus] = useState([]);
-  const indus = [
-    {
-      name: "Education",
-      _id: "14dfdf85df85df85df8",
-    },
-    {
-      name: "Cyber Cell",
-      _id: "14dfdf85df85df85dfd",
-    },
-    {
-      name: "Widgets",
-      _id: "14dfdf85df85df85df2",
-    },
-  ];
+ 
+ 
+ 
   const handleChange = (e) =>{
-    setDemoIndus(e.target.value);
+   
+    setIndustries(e.target.value);
     console.log(e.target.value);
     // let check = false;
     // for (let i = 0; i < demoIndus.length; i++) {
@@ -197,14 +186,14 @@ export default function DepartmentModal(props) {
                         //   width:"20vw"
                         // }}}
                         sx={{width:"20vw"}}
-                        value={demoIndus}
+                        value={industries}
                         onChange={handleChange}
                         input={<OutlinedInput label="Industries" />}
                         renderValue={(selected) => (
                           <Box sx={{ display: "flex", flexWrap: "wrap", gap: 0.5 }}>
                             {selected.map((value) => {
                               
-                                for (const item of indus) {
+                                for (const item of props.industryList) {
                                   if(item._id === value)
                                   { 
                                     return (
@@ -218,8 +207,8 @@ export default function DepartmentModal(props) {
                           </Box>
                         )}
                       >
-                        {indus.map((industry, index) => (
-                          <MenuItem key={industry._id} value={industry._id} name={industry.name}>
+                        {props.industryList.map((industry, index) => (
+                          <MenuItem key={index} value={industry._id} name={industry.name}>
                             {industry.name}
                           </MenuItem>
                         ))}

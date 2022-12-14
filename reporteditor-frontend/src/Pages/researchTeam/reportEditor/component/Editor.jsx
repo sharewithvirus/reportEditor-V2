@@ -1,35 +1,43 @@
 import React, { useRef, useState } from "react";
 import { CKEditor } from "@ckeditor/ckeditor5-react";
-import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
-function Editor({ getData, saveTopics, saveTopicsData, activeTopicData, editorState , saveHtmlData}) {
-    const [subTopicsData, setSubTopicsData] = useState();
-    const editor = useRef(null);
+import ClassicEditor from "ckeditor5-custom-build/build/ckeditor";
 
-const save = async (id,htmlData) =>{
-  const data = {
-    id : id,
-    template : htmlData,
-  }
- 
+
+
+function Editors({
+  getData,
+  saveTopics,
+  saveTopicsData,
+  activeTopicData,
+  editorState,
+  saveHtmlData,
+}) {
+  const [subTopicsData, setSubTopicsData] = useState();
+  const editor = useRef(null);
+
+  const save = async (id, htmlData) => {
+    const data = {
+      id: id,
+      template: htmlData,
+    };
+
     const res = await saveHtmlData(data);
- 
-}
+  };
   return (
     <>
       <CKEditor
         editor={ClassicEditor}
-        data={activeTopicData?activeTopicData.htmlData:""}
-        onReady={(editor) => {
-        }}
+        data={activeTopicData ? activeTopicData.htmlData : ""}
+        onReady={(editor) => {}}
         onChange={(event, editor) => {
           const data = editor.getData();
-          setTimeout(async (data) =>{
-            await save(activeTopicData._id,data);
-          },10000)
+          setTimeout(async (data) => {
+            await save(activeTopicData._id, data);
+          }, 10000);
         }}
       />
     </>
   );
 }
 
-export default Editor;
+export default Editors;
