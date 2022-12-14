@@ -1,52 +1,111 @@
-import { Paper, styled, Table, TableBody, TableCell, tableCellClasses, TableContainer, TableHead, TableRow } from "@mui/material";
-import React from "react";
-const StyledTableCell = styled(TableCell)(({ theme }) => ({
-    [`&.${tableCellClasses.head}`]: {
-      backgroundColor: theme.palette.common.black,
-      color: theme.palette.common.white,
-    },
-    [`&.${tableCellClasses.body}`]: {
-      fontSize: 14,
-    },
-  }));
-  const StyledTableRow = styled(TableRow)(({ theme }) => ({
-    '&:nth-of-type(odd)': {
-      backgroundColor: theme.palette.action.hover,
-    },
-    // hide last border
-    '&:last-child td, &:last-child th': {
-      border: 0,
-    },
-  }));
-    
+import React, { useState } from "react";
+
 const TableUpload = () => {
+  const [rows, setRows] = useState([{}]);
+  const [columnsArray, setColumnsArray] = useState(["id"]);
+
+
+  const handleAddRow = () => {
+    const item = {};
+    setRows([...rows, item]);
+  };
+
+  const handleAddColumn = () => {
+    const columnitem = prompt("Please enter your name", "Column Name");
+    setColumnsArray([...columnsArray, columnitem]);
+  };
+
+  const postResults = () => {
+    console.log(rows); // there you go, do as you please
+  };
+  const handleRemoveSpecificRow = (idx) => {
+    const tempRows = [...rows]; // to avoid  direct state mutation
+    tempRows.splice(idx, 1);
+    setRows(tempRows);
+  };
+
+  const handleRemoveSpecificColumn = (idx) => {
+    const tempColumns = [...columnsArray]; // to avoid  direct state mutation
+    tempColumns.splice(idx, 1);
+    setColumnsArray(tempColumns);
+  };
+
+  const updateState = (e) => {
+    let prope = e.target.attributes.column.value; // the custom column attribute
+    let index = e.target.attributes.index.value; // index of state array -rows
+    let fieldValue = e.target.value; // value
+
+    const tempRows = [...rows]; // avoid direct state mutation
+    const tempObj = rows[index]; // copy state object at index to a temporary object
+    tempObj[prope] = fieldValue; // modify temporary object
+
+    // return object to rows` clone
+    tempRows[index] = tempObj;
+    setRows(tempRows); // update state
+  };
+
   return (
-    <TableContainer component={Paper}>
-      <Table sx={{ minWidth: 700 }} aria-label="customized table">
-        <TableHead>
-          <TableRow>
-            <StyledTableCell align="center">HHHH</StyledTableCell>
-            <StyledTableCell align="center">GGGG</StyledTableCell>
-            <StyledTableCell align="center">KKKK</StyledTableCell>
-            <StyledTableCell align="center">MMMM</StyledTableCell>
-            <StyledTableCell align="center">LLLL</StyledTableCell>
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          {[1,2,3,4,6].map((value,index) => (
-            <StyledTableRow key={value}>
-              <StyledTableCell align="center" component="th" scope="row">
-                {value}
-              </StyledTableCell>
-              <StyledTableCell align="center">{value}</StyledTableCell>
-              <StyledTableCell align="center">{value}</StyledTableCell>
-              <StyledTableCell align="center">{value}</StyledTableCell>
-              <StyledTableCell align="center">{value}</StyledTableCell>
-            </StyledTableRow>
-          ))}
-        </TableBody>
-      </Table>
-    </TableContainer>
+    <div>
+      <div className="container">
+        <div className="row clearfix">
+          <div className="col-md-12 column">
+            <table className="table table-bordered table-hover" id="tab_logic">
+              <thead>
+                <tr>
+                  <th className="text-center"> # </th>
+                  {columnsArray.map((column, index) => (
+                    <th className="text-center" key={index}>
+                      {column}  <span onClick={() => handleRemoveSpecificColumn(index)}>x</span>
+                    </th>
+                  ))}
+                  <th />
+                </tr>
+              </thead>
+              <tbody>
+                {rows.map((item, idx) => (
+                  <tr key={idx}>
+                    <td>{idx + 1}</td>
+                    {columnsArray.map((column, index) => (
+                      <td key={index}>
+                        <input
+                          type="text"
+                          column={column}
+                          value={rows[idx][column]}
+                          index={idx}
+                          className="form-control"
+                          onChange={(e) => updateState(e)}
+                        />
+                      </td>
+                    ))}
+
+                    <td>
+                      <button
+                        className="btn btn-outline-danger btn-sm"
+                        onClick={() => handleRemoveSpecificRow(idx)}
+                      >
+                        Remove
+                      </button>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+            <button onClick={handleAddRow} className="btn btn-primary">
+              Add Row
+            </button>
+            <button onClick={handleAddColumn} className="btn btn-primary">
+              Add Column
+            </button>
+            <button
+              onClick={postResults}
+              className="btn btn-success float-right"
+            >
+              Save Results
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
   );
 };
 
