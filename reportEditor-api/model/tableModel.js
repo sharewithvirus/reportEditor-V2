@@ -9,7 +9,7 @@ const tableSchema = new Schema({
     name:{
         type:String,
     },
-    rowData:[{c1:String,c2:String,c3:String,c4:String}],
+    rowData:String,
 
     isDeleted:{
         type:Boolean,
