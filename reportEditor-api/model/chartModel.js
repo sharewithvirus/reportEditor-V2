@@ -14,15 +14,9 @@ const chartSchema = new Schema({
     name:{
         type:String
     },
-    series:{
-        type:String,
-    },
-    label:{
-        type:String,
-    },
-    categories:{
-        type:String
-    },
+   formChartData:{
+        type:Object
+   },
     isDeleted: {
         type: Boolean,
         default: false
