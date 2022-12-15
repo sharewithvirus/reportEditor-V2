@@ -31,9 +31,7 @@ function Editors({
         onReady={(editor) => {}}
         onChange={(event, editor) => {
           const data = editor.getData();
-          setTimeout(async (data) => {
-            await save(activeTopicData._id, data);
-          }, 10000);
+          setTimeout(save(activeTopicData._id,data),10000);
         }}
       />
     </>
