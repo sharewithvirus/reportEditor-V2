@@ -11,18 +11,10 @@ const chartSchema = new Schema({
         enum:[ "pie","donut","line","bar","radar","stacked","multibar","area","barandline"],
         required:true
     },
-    name:{
-        type:String
-    },
-    series:{
-        type:String,
-    },
-    label:{
-        type:String,
-    },
-    categories:{
-        type:String
-    },
+    formChartData: {
+        type: String,
+        default: ""
+      },
     isDeleted: {
         type: Boolean,
         default: false
