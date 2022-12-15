@@ -119,9 +119,9 @@ function DashboardPanel() {
               ? getData.map((data, index) => {
                   if (data.reportStatusResearch.length === value) {
                     return (
-                      <>
-                        <ReportManagementTable reportData={data} key={index} />
-                      </>
+                      
+                        <ReportManagementTable reportData={data} key={data._id} />
+                      
                     );
                   }
                 })
@@ -131,9 +131,9 @@ function DashboardPanel() {
               ? getData.map((data, index) => {
                   if (data.reportStatusResearch.length === value) {
                     return (
-                      <>
-                        <ReportManagementTable reportData={data} key={index} />
-                      </>
+                    
+                        <ReportManagementTable reportData={data} key={data._id} />
+                      
                     );
                   }
                 })
@@ -141,12 +141,12 @@ function DashboardPanel() {
             : value === 2
             ? ( getData
               ? getData.map((data, index) => {
-                console.log(value);
+                // console.log(value);
                   if (data.reportStatusResearch.length === value) {
                     return (
-                      <>
-                        <ReportManagementTable reportData={data} key={index} />
-                      </>
+                      
+                        <ReportManagementTable reportData={data} key={data._id} />
+                      
                     );
                   }
                 })
@@ -154,12 +154,12 @@ function DashboardPanel() {
             : value === 1
             ? (getData
               ? getData.map((data, index) => {
-                console.log(value);
+                // console.log(value);
                   if (data.reportStatusResearch.length === value) {
                     return (
-                      <>
-                        <ReportManagementTable reportData={data} key={index} />
-                      </>
+                      
+                        <ReportManagementTable reportData={data} key={data._id} />
+                      
                     );
                   }
                 })
@@ -167,25 +167,12 @@ function DashboardPanel() {
             : (getData
             ? getData.map((data, index) => {
                 return (
-                  <>
-                    <ReportManagementTable reportData={data} key={index} />
-                  </>
+                  
+                    <ReportManagementTable reportData={data} key={data._id} />
+      
                 );
               })
             : "")}
-          {/* {getData
-            ? getData.map((data, index) => {
-                
-                return (
-                  <>
-                    <ReportManagementTable reportData={data} key={index} />
-                  </>
-                );
-              })
-            : ""} */}
-          {/* <p> {getData ? getData[3].name : "not coming"} </p> */}
-          {/* <ReportManagementTable taskStatus={[true,true,false,false]}/>
-          <ReportManagementTable taskStatus={[true,false,false,false]}/> */}
         </Box>
       </Box>
     </>

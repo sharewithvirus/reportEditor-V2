@@ -57,7 +57,7 @@ const UserManagementModal = ({
   const handleChange = (event) => {
     const { name, value } = event.target;
     setData({...data, [name]: value});
-    console.log("Name: ", name, "Value: ", value)
+    // console.log("Name: ", name, "Value: ", value)
     setDepartmentList(value);
   };
 
@@ -130,7 +130,7 @@ const UserManagementModal = ({
 
   useEffect(() => {
     if (edit) {
-      console.log("User Data", activeUser)
+      // console.log("User Data", activeUser)
       setData({
         ...data,
         _id: activeUser._id,
@@ -301,10 +301,10 @@ const UserManagementModal = ({
                     >
                       {deptTextList.length > 0 ? (
                         deptTextList.map((x, i) => (
-                          <MenuItem value={x._id}>{x.name}</MenuItem>
+                          <MenuItem value={x._id}  key={x._id} >{x.name}</MenuItem>
                         ))
                       ) : (
-                        <MenuItem disabled>No Department Found</MenuItem>
+                        <MenuItem disabled >No Department Found</MenuItem>
                       )}
                     </Select>
                     : <Select

@@ -137,7 +137,7 @@ export default function FullWidthTabs() {
   const [open, setOpen] = useState(false);
   const [openImage, setOpenImage] = useState(false);
   const [openTable, setOpenTable] = useState(false);
-  const handleOpen = () => setOpen(true);
+  const handleOpen = () => setOpen(!open);
   const handleOpenImage = () => setOpenImage(true);
   const handleOpenTable = () => setOpenTable(true);
   const [openSnack, setopenSnack] = useState(false);
@@ -147,6 +147,7 @@ export default function FullWidthTabs() {
   const handleClose = () => setOpen(false);
   const handleCloseImage = () => setOpenImage(false);
   const [chartType, setChartType] = useState("pie");
+  const [allImages, setAllImages] = useState(null);
   const [active, setActive] = useState(-1);
   const [copyText, setCopyText] = useState("");
   const [chartList,setChartList] = useState([]);
@@ -246,12 +247,32 @@ export default function FullWidthTabs() {
   };
   useEffect(() => {
     // console.log("renderkkkk");
+    
   }, [formChartData]);
+
+
   useEffect(() => {
     if (id) {
       getChartsData(id);
+
     }
+    getAllImages();
   }, []);
+
+  const getAllImages = async () => {
+    const res = await getAllReportImages(id);
+    console.log("images", res.data.data);
+    setAllImages(res.data.data);
+  }
+  const postImage = async (imgData)=>{
+    console.log("working");
+    const res = await uploadImage(id,imgData);
+    console.log("...",res);
+    if(res.status === 200)
+    {
+      console.log("success");
+    }
+  }
   return (
     <>
       <Box sx={{ bgcolor: "background.paper", width: "100%" }}>
@@ -276,21 +297,32 @@ export default function FullWidthTabs() {
         >
           <TabPanel value={value} index={0} dir={theme.direction}>
             <Stack>
+            <Button onClick={handleOpenImage}>
+              <Typography>ADD IMAGES</Typography>
+            </Button>
               <Grid
                 container
                 spacing={{ xs: 2, md: 3 }}
                 columns={{ xs: 4, sm: 8, md: 12 }}
               >
-                {Array.from(Array(6)).map((_, index) => (
+                {allImages?.map((item, index) => (
                   <Grid item sm={4} md={4} key={index}>
-                    <Item square color="inherit"></Item>
+                    <img
+                    src={item.imgUrl}
+                    alt={item.name}
+                    width="120"
+                    // height={'100'}
+                    />
+                    <Typography>
+                      {item.name}
+                    </Typography>
                   </Grid>
                 ))}
               </Grid>
+              
+            
             </Stack>
-            <Button onClick={handleOpenImage}>
-              <Typography>ADD IMAGES</Typography>
-            </Button>
+            
           </TabPanel>
           <TabPanel value={value} index={1} dir={theme.direction}>
             <Button onClick={handleOpenTable} sx={{mt:"20px"}} >
@@ -411,7 +443,7 @@ export default function FullWidthTabs() {
         aria-describedby="modal-modal-description"
       >
         <Box sx={style}>
-          <ImageUpload />
+          <ImageUpload postImage ={(x)=>postImage(x)} />
         </Box>
       </Modal>
 

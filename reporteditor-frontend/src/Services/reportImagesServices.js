@@ -20,12 +20,5 @@ export const uploadImage = async (id, data) => {
     }
 }
 
-export const updateNewCharts = async (data, id) => {
-    try {
-        return await axios.patch(`/api/v1/chart/update/${id}`, data)
-    } catch (error) {
-        alert(error.response.data.message)
-        return error.response;
-    }
-}
+
 

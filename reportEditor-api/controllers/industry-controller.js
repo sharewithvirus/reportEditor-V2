@@ -86,6 +86,7 @@ exports.updateIndustry = async (req,res) => {
     try{
      const { id } = req.params;
      const {name,status} = req.body;
+     console.log("controller..industry update");
      console.log(req.body);
      if(!name){
         res.status(200).json({
@@ -114,6 +115,7 @@ exports.updateIndustry = async (req,res) => {
 exports.deleteIndustry = async (req,res) => {
     try{
       const { id } = req.params;
+      console.log("controler industry",id);
       if(id){
         await IndustryModel.findByIdAndDelete(id);
         res.status(200).json({

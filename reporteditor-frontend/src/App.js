@@ -20,23 +20,26 @@ import Dashboard from "./Pages/researchTeam/dashboard/Dashboard";
 
 import NavBar from "./components/NavBar";
 function App() {
-  const { isAuthenticated, setUserInfo, setIsAuthenticated, setIsLoading, updateAdminData } =
-    useContext(UserDataContext);
+  const {
+    isAuthenticated,
+    setUserInfo,
+    setIsAuthenticated,
+    setIsLoading,
+    updateAdminData,
+  } = useContext(UserDataContext);
 
   const navigate = useNavigate();
 
   const getUserDataApi = async () => {
     const res = await userDashboard();
-    // console.log("Status", res.status)
-    // console.log("Error", res)
+    
     if (res === "User Not found") {
       isAuthenticated(false);
       setIsLoading(false);
       navigate("/login");
     } else {
       setIsAuthenticated(true);
-      // updateAdminData(res.data.user);
-      setUserInfo(res.data.user)
+      setUserInfo(res.data.user);
       setIsLoading(false);
       if (res.data.user.role === "admin") {
         navigate("/a_control");
@@ -54,22 +57,16 @@ function App() {
       <Loader />
       {/* <CreateReport   /> */}
 
-      { isAuthenticated ? (
+      {isAuthenticated ? (
         <DashboardRoutes />
-    )
-    :
-    (
-    <Routes>
-      <Route
-            path="/" 
-            element={<Navigate replace to="login" />}
-          ></Route>
-      <Route path="/login" element={<LogIn />} />
-      <Route path="/verifyEmail/:token" element={<VerifyPassword />} />
-    </Routes>
-    )
-    }
-        {/* <NavBar reportsDashboard={"Research Team Mode"} />
+      ) : (
+        <Routes>
+          <Route path="/" element={<Navigate replace to="login" />}></Route>
+          <Route path="/login" element={<LogIn />} />
+          <Route path="/verifyEmail/:token" element={<VerifyPassword />} />
+        </Routes>
+      )}
+      {/* <NavBar reportsDashboard={"Research Team Mode"} />
 
       <Routes>
         <Route path="/" element={<Navigate replace to="dashboard" />}></Route>
