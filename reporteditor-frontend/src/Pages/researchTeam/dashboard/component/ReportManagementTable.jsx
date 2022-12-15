@@ -57,7 +57,7 @@ function ReportManagementTable({ reportData }) {
               <Typography variant="caption">
                 {reportData.userList
                   ? reportData.userList
-                  : "Author: Nikhil, Vikas, Uttareshwa"}
+                  : "Author: Nikhil, Vikas, Uttareshwar"}
               </Typography>
             </Grid>
             <Grid

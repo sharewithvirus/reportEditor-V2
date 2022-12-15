@@ -7,7 +7,6 @@ import SideMenuItems from "./SideMenuItems";
 function SideBar({ subTopicList, ativeDataSet, getReportDataText }) {
   // console.log(getReportDataText);
   // console.log(subTopicList);
-  const h = 'dfvgevihshdusk'
   return (
     <>
       <Box
@@ -33,13 +32,13 @@ function SideBar({ subTopicList, ativeDataSet, getReportDataText }) {
           subTopicList.map((item, index) => {
             return (
               <SideMenuItems
-              h={'h'}
+           
               index2={Number(index + 1)}
                 item={item}
                 key = {item._id}
                   preIndex='null'
                 ativeDataSet={(x) => ativeDataSet(x)}
-                  getReportDataText1 = {getReportDataText}
+                getReportDataText = {getReportDataText}
                 
               />
             );

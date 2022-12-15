@@ -20,10 +20,15 @@ function DashboardPanel() {
   const [getData, setGetData] = useState([]);
   const url = "/api/v1/report";
   const [value, setValue] = useState(0);
-
+  const [openSnack, setopenSnack] = useState(false);
+  const [severity, setSeverity] = useState("success");
+  const [snackMsg, setSnackMsg] = useState("");
   const getApiData = async () => {
     const res = await getReport();
     if (res.status === 200) {
+      setSeverity("success");
+      setSnackMsg("Data Fetched !");
+      setopenSnack(true);
       setGetData(res.data.reportsList);
       setOpen(true);
     }
@@ -43,8 +48,8 @@ function DashboardPanel() {
   return (
     <>
       <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
-        <Alert onClose={handleClose} severity="success" sx={{ width: "100%" }}>
-          This is a success message!
+        <Alert onClose={handleClose} severity={severity} sx={{ width: "100%" }}>
+          {snackMsg}
         </Alert>
       </Snackbar>
       <Box
