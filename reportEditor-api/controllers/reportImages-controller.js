@@ -18,7 +18,7 @@ exports.uploadImageToReport = async (req, res) => {
         }else{
             const report = await Report.findById(reportId);
             const result = await uploadImg(file);
-            const newReportImage = await ReportImage.create({reportId, name: imageName, key: result?.Key, imgUrl: result.Location})
+            const newReportImage = await ReportImage.create({reportId, name: imageName, key: result?.Key, imgUrl: result?.Location})
             report.reportImages.push(newReportImage._id);
             await report.save();
             res.status(200).json({

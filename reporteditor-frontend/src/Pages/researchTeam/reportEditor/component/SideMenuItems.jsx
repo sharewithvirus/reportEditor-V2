@@ -13,7 +13,6 @@ import { useContext } from "react";
 import { useParams } from "react-router-dom";
 
 function SideMenuItems({ clWidth, item, preIndex, index2 , getReportDataText1 , ativeDataSet,active}) {
-  // console.log(getReportDataText1);
   const { setIsLoading } = useContext(UserDataContext);
   const { id } = useParams();
   const [open, setOpen] = useState(false);
@@ -32,14 +31,11 @@ function SideMenuItems({ clWidth, item, preIndex, index2 , getReportDataText1 , 
       setSnackMsg("Chapter Added Successfully !");
       setopenSnack(true);
       handleShow();
-      // console.log(getReportDataText1);
       getReportDataText1();
       setIsLoading(false);
     }
   };
   const handleDelete = (id) =>{
-    // console.log("work");
-    // console.log("dleid",id);
     setDelId(id);
     handleShow();
   }
@@ -53,7 +49,6 @@ function SideMenuItems({ clWidth, item, preIndex, index2 , getReportDataText1 , 
       setSnackMsg("Chapter Deleted !");
       setopenSnack(true);
       handleShow();
-      // console.log(getReportDataText1);
       getReportDataText1();
       setIsLoading(false);
     }
@@ -67,7 +62,6 @@ function SideMenuItems({ clWidth, item, preIndex, index2 , getReportDataText1 , 
       setSnackMsg("Chapter Updated Successfully !");
       setopenSnack(true);
       handleShow();
-      // console.log(getReportDataText1);
       getReportDataText1();
       setIsLoading(false);
       console.log("updated");

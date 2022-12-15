@@ -80,10 +80,14 @@ function ReportEditor() {
     }
   };
   const saveHtmlData = async (data) => {
-    const res = await updateSubtopics(data);
-    if (res.status === 200) {
-      getReportData();
-    }
+    console.log("Editor Data", data)
+    console.log("topicData", activeTopicData)
+    // const res = await updateSubtopics(data);
+    // if (res.status === 200) {
+    //   console.log("Updated Topic Data", res.data.topic)
+    //   setActiveTopicData(res.data.topic);
+    //   getReportData();
+    // }
   };
   const ativeDataSet = (data) => {
     setActiveTopicData(data);
