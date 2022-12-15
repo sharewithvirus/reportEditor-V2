@@ -1,8 +1,7 @@
 import React, { useEffect, useState } from "react";
 import ReactApexChart from "react-apexcharts";
 
-
-function ShowCharts({formChartData, chartType}) {
+function ShowCharts({ formChartData, chartType }) {
   const [inputValue, setInputValue] = useState(formChartData);
 
   const addChartFormValues = () => {
@@ -10,25 +9,25 @@ function ShowCharts({formChartData, chartType}) {
     setTimeout(() => {}, 0);
   };
 
-  useEffect(() => {
-  }, [formChartData, addChartFormValues]);
+  useEffect(() => {}, [formChartData, addChartFormValues]);
 
   console.log("inputValue", inputValue);
   console.log("chartType", chartType);
-
 
   let chartData;
 
   if (chartType === "pie") {
     chartData = {
-      series: inputValue?.formChartData?.series?.split(",").map((item1) => parseInt(item1)),
+      series: inputValue?.formChartData?.series
+        ?.split(",")
+        .map((item1) => parseInt(item1)),
       options: {
         chart: {
           width: 50,
           type: "pie",
         },
         title: {
-          text:inputValue.formChartData.name,
+          text: inputValue.formChartData.name,
         },
         labels: inputValue?.formChartData?.label?.split(","),
         responsive: [
@@ -50,10 +49,14 @@ function ShowCharts({formChartData, chartType}) {
     chartData = {
       series: [
         {
-          data: inputValue?.formChartData?.series?.split(",").map((item1) => parseInt(item1)),
+          data: inputValue?.formChartData?.series
+            ?.split(",")
+            .map((item1) => parseInt(item1)),
         },
         {
-          data: inputValue?.formChartData?.series1?.split(",").map((item1) => parseInt(item1)),
+          data: inputValue?.formChartData?.series1
+            ?.split(",")
+            .map((item1) => parseInt(item1)),
         },
       ],
       options: {
@@ -83,7 +86,9 @@ function ShowCharts({formChartData, chartType}) {
       series: [
         {
           name: "Series 1",
-          data: inputValue?.formChartData?.series?.split(",").map((item1) => parseInt(item1)),
+          data: inputValue?.formChartData?.series
+            ?.split(",")
+            .map((item1) => parseInt(item1)),
         },
       ],
       options: {
@@ -92,7 +97,7 @@ function ShowCharts({formChartData, chartType}) {
           type: "radar",
         },
         title: {
-          text:inputValue.formChartData.name,
+          text: inputValue.formChartData.name,
         },
         xaxis: {
           categories: inputValue?.formChartData?.categories?.split(","),
@@ -104,7 +109,9 @@ function ShowCharts({formChartData, chartType}) {
       series: [
         {
           name: "Desktops",
-          data: inputValue?.formChartData?.series?.split(",").map((item1) => parseInt(item1)),
+          data: inputValue?.formChartData?.series
+            ?.split(",")
+            .map((item1) => parseInt(item1)),
         },
       ],
       options: {
@@ -122,12 +129,12 @@ function ShowCharts({formChartData, chartType}) {
           curve: "straight",
         },
         title: {
-          text:inputValue.formChartData.name,
+          text: inputValue.formChartData.name,
           align: "left",
         },
         grid: {
           row: {
-            colors: ["#f3f3f3", "transparent"], 
+            colors: ["#f3f3f3", "transparent"],
             opacity: 0.5,
           },
         },
@@ -141,7 +148,9 @@ function ShowCharts({formChartData, chartType}) {
       series: [
         {
           name: "STOCK ABC",
-          data: inputValue?.formChartData?.series?.split(",").map((item1) => parseInt(item1)),
+          data: inputValue?.formChartData?.series
+            ?.split(",")
+            .map((item1) => parseInt(item1)),
         },
       ],
       options: {
@@ -180,10 +189,14 @@ function ShowCharts({formChartData, chartType}) {
     chartData = {
       series: [
         {
-          data: inputValue?.formChartData?.series?.split(",").map((item1) => parseInt(item1)),
+          data: inputValue?.formChartData?.series
+            ?.split(",")
+            .map((item1) => parseInt(item1)),
         },
         {
-          data: inputValue?.formChartData?.series?.split(",").map((item1) => parseInt(item1)),
+          data: inputValue?.formChartData?.series
+            ?.split(",")
+            .map((item1) => parseInt(item1)),
         },
       ],
       options: {
@@ -205,10 +218,11 @@ function ShowCharts({formChartData, chartType}) {
         },
       },
     };
-  } 
-  else if (chartType === "donut") {
+  } else if (chartType === "donut") {
     chartData = {
-      series: inputValue?.formChartData?.series?.split(",").map((item1) => parseInt(item1)),
+      series: inputValue?.formChartData?.series
+        ?.split(",")
+        .map((item1) => parseInt(item1)),
       options: {
         chart: {
           type: "donut",
@@ -261,7 +275,7 @@ function ShowCharts({formChartData, chartType}) {
   //       columnWidth: '50%'
   //     }
   //   },
-    
+
   //   fill: {
   //     opacity: [0.85, 0.25, 1],
   //     gradient: {
@@ -297,7 +311,7 @@ function ShowCharts({formChartData, chartType}) {
   //           return y.toFixed(0) + " points";
   //         }
   //         return y;
-    
+
   //       }
   //     }
   //   }
@@ -307,13 +321,12 @@ function ShowCharts({formChartData, chartType}) {
 
   return (
     <div>
-        <ReactApexChart
-          options={chartData.options}
-          series={chartData.series}
-          type={chartType}
-          width={chartType == 'pie'? '100%':'90%'}
-        
-        />
+      <ReactApexChart
+        options={chartData.options}
+        series={chartData.series}
+        type={chartType}
+        width={chartType == "pie" ? "100%" : "90%"}
+      />
     </div>
   );
 }
