@@ -44,7 +44,7 @@ function ReportTemplateCreator() {
         navigate("/u_control/report-template-management");
       }
     } else {
-      if(templateData.header === " " || templateData.name === "" || templateData.footer)
+      if(templateData.header === "" || templateData.name === "" || templateData.footer === "")
       {
         alert("Name Header and Footer CAN NOT  be Empty !")
       }
