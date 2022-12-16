@@ -55,7 +55,7 @@ function IndustryModal({open,handleClose,handleDeleteModelShow,industryData,crea
             >
               <FileCopyRoundedIcon />
               <Typography sx={{ fontSize: "20px", fontWeight: "bold" }}>
-                Create Team
+                Create Industry
               </Typography>
             </Stack>
             <hr />

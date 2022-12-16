@@ -38,15 +38,7 @@ function ReportEditor() {
   const [openSnack, setopenSnack] = useState(false);
   const [severity, setSeverity] = useState("success");
   const [snackMsg, setSnackMsg] = useState("");
-  const [width, setWidth] = useState(0);
-  const [active, setActive] = useState();
   const date = new Date();
-  const [drawer,setDrawer]=useState(false)
-  const [expanSidePanel, setExpandSidePanel] = useState({
-    left: 4,
-    right: 8,
-  });
-  const ref = useRef(null);
   const getReportData = async () => {
     setIsLoading(true);
     const res = await getReportDataById(id);
@@ -80,8 +72,12 @@ function ReportEditor() {
     }
   };
   const saveHtmlData = async (data) => {
+    console.log("Editor Data", data)
+    console.log("topicData", activeTopicData)
     const res = await updateSubtopics(data);
     if (res.status === 200) {
+      // console.log("Updated Topic Data", res.data.topic)
+      setActiveTopicData(res.data.topic);
       getReportData();
     }
   };
@@ -224,17 +220,14 @@ function ReportEditor() {
                     reportData.subTopics ? reportData.subTopics : ""
                   }
                   getReportDataText={getReportData}
-                  ativeDataSet={(x) => {
-                   
-                    ativeDataSet(x);
-                  }}
+                  ativeDataSet={(x) => {ativeDataSet(x)}}
                 />
               ) : (
                 ""
               )}
               <Stack mt={8}>
                 <Stack alignContent="center" alignItems="center">
-                  <Typography variant="body2">Author: Vikas</Typography>
+                  <Typography variant="body2">Author: {reportData?.userList[0]}</Typography>
                   <Typography variant="body2">
                     Base Year : {reportData ? reportData.baseYear : ""}
                   </Typography>

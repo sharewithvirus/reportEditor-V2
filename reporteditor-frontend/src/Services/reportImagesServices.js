@@ -13,7 +13,7 @@ export const getAllReportImages = async (id) => {
 }
 export const uploadImage = async (id, data) => {
     try {
-        return await axios.post(`/api/v1/report-image/imageUpload/${id}`, data)
+        return await axios.post(`/api/v1/report-image/imageUpload/${id}`, data ,{ headers: {'Content-Type': 'multipart/form-data'}})
     } catch (error) {
         alert(error.response.data.message)
         return error.response;

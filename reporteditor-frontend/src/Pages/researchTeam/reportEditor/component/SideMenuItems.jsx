@@ -12,8 +12,7 @@ import { UserDataContext } from "../../../../context/userContext";
 import { useContext } from "react";
 import { useParams } from "react-router-dom";
 
-function SideMenuItems({ clWidth, item, preIndex, index2 , getReportDataText1 , ativeDataSet,active}) {
-  // console.log(getReportDataText1);
+function SideMenuItems({ clWidth, item, preIndex, index2 , getReportDataText , ativeDataSet,active}) {
   const { setIsLoading } = useContext(UserDataContext);
   const { id } = useParams();
   const [open, setOpen] = useState(false);
@@ -32,14 +31,11 @@ function SideMenuItems({ clWidth, item, preIndex, index2 , getReportDataText1 , 
       setSnackMsg("Chapter Added Successfully !");
       setopenSnack(true);
       handleShow();
-      // console.log(getReportDataText1);
-      getReportDataText1();
+      getReportDataText();
       setIsLoading(false);
     }
   };
   const handleDelete = (id) =>{
-    // console.log("work");
-    // console.log("dleid",id);
     setDelId(id);
     handleShow();
   }
@@ -53,8 +49,7 @@ function SideMenuItems({ clWidth, item, preIndex, index2 , getReportDataText1 , 
       setSnackMsg("Chapter Deleted !");
       setopenSnack(true);
       handleShow();
-      // console.log(getReportDataText1);
-      getReportDataText1();
+      getReportDataText();
       setIsLoading(false);
     }
   }
@@ -67,8 +62,7 @@ function SideMenuItems({ clWidth, item, preIndex, index2 , getReportDataText1 , 
       setSnackMsg("Chapter Updated Successfully !");
       setopenSnack(true);
       handleShow();
-      // console.log(getReportDataText1);
-      getReportDataText1();
+      getReportDataText();
       setIsLoading(false);
       console.log("updated");
       
@@ -122,7 +116,7 @@ function SideMenuItems({ clWidth, item, preIndex, index2 , getReportDataText1 , 
               </AccordionSummary>
               <AccordionDetails>
                 {item.subTopics.map((item, index) => {
-                     return <SideMenuItems key={index2} item={item} preIndex={preIndex !== "null" ? `${preIndex}.${index2}` : `${index2}`} index2={Number(index+1)} ativeDataSet = {(x) =>ativeDataSet(x)} getReportDataText1={getReportDataText1}/>
+                     return <SideMenuItems key={index2} item={item} preIndex={preIndex !== "null" ? `${preIndex}.${index2}` : `${index2}`} index2={Number(index+1)} ativeDataSet = {(x) =>ativeDataSet(x)} getReportDataText={getReportDataText}/>
                 })}
               </AccordionDetails>
             </Accordion>
