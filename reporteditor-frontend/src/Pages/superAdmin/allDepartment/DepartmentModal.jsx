@@ -38,18 +38,19 @@ const style = {
 
 export default function DepartmentModal(props) {
   const [industries, setIndustries] = useState([]);
+ 
+  console.log("hhhhhhh",props.deptData);
   const [data, setData] = useState({
     name: props.deptData.name,
     description: props.deptData.description,
     deptId: props.deptData._id,
     teamType: props.deptData.teamType,
-    industries: industries,
+    industries: props.deptData.industries,
   });
- 
-  const handleChange = (e) =>{
-   
+
+  const handleChange = (e) => {
     setIndustries(e.target.value);
-    console.log(e.target.value);
+    // console.log(e.target.value);
     // let check = false;
     // for (let i = 0; i < demoIndus.length; i++) {
     //   const element = demoIndus[i];
@@ -61,7 +62,7 @@ export default function DepartmentModal(props) {
     //   console.log(check)
     // }
     // console.log(check);
-  }
+  };
   const onInputChange = (e) => {
     const { name, value } = e.target;
     setData({ ...data, [name]: value });
@@ -70,7 +71,10 @@ export default function DepartmentModal(props) {
   const handleSubmit = async () => {
     let finalData = data;
     finalData.industries = industries;
-    await props.create(finalData);
+     await props.create(finalData);
+   
+    finalData.industries="";
+    setIndustries([]);
     setData("");
   };
 
@@ -108,6 +112,9 @@ export default function DepartmentModal(props) {
                     name="teamType"
                     value={data.teamType}
                     onChange={onInputChange}
+                    defaultValue={
+                      props.deptData ? props.deptData.teamType : ""
+                    }
                   >
                     <FormControlLabel
                       value="research-team"
@@ -162,53 +169,58 @@ export default function DepartmentModal(props) {
                       onChange={onInputChange}
                       size="large"
                     />
-                    
                   </Box>
-                  <Grid container >
-                    <Grid item xs={12} sm ={12} md={12}>
-                    <FormControl 
-                    sx={{marginTop:"15px",
-                    minHeight:"100%"
-                  }}
-                  fullWidth
-                    >
-                      <InputLabel>
-                       Industries
-                      </InputLabel>
-                      <Select
-                        multiple
-                        // sx={{sm:{
-                        //   widht:"50vw",
-                        // },md:{
-                        //   width:"20vw"
-                        // }}}
-                        sx={{width:"20vw"}}
-                        value={industries}
-                        onChange={handleChange}
-                        input={<OutlinedInput label="Industries" />}
-                        renderValue={(selected) => (
-                          <Box sx={{ display: "flex", flexWrap: "wrap", gap: 0.5 }}>
-                            {selected.map((value) => {                     
+                  <Grid container>
+                    <Grid item xs={12} sm={12} md={12}>
+                      <FormControl
+                        sx={{ marginTop: "15px", minHeight: "100%" }}
+                        fullWidth
+                      >
+                        <InputLabel>Industries</InputLabel>
+                        <Select
+                          multiple
+                          // sx={{sm:{
+                          //   widht:"50vw",
+                          // },md:{
+                          //   width:"20vw"
+                          // }}}
+                          sx={{ width: { sm: "22vw", md: "18vw" } }}
+                          value={
+                            props.deptData ? props.deptData.industries : industries
+                          }
+                          onChange={handleChange}
+                          input={<OutlinedInput label="Industries" />}
+                          renderValue={(selected) => (
+                            <Box
+                              sx={{
+                                display: "flex",
+                                flexWrap: "wrap",
+                                gap: 0.5,
+                              }}
+                            >
+                              {selected.map((value) => {
                                 for (const item of props.industryList) {
-                                  if(item._id === value)
-                                  { 
+                                  if (item._id === value) {
                                     return (
                                       <Chip label={item.name} value={value} />
-                                    )
+                                    );
                                   }
-                                }                          
-                            })}
-                          </Box>
-                        )}
-                      >
-                        {props.industryList.map((industry, index) => (
-                          <MenuItem key={index} value={industry._id} name={industry.name}>
-                            {industry.name}
-                          </MenuItem>
-                        ))}
-                      </Select>
-                    </FormControl>
-
+                                }
+                              })}
+                            </Box>
+                          )}
+                        >
+                          {props.industryList.map((industry, index) => (
+                            <MenuItem
+                              key={index}
+                              value={industry._id}
+                              name={industry.name}
+                            >
+                              {industry.name}
+                            </MenuItem>
+                          ))}
+                        </Select>
+                      </FormControl>
                     </Grid>
                   </Grid>
                 </FormControl>

@@ -44,7 +44,7 @@ function DashboardRoutes() {
               <Route path="/u_control/edit-report/:id" element={<CreateReport />} />
               <Route path="/u_control/report-editor/:id" element ={<ReportEditor />} />
               {/* <Route path="/u_control/report-editor/" element ={<ReportEditor />} /> */}
-              <Route path='/u_control/report-preview' element={<ReportPreview/>}/>
+              <Route path='/u_control/report-preview/:id' element={<ReportPreview/>}/>
               <Route path='/u_control/report-template-management' element={<ReportTemplateManagement />} />
               <Route path="/u_control/report-template/create" element={<ReportTemplateCreator/>}/>
               <Route path="/u_control/report-template/edit/:id" element={<ReportTemplateCreator/>}/>

@@ -20,11 +20,11 @@ exports.createDepartment = async (req, res) => {
             })
             return;
         }else{
-            // const newDepartment = await Department.create({name, teamType, description,industries});
+            const newDepartment = await Department.create({name, teamType, description,industries});
             res.status(201).json({
                 status: 'success',
                 message: "Department Created Successfully",
-                // data: newDepartment,
+                data: newDepartment,
             })
         }
     } catch (error) {

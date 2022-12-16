@@ -12,8 +12,7 @@ const chartSchema = new Schema({
         required:true
     },
     formChartData: {
-        type: String,
-        default: ""
+        type: Object,
       },
     isDeleted: {
         type: Boolean,

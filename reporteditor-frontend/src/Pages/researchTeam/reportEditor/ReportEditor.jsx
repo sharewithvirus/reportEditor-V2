@@ -72,11 +72,11 @@ function ReportEditor() {
     }
   };
   const saveHtmlData = async (data) => {
-    console.log("Editor Data", data)
-    console.log("topicData", activeTopicData)
+    console.log("Editor Data", data);
+    console.log("topicData", activeTopicData);
     const res = await updateSubtopics(data);
     if (res.status === 200) {
-      // console.log("Updated Topic Data", res.data.topic)
+      console.log("Updated Topic Data", res.data.topic);
       setActiveTopicData(res.data.topic);
       getReportData();
     }
@@ -149,10 +149,9 @@ function ReportEditor() {
                 sx={{
                   fontSize: "12px",
                 }}
-              >
+                >
                 <b>Editing : </b>
                 <span>
-                  
                   {activeTopicData ? activeTopicData.subTopicName : ""}
                 </span>
               </Typography>
@@ -165,36 +164,40 @@ function ReportEditor() {
             display="flex"
             justifyContent="space-between"
             flexDirection="row"
-          >
+            >
             <Stack>
               <Typography
                 sx={{
                   fontSize: "12px",
                 }}
-              >
-                <b>Last Saved :</b>{" "}
+                >
+                <b>Last Saved :</b>
                 <span>
                   {activeTopicData
                     ? moment(activeTopicData.updatedAt).format(
-                        "Do MMM YYYY  , h:mm:ss A"
+                      "Do MMM YYYY  , h:mm:ss A"
                       )
-                    : ""}{" "}
+                      : ""}
                 </span>
               </Typography>
             </Stack>
             <Stack>
-              <Link to="/u_control/report-preview">
-                <Button
-                  color="inherit"
-                  variant="outlined"
-                  size="small"
-                  sx={{
-                    height: "3vh",
-                  }}
-                >
-                  Preview
-                </Button>
-              </Link>
+              {reportData ? (
+                <Link to={`/u_control/report-preview/${reportData._id}`}>
+                  <Button
+                    color="inherit"
+                    variant="outlined"
+                    size="small"
+                    sx={{
+                      height: "3vh",
+                    }}
+                  >
+                    Preview
+                  </Button>
+                </Link>
+              ) : (
+                ""
+              )}
             </Stack>
           </Grid>
         </Grid>
@@ -220,14 +223,16 @@ function ReportEditor() {
                     reportData.subTopics ? reportData.subTopics : ""
                   }
                   getReportDataText={getReportData}
-                  ativeDataSet={(x) => {ativeDataSet(x)}}
+                  ativeDataSet={(x) => {
+                    ativeDataSet(x);
+                  }}
                 />
               ) : (
                 ""
               )}
               <Stack mt={8}>
                 <Stack alignContent="center" alignItems="center">
-                  <Typography variant="body2">Author: {reportData?.userList[0]}</Typography>
+                  <Typography variant="body2">Author: {"vikas"}</Typography>
                   <Typography variant="body2">
                     Base Year : {reportData ? reportData.baseYear : ""}
                   </Typography>
@@ -269,7 +274,7 @@ function ReportEditor() {
                 height: "700px",
                 borderLeft: " 1px solid",
                 borderRight: " 1px solid",
-                overflow:'auto'
+                overflow: "auto",
               }}
             >
               <Editor
@@ -304,7 +309,7 @@ function ReportEditor() {
                 />
               </Stack>
               <Stack
-              mt={2}
+                mt={2}
                 sx={{
                   display: "flex",
                   flexDirection: "row",
