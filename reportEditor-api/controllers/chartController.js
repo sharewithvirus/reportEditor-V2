@@ -1,11 +1,15 @@
 const chartModel = require("../model/chartModel");
 const { findByIdAndUpdate } = require("../model/subTopicModel");
+const Report = require("../model/reportModel");
 
 //Create All Chart With ChartType from[ "pie","donut","line","bar","radar","stacked","multibar","area","barandline"]
 exports.createChart = async (req, res) => {
     try{
-        const {chartType,reportId,name,label,series,categories} = req.body;        
+       const {chartType,reportId} = req.body;
            const newChart = await chartModel.create(req.body);
+           const report = await Report.findById(reportId);
+           report.reportCharts.push(newChart._id);
+           await report.save();
            res.status(201).json({
             status:"Success",
             message:`${chartType} Chart created Successfully`,
@@ -46,9 +50,6 @@ exports.getAllChart = async (req, res) => {
         const { id } = req.params;
         console.log("api hitt", req.body);
         const chartDocs = await chartModel.find({reportId: id})
-        // .select(
-        //     " reportId chartType name series label isDeleted deletedAt createdAt updatedAt "
-        // );
         res.status(200).json({
             status:"Success",
             message:`All Chart fetched Successfully`,
