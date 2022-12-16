@@ -72,8 +72,6 @@ export default function DepartmentModal(props) {
     let finalData = data;
     finalData.industries = industries;
      await props.create(finalData);
-   
-    finalData.industries="";
     setIndustries([]);
     setData("");
   };
@@ -185,8 +183,7 @@ export default function DepartmentModal(props) {
                           //   width:"20vw"
                           // }}}
                           sx={{ width: { sm: "22vw", md: "18vw" } }}
-                          value={
-                            props.deptData ? props.deptData.industries : industries
+                          value={props.deptData ? props.deptData.industries : industries
                           }
                           onChange={handleChange}
                           input={<OutlinedInput label="Industries" />}
