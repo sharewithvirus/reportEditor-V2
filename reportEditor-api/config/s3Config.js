@@ -21,6 +21,7 @@ exports.uploadImg = async (file) => {
     ACL: "public-read",
   };
   const response = await s3.upload(uploadParams).promise();
+  fs.unlinkSync(file.path);
   return response;
 };
 

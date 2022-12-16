@@ -10,7 +10,6 @@ const Report = require("../model/reportModel");
 
 exports.createReport = async (req, res) => {
     try {
-
       const { name,
               userList, 
               industry,

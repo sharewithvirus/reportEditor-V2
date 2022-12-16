@@ -115,7 +115,7 @@ exports.deleteIndustry = async (req,res) => {
       const { id } = req.params;
       console.log("controler industry",id);
       if(id){
-        await IndustryModel.findByIdAndDelete(id);
+        await IndustryModel.findByIdAndUpdate({_id: id}, {deletedAt: new Date()});
         res.status(200).json({
             status:"success",
             message:"Industry Doc Deleted Successfully"
