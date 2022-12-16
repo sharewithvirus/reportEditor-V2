@@ -2,7 +2,7 @@ const IndustryModel = require("../model/industryModel");
 const Department = require("../model/department");1 
 exports.createIndustry = async (req,res) => {
     try{
-      const {name, status} = req.body;
+      const {name} = req.body;
       if(!name){
         res.status(200).json({
             status:"error",
@@ -11,10 +11,10 @@ exports.createIndustry = async (req,res) => {
       return;
       }
       else{
-        const newIndustry = await IndustryModel.create(req.body);
+        const newIndustry = await IndustryModel.create({name, status: true});
         res.status(201).json({
             status:"success",
-            message:"Industry Doc Created Successfully",
+            message:"Industry Created Successfully",
             data:newIndustry
         })
       }
@@ -86,8 +86,6 @@ exports.updateIndustry = async (req,res) => {
     try{
      const { id } = req.params;
      const {name,status} = req.body;
-     console.log("controller..industry update");
-     console.log(req.body);
      if(!name){
         res.status(200).json({
             status:"error",

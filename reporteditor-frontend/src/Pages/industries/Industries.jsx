@@ -70,17 +70,18 @@ function Industries() {
   const createNewIndustry = async (data) => {
     setIsLoading(true);
     let res;
-    // console.log("....",editIndustry);
     if (editIndustry === true) {
       if (data.name === undefined) {
         data.name = activeIndustry.name;
       }
       res = await updateNewIndustry(data, activeIndustry._id);
-      console.log(res);
+      if(res.status === 200){
+        getIndustry();
+      }
     } else {
       res = await createIndustry(data);
     }
-    if (res.status === 200) {
+    if (res.status === 201) {
       getIndustry();
       setOpen(false);
     }
@@ -105,14 +106,15 @@ function Industries() {
   }, []);
 
   return (
-    <>    <IndustryModal
-        handleDeleteModelShow={handleDeleteModelShow}
-        handleClose={handleShow}
-        open={open}
-        edit={setEditIndustry}
-        industryData={activeIndustry}
-        create={(x) => createNewIndustry(x)}
-        />
+      <>    
+      <IndustryModal
+          handleDeleteModelShow={handleDeleteModelShow}
+          handleClose={handleShow}
+          open={open}
+          edit={editIndustry}
+          industryData={activeIndustry}
+          create={(x) => createNewIndustry(x)}
+          />
       <DeleteConfirmationModel
         open={deleteModelShow}
         handleShow={handleDeleteModelShow}
