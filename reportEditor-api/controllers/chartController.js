@@ -6,6 +6,7 @@ const Report = require("../model/reportModel");
 exports.createChart = async (req, res) => {
     try{
        const {chartType,reportId} = req.body;
+       console.log(req.body);
            const newChart = await chartModel.create(req.body);
            const report = await Report.findById(reportId);
            report.reportCharts.push(newChart._id);

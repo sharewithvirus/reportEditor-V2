@@ -28,7 +28,7 @@ function ShowCharts({formChartData, chartType}) {
           type: "pie",
         },
         title: {
-          text:inputValue.formChartData.name,
+          text:inputValue?.formChartData?.name,
         },
         labels: inputValue?.formChartData?.label?.split(","),
         responsive: [

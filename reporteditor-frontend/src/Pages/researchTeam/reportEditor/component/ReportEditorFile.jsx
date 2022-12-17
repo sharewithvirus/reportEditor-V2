@@ -15,7 +15,7 @@ import Tab from "@mui/material/Tab";
 import Tabs from "@mui/material/Tabs";
 import Typography from "@mui/material/Typography";
 import PropTypes from "prop-types";
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import SwipeableViews from "react-swipeable-views";
 import { createCharts, getAllCharts } from "../../../../Services/chartServices";
@@ -23,6 +23,7 @@ import {
   uploadImage,
   getAllReportImages,
 } from "../../../../Services/reportImagesServices";
+import { UserDataContext } from "../../../../context/userContext";
 import ChartFormGen from "./ChartFormGen";
 import ImageUpload from "./ImageUpload";
 import CloseIcon from "@mui/icons-material/Close";
@@ -136,6 +137,8 @@ export default function FullWidthTabs() {
     },
   ];
   const theme = useTheme();
+
+  const {setIsLoading} = useContext(UserDataContext);
   const [value, setValue] = useState(0);
   const [open, setOpen] = useState(false);
   const [openImage, setOpenImage] = useState(false);
@@ -206,6 +209,7 @@ export default function FullWidthTabs() {
     setValue(index);
   };
   const saveChartsData = async () => {
+    setIsLoading(true);
     const data = {
       reportId: id,
       chartType: chartType ? chartType : "",
@@ -238,8 +242,10 @@ export default function FullWidthTabs() {
         }
       }
     }
+    setIsLoading(false);
   };
   const getChartsData = async (id) => {
+    setIsLoading(true);
     const res = await getAllCharts(id);
     {
       if (res.status === 200) {
@@ -247,6 +253,7 @@ export default function FullWidthTabs() {
         setChartList(res.data.data);
       }
     }
+    setIsLoading(false);
   };
   useEffect(() => {
     // console.log("renderkkkk");
@@ -260,26 +267,29 @@ export default function FullWidthTabs() {
   }, []);
 
   const getAllImages = async () => {
+    setIsLoading(true);
     const res = await getAllReportImages(id);
-    // console.log("images", res.data.data);
-    setAllImages(res.data.data);
+    if(res.status === 200){
+      setAllImages(res.data.data);
+    }
+    setIsLoading(false);
   };
   const postImage = async (imgData) => {
-    // for (let [key, value] of imgData.entries()) {
-    //   console.log(`${key}: ${value}`);
-    // }
+    setIsLoading(true);
+    setOpenImage(false);
     const res = await uploadImage(id, imgData);
-    console.log("...", res);
-    if (res.status === 201) {
+    if (res.status === 200) {
       console.log("success");
       setSnackMsg("image uploaded!");
       setSeverity("success");
       setopenSnack(true);
+      getAllImages();
     } else {
       setSnackMsg("something went wrong!");
       setSeverity("error");
       setopenSnack(true);
     }
+    setIsLoading(false);
   };
 
   return (
