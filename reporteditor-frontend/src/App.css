@@ -41,6 +41,6 @@ a{
 }
 
 
-.ck.ck-editor__main>.ck-editor__editable:not(.ck-focused){
+/* .ck.ck-editor__main>.ck-editor__editable:not(.ck-focused){
   height: 100vh !important;
-}
+} */
