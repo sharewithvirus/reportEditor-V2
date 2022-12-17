@@ -26,18 +26,20 @@ import { getReportDataById } from "../../../Services/reportServices";
 import Editor from "./component/Editor";
 import EditorModal from "./component/EditorModal";
 import ReportEditiorFile from "./component/ReportEditorFile";
+import isOnline from "is-online";
 function ReportEditor() {
   const { id } = useParams();
   const { setIsLoading } = useContext(UserDataContext);
   const [reportData, setReportData] = useState();
   const [open, setOpen] = useState(false);
-  const [editorState, setEditorState] = useState(false);
+  // const [editorState, setEditorState] = useState(false);
   const handleShow = () => setOpen(!open);
   const handleClose = () => setOpen(false);
   const [activeTopicData, setActiveTopicData] = useState({});
   const [openSnack, setopenSnack] = useState(false);
   const [severity, setSeverity] = useState("success");
   const [snackMsg, setSnackMsg] = useState("");
+  const [internetStatus, setInternetStatus] = useState(true);
   const date = new Date();
   const getReportData = async () => {
     setIsLoading(true);
@@ -45,7 +47,7 @@ function ReportEditor() {
     if (res.status === 200) {
       if (res.data.reportData.subTopics.length == 0) {
         setOpen(true);
-        setEditorState(true);
+        // setEditorState(true);
       }
       setIsLoading(false);
       setReportData(res.data.reportData);
@@ -72,11 +74,11 @@ function ReportEditor() {
     }
   };
   const saveHtmlData = async (data) => {
-    console.log("Editor Data", data)
-    console.log("topicData", activeTopicData)
+    console.log("Editor Data", data);
+    console.log("topicData", activeTopicData);
     const res = await updateSubtopics(data);
     if (res.status === 200) {
-      // console.log("Updated Topic Data", res.data.topic)
+      console.log("Updated Topic Data", res.data.topic);
       setActiveTopicData(res.data.topic);
       getReportData();
     }
@@ -87,6 +89,14 @@ function ReportEditor() {
   useEffect(() => {
     getReportData();
   }, []);
+  useEffect(() => {
+    setInterval(async () => {
+      const intStatus = await isOnline();
+      if (intStatus !== internetStatus) {
+        setInternetStatus(intStatus);
+      }
+    }, 5000);
+  }, [internetStatus]);
   return (
     <>
       <Snackbar open={openSnack} autoHideDuration={5000} onClose={handleSnack}>
@@ -130,7 +140,9 @@ function ReportEditor() {
             flexDirection="column"
             alignItems="center"
           >
-            <Stack display="flex" justifyContent="center" alignItems="center">
+            <Stack  justifyContent="center" alignItems="center"
+            
+            >
               <Stack
                 flexDirection="row"
                 justifyContent="center"
@@ -146,17 +158,26 @@ function ReportEditor() {
                 </Typography>
               </Stack>
               <Typography
+              sx={{
+                fontSize:"15px"
+              }}>
+                <b>Status :</b> <span>
+                  {internetStatus ? "online" : "offline"}
+                </span>
+              </Typography>
+            </Stack>
+              <Stack>
+              <Typography
                 sx={{
                   fontSize: "12px",
                 }}
               >
                 <b>Editing : </b>
                 <span>
-                  
                   {activeTopicData ? activeTopicData.subTopicName : ""}
                 </span>
               </Typography>
-            </Stack>
+              </Stack>
           </Grid>
           <Grid
             item
@@ -172,29 +193,33 @@ function ReportEditor() {
                   fontSize: "12px",
                 }}
               >
-                <b>Last Saved :</b>{" "}
+                <b>Last Saved :</b>
                 <span>
                   {activeTopicData
                     ? moment(activeTopicData.updatedAt).format(
                         "Do MMM YYYY  , h:mm:ss A"
                       )
-                    : ""}{" "}
+                    : ""}
                 </span>
               </Typography>
             </Stack>
             <Stack>
-              <Link to="/u_control/report-preview">
-                <Button
-                  color="inherit"
-                  variant="outlined"
-                  size="small"
-                  sx={{
-                    height: "3vh",
-                  }}
-                >
-                  Preview
-                </Button>
-              </Link>
+              {reportData ? (
+                <Link to={`/u_control/report-preview/${reportData._id}`}>
+                  <Button
+                    color="inherit"
+                    variant="outlined"
+                    size="small"
+                    sx={{
+                      height: "3vh",
+                    }}
+                  >
+                    Preview
+                  </Button>
+                </Link>
+              ) : (
+                ""
+              )}
             </Stack>
           </Grid>
         </Grid>
@@ -204,7 +229,7 @@ function ReportEditor() {
             border: "1px solid",
           }}
         >
-          <Grid item md={4} sm={3}>
+          <Grid item md={3} sm={3}>
             <Box
               sx={{
                 display: "flex",
@@ -220,14 +245,16 @@ function ReportEditor() {
                     reportData.subTopics ? reportData.subTopics : ""
                   }
                   getReportDataText={getReportData}
-                  ativeDataSet={(x) => {ativeDataSet(x)}}
+                  ativeDataSet={(x) => {
+                    ativeDataSet(x);
+                  }}
                 />
               ) : (
                 ""
               )}
               <Stack mt={8}>
                 <Stack alignContent="center" alignItems="center">
-                  <Typography variant="body2">Author: {reportData?.userList[0]}</Typography>
+                  <Typography variant="body2">Author: {"vikas"}</Typography>
                   <Typography variant="body2">
                     Base Year : {reportData ? reportData.baseYear : ""}
                   </Typography>
@@ -260,7 +287,7 @@ function ReportEditor() {
               </Stack>
             </Box>
           </Grid>
-          <Grid item md={5} sm={9}>
+          <Grid item md={6} sm={9}>
             <Box
               sx={{
                 display: "flex",
@@ -269,14 +296,22 @@ function ReportEditor() {
                 height: "700px",
                 borderLeft: " 1px solid",
                 borderRight: " 1px solid",
-                overflow:'auto'
+                overflow: "auto",
               }}
             >
-              <Editor
-                activeTopicData={activeTopicData ? activeTopicData : ""}
-                saveHtmlData={(x) => saveHtmlData(x)}
-                editorState={editorState}
-              />
+              {internetStatus && activeTopicData ? (
+                <Editor
+                  activeTopicData={activeTopicData ? activeTopicData : ""}
+                  saveHtmlData={(x) => saveHtmlData(x)}
+                  editorState={true}
+                />
+              ) : (
+                <Editor
+                  activeTopicData={activeTopicData ? activeTopicData : ""}
+                  saveHtmlData={(x) => saveHtmlData(x)}
+                  editorState={false}
+                />
+              )}
             </Box>
           </Grid>
           <Grid item md={3} sm={12}>
@@ -304,7 +339,7 @@ function ReportEditor() {
                 />
               </Stack>
               <Stack
-              mt={2}
+                mt={2}
                 sx={{
                   display: "flex",
                   flexDirection: "row",
