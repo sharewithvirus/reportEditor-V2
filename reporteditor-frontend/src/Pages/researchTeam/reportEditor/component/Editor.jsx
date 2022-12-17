@@ -41,7 +41,7 @@ function Editors({
     }
   };
   useEffect(() => {
-    // console.log("",activeHtmlData);
+    
     const timer = setTimeout(() => {
       if(editorState){
         save(activeTopicData._id, activeHtmlData);

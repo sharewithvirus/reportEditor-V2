@@ -55,6 +55,9 @@ function ShowCharts({formChartData, chartType}) {
         {
           data: inputValue?.formChartData?.series1?.split(",").map((item1) => parseInt(item1)),
         },
+        {
+          data: inputValue?.formChartData?.series2?.split(",").map((item1) => parseInt(item1)),
+        },
       ],
       options: {
         chart: {
@@ -62,7 +65,7 @@ function ShowCharts({formChartData, chartType}) {
           height: 50,
         },
         title: {
-          text: "Chart Bar Name",
+          text:inputValue?.formChartData?.name,
         },
         plotOptions: {
           bar: {

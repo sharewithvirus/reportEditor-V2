@@ -111,10 +111,7 @@ export default function FullWidthTabs() {
       value: "radar",
       label: "Radar",
     },
-    {
-      value: "stacked",
-      label: "Stacked",
-    },
+    
     {
       value: "line",
       label: "Line",
@@ -123,18 +120,12 @@ export default function FullWidthTabs() {
       value: "area",
       label: "Area",
     },
-    {
-      value: "multibar",
-      label: "Multibar",
-    },
+    
     {
       value: "donut",
       label: "Donut",
     },
-    {
-      value: "barandline",
-      label: "Barandline",
-    },
+   
   ];
   const theme = useTheme();
 
@@ -213,10 +204,11 @@ export default function FullWidthTabs() {
     const data = {
       reportId: id,
       chartType: chartType ? chartType : "",
-      name: formChartData.name,
-      label: formChartData.label,
-      series: formChartData.series,
-      categories: formChartData.categories ? formChartData.categories : "",
+      // name: formChartData.name,
+      // label: formChartData.label,
+      // series: formChartData.series,
+      // categories: formChartData.categories ? formChartData.categories : "",
+      formChartData:formChartData
     };
     if (formChartData.name === "") {
       alert("Please Enter Chart Name");
