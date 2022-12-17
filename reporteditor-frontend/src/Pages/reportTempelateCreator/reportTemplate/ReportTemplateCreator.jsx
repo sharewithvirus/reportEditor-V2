@@ -33,10 +33,13 @@ function ReportTemplateCreator() {
     footer: "",
     logoAlignment: "left-to",
   });
+  const handleChange = (e) => {
+    console.log(e.target.name, e.target.value);
+    setTemplateData({ ...templateData, [e.target.name]: e.target.value });
+  };
   const submitValues = async () => {
     console.log(templateData.logoAlignment);
     if (id) {
-      // console.log(templateData)
       setIsLoading(true);
       const res = await updateTemplate(templateData);
       if (res.status === 200) {
@@ -46,7 +49,7 @@ function ReportTemplateCreator() {
     } else {
       if(templateData.header === "" || templateData.name === "" || templateData.footer === "")
       {
-        alert("Name Header and Footer CAN NOT  be Empty !")
+        alert("Name , Header and Footer CAN NOT  be Empty !")
       }
       else
       {
@@ -59,9 +62,6 @@ function ReportTemplateCreator() {
       }
       }
     }
-  };
-  const handleChange = (e) => {
-    setTemplateData({ ...templateData, [e.target.name]: e.target.value });
   };
 
   const getTemplateData = async (x) => {

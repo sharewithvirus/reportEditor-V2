@@ -270,7 +270,7 @@ export default function FullWidthTabs() {
     // }
     const res = await uploadImage(id, imgData);
     console.log("...", res);
-    if (res.status === 200) {
+    if (res.status === 201) {
       console.log("success");
       setSnackMsg("image uploaded!");
       setSeverity("success");

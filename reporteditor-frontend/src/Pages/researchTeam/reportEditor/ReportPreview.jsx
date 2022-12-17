@@ -1,8 +1,33 @@
 import { Box, Typography, Stack, Button, Paper } from "@mui/material";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import FileCopyOutlinedIcon from "@mui/icons-material/FileCopyOutlined";
+import { useParams } from "react-router-dom";
+import { getReportDataById } from "../../../Services/reportServices";
+import moment from "moment";
 
 function ReportPreview() {
+  const [data,setData] = useState();
+  const {id} = useParams();
+  // console.log("....",id);
+  const getReportData = async () =>
+  {
+    const res = await getReportDataById(id);
+    if(res.status === 200)
+    {
+      if(res.data.reportData)
+      {
+        setData(res.data.reportData);
+      }
+      console.log("success fetched...", res.data);
+      // setData(res.data.data.reportData);
+    }
+  }
+  useEffect(()=>{
+    if(id)
+    {
+    getReportData();
+    }
+  },[])
   return (
     <Box
       sx={{
@@ -29,7 +54,11 @@ function ReportPreview() {
           }}
         >
           <Typography sx={{ fontSize: "12px" }}>
-            <b>Last Saved:</b> 12:00PM
+            <b>Last Saved:</b> {data
+                    ? moment(data.updatedAt).format(
+                      "Do MMM YYYY  , h:mm:ss A"
+                      )
+                      : "MM : YYYY , H:M:SS D"}
           </Typography>
         </Stack>
         <Stack

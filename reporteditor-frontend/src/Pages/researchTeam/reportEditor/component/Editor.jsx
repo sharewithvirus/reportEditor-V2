@@ -11,20 +11,19 @@ function Editors({
   saveHtmlData,
 }) {
   let config = {
-    disable: null,
+    disabled: null,
     readonly: null,
   };
 
   if (editorState) {
     config = {
-      disable: false,
+      disabled: false,
       readonly: false,
     };
   } else {
     config = {
-      disable: true,
+      disabled: true,
       readonly: true,
-      InsertMode: "insert_as_html",
     };
   }
   const editor = useRef(null);
@@ -44,7 +43,9 @@ function Editors({
   useEffect(() => {
     // console.log("",activeHtmlData);
     const timer = setTimeout(() => {
-      save(activeTopicData._id, activeHtmlData);
+      if(editorState){
+        save(activeTopicData._id, activeHtmlData);
+      }
       console.log("after",activeHtmlData);
     }, 5000);
     return () => clearTimeout(timer);
@@ -54,6 +55,8 @@ function Editors({
     <>
       <CKEditor
         ref={editor}
+        disabled ={editorState ? false : true}
+        readOnly ={editorState ? false : true}
         editor={ClassicEditor}
         data={activeTopicData ? activeTopicData.htmlData : activeHtmlData}
         onReady={(editor) => {
