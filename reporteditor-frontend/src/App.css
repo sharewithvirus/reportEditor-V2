@@ -39,3 +39,8 @@ a{
     transform: rotate(360deg);
   }
 }
+
+
+.ck.ck-editor__main>.ck-editor__editable:not(.ck-focused){
+  height: 100vh !important;
+}
