@@ -5,7 +5,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import { getReportDataById } from "../../../Services/reportServices";
 import moment from "moment";
 import ReportPreivewTopicSection from "./ReportPreivewTopicSection";
-// import jsPDF from "jspdf";
+import jsPDF from "jspdf";
 import { useRef } from "react";
 
 function ReportPreview() {
@@ -14,22 +14,22 @@ function ReportPreview() {
   const navigate = useNavigate();
   const { id } = useParams();
   // ////////////////////////////////////////////////////////////////////// pdf converter
-  // const handleGeneratePdf = () => {
-  //   const doc = new jsPDF({
-  //     unit: "px",
-  //     orientation: "p",
-  //     format: "a4",
-  //     putOnlyUsedFonts: true,
-  //     floatPrecision: 16, // or "smart", default is 16
-  //   });
-  //   // Adding the fonts.
-  //   doc.html(reportTemplateRef.current, {
-  //     async callback(doc) {
-  //       await doc.save("document");
-  //     },
-  //   });
-  // };
-  // /////////////////////////////////////////////////////////////////
+  const handleGeneratePdf = () => {
+    const doc = new jsPDF({
+      unit: "px",
+      orientation: "p",
+      format: "a4",
+      putOnlyUsedFonts: true,
+      floatPrecision: 16, // or "smart", default is 16
+    });
+    // Adding the fonts.
+    doc.html(reportTemplateRef.current, {
+      async callback(doc) {
+        await doc.save("document");
+      },
+    });
+  };
+  // ////////////////////////////////////////////////////////////////////////////////////
   const getReportData = async () => {
     const res = await getReportDataById(id);
     if (res.status === 200) {
@@ -106,7 +106,7 @@ function ReportPreview() {
               color="inherit"
               size="small"
               sx={{ fontSize: "8px", marginRight: "10px" }}
-              // onClick={handleGeneratePdf}
+              onClick={handleGeneratePdf}
               // onClick={()=>window.print()}
             >
               Export to PDF
