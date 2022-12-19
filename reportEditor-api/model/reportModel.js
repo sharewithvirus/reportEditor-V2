@@ -32,7 +32,7 @@ const reportModel = new mongoose.Schema(
       type:[String]
     },
     industry: {
-      type: String,
+      type: [String],
     },
     baseYear:{
       type:String
