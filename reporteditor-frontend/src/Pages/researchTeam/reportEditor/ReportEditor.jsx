@@ -13,7 +13,7 @@ import AddOutlinedIcon from "@mui/icons-material/AddOutlined";
 import { Box } from "@mui/system";
 import React, { useContext, useEffect, useRef, useState } from "react";
 import moment from "moment";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import FileCopyOutlinedIcon from "@mui/icons-material/FileCopyOutlined";
 import SideBar from "./component/SideBar";
 import { Link } from "react-router-dom";
@@ -28,6 +28,7 @@ import EditorModal from "./component/EditorModal";
 import ReportEditiorFile from "./component/ReportEditorFile";
 import isOnline from "is-online";
 function ReportEditor() {
+  const navigate = useNavigate();
   const { id } = useParams();
   const { setIsLoading } = useContext(UserDataContext);
   const [reportData, setReportData] = useState();
