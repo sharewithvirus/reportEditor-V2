@@ -156,8 +156,8 @@ export default function FullWidthTabs() {
   });
   const [show, setShow] = useState(false);
   const copyToClipboard = (copyText) => {
-    copy(`<div id='${copyText}'><div/>`);
-    alert(`copied value <div id='${copyText}'><div/>`);
+    copy(`<div id='${copyText}'></div>`);
+    alert(`copied value <div id='${copyText}'></div>`);
   };
   const handleChange = (event, newValue) => {
     setValue(newValue);
