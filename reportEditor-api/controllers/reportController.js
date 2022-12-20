@@ -48,7 +48,7 @@ exports.createReport = async (req, res) => {
     try {
       const { id } = req.params;
       const report = await Report.findById(id).select(
-        "name userList baseYear forecastYear template"
+        "name userList baseYear forecastYear template industry"
       );
       res.status(200).json({
         status: "success",

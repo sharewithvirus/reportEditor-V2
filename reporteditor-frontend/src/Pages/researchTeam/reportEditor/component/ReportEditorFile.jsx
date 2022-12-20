@@ -111,10 +111,7 @@ export default function FullWidthTabs() {
       value: "radar",
       label: "Radar",
     },
-    {
-      value: "stacked",
-      label: "Stacked",
-    },
+
     {
       value: "line",
       label: "Line",
@@ -123,22 +120,15 @@ export default function FullWidthTabs() {
       value: "area",
       label: "Area",
     },
-    {
-      value: "multibar",
-      label: "Multibar",
-    },
+
     {
       value: "donut",
       label: "Donut",
     },
-    {
-      value: "barandline",
-      label: "Barandline",
-    },
   ];
   const theme = useTheme();
 
-  const {setIsLoading} = useContext(UserDataContext);
+  const { setIsLoading } = useContext(UserDataContext);
   const [value, setValue] = useState(0);
   const [open, setOpen] = useState(false);
   const [openImage, setOpenImage] = useState(false);
@@ -166,8 +156,8 @@ export default function FullWidthTabs() {
   });
   const [show, setShow] = useState(false);
   const copyToClipboard = (copyText) => {
-    copy(`<div id='${copyText}'><div/>`);
-    alert(`copied value <div id='${copyText}'><div/>`);
+    copy(`<div id='${copyText}'></div>`);
+    alert(`copied value <div id='${copyText}'></div>`);
   };
   const handleChange = (event, newValue) => {
     setValue(newValue);
@@ -213,10 +203,11 @@ export default function FullWidthTabs() {
     const data = {
       reportId: id,
       chartType: chartType ? chartType : "",
-      name: formChartData.name,
-      label: formChartData.label,
-      series: formChartData.series,
-      categories: formChartData.categories ? formChartData.categories : "",
+      // name: formChartData.name,
+      // label: formChartData.label,
+      // series: formChartData.series,
+      // categories: formChartData.categories ? formChartData.categories : "",
+      formChartData: formChartData,
     };
     if (formChartData.name === "") {
       alert("Please Enter Chart Name");
@@ -269,7 +260,7 @@ export default function FullWidthTabs() {
   const getAllImages = async () => {
     setIsLoading(true);
     const res = await getAllReportImages(id);
-    if(res.status === 200){
+    if (res.status === 200) {
       setAllImages(res.data.data);
     }
     setIsLoading(false);
@@ -312,26 +303,39 @@ export default function FullWidthTabs() {
         <SwipeableViews
           axis={theme.direction === "rtl" ? "x-reverse" : "x"}
           index={value}
+          border={2}
           onChangeIndex={handleChangeIndex}
         >
-          <TabPanel value={value} index={0} dir={theme.direction}>
+          <TabPanel value={value} index={0} dir={theme.direction}
+         
+          >
             <Stack>
               <Button onClick={handleOpenImage}>
                 <Typography>ADD IMAGES</Typography>
               </Button>
+            </Stack>
+            <Stack mt={4}
+            justifyContent='start'
+            alignItems='center'
+            height='450px'
+            pl={3}
+            >
               <Grid
                 container
                 spacing={{ xs: 2, md: 3 }}
                 columns={{ xs: 4, sm: 8, md: 12 }}
+                
               >
                 {allImages?.map((item, index) => (
-                  <Grid item sm={4} md={4} key={index}>
-                    <img
-                      src={item.imgUrl}
-                      alt={item.name}
-                      width="120"
-                      // height={'100'}
-                    />
+                  <Grid
+                    item
+                    sm={3}
+                    md={12}
+                    key={item._id}
+                    border='1px solid'
+                    mt={2}
+                  >
+                    <img src={item.imgUrl} alt={item.name} width="90%"  />
                     <Typography>{item.name}</Typography>
                   </Grid>
                 ))}

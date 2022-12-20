@@ -129,8 +129,6 @@ const Department = () => {
       />
       <Box
         sx={{
-          // border: "1px solid black",
-          // borderRadius: "5px",
           padding: "5px 0px 5px 0px",
           margin: "5px 50px 5px 50px",
         }}
@@ -163,12 +161,9 @@ const Department = () => {
           <Box
             sx={{
               borderRadius: "5px",
-              // padding: "50px",
+
               margin: "10px",
               marginY: "20px",
-              // borderRadius: "5px",
-              // // padding: "",
-              // margin: "20px 50px 20px 50px",
             }}
           >
             <DepartmentTable
@@ -181,7 +176,6 @@ const Department = () => {
           </Box>
         </Box>
       </Box>
-      {/* {console.log("department id is....",departmentList)} */}
     </>
   );
 };

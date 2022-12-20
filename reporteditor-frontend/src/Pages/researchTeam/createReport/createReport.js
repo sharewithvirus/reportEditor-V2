@@ -117,6 +117,7 @@ function CreateReport() {
     template: selectedTemplate,
     userList: personName,
     name: reportName,
+    industry : industries
   };
 
   const submitDetail = async () => {
@@ -129,6 +130,7 @@ function CreateReport() {
         template: selectedTemplate,
         userList: personName,
         name: reportName,
+        industry : industries,
       };
 
       const res = await updateReport(reportData);
@@ -140,7 +142,7 @@ function CreateReport() {
     } else {
       setIsLoading(true);
 
-      if (reportData.name == "" || reportData.userList == "") {
+      if (reportData.name === "" || reportData.userList === "" || reportData.industry == []) {
         setIsLoading(false);
         alert("required field should not be empty !");
       } else {
@@ -156,21 +158,26 @@ function CreateReport() {
   };
   const getReportData = async (x) => {
     const res = await getReportDataById(x);
-
+console.log("report data",res.data.reportData);
     if (res.status === 200) {
       let obj = {
         _id: id,
-        baseYear: new Date(res.data.data.baseYear).getFullYear(),
-        forecastYear: new Date(res.data.data.forecastYear).getFullYear(),
-        template: res.data.data.template,
-        userList: res.data.data.userList,
-        name: res.data.data.name,
+        baseYear: new Date(res.data.reportData.baseYear).getFullYear(),
+        forecastYear: new Date(res.data.reportData.forecastYear).getFullYear(),
+        template: res.data.reportData.template,
+        userList: res.data.reportData.userList,
+        name: res.data.reportData.name,
+        industry:res.data.reportData.industry,
       };
-      let d = new Date(res.data.data.baseYear).getFullYear();
+  
+      let d = new Date(res.data.reportData.baseYear).getFullYear();
       setBaseYear(obj.baseYear);
       setForecastYear(obj.forecastYear);
       setSelectedTemplate(obj.template);
       setReportName(obj.name);
+      setIndustries(obj.industry);
+      setPersonName(obj.userList);
+      
     }
   };
   useEffect(() => {
@@ -256,7 +263,7 @@ function CreateReport() {
             >
               {searchField === ""
                 ? allAuther.map((author, index) => (
-                    <MenuItem key={author._id} value={author.userName}>
+                    <MenuItem key={author._id} value={author.userName}  >
                       <ListItemText primary={author.userName} />
                     </MenuItem>
                   ))

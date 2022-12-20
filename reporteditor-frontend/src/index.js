@@ -5,7 +5,7 @@ import { BrowserRouter } from "react-router-dom";
 import UserContext from './context/userContext'
 import App from './App';
 // import reportWebVitals from './reportWebVitals';
-
+<script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>

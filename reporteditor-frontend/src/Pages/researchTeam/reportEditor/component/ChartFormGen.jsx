@@ -31,9 +31,12 @@ const ChartFormGen = ({ setChartFormValues, chartFormValues, saveChartsData , ch
                         return (
                             <div key={index} style={{marginTop:"10px"}} >
                                 <TextField id={chartType} label={item} name={item} variant="outlined" onChange={e => handleFormValueChange(e)}
-                                    value={item === 'series' ? formChartData.series : item === "label" ? formChartData.label : item === "series1" ? formChartData.series1 : item === 'categories' ? formChartData.categories : ""} />
+                                    value={item === 'series' ? formChartData.series : item === "label" ? formChartData.label : item === "series1" ? formChartData.series1 : item === "series2" ? formChartData.series2 : item === 'categories' ? formChartData.categories : ""} />
 
-                                {item === 'series' && chartType === 'bar' ? <IconButton aria-label="add" onClick={addSeriesField}>
+                                {item === 'series' && chartType === 'bar' && chartFormValues.includes('series2') === false? <IconButton aria-label="add" onClick={addSeriesField} 
+                            
+                                >
+                                   
                                     <AddCircleIcon />
                                 </IconButton> : ""}
                             </div>

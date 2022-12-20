@@ -44,16 +44,38 @@ exports.getChart = async (req, res) => {
     }
 }
 
+
+
 // all charts by report id code by javed
 exports.getAllChart = async (req, res) => {
     try {
         // const { chartType } = req.body;
         const { id } = req.params;
-        console.log("api hitt", req.body);
+        // console.log("api hitt", req.body);
         const chartDocs = await chartModel.find({reportId: id})
         res.status(200).json({
             status:"Success",
             message:`All Chart fetched Successfully`,
+            data:chartDocs
+        })
+    } catch(error){
+        console.log(error);
+        res.status(500).json({
+            status:"Error",
+            message:"Internal Server Error"
+        })
+    }
+}
+// //// chart by chart id
+exports.getChartbyId= async (req, res) => {
+    try {
+        // const { chartType } = req.body;
+        const { id } = req.body;
+        console.log("api hitt", req.body);
+        const chartDocs = await chartModel.findById(id)
+        res.status(200).json({
+            status:"Success",
+            message:`Chart fetched Successfully`,
             data:chartDocs
         })
     } catch(error){
