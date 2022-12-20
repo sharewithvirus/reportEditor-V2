@@ -10,6 +10,16 @@ export const getChartsByType = async () => {
         return error.response;
     }
 }
+export const getChartsById = async (chartId) => {
+    try {
+        const res = await axios.get(`/api/v1/chart/chartId/${chartId}`)
+        console.log(res)
+        return res;
+    } catch (error) {
+        alert(error.response.data.message)
+        return error.response;
+    }
+}
 export const getAllCharts = async (id) => {
     try {
         // console.log(id);
