@@ -37,7 +37,7 @@ function Editors({
     console.log("...working", htmlData);
     const res = await saveHtmlData(data);
     if (res.status === 200) {
-      console.log("saved");
+      // console.log("saved");
     }
   };
   useEffect(() => {
@@ -46,7 +46,7 @@ function Editors({
       if(editorState){
         save(activeTopicData._id, activeHtmlData);
       }
-      console.log("after",activeHtmlData);
+      // console.log("after",activeHtmlData);
     }, 5000);
     return () => clearTimeout(timer);
   }, [activeHtmlData]);
