@@ -15,5 +15,4 @@ router.route("/:id").patch(updateChart).delete(deleteChart);
 router.route("/:id").get(getAllChart);
 router.route("/chartId/").get(getChartbyId);
 
-
 module.exports = router;
