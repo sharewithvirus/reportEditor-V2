@@ -51,7 +51,7 @@ exports.getAllChart = async (req, res) => {
     try {
         // const { chartType } = req.body;
         const { id } = req.params;
-        console.log("api hitt", req.body);
+        // console.log("api hitt", req.body);
         const chartDocs = await chartModel.find({reportId: id})
         res.status(200).json({
             status:"Success",
@@ -72,7 +72,7 @@ exports.getChartbyId= async (req, res) => {
         // const { chartType } = req.body;
         const { id } = req.body;
         console.log("api hitt", req.body);
-        const chartDocs = await chartModel.findById({id})
+        const chartDocs = await chartModel.findById(id)
         res.status(200).json({
             status:"Success",
             message:`Chart fetched Successfully`,
