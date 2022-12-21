@@ -6,6 +6,7 @@ const {
         updateChart,
         deleteChart,
         getAllChart,
+        getChartByChartId,
         getChartbyId,
         chartDelete
       } = require("../controllers/chartController");
@@ -14,6 +15,7 @@ const {
 router.route("/").post(createChart).get(getChart);
 router.route("/:id").patch(updateChart).delete(chartDelete);
 router.route("/:id").get(getAllChart);
-router.route("/chartId/").get(getChartbyId);
+router.route("/chartId").get(getChartByChartId);
+
 
 module.exports = router;

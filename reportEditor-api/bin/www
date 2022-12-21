@@ -83,5 +83,5 @@ function onListening() {
     ? 'pipe ' + addr
     : 'port ' + addr.port;
   debug('GMI Editor Backend Listening on ' + bind);
-  console.log(`Server in Listening on ${addr.port}`)
+  console.log(`Server is Listening on ${addr.port}`)
 }
