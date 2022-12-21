@@ -5,6 +5,8 @@ const wkhtmltopdf = require("wkhtmltopdf");
 const Report = require("../model/reportModel");
 const Template = require("../model/templateModel");
 const chartModel = require("../model/chartModel");
+const jsonToHtml = require("node-json2html");
+
 
 //const SubTopic = require("../model/subTopicModel");
 
@@ -198,7 +200,6 @@ exports.createReport = async (req, res) => {
           },
         },
       });
-      console.log(sub)
     const templateData = await Template.findById(reportData.template);
     let fullPageHTML = [];
     let headingHTML = [];
@@ -475,6 +476,19 @@ exports.createReport = async (req, res) => {
     const chartArr = newHtml?.split("&lt;div id='").slice(0,24);
       chartId = chartArr[1].slice(0,24);
     const chartData = await chartModel.findById({_id:chartId});
+    // "chartType": "bar",
+    // "formChartData": {
+    //     "name": "Test chart 1",
+    //     "series": "1,2,3",
+    //     "label": "",
+    //     "categories": "a,b,c",
+    //     "series1": "4,5,6"
+    // }
+   
+    // By using json2html package
+    console.log(chartData);
+    let htmlFile = json2html.transform([chartData],{"<>":"div","html":"${chartType} ${formChartData.series} ${formChartData.label}"});
+    console.log(htmlFile);
 
     const data = {
       html: newHtml,

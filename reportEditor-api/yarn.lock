@@ -2821,6 +2821,11 @@
   dependencies:
     "whatwg-url" "^5.0.0"
 
+"node-json2html@^2.2.2":
+  "integrity" "sha512-wkXcaaw5P52rPNOAY6aImmCvQNDRxwmbFcF5kQrJOsC5hBovHQcVlMNpUlyxxNLN5EQs03ygLkCjcujL741OcQ=="
+  "resolved" "https://registry.npmjs.org/node-json2html/-/node-json2html-2.2.2.tgz"
+  "version" "2.2.2"
+
 "node-releases@^2.0.6":
   "integrity" "sha512-PiVXnNuFm5+iYkLBNeq5211hvO38y63T0i2KKh2KnUs3RpzJ+JtODFjkD8yjLwnDkTYF1eKXheUwdssR+NRZdg=="
   "resolved" "https://registry.npmjs.org/node-releases/-/node-releases-2.0.6.tgz"
