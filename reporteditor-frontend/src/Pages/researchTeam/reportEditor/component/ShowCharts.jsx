@@ -13,8 +13,8 @@ function ShowCharts({formChartData, chartType}) {
   useEffect(() => {
   }, [formChartData, addChartFormValues]);
 
-  console.log("inputValue", inputValue);
-  console.log("chartType", chartType);
+  // console.log("inputValue", inputValue);
+  // console.log("chartType", chartType);
 
 
   let chartData;

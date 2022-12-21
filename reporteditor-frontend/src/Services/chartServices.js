@@ -49,3 +49,12 @@ export const updateNewCharts = async (data, id) => {
     }
 }
 
+export const deleteCharts = async (chartId) => {
+    console.log("Chart Id", chartId)
+    try {
+       return await axios.delete(`/api/v1/chart/${chartId}`)
+    } catch (error) {
+       alert(error.response.data.message)
+       return error.response;
+    }
+}
