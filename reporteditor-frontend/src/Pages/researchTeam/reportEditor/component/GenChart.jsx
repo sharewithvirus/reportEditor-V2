@@ -11,6 +11,8 @@ const GenChart = ({
   setShow,
   chartType,
   saveChartsData,
+  editId,
+  updateChartsDetails
 }) => {
   const [inputValue, setInputValue] = useState(null);
 
@@ -345,16 +347,30 @@ const GenChart = ({
             justifyContent="space-between"
             sx={{ marginRight: "10px" }}
           >
+            {editId ?
+            
             <Button
               variant="contained"
               color="warning"
               size="small"
-              //   onChange={()=>{saveChartValues()}}
+            
+              onClick={() => updateChartsDetails(editId)}
+              disabled={show ? false : true}
+            >
+              UPDATE
+            </Button>
+            :
+            
+            <Button
+              variant="contained"
+              color="warning"
+              size="small"
               onClick={() => saveChartsData()}
               disabled={show ? false : true}
             >
               SAVE CHART
             </Button>
+            }
             <Button
               variant="contained"
               size="small"
