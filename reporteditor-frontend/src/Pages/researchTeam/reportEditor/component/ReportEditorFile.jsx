@@ -1,9 +1,12 @@
 import {
+  Alert,
   Button,
+  ButtonGroup,
   Grid,
   IconButton,
   MenuItem,
   Paper,
+  Snackbar,
   Stack,
   TextField,
 } from "@mui/material";
@@ -18,7 +21,11 @@ import PropTypes from "prop-types";
 import React, { useContext, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import SwipeableViews from "react-swipeable-views";
-import { createCharts, getAllCharts } from "../../../../Services/chartServices";
+import {
+  createCharts,
+  deleteCharts,
+  getAllCharts,
+} from "../../../../Services/chartServices";
 import {
   uploadImage,
   getAllReportImages,
@@ -246,6 +253,22 @@ export default function FullWidthTabs() {
     }
     setIsLoading(false);
   };
+  const handleSnack = () => {
+    setopenSnack(!openSnack);
+  };
+  const deleteChart = async (chartId) => {
+    const res = await deleteCharts(chartId);
+    console.log("delete res", res);
+    setIsLoading(true);
+    if (res.status === 200) {
+      console.log("chart deleted..");
+      setSnackMsg("chart deleted!");
+      setSeverity("success");
+      getChartsData(id);
+      setopenSnack(true);
+      setIsLoading(false);
+    }
+  };
   useEffect(() => {
     // console.log("renderkkkk");
   }, [formChartData]);
@@ -285,6 +308,11 @@ export default function FullWidthTabs() {
 
   return (
     <>
+      <Snackbar open={openSnack} autoHideDuration={5000} onClose={handleSnack}>
+        <Alert onClose={handleSnack} severity={severity} sx={{ width: "100%" }}>
+          {snackMsg}
+        </Alert>
+      </Snackbar>
       <Box sx={{ bgcolor: "background.paper", width: "100%" }}>
         <AppBar position="static">
           <Tabs
@@ -306,25 +334,23 @@ export default function FullWidthTabs() {
           border={2}
           onChangeIndex={handleChangeIndex}
         >
-          <TabPanel value={value} index={0} dir={theme.direction}
-         
-          >
+          <TabPanel value={value} index={0} dir={theme.direction}>
             <Stack>
               <Button onClick={handleOpenImage}>
                 <Typography>ADD IMAGES</Typography>
               </Button>
             </Stack>
-            <Stack mt={4}
-            justifyContent='start'
-            alignItems='center'
-            height='450px'
-            pl={3}
+            <Stack
+              mt={4}
+              justifyContent="start"
+              alignItems="center"
+              height="450px"
+              pl={3}
             >
               <Grid
                 container
                 spacing={{ xs: 2, md: 3 }}
                 columns={{ xs: 4, sm: 8, md: 12 }}
-                
               >
                 {allImages?.map((item, index) => (
                   <Grid
@@ -332,10 +358,10 @@ export default function FullWidthTabs() {
                     sm={3}
                     md={12}
                     key={item._id}
-                    border='1px solid'
+                    border="1px solid"
                     mt={2}
                   >
-                    <img src={item.imgUrl} alt={item.name} width="90%"  />
+                    <img src={item.imgUrl} alt={item.name} width="90%" />
                     <Typography>{item.name}</Typography>
                   </Grid>
                 ))}
@@ -381,10 +407,7 @@ export default function FullWidthTabs() {
                           chartType={chart.chartType}
                           formChartData={chart}
                         />
-                        <Button
-                          size="small"
-                          variant="contained"
-                          color="warning"
+                        <ButtonGroup
                           sx={{
                             fontSize: "10px",
                             position: "absolute",
@@ -393,10 +416,27 @@ export default function FullWidthTabs() {
                             display: `${active === index ? "block" : "none"}`,
                             transition: "0.3s",
                           }}
-                          onClick={() => copyToClipboard(chart._id)}
                         >
-                          Copy
-                        </Button>
+                          <Button
+                            size="small"
+                            variant="contained"
+                            color="warning"
+                            sx={{
+                              marginRight: "2px",
+                            }}
+                            onClick={() => copyToClipboard(chart._id)}
+                          >
+                            Copy
+                          </Button>
+                          <Button
+                            size="small"
+                            variant="contained"
+                            color="error"
+                            onClick={() => deleteChart(chart._id)}
+                          >
+                            DEL
+                          </Button>
+                        </ButtonGroup>
                       </Grid>
                     ))
                   : ""}
