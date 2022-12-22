@@ -51,7 +51,7 @@ export default function EditUserManagementModal(props) {
                         <Grid container spacing={2}>
                             <Grid lg={4} md={12} item xs={12}>
                                 <Box
-                                    component="form"
+                                    
                                     sx={{
                                         '& .MuiTextField-root': { m: 1, width: '25ch' },
                                     }}
@@ -69,7 +69,7 @@ export default function EditUserManagementModal(props) {
                             </Grid>
                             <Grid item lg={4} md={12} xs={12}>
                                 <Box
-                                    component="form"
+                                   
                                     sx={{
                                         '& .MuiTextField-root': { m: 1, width: '25ch' },
                                     }}
@@ -86,7 +86,7 @@ export default function EditUserManagementModal(props) {
                             </Grid>
                             <Grid item xs={12} lg={4} md={12}>
                                 <Box
-                                    component="form"
+                                    
                                     sx={{
                                         '& .MuiTextField-root': { m: 1, width: '25ch' },
                                     }}

@@ -27,7 +27,7 @@ function ReportTemplateManagement() {
   const [open, setOpen] = React.useState(false);
   const [deleteModelData, setDeleteModelData] = useState("");
   const { setIsLoading, userInfo } = useContext(UserDataContext);
-  const [severity, setSeverity] = useState("");
+  const [severity, setSeverity] = useState("success");
   const [snacbarMsg, setSnackBarMsg] = useState("");
   const navigate = useNavigate();
   // const [defaultTemplate,setDefaultTemplate]=useState(false);
@@ -87,7 +87,7 @@ function ReportTemplateManagement() {
     <>
       <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
         <Alert onClose={handleClose} severity={severity} sx={{ width: "100%" }}>
-          {snacbarMsg ? snacbarMsg :""}
+          {snacbarMsg ? snacbarMsg : ""}
         </Alert>
       </Snackbar>
       <Box
@@ -129,9 +129,9 @@ function ReportTemplateManagement() {
                 }}
               >
                 Add
-                <IconButton>
+               
                   <AddCircleOutlineOutlinedIcon />
-                </IconButton>
+                
               </Button>
             </Link>
           </Stack>

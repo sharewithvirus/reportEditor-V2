@@ -55,7 +55,7 @@ export const updateNewDepartment = async (data, id) => {
 //      }
 // }
 export const updateTemplateStatus = async ( templateId ) => {
-    console.log("id...",templateId);
+    // console.log("id...",templateId);
          try {
             return await axios.patch(`/api/v1/template/${templateId}`)
          } catch (error) {

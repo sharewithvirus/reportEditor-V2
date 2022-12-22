@@ -52,7 +52,7 @@ exports.getAllChart = async (req, res) => {
         // const { chartType } = req.body;
         const { id } = req.params;
         // console.log("api hitt", req.body);
-        const chartDocs = await chartModel.find({reportId: id})
+        const chartDocs = await chartModel.find({reportId:id, isDeleted:false})
         res.status(200).json({
             status:"Success",
             message:`All Chart fetched Successfully`,
@@ -70,16 +70,16 @@ exports.getAllChart = async (req, res) => {
 exports.getChartbyId= async (req, res) => {
     try {
         // const { chartType } = req.body;
-        const { id } = req.body;
-        console.log("api hitt", req.body);
-        const chartDocs = await chartModel.findById()
+        const {chartId} = req.params;
+        console.log("api hitt", chartId);
+        const chartDocs = await chartModel.findById(chartId);
         res.status(200).json({
             status:"Success",
             message:`Chart fetched Successfully`,
             data:chartDocs
         })
     } catch(error){
-        console.log(error);
+        console.log("Chart Errr",error);
         res.status(500).json({
             status:"Error",
             message:"Internal Server Error"
@@ -149,23 +149,23 @@ exports.deleteChart = async (req,res) => {
         })
     }
 }
-exports.chartDelete = async (req, res) => {
-    try {
-        // const { chartType } = req.body;
-        const { id } = req.params;
-        console.log('chart id in controller', id);
-        // console.log("api hitt", req.body);
-        const chartDocs = await chartModel.findByIdAndDelete(id)
-        res.status(200).json({
-            status:"Success",
-            message:`Chart Deleted Successfully`,
-            data:chartDocs
-        })
-    } catch(error){
-        console.log(error);
-        res.status(500).json({
-            status:"Error",
-            message:"Internal Server Error"
-        })
-    }
-}
+// exports.chartDelete = async (req, res) => {
+//     try {
+//         // const { chartType } = req.body;
+//         const { id } = req.params;
+//         console.log('chart id in controller', id);
+//         // console.log("api hitt", req.body);
+//         const chartDocs = await chartModel.findByIdAndDelete(id)
+//         res.status(200).json({
+//             status:"Success",
+//             message:`Chart Deleted Successfully`,
+//             data:chartDocs
+//         })
+//     } catch(error){
+//         console.log(error);
+//         res.status(500).json({
+//             status:"Error",
+//             message:"Internal Server Error"
+//         })
+//     }
+// }

@@ -12,7 +12,7 @@ export const getChartsByType = async () => {
 }
 export const getChartsById = async (chartId) => {
     try {
-        const res = await axios.get(`/api/v1/chart/chartId/${chartId}`)
+        const res = await axios.get(`/api/v1/chart/getChartById/${chartId}`)
         console.log(res)
         return res;
     } catch (error) {
@@ -24,7 +24,7 @@ export const getAllCharts = async (id) => {
     try {
         // console.log(id);
         const res = await axios.get(`/api/v1/chart/${id}`)
-        console.log("chart get req", res.data)
+        // console.log("chart get req", res.data)
         return res;
     } catch (error) {
         alert(error.response.data.message)
@@ -40,9 +40,9 @@ export const createCharts = async (data) => {
     }
 }
 
-export const updateNewCharts = async (data, id) => {
+export const updateCharts = async (data,id) => {
     try {
-        return await axios.patch(`/api/v1/chart/update/${id}`, data)
+        return await axios.patch(`/api/v1/chart/${id}`, data)
     } catch (error) {
         alert(error.response.data.message)
         return error.response;

@@ -3,7 +3,7 @@ import { IconButton, TextField } from '@mui/material';
 import React, { useEffect } from 'react';
 import GenChart from './GenChart';
 
-const ChartFormGen = ({ setChartFormValues, chartFormValues, saveChartsData , chartType, formChartData, setFormChartData, show, setShow, }) => {
+const ChartFormGen = ({ setChartFormValues, chartFormValues, saveChartsData , chartType, formChartData, setFormChartData, show, setShow,editId, updateChartsDetails}) => {
 
     const handleFormValueChange = (e) => {
         setShow(false)
@@ -44,7 +44,7 @@ const ChartFormGen = ({ setChartFormValues, chartFormValues, saveChartsData , ch
                     }
                 )
             }
-            <GenChart formChartData={formChartData} setFormChartData={setFormChartData} show={show} setShow={setShow} chartType={chartType} saveChartsData ={()=>saveChartsData()}  />
+            <GenChart formChartData={formChartData} setFormChartData={setFormChartData} show={show} setShow={setShow} chartType={chartType} saveChartsData ={()=>saveChartsData()} editId={editId} updateChartsDetails = {(x)=>updateChartsDetails(x)}/>
         </>
     )
 }

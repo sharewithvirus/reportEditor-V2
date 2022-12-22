@@ -35,18 +35,29 @@ function ReportEditor() {
   const [open, setOpen] = useState(false);
   // const [editorState, setEditorState] = useState(false);
   const handleShow = () => setOpen(!open);
-  const handleClose = () => setOpen(false);
+  const handleClose = () => {
+    handleShow();
+  };
   const [activeTopicData, setActiveTopicData] = useState({});
   const [openSnack, setopenSnack] = useState(false);
   const [severity, setSeverity] = useState("success");
   const [snackMsg, setSnackMsg] = useState("");
   const [internetStatus, setInternetStatus] = useState(true);
+
+  const startValues = {
+    subTopicName: "",
+    reportId: "",
+    subTopicId: "",
+    htmlData: "",
+  };
+
+  const [data, setData] = useState(startValues);
   const date = new Date();
   const getReportData = async () => {
     setIsLoading(true);
     const res = await getReportDataById(id);
     if (res.status === 200) {
-      if (res.data.reportData.subTopics.length == 0) {
+      if (res.data.reportData.subTopics.length === 0) {
         setOpen(true);
         // setEditorState(true);
       }
@@ -65,9 +76,9 @@ function ReportEditor() {
       setSnackMsg("Added Successfully !");
       setopenSnack(true);
       handleShow();
+      setData(startValues);
       getReportData();
       setIsLoading(false);
-      console.log("success");
     } else {
       setSeverity("error");
       setSnackMsg("Something went Wrong !");
@@ -75,11 +86,11 @@ function ReportEditor() {
     }
   };
   const saveHtmlData = async (data) => {
-    console.log("Editor Data", data);
-    console.log("topicData", activeTopicData);
+    // console.log("Editor Data", data);
+    // console.log("topicData", activeTopicData);
     const res = await updateSubtopics(data);
     if (res.status === 200) {
-      console.log("Updated Topic Data", res.data.topic);
+      // console.log("Updated Topic Data", res.data.topic);r
       setActiveTopicData(res.data.topic);
       getReportData();
     }
@@ -108,19 +119,72 @@ function ReportEditor() {
       <EditorModal
         open={open}
         handleOpen={handleShow}
-        handleClose={handleShow}
+        handleClose={handleClose}
         saveData={saveTopicsData}
         reportId={id}
+        data={data}
+        setData={setData}
       />
       <Box
         sx={{
           padding: "0px 36px 5px 30px",
         }}
       >
+        <Grid container spacing={0} mt={2}>
+          <Grid
+            item
+            md={12}
+            sm={12}
+            
+          >
+            <Stack
+             
+              alignItems="center"
+              mt={2}
+              flexDirection={"row"}
+            >
+              <Stack
+                alignItems="flex-start"
+                sx={{
+                  minWidth: "150px",
+                }}
+              >
+                <Typography sx={{ fontSize: "20px", fontWeight: "" }}>
+                  <b>Report Name : </b>
+                </Typography>
+              </Stack>
+              <Stack sx={{}}>
+                <Typography>{reportData ? reportData.name : ""}</Typography>
+              </Stack>
+            </Stack>
+            <Stack
+              
+              alignItems="center"
+              flexDirection={"row"}
+              mt={2}
+            >
+              <Stack
+                alignItems="flex-start"
+                sx={{
+                  minWidth: "150px",
+                }}
+              >
+                <Typography sx={{ fontSize: "18px", fontWeight: "" }}>
+                  <b>Editing : </b>
+                </Typography>
+              </Stack>
+              <Stack sx={{}}>
+                <Typography>
+                  {activeTopicData ? activeTopicData.subTopicName : ""}
+                </Typography>
+              </Stack>
+            </Stack>
+          </Grid>
+        </Grid>
         <Grid container spacing={0} mt={5}>
           <Grid
             item
-            md={4}
+            md={3}
             sm={2}
             display="flex"
             justifyContent="end"
@@ -134,60 +198,24 @@ function ReportEditor() {
           </Grid>
           <Grid
             item
-            md={5}
+            md={6}
             sm={5}
             display="flex"
-            justifyContent="center"
-            flexDirection="column"
+            justifyContent="space-around"
+            flexDirection="row"
             alignItems="center"
           >
-            <Stack  justifyContent="center" alignItems="center"
-            
-            >
-              <Stack
-                flexDirection="row"
-                justifyContent="center"
-                alignContent="center"
-              >
-                <FileCopyOutlinedIcon
-                  sx={{
-                    fontSize: "22px",
-                  }}
-                />
-                <Typography sx={{ fontSize: "16px", fontWeight: "" }}>
-                  {reportData ? reportData.name : ""}
-                </Typography>
-              </Stack>
-              <Typography
+            <Stack>
+
+            <Typography
               sx={{
-                fontSize:"15px"
-              }}>
-                <b>Status :</b> <span>
-                  {internetStatus ? "online" : "offline"}
-                </span>
-              </Typography>
-            </Stack>
-              <Stack>
-              <Typography
-                sx={{
-                  fontSize: "12px",
-                }}
+                fontSize: "15px",
+              }}
               >
-                <b>Editing : </b>
-                <span>
-                  {activeTopicData ? activeTopicData.subTopicName : ""}
-                </span>
-              </Typography>
+              <b>Status :</b>{" "}
+              <span>{internetStatus ? "online" : "offline"}</span>
+            </Typography>
               </Stack>
-          </Grid>
-          <Grid
-            item
-            md={3}
-            sm={5}
-            display="flex"
-            justifyContent="space-between"
-            flexDirection="row"
-          >
             <Stack>
               <Typography
                 sx={{
@@ -204,6 +232,16 @@ function ReportEditor() {
                 </span>
               </Typography>
             </Stack>
+          </Grid>
+          <Grid
+            item
+            md={3}
+            sm={5}
+            display="flex"
+            justifyContent="center"
+            flexDirection="row"
+          >
+            
             <Stack>
               {reportData ? (
                 <Link to={`/u_control/report-preview/${reportData._id}`}>

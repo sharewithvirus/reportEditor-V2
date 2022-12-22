@@ -8,14 +8,16 @@ const {
         getAllChart,
         getChartByChartId,
         getChartbyId,
-        chartDelete
+        // chartDelete
       } = require("../controllers/chartController");
 
 //All Charts Route In a Single Model
 router.route("/").post(createChart).get(getChart);
-router.route("/:id").patch(updateChart).delete(chartDelete);
+router.route("/:id").patch(updateChart).delete(deleteChart);
 router.route("/:id").get(getAllChart);
-router.route("/chartId").get(getChartByChartId);
+
+router.route("/getChartById/:chartId").get(getChartbyId);
+
 
 
 module.exports = router;

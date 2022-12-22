@@ -25,6 +25,8 @@ import {
   createCharts,
   deleteCharts,
   getAllCharts,
+  getChartsById,
+  updateCharts,
 } from "../../../../Services/chartServices";
 import {
   uploadImage,
@@ -147,7 +149,6 @@ export default function FullWidthTabs() {
   const [severity, setSeverity] = useState("success");
   const [snackMsg, setSnackMsg] = useState("");
   const [chartFormValues, setChartFormValues] = useState(["series", "label"]);
-  const handleClose = () => setOpen(false);
   const handleCloseImage = () => setOpenImage(false);
   const [chartType, setChartType] = useState("pie");
   const [allImages, setAllImages] = useState(null);
@@ -155,12 +156,24 @@ export default function FullWidthTabs() {
   const [copyText, setCopyText] = useState("");
   const [chartList, setChartList] = useState([]);
   const handleCloseTable = () => setOpenTable(false);
+  const [editId, setEditId] = useState("");
   const [formChartData, setFormChartData] = useState({
     name: "",
     series: "",
     label: "",
     categories: "",
   });
+  const handleClose = () => {
+    setEditId("");
+    setChartFormValues(["series", "label"]);
+    setFormChartData({
+      name: "",
+      series: "",
+      label: "",
+      categories: "",
+    });
+    setOpen(false);
+  };
   const [show, setShow] = useState(false);
   const copyToClipboard = (copyText) => {
     copy(`<div id='${copyText}'></div>`);
@@ -205,15 +218,48 @@ export default function FullWidthTabs() {
   const handleChangeIndex = (index) => {
     setValue(index);
   };
+
+  const handleOpenChartModal = (chartId) => {
+    getSingleChartData(chartId);
+    // setEditId();
+    handleOpen(!open);
+  };
+  const getSingleChartData = async (chartId) => {
+    const res = await getChartsById(chartId);
+    console.log("fetch data", res.data.data, "chartTypeeee", res.data.data._id);
+
+    if (res.status === 200) {
+      setEditId(res.data.data._id);
+      setChartType(res.data.data.chartType);
+      setFormChartData(res.data.data.formChartData);
+      if (res.data.data.chartType === "pie") {
+        setChartFormValues(["series", "label"]);
+      } else if (res.data.data.chartType === "bar") {
+        setChartFormValues(["series", "categories"]);
+      } else if (res.data.data.chartType === "radar") {
+        return setChartFormValues(["series", "categories"]);
+      } else if (res.data.data.chartType === "stacked") {
+        return setChartFormValues(["series", "categories"]);
+      } else if (res.data.data.chartType === "line") {
+        return setChartFormValues(["series", "categories"]);
+      } else if (res.data.data.chartType === "area") {
+        return setChartFormValues(["series", "label"]);
+      } else if (res.data.data.chartType === "radar") {
+        return setChartFormValues(["series", "categories"]);
+      } else if (res.data.data.chartType === "multibar") {
+        setChartFormValues(["series", "categories"]);
+      } else if (res.data.data.chartType === "donut") {
+        return setChartFormValues(["series", "label"]);
+      } else if (res.data.data.chartType === "barandline") {
+        return setChartFormValues(["series", "categories"]);
+      }
+    }
+  };
   const saveChartsData = async () => {
     setIsLoading(true);
     const data = {
       reportId: id,
       chartType: chartType ? chartType : "",
-      // name: formChartData.name,
-      // label: formChartData.label,
-      // series: formChartData.series,
-      // categories: formChartData.categories ? formChartData.categories : "",
       formChartData: formChartData,
     };
     if (formChartData.name === "") {
@@ -221,10 +267,10 @@ export default function FullWidthTabs() {
     } else {
       const res = await createCharts(data);
       {
+        setIsLoading(true)
         if (res.status === 201) {
           console.log("chart added", res.data);
           console.log("chart added", res.data.data);
-
           setSeverity("success");
           setSnackMsg("Added Successfully !");
           setopenSnack(true);
@@ -234,6 +280,7 @@ export default function FullWidthTabs() {
             label: "",
             categories: "",
           });
+          setIsLoading(false)
           getChartsData(id);
           setShow(false);
           handleClose();
@@ -242,12 +289,39 @@ export default function FullWidthTabs() {
     }
     setIsLoading(false);
   };
+  const updateChartsDetails = async (chartId) => {
+    const data = {
+      reportId: id,
+      chartType: chartType ? chartType : "",
+      formChartData: formChartData,
+    };
+    setIsLoading(true);
+    const res = await updateCharts(data, chartId);
+    // console.log("chartUpdata...", res);
+    if (res.status === 200) {
+      console.log("after updation", res);
+      setSeverity("success");
+      setSnackMsg("Updated Successfully !");
+      setopenSnack(true);
+      setFormChartData({
+        name: "",
+        series: "",
+        label: "",
+        categories: "",
+      });
+      getChartsData(id);
+      setShow(false);
+      handleClose();
+      setEditId("");
+      setIsLoading(false);
+    }
+  };
   const getChartsData = async (id) => {
     setIsLoading(true);
     const res = await getAllCharts(id);
     {
       if (res.status === 200) {
-        // console.log(res.data.data);
+        // console.log("get chart",res.data.data);
         setChartList(res.data.data);
       }
     }
@@ -431,6 +505,17 @@ export default function FullWidthTabs() {
                           <Button
                             size="small"
                             variant="contained"
+                            color="info"
+                            sx={{
+                              marginRight: "2px",
+                            }}
+                            onClick={() => handleOpenChartModal(chart._id)}
+                          >
+                            EDIT
+                          </Button>
+                          <Button
+                            size="small"
+                            variant="contained"
                             color="error"
                             onClick={() => deleteChart(chart._id)}
                           >
@@ -463,6 +548,7 @@ export default function FullWidthTabs() {
               select
               label="Select"
               value={chartType}
+              disabled={editId ? true : false}
               onChange={SeletFormChange}
               helperText="Please select your Chart Type"
             >
@@ -491,6 +577,8 @@ export default function FullWidthTabs() {
             chartFormValues={chartFormValues}
             chartType={chartType}
             saveChartsData={() => saveChartsData()}
+            updateChartsDetails={(x) => updateChartsDetails(x)}
+            editId={editId}
           />
         </Box>
       </Modal>
