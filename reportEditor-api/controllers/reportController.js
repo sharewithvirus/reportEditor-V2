@@ -3,8 +3,12 @@ const path = require("path");
 const pdf = require("html-pdf");
 const wkhtmltopdf = require("wkhtmltopdf");
 const Report = require("../model/reportModel");
-//const Template = require("../models/templateModel");
-//const SubTopic = require("../models/subTopicModel");
+const Template = require("../model/templateModel");
+const chartModel = require("../model/chartModel");
+const jsonToHtml = require("node-json2html");
+
+
+//const SubTopic = require("../model/subTopicModel");
 
 exports.createReport = async (req, res) => {
   try {

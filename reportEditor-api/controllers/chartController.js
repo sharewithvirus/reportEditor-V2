@@ -87,6 +87,28 @@ exports.getChartbyId= async (req, res) => {
     }
 }
 
+
+// Get charts by their Chartid 
+exports.getChartByChartId = async (req, res) => {
+    try {
+        const { chartId } = req.body;
+        console.log("api hit", req.body);
+        const chartDocs = await chartModel.find(chartId)
+        res.status(200).json({
+            status:"Success",
+            message:`All Chart fetched Successfully`,
+            data:chartDocs
+        })
+    } catch(error){
+        console.log(error);
+        res.status(500).json({
+            status:"Error",
+            message:"Internal Server Error"
+        })
+    }
+}
+
+
 exports.updateChart = async (req,res) => {
     try{
        const { id } = req.params;
