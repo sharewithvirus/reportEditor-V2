@@ -18,7 +18,7 @@ const reportModel = new mongoose.Schema(
       ],
     },
     reportStatusResearch: {
-      type: [String],
+      type: String,
       default: ["drafting"],
       enum: [
         null,
@@ -29,10 +29,12 @@ const reportModel = new mongoose.Schema(
       ],
     },
     userList:{
-      type:[String]
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Industry"
     },
     industry: {
-      type: [String],
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Industry"
     },
     baseYear:{
       type:String
