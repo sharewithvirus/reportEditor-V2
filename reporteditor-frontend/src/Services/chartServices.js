@@ -24,7 +24,7 @@ export const getAllCharts = async (id) => {
     try {
         // console.log(id);
         const res = await axios.get(`/api/v1/chart/${id}`)
-        console.log("chart get req", res.data)
+        // console.log("chart get req", res.data)
         return res;
     } catch (error) {
         alert(error.response.data.message)

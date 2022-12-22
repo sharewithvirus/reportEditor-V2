@@ -62,7 +62,7 @@ function VerifyPassword() {
         <Box className='login-box' sx={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', }}>
             <Typography sx={{ fontSize: '25px' }}>Verify User</Typography>
             <Box
-                component="form" x
+                
                 sx={{
                     '& > :not(style)': { m: 1, width: '35ch' },
                 }}
@@ -74,7 +74,7 @@ function VerifyPassword() {
 
             </Box>
             <Box
-                component="form"
+                
                 sx={{
                     '& > :not(style)': { m: 1, width: '35ch' },
                 }}

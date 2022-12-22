@@ -132,7 +132,7 @@ export default function DepartmentModal(props) {
               <Grid lg={4} item xs={12} md={12}>
                 <FormControl fullWidth sx={{ m: 1 }}>
                   <Box
-                    component="form"
+                    
                     sx={{
                       "& .MuiTextField-root": { width: "35ch" },
                     }}

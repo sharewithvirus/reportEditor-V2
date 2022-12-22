@@ -267,6 +267,7 @@ export default function FullWidthTabs() {
     } else {
       const res = await createCharts(data);
       {
+        setIsLoading(true)
         if (res.status === 201) {
           console.log("chart added", res.data);
           console.log("chart added", res.data.data);
@@ -279,6 +280,7 @@ export default function FullWidthTabs() {
             label: "",
             categories: "",
           });
+          setIsLoading(false)
           getChartsData(id);
           setShow(false);
           handleClose();
@@ -297,7 +299,7 @@ export default function FullWidthTabs() {
     const res = await updateCharts(data, chartId);
     // console.log("chartUpdata...", res);
     if (res.status === 200) {
-      // console.log("after updation", res);
+      console.log("after updation", res);
       setSeverity("success");
       setSnackMsg("Updated Successfully !");
       setopenSnack(true);
@@ -319,7 +321,7 @@ export default function FullWidthTabs() {
     const res = await getAllCharts(id);
     {
       if (res.status === 200) {
-        // console.log(res.data.data);
+        // console.log("get chart",res.data.data);
         setChartList(res.data.data);
       }
     }

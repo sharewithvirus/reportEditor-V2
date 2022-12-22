@@ -9,6 +9,8 @@ import { useState } from "react";
 import { useEffect } from "react";
 
 function EditorModal({
+  data,
+  setData,
   handleOpen,
   handleClose,
   open,
@@ -34,16 +36,19 @@ function EditorModal({
     boxShadow: 24,
     p: 4,
   };
-  const [data, setData] = useState({
-    subTopicName: "",
-    reportId: "",
-    subTopicId: "",
-    htmlData: "",
-  });
+  // const startValues = {
+  //   subTopicName: "",
+  //   reportId: "",
+  //   subTopicId: "",
+  //   htmlData: "",
+  // }
 
+  // const [data, setData] = useState(startValues);
   const changeValues = (e) => {
-    setData({ ...data, subTopicName: e.target.value });
+    setData({ ...data, subTopicName: e.target.value});
   };
+
+  // console.log("DATA", data)
   const [editedTopicData,setEditedTopic] = useState({
     subTopicName: "",
     id : "",
@@ -63,12 +68,8 @@ function EditorModal({
     // console.log(data)
     const res = await saveData(data);
     if (res.status === 200) {
-      setData({
-        subTopicName: "",
-        reportId: "",
-        subTopicId: "",
-        htmlData: "",
-      });
+      console.log("onclose",res);
+      
     }
 
     close();
@@ -97,6 +98,7 @@ function EditorModal({
         subTopicName: "",
         id : "",
       })
+      
     }
   }, [])
 
@@ -130,7 +132,7 @@ function EditorModal({
             ) : (
               <TextField
                 id="outlined-basic"
-                value={data.subTopicName}
+                value={data?.subTopicName}
                 label="Topic Name"
                 variant="outlined"
                 onChange={(e) => changeValues(e)}

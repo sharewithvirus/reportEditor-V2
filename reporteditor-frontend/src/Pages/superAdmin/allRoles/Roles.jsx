@@ -180,7 +180,7 @@ const Model = ({open, handleClose, deptList, createRole, openDeleteModel}) => {
                 <Grid container spacing={2}>
                     <Grid lg={4} item xs={12}>
                         <Box
-                            component="form"
+                            
                             sx={{
                                 '& .MuiTextField-root': { m: 1, width: '25ch' },
                             }}

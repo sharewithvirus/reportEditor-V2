@@ -23,7 +23,7 @@ export const getAllIndustry = async () => {
 
 export const getAllIndustrybyDeptId = async (id) => {
     try {
-        console.log(id)
+        // console.log(id)
         return await axios.get(`/api/v1/industry/getindustryBy/DeptId/${id}`);
     } catch (error) {
         alert(error.response.data.message)

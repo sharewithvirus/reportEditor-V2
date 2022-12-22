@@ -85,13 +85,13 @@ function CreateReport() {
   };
   const getAllIndustryList = async () => {
     const res = await getAllIndustrybyDeptId(userInfo.department);
-    console.log(res);
+    // console.log(res);
     if (res.status === 200) {
       setIndustryList(res.data.data);
     }
   };
   useEffect(() => {
-    console.log(userInfo);
+    // console.log(userInfo);
     getUserList();
     getAllIndustryList();
   }, []);

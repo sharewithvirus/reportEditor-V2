@@ -34,11 +34,11 @@ function Editors({
       template: htmlData,
     };
 
-    console.log("...working", htmlData);
-    const res = await saveHtmlData(data);
-    if (res.status === 200) {
-      // console.log("saved");
-    }
+    // console.log("...working", htmlData);
+     await saveHtmlData(data);
+    // if (res.status === 200) {
+    //   // console.log("saved");
+    // }
   };
   useEffect(() => {
     
@@ -61,7 +61,7 @@ function Editors({
         data={activeTopicData ? activeTopicData.htmlData : activeHtmlData}
         onReady={(editor) => {
           // You can store the "editor" and use when it is needed.
-          console.log("Editor is ready to use!", editor);
+          // console.log("Editor is ready to use!", editor);
         }}
         onChange={(event, editor) => {
           const data = editor.getData();
@@ -69,10 +69,10 @@ function Editors({
           setActiveHtmlData(data);
         }}
         onBlur={(event, editor) => {
-          console.log("Blur.", editor);
+          // console.log("Blur.", editor);
         }}
         onFocus={(event, editor) => {
-          console.log("Focus.", editor);
+          // console.log("Focus.", editor);
         }}
       />
     </>

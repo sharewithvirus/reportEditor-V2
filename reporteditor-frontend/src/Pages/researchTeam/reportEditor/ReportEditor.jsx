@@ -35,18 +35,29 @@ function ReportEditor() {
   const [open, setOpen] = useState(false);
   // const [editorState, setEditorState] = useState(false);
   const handleShow = () => setOpen(!open);
-  const handleClose = () => setOpen(false);
+  const handleClose = () => {
+    handleShow();
+  }
   const [activeTopicData, setActiveTopicData] = useState({});
   const [openSnack, setopenSnack] = useState(false);
   const [severity, setSeverity] = useState("success");
   const [snackMsg, setSnackMsg] = useState("");
   const [internetStatus, setInternetStatus] = useState(true);
+
+  const startValues = {
+    subTopicName: "",
+    reportId: "",
+    subTopicId: "",
+    htmlData: "",
+  }
+
+  const [data, setData] = useState(startValues);
   const date = new Date();
   const getReportData = async () => {
     setIsLoading(true);
     const res = await getReportDataById(id);
     if (res.status === 200) {
-      if (res.data.reportData.subTopics.length == 0) {
+      if (res.data.reportData.subTopics.length === 0) {
         setOpen(true);
         // setEditorState(true);
       }
@@ -65,9 +76,9 @@ function ReportEditor() {
       setSnackMsg("Added Successfully !");
       setopenSnack(true);
       handleShow();
+      setData(startValues);
       getReportData();
       setIsLoading(false);
-      console.log("success");
     } else {
       setSeverity("error");
       setSnackMsg("Something went Wrong !");
@@ -75,11 +86,11 @@ function ReportEditor() {
     }
   };
   const saveHtmlData = async (data) => {
-    console.log("Editor Data", data);
-    console.log("topicData", activeTopicData);
+    // console.log("Editor Data", data);
+    // console.log("topicData", activeTopicData);
     const res = await updateSubtopics(data);
     if (res.status === 200) {
-      console.log("Updated Topic Data", res.data.topic);
+      // console.log("Updated Topic Data", res.data.topic);r
       setActiveTopicData(res.data.topic);
       getReportData();
     }
@@ -108,9 +119,11 @@ function ReportEditor() {
       <EditorModal
         open={open}
         handleOpen={handleShow}
-        handleClose={handleShow}
+        handleClose={handleClose}
         saveData={saveTopicsData}
         reportId={id}
+        data={data}
+        setData={setData}
       />
       <Box
         sx={{
