@@ -40,26 +40,24 @@ function ReportTemplateManagement() {
     setIsLoading(true);
     const res = await updateTemplateStatus(id);
     console.log(res);
-    if(res.status)
-    {
+    if (res.status) {
       setSnackBarMsg("Default status changed!");
       setSeverity("success");
       setIsLoading(false);
       getData();
     }
-  }
+  };
   const handleDelete = async () => {
     setIsLoading(true);
     const res = await deleteTemplate(deleteModelData._id);
     console.log(res);
     setIsLoading(false);
     if (res.status == 200) {
-      setSnackBarMsg("Data Deleted !")
-      setSeverity("success")
+      setSnackBarMsg("Data Deleted !");
+      setSeverity("success");
       getData();
       setOpen(false);
-    }
-    else{
+    } else {
       setSnackBarMsg("Data is not Deleted !");
       setSeverity("error");
       getData();
@@ -129,9 +127,7 @@ function ReportTemplateManagement() {
                 }}
               >
                 Add
-               
-                  <AddCircleOutlineOutlinedIcon />
-                
+                <AddCircleOutlineOutlinedIcon />
               </Button>
             </Link>
           </Stack>
@@ -148,13 +144,9 @@ function ReportTemplateManagement() {
             ? templatesData.map((data, index) => {
                 return (
                   <Stack
-                    // sx={{
-                    //   display: "flex",
-                    //   justifyContent: "space-between",
-                    //   alignItems: "center",
-                    // }}
                     direction={{ xs: "column", sm: "row", md: "row" }}
                     spacing={{ xs: 1, sm: 4, md: 6 }}
+                    key={index}
                   >
                     <Stack
                       direction={{ xs: "column", sm: "row", md: "row" }}
@@ -169,8 +161,8 @@ function ReportTemplateManagement() {
                           flexWrap: "wrap",
                           "& > :not(style)": {
                             m: 1,
-                            width: 160,
-                            height: 180,
+                            width:220,
+                            height:240,
                           },
                         }}
                       >
@@ -182,17 +174,51 @@ function ReportTemplateManagement() {
                             flexDirection: "column",
                             justifyContent: "space-around",
                             alignItems: "center",
-                            backgroundColor:`${data.defaultTemp === true ? "rgba(0, 45, 227, 0.55)" : ""}`
-                            
+                            padding:"0px",
+                            backgroundColor: `${
+                              data.defaultTemp === true
+                                ? "rgba(0, 45, 227, 0.55)"
+                                : ""
+                            }`,
                           }}
                         >
-                          <Typography
-                            sx={{
-                              fontSize: "15px",
-                            }}
+                          <Stack
+                            flexDirection={"row"}
+                            justifyContent={"space-between"}
                           >
-                            {data.header}
-                          </Typography>
+                            {data?.logoAlignment === "left-top" ? (
+                              <img
+                                src={data?.url}
+                                style={{
+                                  height: "40px",
+                                  width: "40px",
+                                  marginRight: "10px",
+                                }}
+                              ></img>
+                            ) : (
+                              ""
+                            )}
+                            <Typography
+                              sx={{
+                                fontSize: "15px",
+                                marginLeft: "10px",
+                              }}
+                            >
+                              {data.header}
+                            </Typography>
+                            {data?.logoAlignment === "right-top" ? (
+                              <img
+                                src={data?.url}
+                                style={{
+                                  height: "40px",
+                                  width: "40px",
+                                  marginLeft: "10px",
+                                }}
+                              ></img>
+                            ) : (
+                              ""
+                            )}
+                          </Stack>
                           <IconButton
                             sx={{
                               fontSize: "10px",
@@ -211,10 +237,40 @@ function ReportTemplateManagement() {
 
                             {data.defaultTemp === true ? "Default" : ""}
                           </IconButton>
+                          
                           <Typography sx={{ fontSize: "10px", color: "green" }}>
                             {data.name}
                           </Typography>
+                          <Stack
+                          flexDirection={'row'}
+                          justifyContent={'space-between'}
+                          >
+                          {data?.logoAlignment === "left-bottom" ? (
+                              <img
+                                src={data?.url}
+                                style={{
+                                  height: "40px",
+                                  width: "40px",
+                                  marginRight: "10px",
+                                }}
+                              ></img>
+                            ) : (
+                              ""
+                            )}
                           <Typography>{data.footer}</Typography>
+                          {data?.logoAlignment === "right-bottom" ? (
+                              <img
+                                src={data?.url}
+                                style={{
+                                  height: "40px",
+                                  width: "40px",
+                                  marginLeft: "10px",
+                                }}
+                              ></img>
+                            ) : (
+                              ""
+                            )}
+                          </Stack>
                         </Paper>
                       </Box>
                       <Stack
@@ -255,7 +311,6 @@ function ReportTemplateManagement() {
                           </Button>
                         </Link>
                         <Link>
-                        
                           <Button
                             variant="outlined"
                             color="inherit"
@@ -266,8 +321,9 @@ function ReportTemplateManagement() {
                             }}
                             size="small"
                             fullWidth
-                            
-                            onClick={()=> {changeDefaultTemplate(data._id)}}
+                            onClick={() => {
+                              changeDefaultTemplate(data._id);
+                            }}
                           >
                             Set as Default
                           </Button>

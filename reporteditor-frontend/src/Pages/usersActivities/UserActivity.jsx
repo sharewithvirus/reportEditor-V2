@@ -74,9 +74,7 @@ const UserActivity = () => {
         >
           {activityList
             ? activityList.map((x, index) => (
-                <>
-                  <Activity item={x} keyItem={index} key={x} />
-                </>
+                <Activity item={x} keyItem={index} key={`${x._id}.${index}`} />
               ))
             : ""}
           <Box

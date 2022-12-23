@@ -149,7 +149,7 @@ const UserManagementModal = ({
     <div>
       <Modal open={open} onClose={handleClose}>
         <Box sx={style}>
-          <Typography id="modal-modal-title" variant="h6" component="h2">
+         
             <Stack
               display="flex"
               direction="row"
@@ -163,7 +163,7 @@ const UserManagementModal = ({
               </Typography>
             </Stack>
             <hr />
-          </Typography>
+         
           <Box>
             <Grid
               container
