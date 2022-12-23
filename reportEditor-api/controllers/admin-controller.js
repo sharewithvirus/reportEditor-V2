@@ -30,6 +30,7 @@ exports.adminLogin = async (req, res) => {
                 userText.password = undefined;
                 createSendToken(userText, 200, res);
             }else{
+              const userText = await User.findById(user._id);
               userText.password = undefined;
               createSendToken(userText, 200, res);
             }

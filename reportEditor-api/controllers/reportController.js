@@ -6,6 +6,7 @@ const Report = require("../model/reportModel");
 const Template = require("../model/templateModel");
 const chartModel = require("../model/chartModel");
 const jsonToHtml = require("node-json2html");
+const cheerio = require('cheerio');
 
 
 //const SubTopic = require("../model/subTopicModel");
@@ -202,14 +203,82 @@ exports.createPdfPreview = async (req, res) => {
       }
     })
     let subTopicData = reportData.subTopics;
-    const dataText = await prePairHTMLData(reportData.subTopics);
-    // console.log(reportData)
+    let reportCharts = reportData.reportCharts;
+    // const dataText = await prePairHTMLData(subTopicData);
+    // console.log(dataText)
+// --------------------------------Data --------------------------------
+
+// let fullPageHTML = [];
+// let headingHTML = [];
+// let headings = [];
+
+const headings = [];
+const headingHTML = [];
+const fullPageHTML = [];
+
+const subTopicMap = async (x, preIndex) => {
+  x.map(async (itemX, index) => {
+    // console.log(itemX.subTopicName, `${preIndex ? `${preIndex}.${index+1}` : `${index+1}`}`)
+    if(itemX.subTopics.length > 0){
+      fullPageHTML.push(
+        `<div id="${preIndex ? `${preIndex}.`: ""}${index+1}"><h3>Chapter: ${preIndex ? `${preIndex}.`: ""}${index+1} : <strong>${itemX.subTopicName}</strong></h3></div>`, 
+      `<div styles="page-break-inside: avoid; page-break-after:always;">${itemX.htmlData}</div>`)
+      headings.push(`index:${preIndex ? `${preIndex}.`: ""}${index + 1} heading:${itemX.subTopicName}`);
+      headingHTML.push(`<div><a href="#${preIndex ? `${preIndex}.`: ""}${index + 1}" style="text-decoration: none; color: black" />${preIndex ? `${preIndex}.`: ""}${index + 1} : ${itemX.subTopicName}</div>`);
+      await subTopicMap(itemX.subTopics, `${preIndex ? `${preIndex}.` : ''}${index+1}`);
+    }else {
+      fullPageHTML.push(
+        `<div id="${preIndex ? `${preIndex}.`: ""}${index+1}"><h3>Chapter: ${preIndex ? `${preIndex}.`: ""}${index+1} : <strong>${itemX.subTopicName}</strong></h3></div>`, 
+      `<div styles="page-break-inside: avoid; page-break-after:always;">${itemX.htmlData}</div>`)
+      headings.push(`index:${preIndex ? `${preIndex}.`: ""}${index + 1} heading:${itemX.subTopicName}`);
+      headingHTML.push(`<div><a href="#${preIndex ? `${preIndex}.`: ""}${index + 1}" style="text-decoration: none; color: black" />${preIndex ? `${preIndex}.`: ""}${index + 1} : ${itemX.subTopicName}</div>`);
+    }
+  })
+}
+
+fullPageHTML.push("<html><head></head><body>")
+await subTopicMap(subTopicData);
+fullPageHTML.push(`<script src="https://cdn.jsdelivr.net/npm/apexcharts"></script></body>`)
+
+
+// fullPageHTML.push(`<script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>`)
+const joinHTML = fullPageHTML.join('');
+// console.log("HTML Preview", joinHTML)
+const dom = cheerio.load(joinHTML);
+
+reportCharts.forEach(async (chart) => {
+  // console.log(chart);
+  // dom(`#${chart._id}`).html('<h1>Hello World</h1>');
+
+  var options = {
+    chart: {
+      type: 'bar'
+    },
+    series: [{
+      name: 'sales',
+      data: [30,40,45,50,49,60,70,91,125]
+    }],
+    xaxis: {
+      categories: [1991,1992,1993,1994,1995,1996,1997, 1998,1999]
+    }
+  }
+  
+  // var chart = new ApexCharts(dom.querySelector(`#${chart._id}`), options);
+  // chart.render();
+
+
+})
+
+console.log(dom.html())
+
+  let data = 
+  `<html><head><title>Test Page</title><style>body{background-color:#a8d1d1;font-family:Roboto,sans-serif}#chart{max-width:650px;margin:35px auto}</style></head><body><div id='chart'>Hello</div><script src='https://cdn.jsdelivr.net/npm/apexcharts'></script> <script>let options = {chart:{type:'bar'},series:[{name:'sales',data:[30,40,45,50,49,60,70,91,125]}],xaxis:{categories: [1991,1992,1993,1994,1995,1996,1997, 1998,1999]}}; let chart=new ApexCharts(document.querySelector('#chart'), options); chart.render();</script></body></html>`
+
     res.status(200)
     .json({ 
       status: "success", 
       message: "Report Data", 
-      // data: reportData
-      data: dataText
+      data: data
     });
   // } catch (error) {
   //   res.status(500).json({
@@ -219,314 +288,11 @@ exports.createPdfPreview = async (req, res) => {
   // }
 };
 
-const prePairHTMLData = async (data) => {
-  let fullPageHTML = [];
-  let headingHTML = [];
-  let headings = [];
-  let finalData;
-  data.map(async (dataT, i) => {
-    finalData = await mapFunction(dataT, i);
-  })
-  console.log(finalData);
-  return finalData;
-}
-
-const mapFunction = async (subTopic, index, preIndex) => {
-  let Arry = [];
-  if(subTopic.subTopics.length > 0){
-    let fullPageHtml = [`<div id="${preIndex ? `${preIndex}.`: ""}${index+1}"><h3>Chapter: ${preIndex ? `${preIndex}.`: ""}${index+1} : <strong>${subTopic.subTopicsName}</strong></h3></div>`, `<div styles="page-break-inside: avoid; page-break-after:always;">${subTopic.htmlData}</div>`]
-    let headings = {index: `${preIndex ? `${preIndex}.`: ""}${index + 1}`, heading: `${subTopic.subTopicsName}`};
-    let headingHTML = `<div><a href="#${preIndex ? `${preIndex}.`: ""}${index + 1}" style="text-decoration: none; color: black" />${preIndex ? `${preIndex}.`: ""}${index + 1} : ${subTopic.subTopicsName}</div>`
-      let Obj = {
-        fullPageHtml, headings, headingHTML
-      }
-      Arry.push(Obj);
-      subTopic.subTopics.map(async (subTopic, index2) => {
-        const data = await mapFunction(subTopic, index2, `${preIndex ? `${preIndex}.`: ""}${index}`);
-        Arry.push(data);
-      })
-      return Arry;
-  }else{
-      let fullPageHtml = [`<div id="${preIndex ? `${preIndex}.`: ""}${index+1}"><h3>Chapter: ${preIndex ? `${preIndex}.`: ""}${index+1} : <strong>${subTopic.subTopicsName}</strong></h3></div>`, `<div styles="page-break-inside: avoid; page-break-after:always;">${subTopic.htmlData}</div>`]
-      let headings = {index: `${preIndex ? `${preIndex}.`: ""}${index + 1}`, heading: `${subTopic.subTopicsName}`};
-      let headingHTML = `<div><a href="#${preIndex ? `${preIndex}.`: ""}${index + 1}" style="text-decoration: none; color: black" />${preIndex ? `${preIndex}.`: ""}${index + 1} : ${subTopic.subTopicsName}</div>`
-      let Obj = {
-        fullPageHtml, headings, headingHTML
-      }
-      // return Obj;
-      Arry.push(Obj);
-      return Arry;
-  }
-}
-
 
 
 
 // Old Function For Report Preview....----------------------------------
-  // reportData.subTopics.map((x, xIndex) => {
-  //   fullPageHTML.push(
-  //     `<div id="${xIndex + 1}"><h3>Chapter: ${xIndex + 1} : <strong>${
-  //       x.subTopicsName
-  //     }</strong></h3></div>`
-  //   );
-  //   fullPageHTML.push(
-  //     `<div styles="page-break-inside: avoid; page-break-after:always;">${x.htmlData}</div>`
-  //   );
-  //   headings.push({
-  //     index: `${xIndex + 1}`,
-  //     heading: `${x.subTopicsName}`,
-  //   });
-  //   headingHTML.push(
-  //     `<div><a href="#${
-  //       xIndex + 1
-  //     }" style="text-decoration: none; color: black" />${xIndex + 1} : ${
-  //       x.subTopicsName
-  //     }</div>`
-  //   );
-  //   if (x.subTopics.length > 0) {
-  //     x.subTopics.map((y, yIndex) => {
-  //       headingHTML.push(
-  //         `<div>&nbsp&nbsp&nbsp<a style="text-decoration: none; color: black" href="#${
-  //           xIndex + 1
-  //         }.${yIndex + 1}" />${xIndex + 1}.${yIndex + 1} : ${
-  //           y.subTopicsName
-  //         }</div>`
-  //       );
-  //       fullPageHTML.push(
-  //         `<div id="${xIndex + 1}.${
-  //           yIndex + 1
-  //         }" style="margin-top:10px; margin-bottom:5px"><h3>Chapter: ${
-  //           xIndex + 1
-  //         }.${yIndex + 1} : ${y.subTopicsName}</h3></div>`
-  //       );
-  //       fullPageHTML.push(
-  //         `<div styles="page-break-inside: avoid; page-break-after:always;">${y.htmlData}</div>`
-  //       );
-  //       headings.push({
-  //         index: `${xIndex + 1}.${yIndex + 1}`,
-  //         heading: `${y.subTopicsName}`,
-  //         pageNo: "",
-  //       });
-  //       if (y.subTopics.length > 0) {
-  //         y.subTopics.map((z, zIndex) => {
-  //           headingHTML.push(
-  //             `<div>&nbsp&nbsp&nbsp<a style="text-decoration: none; color: black" href="#${
-  //               xIndex + 1
-  //             }.${yIndex + 1}.${zIndex + 1}" />${xIndex + 1}.${yIndex + 1}.${
-  //               zIndex + 1
-  //             } : ${z.subTopicsName}</div>`
-  //           );
-  //           fullPageHTML.push(
-  //             `<div id="${xIndex + 1}.${yIndex + 1}.${
-  //               zIndex + 1
-  //             }" style="margin-top:10px; margin-bottom:5px"><h3>Chapter: ${
-  //               xIndex + 1
-  //             }.${yIndex + 1}.${zIndex + 1} : ${z.subTopicsName}</h3></div>`
-  //           );
-  //           fullPageHTML.push(
-  //             `<div styles="page-break-inside: avoid; page-break-after:always;">${z.htmlData}</div>`
-  //           );
-  //           headings.push({
-  //             index: `${xIndex + 1}.${yIndex + 1}.${zIndex + 1}`,
-  //             heading: `${z.subTopicsName}`,
-  //             pageNo: "",
-  //           });
-  //           if (y.subTopics.length > 0) {
-  //             z.subTopics.map((a, aIndex) => {
-  //               fullPageHTML.push(
-  //                 `<div id="${xIndex + 1}.${yIndex + 1}.${zIndex + 1}.${
-  //                   aIndex + 1
-  //                 }" style="margin-top:10px; margin-bottom:5px"><h3>Chapter: ${
-  //                   xIndex + 1
-  //                 }.${yIndex + 1}.${zIndex + 1}.${aIndex + 1} : ${
-  //                   a.subTopicsName
-  //                 }</h3></div>`
-  //               );
-  //               fullPageHTML.push(
-  //                 `<div styles="page-break-inside: avoid; page-break-after:always;">${a.htmlData}</div>`
-  //               );
-  //               headingHTML.push(
-  //                 `<div>&nbsp&nbsp&nbsp<a  style="text-decoration: none; color: black" href="#${
-  //                   xIndex + 1
-  //                 }.${yIndex + 1}.${zIndex + 1}.${aIndex + 1}" />${
-  //                   xIndex + 1
-  //                 }.${yIndex + 1}.${zIndex + 1}.${aIndex + 1} : ${
-  //                   a.subTopicsName
-  //                 }</div>`
-  //               );
-
-  //               headings.push({
-  //                 index: `${xIndex + 1}.${yIndex + 1}.${zIndex + 1}.${
-  //                   aIndex + 1
-  //                 }`,
-  //                 heading: `${a.subTopicsName}`,
-  //                 pageNo: "",
-  //               });
-  //               if (a.subTopics.length > 0) {
-  //                 a.subTopics.map((b, bIndex) => {
-  //                   fullPageHTML.push(
-  //                     `<div id="${xIndex + 1}.${yIndex + 1}.${zIndex + 1}.${
-  //                       aIndex + 1
-  //                     }.${
-  //                       bIndex + 1
-  //                     }" style="margin-top:10px; margin-bottom:5px"><h3>Chapter: ${
-  //                       xIndex + 1
-  //                     }.${yIndex + 1}.${zIndex + 1}.${aIndex + 1}.${
-  //                       bIndex + 1
-  //                     } : ${b.subTopicsName}</h3></div>`
-  //                   );
-  //                   fullPageHTML.push(
-  //                     `<div styles="page-break-inside: avoid; page-break-after:always;">${b.htmlData}</div>`
-  //                   );
-  //                   headingHTML.push(
-  //                     `<div>&nbsp&nbsp&nbsp<a style="text-decoration: none; color: black" href="#${
-  //                       xIndex + 1
-  //                     }.${yIndex + 1}.${zIndex + 1}.${aIndex + 1}.${
-  //                       bIndex + 1
-  //                     }" />${xIndex + 1}.${yIndex + 1}.${zIndex + 1}.${
-  //                       aIndex + 1
-  //                     }.${bIndex + 1} : ${b.subTopicsName}</div>`
-  //                   );
-
-  //                   headings.push({
-  //                     index: `${xIndex + 1}.${yIndex + 1}.${zIndex + 1}.${
-  //                       aIndex + 1
-  //                     }.${bIndex + 1}`,
-  //                     heading: `${b.subTopicsName}`,
-  //                     pageNo: "",
-  //                   });
-  //                   if (b.subTopics.length > 0) {
-  //                     b.subTopics.map((c, cIndex) => {
-  //                       fullPageHTML.push(
-  //                         `<div id="${xIndex + 1}.${yIndex + 1}.${zIndex + 1}.${
-  //                           aIndex + 1
-  //                         }.${bIndex + 1}.${
-  //                           cIndex + 1
-  //                         }" style="margin-top:10px; margin-bottom:5px"><h3>Chapter: ${
-  //                           xIndex + 1
-  //                         }.${yIndex + 1}.${zIndex + 1}.${aIndex + 1}.${
-  //                           bIndex + 1
-  //                         }.${cIndex + 1} : ${c.subTopicsName}</h3></div>`
-  //                       );
-  //                       fullPageHTML.push(
-  //                         `<div styles="page-break-inside: avoid; page-break-after:always;">${c.htmlData}</div>`
-  //                       );
-  //                       headingHTML.push(
-  //                         `<div>&nbsp&nbsp&nbsp<a style="text-decoration: none; color: black" href="#${
-  //                           xIndex + 1
-  //                         }.${yIndex + 1}.${zIndex + 1}.${aIndex + 1}.${
-  //                           bIndex + 1
-  //                         }.${cIndex + 1}" />${xIndex + 1}.${yIndex + 1}.${
-  //                           zIndex + 1
-  //                         }.${aIndex + 1}.${bIndex + 1}.${cIndex + 1} : ${
-  //                           c.subTopicsName
-  //                         }</div>`
-  //                       );
-  //                       headings.push({
-  //                         index: `${xIndex + 1}.${yIndex + 1}.${zIndex + 1}.${
-  //                           aIndex + 1
-  //                         }.${bIndex + 1}.${cIndex + 1}`,
-  //                         heading: `${c.subTopicsName}`,
-  //                         pageNo: "",
-  //                       });
-  //                       if (c.subTopics.length > 0) {
-  //                         c.subTopics.map((d, dIndex) => {
-  //                           fullPageHTML.push(
-  //                             `<div id="${xIndex + 1}.${yIndex + 1}.${
-  //                               zIndex + 1
-  //                             }.${aIndex + 1}.${bIndex + 1}.${cIndex + 1}.${
-  //                               dIndex + 1
-  //                             }" style="margin-top:10px; margin-bottom:5px"><h3>Chapter: ${
-  //                               xIndex + 1
-  //                             }.${yIndex + 1}.${zIndex + 1}.${aIndex + 1}.${
-  //                               bIndex + 1
-  //                             }.${cIndex + 1}.${dIndex + 1} : ${
-  //                               d.subTopicsName
-  //                             }</h3></div>`
-  //                           );
-  //                           fullPageHTML.push(
-  //                             `<div styles="page-break-inside: avoid; page-break-after:always;">${d.htmlData}</div>`
-  //                           );
-  //                           headingHTML.push(
-  //                             `<div>&nbsp&nbsp&nbsp<a style="text-decoration: none; color: black" href="#${
-  //                               xIndex + 1
-  //                             }.${yIndex + 1}.${yIndex + 1}.${zIndex + 1}.${
-  //                               aIndex + 1
-  //                             }.${bIndex + 1}.${cIndex + 1}.${dIndex + 1}" />${
-  //                               xIndex + 1
-  //                             }.${yIndex + 1}.${yIndex + 1}.${zIndex + 1}.${
-  //                               aIndex + 1
-  //                             }.${bIndex + 1}.${cIndex + 1}.${dIndex + 1} : ${
-  //                               d.subTopicsName
-  //                             }</div>`
-  //                           );
-  //                           headings.push({
-  //                             index: `${xIndex + 1}.${yIndex + 1}.${
-  //                               zIndex + 1
-  //                             }.${aIndex + 1}.${bIndex + 1}.${cIndex + 1}.${
-  //                               dIndex + 1
-  //                             }`,
-  //                             heading: `${d.subTopicsName}`,
-  //                             pageNo: "",
-  //                           });
-  //                           if (d.subTopics.length > 0) {
-  //                             d.subTopics.map((e, eIndex) => {
-  //                               fullPageHTML.push(
-  //                                 `<div id="${xIndex + 1}.${yIndex + 1}.${
-  //                                   zIndex + 1
-  //                                 }.${aIndex + 1}.${bIndex + 1}.${cIndex + 1}.${
-  //                                   dIndex + 1
-  //                                 }.${
-  //                                   eIndex + 1
-  //                                 }" style="margin-top:10px; margin-bottom:5px"><h3>Chapter: ${
-  //                                   xIndex + 1
-  //                                 }.${yIndex + 1}.${zIndex + 1}.${aIndex + 1}.${
-  //                                   bIndex + 1
-  //                                 }.${cIndex + 1}.${dIndex + 1}.${
-  //                                   eIndex + 1
-  //                                 } : ${e.subTopicsName}</h3></div>`
-  //                               );
-  //                               fullPageHTML.push(
-  //                                 `<div styles="page-break-inside: avoid; page-break-after:always;">${e.htmlData}</div>`
-  //                               );
-  //                               headingHTML.push(
-  //                                 `<div>&nbsp&nbsp&nbsp<a style="text-decoration: none; color: black" href="#${
-  //                                   xIndex + 1
-  //                                 }.${yIndex + 1}.${yIndex + 1}.${zIndex + 1}.${
-  //                                   aIndex + 1
-  //                                 }.${bIndex + 1}.${cIndex + 1}.${dIndex + 1}.${
-  //                                   eIndex + 1
-  //                                 }" />${xIndex + 1}.${yIndex + 1}.${
-  //                                   zIndex + 1
-  //                                 }.${aIndex + 1}.${bIndex + 1}.${cIndex + 1}.${
-  //                                   dIndex + 1
-  //                                 }.${eIndex + 1} : ${e.subTopicsName}</div>`
-  //                               );
-
-  //                               headings.push({
-  //                                 index: `${xIndex + 1}.${yIndex + 1}.${
-  //                                   zIndex + 1
-  //                                 }.${aIndex + 1}.${bIndex + 1}.${cIndex + 1}.${
-  //                                   dIndex + 1
-  //                                 }.${eIndex + 1}`,
-  //                                 heading: `${e.subTopicsName}`,
-  //                                 pageNo: "",
-  //                               });
-  //                             });
-  //                           }
-  //                         });
-  //                       }
-  //                     });
-  //                   }
-  //                 });
-  //               }
-  //             });
-  //           }
-  //         });
-  //       }
-  //     });
-  //   }
-  // });
+  
   // const html = fullPageHTML.join("");
   // const newHtml = `<div id="index">${headingHTML.join(
   //   ""
