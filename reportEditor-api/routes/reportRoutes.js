@@ -5,11 +5,11 @@ const {
   createReport,
   getSingleReport,
   updateReport,
-  createPdfPreview,
-  createPDFReport
+  createPdfPreview
 } = require("../controllers/reportController");
 
 router.route("/").get(getReportsList).post(createReport).put(updateReport);
+router.route("/reportData/preview/:id").get(createPdfPreview);
 router.route("/reportData/:id").get(getSingleReport);
 router.route("/pdf-preview/:id").get(createPdfPreview);
 router.route("/pdf-generate/:id").get(createPDFReport);

@@ -18,6 +18,16 @@ export const getReportDataById = async (id) => {
         return error.response;
     }
 }
+
+export const getReportPreviewData = async (id) => {
+    try {
+        console.log("Report Id In Axios Request", id)
+        return await axios.get(`/api/v1/report/reportData/preview/${id}`)
+    } catch (error) {
+        alert(error.response.data.message)
+        return error.response;
+    }
+}
 export const createReport = async (data) => {
     console.log(data);
     try {
