@@ -160,7 +160,7 @@ function SideMenuItems({
               {item.subTopics.map((item, index) => {
                 return (
                   <SideMenuItems
-                    key={index2}
+                    key={`${index}.${index2}`}
                     item={item}
                     preIndex={
                       preIndex !== "null"

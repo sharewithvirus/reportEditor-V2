@@ -1,10 +1,13 @@
 import {
+  Alert,
   Box,
   Button,
   Divider,
+  Fab,
   FormControlLabel,
   Radio,
   RadioGroup,
+  Snackbar,
   TextField,
   Typography,
 } from "@mui/material";
@@ -12,19 +15,23 @@ import { Stack } from "@mui/system";
 import FileCopyOutlinedIcon from "@mui/icons-material/FileCopyOutlined";
 import React, { useContext, useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-
 import {
   createTemplate,
   getTemplateDataById,
   updateTemplate,
 } from "../../../Services/templateServices";
 import { UserDataContext } from "../../../context/userContext";
-
+import LogoImage from "./LogoImage";
 function ReportTemplateCreator() {
   const { setIsLoading, userInfo } = useContext(UserDataContext);
+  const [openSnack, setopenSnack] = useState(false);
+  const handleClose = () => setopenSnack(false);
+  const [severity, setSeverity] = useState("success");
+  const [snackMsg, setSnackMsg] = useState("");
   const { id } = useParams();
   const navigate = useNavigate();
-  const [logoAlignment, setLogoAlignment] = useState("left-to");
+  const [imgLogo, setImgLogo] = useState(null);
+  // const [logoAlignment, setLogoAlignment] = useState("left-to");
   const [templateData, setTemplateData] = useState({
     _id: "",
     name: "",
@@ -33,33 +40,54 @@ function ReportTemplateCreator() {
     footer: "",
     logoAlignment: "left-to",
   });
+
   const handleChange = (e) => {
-    console.log(e.target.name, e.target.value);
+    // console.log(e.target.name, e.target.value);
     setTemplateData({ ...templateData, [e.target.name]: e.target.value });
   };
+
   const submitValues = async () => {
-    console.log(templateData.logoAlignment);
+    console.log(templateData);
+    console.log(imgLogo);
+    const formData = new FormData();
+
+    formData.append("templateImg", imgLogo);
+    formData.append("_id", templateData._id);
+    formData.append("name", templateData.name);
+    formData.append("header", templateData.header);
+    formData.append("footer", templateData.footer);
+    formData.append("logoAlignment", templateData.logoAlignment);
     if (id) {
       setIsLoading(true);
-      const res = await updateTemplate(templateData);
+      // alert("UPdate Form Data")
+      const res = await updateTemplate(formData);
       if (res.status === 200) {
+        setSeverity("success");
+        setSnackMsg("updated successfully!");
         setIsLoading(false);
+        setopenSnack(true);
+
         navigate("/u_control/report-template-management");
       }
     } else {
-      if(templateData.header === "" || templateData.name === "" || templateData.footer === "")
-      {
-        alert("Name , Header and Footer CAN NOT  be Empty !")
-      }
-      else
-      {
+      if (
+        templateData.header === "" ||
+        templateData.name === "" ||
+        templateData.footer === "" ||
+        formData.file === null
+      ) {
+        alert("Name , Header and Footer CAN NOT  be Empty !");
+      } else {
         setIsLoading(true);
-      const res = await createTemplate(templateData);
-      if (res.status === 200) {
-        setIsLoading(false);
-        navigate("/u_control/report-template-management");
-        // console.log(res.status);
-      }
+        // alert("Data Send", formData)
+        const res = await createTemplate(formData);
+        if (res.status === 200) {
+          setIsLoading(false);
+          setSeverity("success");
+          setSnackMsg("created successfully!");
+          setIsLoading(false);
+          navigate("/u_control/report-template-management");
+        }
       }
     }
   };
@@ -73,7 +101,7 @@ function ReportTemplateCreator() {
         _id: id,
         name: res.data.data.name,
         header: res.data.data.header,
-        url: "",
+        url: res.data.data.url,
         footer: res.data.data.footer,
         logoAlignment: res.data.data.logoAlignment,
       };
@@ -82,7 +110,6 @@ function ReportTemplateCreator() {
     }
     setIsLoading(false);
   };
-
   useEffect(() => {
     console.log(id);
     if (id) {
@@ -91,6 +118,11 @@ function ReportTemplateCreator() {
   }, []);
   return (
     <>
+      <Snackbar open={openSnack} autoHideDuration={6000} onClose={handleClose}>
+        <Alert onClose={handleClose} severity="success" sx={{ width: "100%" }}>
+          This is a success message!
+        </Alert>
+      </Snackbar>
       <Box
         sx={{
           padding: "15px 50px 5px 50px",
@@ -144,17 +176,14 @@ function ReportTemplateCreator() {
             onChange={(e) => handleChange(e)}
           />
         </Stack>
-        <Stack sx={{ marginTop: "50px" }} spacing={1}>
-          <Typography variant="subtitle2">URL</Typography>
-
-          <Button variant="outlined" component="label" color="inherit">
-            select file
-            <input type="file" hidden />
-          </Button>
-        </Stack>
+        <LogoImage
+          setImgLogo={(x) => setImgLogo(x)}
+          imgUrl={templateData?.url}
+        />
+        {/* {imgLogo? console.log(imgLogo) : "" } */}
         <Stack
           mt={5}
-          spacing={{sm:3,md:0}}
+          spacing={{ sm: 3, md: 0 }}
           flexDirection={{ md: "row" }}
           justifyContent={{ sm: "start", md: "space-between" }}
         >
@@ -164,19 +193,17 @@ function ReportTemplateCreator() {
             aria-labelledby="demo-row-radio-buttons-group-label"
             name="logoAlignment"
             value={templateData.logoAlignment}
-            // value={logoAlignment}
             onChange={(e) => handleChange(e)}
-            // onChange={(e)=>setLogoAlignment(e.target.value)}
           >
             <FormControlLabel
-              value="left-to"
+              value="left-top"
               control={<Radio size="small" />}
-              label="Left To"
+              label="Left ToP"
             />
             <FormControlLabel
-              value="right-to"
+              value="right-top"
               control={<Radio size="small" />}
-              label="Right To"
+              label="Right ToP"
             />
             <FormControlLabel
               value="left-bottom"
@@ -194,10 +221,12 @@ function ReportTemplateCreator() {
           <Button
             variant="contained"
             color="info"
-            sx={{ width: {
-              sm:"100%0",
-              md:"50%",
-            }, }}
+            sx={{
+              width: {
+                sm: "100%0",
+                md: "50%",
+              },
+            }}
             onClick={submitValues}
             fullWidth
           >

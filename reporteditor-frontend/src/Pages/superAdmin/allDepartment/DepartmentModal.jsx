@@ -39,7 +39,7 @@ const style = {
 export default function DepartmentModal(props) {
   const [industries, setIndustries] = useState([]);
  
-  console.log("hhhhhhh",props.deptData);
+ 
   const [data, setData] = useState({
     name: props.deptData.name,
     description: props.deptData.description,
@@ -50,18 +50,6 @@ export default function DepartmentModal(props) {
 
   const handleChange = (e) => {
     setIndustries(e.target.value);
-    // console.log(e.target.value);
-    // let check = false;
-    // for (let i = 0; i < demoIndus.length; i++) {
-    //   const element = demoIndus[i];
-    //   console.log("For Loop Elemet:-", element)
-    //   console.log("Targeted Id", e.target.value)
-    //   if(element._id == e.target.value._id){
-    //     check = true;
-    //   }
-    //   console.log(check)
-    // }
-    // console.log(check);
   };
   const onInputChange = (e) => {
     const { name, value } = e.target;

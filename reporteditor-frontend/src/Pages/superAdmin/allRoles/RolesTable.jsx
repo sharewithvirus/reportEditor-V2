@@ -71,7 +71,7 @@ export default function RolesTable({ rows, changeVisibility, getData }) {
           </TableHead>
           <TableBody>
             {rows.length > 0
-              ? rows.map((row, index) => (
+              && rows.map((row, index) => (
                   <TableRow
                     key={`${row.name}${index}`}
                     sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
@@ -111,7 +111,7 @@ export default function RolesTable({ rows, changeVisibility, getData }) {
                     </TableCell>
                   </TableRow>
                 ))
-              : ""}
+              }
           </TableBody>
         </Table>
       </TableContainer>

@@ -45,7 +45,7 @@ function IndustryModal({open,handleClose,handleDeleteModelShow,industryData,crea
         aria-describedby="modal-modal-description"
       >
         <Box sx={style}>
-          <Typography id="modal-modal-title" variant="h6" component="h2">
+          {/* <Typography id="modal-modal-title" variant="h6" component="h2"> */}
             <Stack
               display="flex"
               direction="row"
@@ -59,7 +59,7 @@ function IndustryModal({open,handleClose,handleDeleteModelShow,industryData,crea
               </Typography>
             </Stack>
             <hr />
-          </Typography>
+          {/* </Typography> */}
           <Box>
             <Grid container spacing={2}>
               <Grid lg={4} item xs={12}>

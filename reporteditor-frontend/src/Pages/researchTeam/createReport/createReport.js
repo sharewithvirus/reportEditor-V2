@@ -117,7 +117,7 @@ function CreateReport() {
     template: selectedTemplate,
     userList: personName,
     name: reportName,
-    industry : industries
+    industry: industries,
   };
 
   const submitDetail = async () => {
@@ -130,7 +130,7 @@ function CreateReport() {
         template: selectedTemplate,
         userList: personName,
         name: reportName,
-        industry : industries,
+        industry: industries,
       };
 
       const res = await updateReport(reportData);
@@ -142,7 +142,11 @@ function CreateReport() {
     } else {
       setIsLoading(true);
 
-      if (reportData.name === "" || reportData.userList === "" || reportData.industry == []) {
+      if (
+        reportData.name === "" ||
+        reportData.userList === "" ||
+        reportData.industry == []
+      ) {
         setIsLoading(false);
         alert("required field should not be empty !");
       } else {
@@ -158,7 +162,7 @@ function CreateReport() {
   };
   const getReportData = async (x) => {
     const res = await getReportDataById(x);
-console.log("report data",res.data.reportData);
+    // console.log("report data", res.data.reportData);
     if (res.status === 200) {
       let obj = {
         _id: id,
@@ -167,9 +171,9 @@ console.log("report data",res.data.reportData);
         template: res.data.reportData.template,
         userList: res.data.reportData.userList,
         name: res.data.reportData.name,
-        industry:res.data.reportData.industry,
+        industry: res.data.reportData.industry,
       };
-  
+
       let d = new Date(res.data.reportData.baseYear).getFullYear();
       setBaseYear(obj.baseYear);
       setForecastYear(obj.forecastYear);
@@ -177,7 +181,6 @@ console.log("report data",res.data.reportData);
       setReportName(obj.name);
       setIndustries(obj.industry);
       setPersonName(obj.userList);
-      
     }
   };
   useEffect(() => {
@@ -253,8 +256,8 @@ console.log("report data",res.data.reportData);
               input={<OutlinedInput label="select" />}
               renderValue={(selected) => (
                 <Box sx={{ display: "flex", flexWrap: "wrap", gap: 0.5 }}>
-                  {selected.map((value) => (
-                    <Chip key={value} label={value} />
+                  {selected.map((value, index) => (
+                    <Chip key={`${index}.${value}`} label={value} />
                   ))}
                 </Box>
               )}
@@ -263,7 +266,7 @@ console.log("report data",res.data.reportData);
             >
               {searchField === ""
                 ? allAuther.map((author, index) => (
-                    <MenuItem key={author._id} value={author.userName}  >
+                    <MenuItem key={author._id} value={author.userName}>
                       <ListItemText primary={author.userName} />
                     </MenuItem>
                   ))
@@ -463,6 +466,7 @@ console.log("report data",res.data.reportData);
               ? templatesData.map((value, index) => {
                   return (
                     <Paper
+                    key = {`${index}.${value._id}`}
                       elevation={selectedTemplate === value._id ? 16 : 3}
                       square
                       style={
@@ -478,15 +482,73 @@ console.log("report data",res.data.reportData);
                         alignItems="center"
                         spacing={3}
                       >
-                        <Typography sx={{ fontSize: "10px" }}>
-                          {value.header}
-                        </Typography>
+                        <Stack
+                        flexDirection={'row'}
+                        justifyContent={'space-between'}
+                        > {value?.logoAlignment === "left-top" ? (
+                          <img
+                            src={value?.url}
+                            style={{
+                              height: "20px",
+                              width: "20px",
+                              marginRight: "10px",
+                            }}
+                          ></img>
+                        ) : (
+                          ""
+                        )}
+
+                          <Typography sx={{ fontSize: "10px" }}>
+                            {value.header}
+                          </Typography>
+                          {value?.logoAlignment === "right-top" ? (
+                          <img
+                            src={value?.url}
+                            style={{
+                              height: "20px",
+                              width: "20px",
+                              marginLeft: "10px",
+                            }}
+                          ></img>
+                        ) : (
+                          ""
+                        )}
+                        </Stack>
                         <Typography sx={{ fontSize: "10px", color: "green" }}>
                           {value.name}
                         </Typography>
-                        <Typography sx={{ fontSize: "10px" }}>
-                          {value.footer}
-                        </Typography>
+                        <Stack
+                        flexDirection={'row'}
+                        justifyContent={'space-between'}
+                        >
+                          {value?.logoAlignment === "left-bottom" ? (
+                          <img
+                            src={value?.url}
+                            style={{
+                              height: "20px",
+                              width: "20px",
+                              marginRight: "10px",
+                            }}
+                          ></img>
+                        ) : (
+                          ""
+                        )}
+                          <Typography sx={{ fontSize: "10px" }}>
+                            {value.footer}
+                          </Typography>
+                          {value?.logoAlignment === "right-bottom" ? (
+                          <img
+                            src={value?.url}
+                            style={{
+                              height: "20px",
+                              width: "20px",
+                              marginLeft: "10px",
+                            }}
+                          ></img>
+                        ) : (
+                          ""
+                        )}
+                        </Stack>
                       </Stack>
                     </Paper>
                   );

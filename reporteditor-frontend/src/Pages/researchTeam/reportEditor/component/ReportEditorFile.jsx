@@ -267,7 +267,7 @@ export default function FullWidthTabs() {
     } else {
       const res = await createCharts(data);
       {
-        setIsLoading(true)
+        setIsLoading(true);
         if (res.status === 201) {
           console.log("chart added", res.data);
           console.log("chart added", res.data.data);
@@ -280,7 +280,7 @@ export default function FullWidthTabs() {
             label: "",
             categories: "",
           });
-          setIsLoading(false)
+          setIsLoading(false);
           getChartsData(id);
           setShow(false);
           handleClose();
@@ -297,7 +297,7 @@ export default function FullWidthTabs() {
     };
     setIsLoading(true);
     const res = await updateCharts(data, chartId);
-    // console.log("chartUpdata...", res);
+    console.log("chartUpdata...", res);
     if (res.status === 200) {
       console.log("after updation", res);
       setSeverity("success");
@@ -453,78 +453,77 @@ export default function FullWidthTabs() {
             </Button>
             <Stack sx={{ height: "450px" }}>
               <Grid container columns={{ xs: 4, sm: 8, md: 12 }}>
-                {chartList
-                  ? chartList.map((chart, index) => (
-                      <Grid
-                        item
-                        sm={3}
-                        md={12}
-                        key={index}
+                {chartList &&
+                  chartList.map((chart, index) => (
+                    <Grid
+                      item
+                      sm={3}
+                      md={12}
+                      key={index}
+                      sx={{
+                        border: `${active === index ? "3px" : "3px"} solid ${
+                          active === index ? "green" : "grey"
+                        }`,
+                        padding: "0px",
+                        position: "relative",
+                        paddingTop: "5px",
+                        transition: "0.3s",
+                      }}
+                      onMouseEnter={() => {
+                        setActive(index);
+                      }}
+                      onMouseLeave={() => {
+                        setActive(-1);
+                      }}
+                      mt={1}
+                    >
+                      <ShowCharts
+                        chartType={chart.chartType}
+                        formChartData={chart}
+                      />
+                      <ButtonGroup
                         sx={{
-                          border: `${active === index ? "3px" : "3px"} solid ${
-                            active === index ? "green" : "grey"
-                          }`,
-                          padding: "0px",
-                          position: "relative",
-                          paddingTop: "5px",
+                          fontSize: "10px",
+                          position: "absolute",
+                          bottom: "1px",
+                          right: "1px",
+                          display: `${active === index ? "block" : "none"}`,
                           transition: "0.3s",
                         }}
-                        onMouseEnter={() => {
-                          setActive(index);
-                        }}
-                        onMouseLeave={() => {
-                          setActive(-1);
-                        }}
-                        mt={1}
                       >
-                        <ShowCharts
-                          chartType={chart.chartType}
-                          formChartData={chart}
-                        />
-                        <ButtonGroup
+                        <Button
+                          size="small"
+                          variant="contained"
+                          color="warning"
                           sx={{
-                            fontSize: "10px",
-                            position: "absolute",
-                            bottom: "1px",
-                            right: "1px",
-                            display: `${active === index ? "block" : "none"}`,
-                            transition: "0.3s",
+                            marginRight: "2px",
                           }}
+                          onClick={() => copyToClipboard(chart._id)}
                         >
-                          <Button
-                            size="small"
-                            variant="contained"
-                            color="warning"
-                            sx={{
-                              marginRight: "2px",
-                            }}
-                            onClick={() => copyToClipboard(chart._id)}
-                          >
-                            Copy
-                          </Button>
-                          <Button
-                            size="small"
-                            variant="contained"
-                            color="info"
-                            sx={{
-                              marginRight: "2px",
-                            }}
-                            onClick={() => handleOpenChartModal(chart._id)}
-                          >
-                            EDIT
-                          </Button>
-                          <Button
-                            size="small"
-                            variant="contained"
-                            color="error"
-                            onClick={() => deleteChart(chart._id)}
-                          >
-                            DEL
-                          </Button>
-                        </ButtonGroup>
-                      </Grid>
-                    ))
-                  : ""}
+                          Copy
+                        </Button>
+                        <Button
+                          size="small"
+                          variant="contained"
+                          color="info"
+                          sx={{
+                            marginRight: "2px",
+                          }}
+                          onClick={() => handleOpenChartModal(chart._id)}
+                        >
+                          EDIT
+                        </Button>
+                        <Button
+                          size="small"
+                          variant="contained"
+                          color="error"
+                          onClick={() => deleteChart(chart._id)}
+                        >
+                          DEL
+                        </Button>
+                      </ButtonGroup>
+                    </Grid>
+                  ))}
               </Grid>
             </Stack>
           </TabPanel>

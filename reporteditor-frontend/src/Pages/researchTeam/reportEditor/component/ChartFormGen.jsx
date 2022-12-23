@@ -7,22 +7,17 @@ const ChartFormGen = ({ setChartFormValues, chartFormValues, saveChartsData , ch
 
     const handleFormValueChange = (e) => {
         setShow(false)
-        // console.log("formChartDataName", formChartData)
+       
         setFormChartData({ ...formChartData, [e.target.name]: e.target.value })
     }
     const addSeriesField = () => {
         setChartFormValues([...chartFormValues, `series${chartFormValues.length - 1}`])
-
-        // setFormChartData({ ...formChartData, formChartData["series"]})
-        // setChartFormValues([...chartFormValues, "series1"])
-        console.log("Add Field2", chartFormValues);
+        // console.log("Add Field2", chartFormValues);
     }
-
     useEffect(() => {
-        console.log("formData", formChartData)
+        // console.log("formData", formChartData)
     }, [formChartData, setFormChartData])
-
-    console.log("chartFormValues", chartFormValues);
+    // console.log("chartFormValues", chartFormValues);
     return (
         <>
             {
@@ -33,10 +28,8 @@ const ChartFormGen = ({ setChartFormValues, chartFormValues, saveChartsData , ch
                                 <TextField id={chartType} label={item} name={item} variant="outlined" onChange={e => handleFormValueChange(e)}
                                     value={item === 'series' ? formChartData.series : item === "label" ? formChartData.label : item === "series1" ? formChartData.series1 : item === "series2" ? formChartData.series2 : item === 'categories' ? formChartData.categories : ""} />
 
-                                {item === 'series' && chartType === 'bar' && chartFormValues.includes('series2') === false? <IconButton aria-label="add" onClick={addSeriesField} 
-                            
-                                >
-                                   
+                                {item === 'series' && chartType === 'bar' && chartFormValues.includes('series2') === false? <IconButton aria-label="add" onClick={addSeriesField}                           
+                                >                                 
                                     <AddCircleIcon />
                                 </IconButton> : ""}
                             </div>
