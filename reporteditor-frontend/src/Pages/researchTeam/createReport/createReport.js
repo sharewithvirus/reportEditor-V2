@@ -101,6 +101,12 @@ function CreateReport() {
     const res = await getTemplate();
     if (res.status === 200) {
       setTemplatesData(res.data.templateList);
+      console.log("...length of the templatelist",res.data.templateList);
+      if(res.data.templateList.length === 0)
+      {
+        alert("First Create Template");
+        navigate("/u_control/report-template/create");
+      }
     }
     setIsLoading(false);
   };
@@ -256,31 +262,35 @@ function CreateReport() {
               input={<OutlinedInput label="select" />}
               renderValue={(selected) => (
                 <Box sx={{ display: "flex", flexWrap: "wrap", gap: 0.5 }}>
-                  {selected.map((value, index) => (
-                    <Chip key={`${index}.${value}`} label={value} />
-                  ))}
-                </Box>
+                {selected.map((value,index) => {
+                  for (const item of allAuther) {
+                    if (item._id === value) {
+                      return <Chip label={item.userName} value={value} key={`${item._id}${index}`} />;
+                    }
+                  }
+                })}
+              </Box>
               )}
               MenuProps={MenuProps}
               size="medium"
             >
               {searchField === ""
                 ? allAuther.map((author, index) => (
-                    <MenuItem key={author._id} value={author.userName}>
+                    <MenuItem key={author._id} value={author._id}>
                       <ListItemText primary={author.userName} />
                     </MenuItem>
                   ))
                 : allAuther.filter((author, index) => {
                     if (author.name.includes(searchField) === true) {
                       return (
-                        <MenuItem key={index} value={author.userName}>
+                        <MenuItem key={index} value={author._id}>
                           <ListItemText primary={author.userName} />
                         </MenuItem>
                       );
                     } else {
                       return (
-                        <MenuItem key={index} value={author.name}>
-                          <ListItemText primary={author.name} />
+                        <MenuItem key={index} value={author._id}>
+                          <ListItemText primary={author.userName} />
                         </MenuItem>
                       );
                     }
@@ -308,17 +318,11 @@ function CreateReport() {
               required
               input={<OutlinedInput label="select" />}
               renderValue={(selected) => (
-                // <Box sx={{ display: "flex", flexWrap: "wrap", gap: 0.5 }}>
-                //   {selected.map((value) => (
-                //     <Chip key={value} label={value} />
-                //   ))}
-                // </Box>
-
                 <Box sx={{ display: "flex", flexWrap: "wrap", gap: 0.5 }}>
-                  {selected.map((value) => {
+                  {selected.map((value,index) => {
                     for (const item of industryList) {
                       if (item._id === value) {
-                        return <Chip label={item.name} value={value} />;
+                        return <Chip label={item.name} value={value} key={`${item._id}${index}`}/>;
                       }
                     }
                   })}
@@ -466,7 +470,7 @@ function CreateReport() {
               ? templatesData.map((value, index) => {
                   return (
                     <Paper
-                    key = {`${index}.${value._id}`}
+                      key={`${index}.${value._id}`}
                       elevation={selectedTemplate === value._id ? 16 : 3}
                       square
                       style={
@@ -483,71 +487,72 @@ function CreateReport() {
                         spacing={3}
                       >
                         <Stack
-                        flexDirection={'row'}
-                        justifyContent={'space-between'}
-                        > {value?.logoAlignment === "left-top" ? (
-                          <img
-                            src={value?.url}
-                            style={{
-                              height: "20px",
-                              width: "20px",
-                              marginRight: "10px",
-                            }}
-                          ></img>
-                        ) : (
-                          ""
-                        )}
-
+                          flexDirection={"row"}
+                          justifyContent={"space-between"}
+                        >
+                          {" "}
+                          {value?.logoAlignment === "left-top" ? (
+                            <img
+                              src={value?.url}
+                              style={{
+                                height: "20px",
+                                width: "20px",
+                                marginRight: "10px",
+                              }}
+                            ></img>
+                          ) : (
+                            ""
+                          )}
                           <Typography sx={{ fontSize: "10px" }}>
                             {value.header}
                           </Typography>
                           {value?.logoAlignment === "right-top" ? (
-                          <img
-                            src={value?.url}
-                            style={{
-                              height: "20px",
-                              width: "20px",
-                              marginLeft: "10px",
-                            }}
-                          ></img>
-                        ) : (
-                          ""
-                        )}
+                            <img
+                              src={value?.url}
+                              style={{
+                                height: "20px",
+                                width: "20px",
+                                marginLeft: "10px",
+                              }}
+                            ></img>
+                          ) : (
+                            ""
+                          )}
                         </Stack>
                         <Typography sx={{ fontSize: "10px", color: "green" }}>
                           {value.name}
                         </Typography>
                         <Stack
-                        flexDirection={'row'}
-                        justifyContent={'space-between'}
+                          flexDirection={"row"}
+                          justifyContent={"space-between"}
                         >
                           {value?.logoAlignment === "left-bottom" ? (
-                          <img
-                            src={value?.url}
-                            style={{
-                              height: "20px",
-                              width: "20px",
-                              marginRight: "10px",
-                            }}
-                          ></img>
-                        ) : (
-                          ""
-                        )}
+                            <img
+                              src={value?.url}
+                              style={{
+                                height: "20px",
+                                width: "20px",
+                                marginRight: "10px",
+                              }}
+                            ></img>
+                          ) : (
+                            ""
+                          )}
                           <Typography sx={{ fontSize: "10px" }}>
                             {value.footer}
                           </Typography>
                           {value?.logoAlignment === "right-bottom" ? (
-                          <img
-                            src={value?.url}
-                            style={{
-                              height: "20px",
-                              width: "20px",
-                              marginLeft: "10px",
-                            }}
-                          ></img>
-                        ) : (
-                          ""
-                        )}
+                            <img
+                              src={value?.url}
+                              style={{
+                                height: "20px",
+                                width: "20px",
+                                marginLeft: "10px",
+                              }}
+                            ></img>
+                          ) : (
+                            ""
+                          )}
                         </Stack>
                       </Stack>
                     </Paper>

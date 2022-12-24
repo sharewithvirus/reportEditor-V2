@@ -55,7 +55,7 @@ export default function LogoImage({ setImgLogo, imgUrl,setImgUrlLogo }) {
         >
           <Button
             variant="outlined"
-            component="label"
+            
             color="inherit"
             sx={{
               width: { md: "44%", sm: "44%" },

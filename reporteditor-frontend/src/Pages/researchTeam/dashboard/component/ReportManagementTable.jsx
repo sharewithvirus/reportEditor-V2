@@ -9,7 +9,7 @@ import {
 } from "@mui/material";
 import TaskOutlinedIcon from "@mui/icons-material/TaskOutlined";
 import { Box } from "@mui/system";
-import React from "react";
+import React, { useEffect } from "react";
 import StatusTable from "./StatusTable";
 import SettingsOutlinedIcon from "@mui/icons-material/SettingsOutlined";
 import NoteAltOutlinedIcon from "@mui/icons-material/NoteAltOutlined";
@@ -17,7 +17,9 @@ import ListAltRoundedIcon from "@mui/icons-material/ListAltRounded";
 import { Link } from "react-router-dom";
 import UpdateModal from "../UpdateModal";
 import { useState } from "react";
+import { getUsers } from "../../../../Services/userService";
 function ReportManagementTable({ reportData }) {
+  const [userList , setUserList] = useState([]); 
   const [open, setOpen] = useState(false);
   const [taskStatus, setTaskstatus] = useState([
     reportData.reportStatusEditing.length >= 1 ? true : false,
@@ -38,6 +40,28 @@ function ReportManagementTable({ reportData }) {
   const handleShow = () => {
     setOpen(!open);
   };
+  const getUserList = async() =>{
+    const res = await  getUsers ();
+    console.log("result...",res);
+    if(res.status === 200)
+    {
+      console.log("success...",res.data.data);
+      const tempUsers = reportData.userList.map((user)=>{
+        for (const value of res.data.data) {
+          if(value._id === user)
+          {
+            return value.userName;
+          }
+        }
+      })
+      setUserList(tempUsers);
+
+    }
+  }
+  useEffect(()=>{
+    
+    getUserList();
+  },[])
   return (
     <>
       <Box
@@ -55,9 +79,10 @@ function ReportManagementTable({ reportData }) {
             <Grid item sm={12} md={7} sx={{ padding: 4 }}>
               <Typography variant="body2">{reportData.name}</Typography>
               <Typography variant="caption">
-                {reportData.userList
+                {/* {reportData.userList
                   ? reportData.userList
-                  : "Author: Nikhil, Vikas, Uttareshwar"}
+                  : ""} */}
+                  {userList ? userList : ''}
               </Typography>
             </Grid>
             <Grid

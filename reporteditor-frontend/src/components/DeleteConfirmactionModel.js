@@ -24,7 +24,7 @@ const DeleteConfirmationModel = ({open, handleClose, handleDelete, handleModelCl
 
         <Box sx={style}>
          
-            <Typography id="modal-modal-title" variant="h6" component="h2">
+            
                 <Stack display='flex'
                     direction='row'
                     justifyContent='start'
@@ -35,7 +35,7 @@ const DeleteConfirmationModel = ({open, handleClose, handleDelete, handleModelCl
                     <Typography sx={{ fontSize: '20px', fontWeight: 'bold' }}>Deleting Confirmaction</Typography>
                 </Stack>
                 <hr />
-            </Typography>
+       
             <Box>
                 <Grid container spacing={2}>
                     <Grid height={75} item xs={12}>

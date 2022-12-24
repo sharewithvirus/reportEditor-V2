@@ -34,7 +34,7 @@ export default function EditDepartmentModal(props) {
                 aria-describedby="modal-modal-description"
             >
                 <Box sx={style}>
-                    <Typography id="modal-modal-title" variant="h6" component="h2">
+                    
                         <Stack display='flex'
                             direction='row'
                             justifyContent='start'
@@ -45,7 +45,7 @@ export default function EditDepartmentModal(props) {
                             <Typography sx={{ fontSize: '20px', fontWeight: 'bold' }}>Modify a Department</Typography>
                         </Stack>
                         <hr />
-                    </Typography>
+                    
                     <Box>
                         <Grid container spacing={2}>
                             <Grid lg={4} item xs={12}>
