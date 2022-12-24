@@ -41,25 +41,39 @@ exports.singleTemplateData = async (req, res) => {
 };
 
 exports.createTemplate = async (req, res) => {
-  try {
-    const { name, editor, logoAlignment, header, footer, defaultTemp } =
-      req.body;
+  // try {
+    const { name, editor, logoAlignment, header, footer, defaultTemp ,url} = req.body;
+    console.log("Body Log", req.body);
     const file = req.file;
-    console.log(file);
-    console.log(name, logoAlignment, header, footer, defaultTemp);
-    if ((!name, !logoAlignment, !header, !footer, !defaultTemp, !file)) {
-      res.status(200).json({
+    // console.log(file);
+    // console.log(name, logoAlignment, header, footer, defaultTemp);
+    if ((!name, !logoAlignment, !header, !footer)){
+      console.log("Error Data")
+      res.status(400).json({
         status: "error",
-        message: "Template Data and Image Require",
+        message: "Bad Request !!",
       });
       return;
-    } else {
+    } else 
+    if(!file , url ,name, logoAlignment, header, footer){
+      await Template.create({
+        name: name,
+        editor: editor,
+        logoAlignment: logoAlignment,
+        header: header,
+        footer: footer,
+        url: url,
+        defaultTemp,
+      });
+    }
+    else
+    {
       let result;
       if (file) {
         result = await uploadImg(file);
         console.log(result);
       }
-      const newTemplate = await Template.create({
+      await Template.create({
         name: name,
         editor: editor,
         logoAlignment: logoAlignment,
@@ -68,27 +82,28 @@ exports.createTemplate = async (req, res) => {
         url: result?.Location,
         defaultTemp,
       });
-      res.status(200).json({
-        status: "Success",
-        message: "Template created successfully",
-        newTemplate: newTemplate,
-      });
     }
-  } catch (error) {
-    res.status(500).json({
-      Status: "Error",
-      message: "Internal Server Error",
-      error: error,
+    res.status(200).json({
+      status: "Success",
+      message: "Template created successfully",
+      // newTemplate: newTemplate,
     });
-  }
+  // } catch (error) {
+  //   res.status(500).json({
+  //     Status: "Error",
+  //     message: "Internal Server Error",
+  //     error: error,
+  //   });
+  // }
 };
 
 exports.updateTemplate = async (req, res) => {
-  try {
-    const { _id, name, editor, logoAlignment, header, footer, defaultTemp } = req.body;
+  // try {
+    const { _id, name, editor, url, logoAlignment, header, footer} = req.body;
     const file = req.file;
     if (!file) {
-      console.log(".....",req.body);
+      console.log("File is Not Present");
+      console.log(req.body);
       await Template.findByIdAndUpdate(_id, req.body);
       res.status(200).json({
         status: "Success",
@@ -103,25 +118,24 @@ exports.updateTemplate = async (req, res) => {
       }
       await Template.findByIdAndUpdate(_id, {
         name: name,
-        editor: editor,
+        editor: editor, 
         logoAlignment: logoAlignment,
         header: header,
         footer: footer,
         url: result?.Location,
-        defaultTemp,
       });
       res.status(200).json({
         status: "Success",
         message: "Template Updated successfully",
       });
     }
-  } catch (error) {
-    res.status(500).json({
-      Status: "Error",
-      message: "Internal Server Error",
-      error: error,
-    });
-  }
+  // } catch (error) {
+  //   res.status(500).json({
+  //     Status: "Error",
+  //     message: "Internal Server Error",
+  //     error: error,
+  //   });
+  // }
 };
 
 exports.deleteTemplate = async (req, res) => {

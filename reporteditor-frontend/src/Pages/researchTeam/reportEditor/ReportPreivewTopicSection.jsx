@@ -3,20 +3,80 @@ import { Stack } from "@mui/system";
 import React from "react";
 import parse from "html-react-parser";
 import { getChartsById } from "../../../Services/chartServices";
-
-
-const reportPreivewTopicSection = ({dataToDisplay}) => {
-  
+function reportPreivewTopicSection({
+  topicList,
+  index,
+  topicName,
+  dataToDisplay,
+}) {
+  // const getChartDetails = async (id) =>{
+  //   const res = await getChartsById(id);
+  //   if(res.status === 200 )
+  //   {
+  //     console.log("chart response", res);
+  //   }
+  // }
+  // // ////////////////////////////////////////// target id of chart
+  // const arr = dataToDisplay?.split("id='");
+  // if(arr)
+  // {
+  //   // console.log("targeted id",arr[1].slice(0,24));
+  //   const id = arr[1].slice(0,24);
+  //   console.log("target id",id);
+  //   getChartDetails(id);
+  // }
+  // // //////////////////////////////////////////
+  // console.log("topic list", topicList.length);
+  // if (topicList.length) {
+  //   console.log();
     return (
       <>
-        <Stack>
+        {/* <Stack>
+          {" "}
           <Container>
-            {parse("<html><head><title>Test Page</title><style>body{background-color:#a8d1d1;font-family:Roboto,sans-serif}#chart{max-width:650px;margin:35px auto}</style></head><body><div id='chart'>Hello</div><script src='https://cdn.jsdelivr.net/npm/apexcharts'></script> <script>let options = {chart:{type:'bar'},series:[{name:'sales',data:[30,40,45,50,49,60,70,91,125]}],xaxis:{categories: [1991,1992,1993,1994,1995,1996,1997, 1998,1999]}}; let chart=new ApexCharts(document.querySelector('#chart'), options); chart.render();</script></body></html>")}
+            <Typography variant="h5">
+              {index}.{topicName}
+            </Typography>
+            {parse(dataToDisplay)}
           </Container>
         </Stack>
+        {topicList?.map((item, index) => {
+          return (
+            <DisplayTopics
+              index={item.index}
+              topicList={item.subTopics}
+              topicName={item.subTopicName}
+              dataToDisplay={item.htmlData}
+              key={item._id}
+            />
+          );
+        })} */}
+        <div>
+          {/* {parse(``)}
+           */}
+
+        </div>
       </>
     );
-  }
+  // } else {
+  //   return (
+  //     <>
+  //       <Stack>
+  //         <Container>
+  //           <Typography variant="h5">
+  //             {index}.{topicName}
+  //           </Typography>
+  //           {parse(dataToDisplay)}
+  //         </Container>
+  //       </Stack>
+  //     </>
+  //   );
+  // }
+}
+
+
+
+
 
 // const DisplayTopics = ({ index, topicName, dataToDisplay, topicList }) => {
 //   if (topicList.length) {

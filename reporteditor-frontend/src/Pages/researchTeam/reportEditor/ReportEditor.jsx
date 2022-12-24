@@ -362,7 +362,7 @@ function ReportEditor() {
                 height: "700px",
               }}
             >
-              <Stack
+              {/* <Stack
                 sx={{
                   marginTop: "10px",
                 }}
@@ -376,7 +376,7 @@ function ReportEditor() {
                     textAlign: "center",
                   }}
                 />
-              </Stack>
+              </Stack> */}
               <Stack
                 mt={2}
                 sx={{
