@@ -80,7 +80,7 @@ function ReportManagementTable({ reportData }) {
                       alignItems: "center",
                     }}
                   >
-                    <Link
+                    {/* <Link
                       to="submit-report"
                       style={{
                         textDecoration: "none",
@@ -93,12 +93,12 @@ function ReportManagementTable({ reportData }) {
                           <NoteAltOutlinedIcon />
                         )}
                       </IconButton>
-                    </Link>
-                    <Link>
+                    </Link> */}
+                    {/* <Link>
                       <IconButton onClick={handleShow}>
                         <SettingsOutlinedIcon />
                       </IconButton>
-                    </Link>
+                    </Link> */}
                     <Link
                       to={`/u_control/report-editor/${reportData._id}`}
                       style={{

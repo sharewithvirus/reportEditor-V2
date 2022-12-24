@@ -429,7 +429,7 @@ function CreateReport() {
 
         <Stack
           flexDirection={{ md: "row" }}
-          justifyContent={{ sm: "center", md: "space-between" }}
+          justifyContent={{ sm: "center", md: "start" }}
           alignItems="start"
           spacing={{ sm: 3, md: 0 }}
           mt={3}
