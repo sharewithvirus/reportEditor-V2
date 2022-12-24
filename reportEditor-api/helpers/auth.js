@@ -52,7 +52,9 @@ exports.protect = async (req, res, next) => {
           const decoded = jwt.verify(token, process.env.JWT_SECRET);
           currentAdmin = await User.findById(decoded.id);
           if (!currentAdmin) {
-            res.status(404).json({
+            res.status(404)
+            .clearCookie("bearer")
+            .json({
               status: "not found",
               message: "User not found",
             });

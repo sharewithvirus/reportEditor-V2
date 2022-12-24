@@ -15,20 +15,24 @@ exports.adminLogin = async (req, res) => {
           message: "Enter Password Or Email",
         });
       } else {
-          const user = await User.findOne({ email }).select("password");
-          console.log(user)
+          const user = await User.findOne({ email: email }).select("password");
+          console.log("email", email,"User", user)
           if(!user || !(await comparePassword(password, user.password))){    
                 res.status(403).json({
                     status: "unauthorized",
                     message: "Invalid Username or Password",
                 });
-            }else{
+            }else if(user.role === "admin"){
                 const activityText = await Activity.create({ user: user._id, activityType: "Login", ipAddress: `${Ip[3]}`  })
                 const userText = await User.findById(user._id);
                 userText.activity.push(activityText._id);
                 await userText.save();
                 userText.password = undefined;
                 createSendToken(userText, 200, res);
+            }else{
+              const userText = await User.findById(user._id);
+              userText.password = undefined;
+              createSendToken(userText, 200, res);
             }
     }
     } catch (error) {
