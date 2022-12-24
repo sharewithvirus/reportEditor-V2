@@ -291,6 +291,17 @@ const ResearchUserSection = () => {
       alignItems={'center'}
       sx={{width:"50%"}}
       >
+         <Box sx={{ flexGrow: 1, color: "block !important" }}>
+          <Link to="/u_control">
+            <Button
+              variant="text"
+              sx={{ fontSize: "17px", textTransform: "none", color: "black" }}
+              size="small"
+            >
+              Dashboard
+            </Button>
+          </Link>
+        </Box>
         <Box sx={{ flexGrow: 2, color: "block !important" }}>
           {/* <Button
           variant="text"
@@ -358,17 +369,7 @@ const ResearchUserSection = () => {
             </Button>
           </Link>
         </Box>
-        <Box sx={{ flexGrow: 1, color: "block !important" }}>
-          <Link to="/u_control">
-            <Button
-              variant="text"
-              sx={{ fontSize: "17px", textTransform: "none", color: "black" }}
-              size="small"
-            >
-              Dashboard
-            </Button>
-          </Link>
-        </Box>
+       
       </Stack>
     </>
   );

@@ -77,12 +77,11 @@ function ReportManagementTable({ reportData }) {
         <Paper elevation={3} sx={{ padding: "5px", display: "flex" }}>
           <Grid container spacing={0}>
             <Grid item sm={12} md={7} sx={{ padding: 4 }}>
-              <Typography variant="body2">{reportData.name}</Typography>
+              <Typography variant="body1">
+              <b>Report : </b>
+                {reportData.name}</Typography>
               <Typography variant="caption">
-                {/* {reportData.userList
-                  ? reportData.userList
-                  : ""} */}
-                  {userList ? userList : ''}
+                  <b>Authors : </b>{userList ? userList : ''}
               </Typography>
             </Grid>
             <Grid
