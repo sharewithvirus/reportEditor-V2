@@ -15,6 +15,7 @@ exports.createReport = async (req, res) => {
   try {
     const { name, userList, industry, template, baseYear, forecastYear } =
       req.body;
+      console.log(req.body);
     const newReport = await Report.create({
       name,
       userList,
