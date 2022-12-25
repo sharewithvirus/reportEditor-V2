@@ -45,12 +45,12 @@ function ReportManagementTable({ reportData }) {
     console.log("result...",res);
     if(res.status === 200)
     {
-      console.log("success...",res.data.data);
-      const tempUsers = reportData.userList.map((user)=>{
-        for (const value of res.data.data) {
+      console.log("success...",res?.data?.data);
+      const tempUsers = reportData?.userList?.map((user)=>{
+        for (const value of res?.data?.data) {
           if(value._id === user)
           {
-            return value.userName;
+            return value?.userName;
           }
         }
       })

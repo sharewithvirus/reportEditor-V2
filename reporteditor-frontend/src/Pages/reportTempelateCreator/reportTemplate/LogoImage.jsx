@@ -6,6 +6,7 @@ import { useEffect } from "react";
 export default function LogoImage({ setImgLogo, imgUrl,setImgUrlLogo }) {
   const [imgPreview, setImgPreview] = useState(null);
   let profile_pic = null;
+  
   const handleImageChange = (e) => {
     profile_pic = e.target.files[0];
     console.log(profile_pic);
