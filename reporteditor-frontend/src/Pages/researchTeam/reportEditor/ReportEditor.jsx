@@ -243,7 +243,7 @@ function ReportEditor() {
           >
             
             <Stack>
-              {reportData ? (
+              {/* {reportData ? (
                 <Link to={`/u_control/report-preview/${reportData._id}`}>
                   <Button
                     color="inherit"
@@ -258,7 +258,7 @@ function ReportEditor() {
                 </Link>
               ) : (
                 ""
-              )}
+              )} */}
             </Stack>
           </Grid>
         </Grid>
