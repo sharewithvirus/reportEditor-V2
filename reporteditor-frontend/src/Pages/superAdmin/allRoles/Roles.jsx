@@ -79,7 +79,6 @@ const createNewRole = async ( data ) => {
 const changeStatusOfRole = async (x) => {
     setIsLoading(true)
     const res = await changeRoleStatus(x)
-    console.log(res)
     if(res.status === 200){
         getData();
     }
@@ -87,7 +86,7 @@ const changeStatusOfRole = async (x) => {
 }
 useEffect(() => {
     getData();
-}, [])
+}, [open])
     return (
         <>
             <Box

@@ -53,10 +53,8 @@ function ReportTemplateCreator() {
     let tempData = templateData;
     if(imgUrlLogo && !imgLogo)
     {
-      console.log("image url...",imgUrlLogo);
       setTemplateData({ ...templateData, url : imgUrlLogo });
       tempData.url = imgUrlLogo;
-      console.log("...template data..",templateData);
     }
     else if(imgLogo){
       console.log("file...",imgLogo);

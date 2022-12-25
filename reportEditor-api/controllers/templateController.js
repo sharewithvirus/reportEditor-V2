@@ -3,7 +3,7 @@ const { uploadImg } = require("../config/s3Config");
 
 exports.getAllTemplate = async (req, res) => {
   try {
-    const templateList = await Template.find({});
+    const templateList = await Template.find({ deletedAt: null });
     res.status(200).json({
       status: "Success",
       message: "Template List was successfully retrieved",
@@ -22,7 +22,7 @@ exports.getAllTemplate = async (req, res) => {
 exports.singleTemplateData = async (req, res) => {
   try {
     const { id } = req.params;
-    const template = await Template.findById(id).select(
+    const template = await Template.findOne({_id:id, deletedAt: null}).select(
       "name editor header footer url body headerLogo logoAlignment"
     );
     res.status(200).json({
@@ -45,8 +45,6 @@ exports.createTemplate = async (req, res) => {
     const { name, editor, logoAlignment, header, footer, defaultTemp ,url} = req.body;
     console.log("Body Log", req.body);
     const file = req.file;
-    // console.log(file);
-    // console.log(name, logoAlignment, header, footer, defaultTemp);
     if ((!name, !logoAlignment, !header, !footer)){
       console.log("Error Data")
       res.status(400).json({
@@ -141,9 +139,9 @@ exports.updateTemplate = async (req, res) => {
 exports.deleteTemplate = async (req, res) => {
   try {
     const { id } = req.params;
-    console.log(id);
+    console.log("Delete Template Id" ,id)
     if (id) {
-      await Template.findByIdAndDelete(id);
+      await Template.findByIdAndUpdate(id, {deletedAt: new Date()});
       res.status(200).json({
         status: "Success",
         message: "Template deleted",
