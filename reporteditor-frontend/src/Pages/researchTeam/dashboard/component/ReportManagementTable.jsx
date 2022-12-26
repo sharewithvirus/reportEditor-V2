@@ -19,7 +19,7 @@ import UpdateModal from "../UpdateModal";
 import { useState } from "react";
 import { getUsers } from "../../../../Services/userService";
 function ReportManagementTable({ reportData }) {
-  const [userList , setUserList] = useState([]); 
+  const [userList, setUserList] = useState([]);
   const [open, setOpen] = useState(false);
   const [taskStatus, setTaskstatus] = useState([
     reportData.reportStatusEditing.length >= 1 ? true : false,
@@ -28,40 +28,34 @@ function ReportManagementTable({ reportData }) {
     reportData.reportStatusEditing.length >= 4 ? true : false,
   ]);
   let taskFlag = false;
-  taskStatus.forEach(element => {
-    if(element === false)
-    {
+  taskStatus.forEach((element) => {
+    if (element === false) {
       taskFlag = false;
-    }
-    else{
+    } else {
       taskFlag = true;
     }
   });
   const handleShow = () => {
     setOpen(!open);
   };
-  const getUserList = async() =>{
-    const res = await  getUsers ();
-    console.log("result...",res);
-    if(res.status === 200)
-    {
-      console.log("success...",res?.data?.data);
-      const tempUsers = reportData?.userList?.map((user)=>{
+  const getUserList = async () => {
+    const res = await getUsers();
+    console.log("result...", res);
+    if (res.status === 200) {
+      console.log("success...", res?.data?.data);
+      const tempUsers = reportData?.userList?.map((user) => {
         for (const value of res?.data?.data) {
-          if(value._id === user)
-          {
+          if (value._id === user) {
             return value?.userName;
           }
         }
-      })
+      });
       setUserList(tempUsers);
-
     }
-  }
-  useEffect(()=>{
-    
+  };
+  useEffect(() => {
     getUserList();
-  },[])
+  }, []);
   return (
     <>
       <Box
@@ -78,10 +72,12 @@ function ReportManagementTable({ reportData }) {
           <Grid container spacing={0}>
             <Grid item sm={12} md={7} sx={{ padding: 4 }}>
               <Typography variant="body1">
-              <b>Report : </b>
-                {reportData.name}</Typography>
+                <b>Report : </b>
+                {reportData.name}
+              </Typography>
               <Typography variant="caption">
-                  <b>Authors : </b>{userList ? userList : ''}
+                <b>Authors : </b>
+                {userList ? userList : ""}
               </Typography>
             </Grid>
             <Grid
@@ -90,7 +86,7 @@ function ReportManagementTable({ reportData }) {
               md={2}
               sx={{ paddingTop: 3, alignItems: "center" }}
             >
-              <StatusTable completedTask={taskStatus} taskType={"research"}/>
+              <StatusTable completedTask={taskStatus} taskType={"research"} />
             </Grid>
             <Grid item sm={12} md={3}>
               <Grid container spacing={8} sx={{ alignItems: "center" }}>
@@ -129,18 +125,26 @@ function ReportManagementTable({ reportData }) {
                         textDecoration: "none",
                       }}
                     >
-                      <IconButton color="info">
+                      {/* <IconButton color="info">
                         <ListAltRoundedIcon />
-                      </IconButton>
+                      </IconButton> */}
+                      <Button
+                        variant="outlined"
+                        color="info"
+                        size="small"
+                        sx={{ fontSize: "10px", paddingY: "2px",marginRight:'5px' }}
+                      >
+                        Edit Report
+                      </Button>
                     </Link>
                     <Link to={`/u_control/edit-report/${reportData._id}`}>
                       <Button
                         variant="outlined"
                         color="secondary"
                         size="small"
-                        sx={{ fontSize: "10px", paddingY: "0px" }}
+                        sx={{ fontSize: "10px", paddingY: "2px",marginLeft:'5px' }}
                       >
-                        Edit Report
+                        Edit Meta Data
                       </Button>
                     </Link>
                   </Box>

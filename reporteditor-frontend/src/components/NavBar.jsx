@@ -298,10 +298,29 @@ const ResearchUserSection = () => {
               sx={{ fontSize: "17px", textTransform: "none", color: "black" }}
               size="small"
             >
-              Dashboard
+              All Reports
             </Button>
           </Link>
         </Box>
+          <Box sx={{ flexGrow: 2, color: "block !important" }}>
+           
+            <Link
+              to="/u_control/create-report"
+              style={{ textDecoration: "none" }}
+            >
+              <Button
+                variant="contained"
+                sx={{
+                  fontSize: "10px",
+                  textTransform: "none",
+                  marginLeft: "8px",
+                }}
+                size="small"
+              >
+                Create A Report
+              </Button>
+            </Link>
+          </Box>
         <Box sx={{ flexGrow: 2, color: "block !important" }}>
           {/* <Button
           variant="text"
@@ -340,35 +359,6 @@ const ResearchUserSection = () => {
      </Box>
       : ""} */}
 
-        <Box sx={{ flexGrow: 2, color: "block !important" }}>
-          {/* <Button
-          variant="contained"
-          sx={{
-            fontSize: "10px",
-            textTransform: "none",
-            marginRight: "8px",
-          }}
-          size="small"
-        >
-          All Reports
-        </Button> */}
-          <Link
-            to="/u_control/create-report"
-            style={{ textDecoration: "none" }}
-          >
-            <Button
-              variant="contained"
-              sx={{
-                fontSize: "10px",
-                textTransform: "none",
-                marginLeft: "8px",
-              }}
-              size="small"
-            >
-              Create A Report
-            </Button>
-          </Link>
-        </Box>
        
       </Stack>
     </>

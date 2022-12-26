@@ -32,10 +32,11 @@ function ReportPreview() {
   // ////////////////////////////////////////////////////////////////////////////////////
   const getReportData = async () => {
     const res = await getReportPreviewData(id);
-    console.log("Report Preview Response", res.data.data);
+    console.log("Report Preview Response", res.data);
+    console.log("report data", res.data.reportData.name);
     if (res.status === 200) {
       if (res.data.data) {
-        setData(res.data.data);
+        setData(res.data);
       }
     }
   };
@@ -90,7 +91,7 @@ function ReportPreview() {
               sx={{ marginRight: "10px", fontSize: "20px" }}
             />
             <Typography sx={{ fontSize: "16px", fontWeight: "" }}>
-              {data ? data.name : ""} -{" "}
+              {data?.reportData?.name} - {" "}
               <span style={{ fontSize: "12px" }}>Preview</span>
             </Typography>
           </Stack>
@@ -131,8 +132,8 @@ function ReportPreview() {
           backgroundColor: "rgba(0,0,0,0.6)",
           padding: "5px",
           marginTop: "20px",
-          height: "100vh",
-          overflow: "auto",
+          // height: "100vh",
+          // overflow: "auto",
         }}
       >
         <Box
@@ -152,18 +153,23 @@ function ReportPreview() {
         >
           <Paper elevation={3} square>
             <Stack justifyContent={"space-between"} direction="row">
-              <Typography>
-                Last Update :{" "}
-                {data
+              <Typography variant="caption">
+                <b>Last Update : </b>{" "}
+                <b>{data
                   ? moment(data.updatedAt).format("Do MMM YYYY  , h:mm:ss A")
-                  : ""}
+                  : ""}</b>
               </Typography>
             </Stack>
             <Stack alignItems={"center"}>
-              <Typography variant="h4">{data?.name}</Typography>
-              <Typography>Editor Name : {data?.userList}</Typography>
+              <Typography variant="h6">{data?.reportData?.name}</Typography>
+              <Typography variant="caption"><b>Editor Name : </b> {data?.reportData?.userList}</Typography>
             </Stack>
-            <Stack mt={2}>
+            <Stack mt={2}
+            sx={{
+              minHeight:'842px',
+              width:'100%'
+            }}
+            >
               {/* <Typography variant="body2" component="article">
                 Lorem ipsum dolor sit amet consectetur adipisicing elit. Repellat nostrum, soluta ullam dolorem magnam doloribus quod aspernatur, tempore rem atque laboriosam aliquid magni ea eligendi quisquam dolorum fugiat! Illum, officiis?
                 Lorem ipsum dolor, sit amet consectetur adipisicing elit. At consectetur odit, corrupti, fugit maiores blanditiis deserunt facere optio quas hic quaerat provident, tenetur architecto quia ipsum officiis impedit quidem! Saepe?
@@ -176,7 +182,7 @@ function ReportPreview() {
                     // index={item.index}
                     // topicList={item.subTopics}
                     // topicName={item.subTopicName}
-                    dataToDisplay={data}
+                    dataToDisplay={data?.data}
                   />
                   :
                   ""

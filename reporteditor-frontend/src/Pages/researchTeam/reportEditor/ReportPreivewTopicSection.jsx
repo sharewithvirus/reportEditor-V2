@@ -29,14 +29,22 @@ function reportPreivewTopicSection({
   // console.log("topic list", topicList.length);
   // if (topicList.length) {
   //   console.log();
-    return (
-      <>
-        {/* <Stack height="100vh"> */}
-            <iframe width="100%" hight="100%" srcdoc={dataToDisplay} title="html Preview" >
-            </iframe>
-        {/* </Stack> */}
-      </>
-    );
+  return (
+    <>
+      {/* <Stack height="100vh"> */}
+      <iframe
+       
+        style={{ minHeight: "842px", width: "100%",scrolling:"no"  }}
+        srcdoc={dataToDisplay}
+        title="html Preview"
+      ></iframe>
+
+      {/* </Stack> */}
+      {/* <div>
+          {parse(dataToDisplay)}
+        </div> */}
+    </>
+  );
   // } else {
   //   return (
   //     <>
@@ -52,10 +60,6 @@ function reportPreivewTopicSection({
   //   );
   // }
 }
-
-
-
-
 
 // const DisplayTopics = ({ index, topicName, dataToDisplay, topicList }) => {
 //   if (topicList.length) {

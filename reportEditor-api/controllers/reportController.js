@@ -1060,11 +1060,17 @@ fullPageHTML.push(`</script></body></html>`);
 const joinHTML = fullPageHTML.join('');
 const dom = cheerio.load(joinHTML);
 
+reportData.subTopics = [],
+reportData.reportCharts = [],
+reportData.reportTables = [],
+reportData.reportImages = [],
+
     res.status(200)
     .json({ 
       status: "success", 
       message: "Report Data", 
-      data: dom.html()
+      data: dom.html(),
+      reportData
     });
   } catch (error) {
     res.status(500).json({
