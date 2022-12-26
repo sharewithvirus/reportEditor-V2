@@ -21,6 +21,7 @@ import {
   saveSubtopics,
   updateSubtopics,
 } from "../../../Services/chapterServices";
+import {getUsers} from  "../../../Services/userService"
 import { UserDataContext } from "../../../context/userContext";
 import { getReportDataById } from "../../../Services/reportServices";
 import Editor from "./component/Editor";
@@ -34,6 +35,7 @@ function ReportEditor() {
   const [reportData, setReportData] = useState();
   const [open, setOpen] = useState(false);
   // const [editorState, setEditorState] = useState(false);
+  const [userList, setUserList] = useState([]);
   const handleShow = () => setOpen(!open);
   const handleClose = () => {
     handleShow();
@@ -57,12 +59,15 @@ function ReportEditor() {
     setIsLoading(true);
     const res = await getReportDataById(id);
     if (res.status === 200) {
+      getUserList();
       if (res.data.reportData.subTopics.length === 0) {
         setOpen(true);
         // setEditorState(true);
       }
       setIsLoading(false);
       setReportData(res.data.reportData);
+      console.log("report Data..",res.data.reportData.userList);
+      
     }
   };
   const handleSnack = () => {
@@ -95,11 +100,30 @@ function ReportEditor() {
       getReportData();
     }
   };
+  const getUserList = async() =>{
+    const res = await  getUsers ();
+    console.log("result...",res);
+    if(res.status === 200)
+    {
+      console.log("success...",res?.data?.data);
+      const tempUsers = reportData?.userList?.map((user)=>{
+        for (const value of res?.data?.data) {
+          if(value._id === user)
+          {
+            return value?.userName;
+          }
+        }
+      })
+      setUserList(tempUsers);
+
+    }
+  }
   const ativeDataSet = (data) => {
     setActiveTopicData(data);
   };
   useEffect(() => {
     getReportData();
+    getUserList();
   }, []);
   useEffect(() => {
     setInterval(async () => {
@@ -293,7 +317,10 @@ function ReportEditor() {
               )}
               <Stack mt={8}>
                 <Stack alignContent="center" alignItems="center">
-                  <Typography variant="body2">Author: {reportData? reportData.userList : ""}</Typography>
+                  <Typography variant="body2">
+                    Author:
+                   {/* {reportData? reportData.userList : ""} */}
+                   {userList ? userList : ''}</Typography>
                   <Typography variant="body2">
                     Base Year : {reportData ? reportData.baseYear : ""}
                   </Typography>
