@@ -31,31 +31,10 @@ function reportPreivewTopicSection({
   //   console.log();
     return (
       <>
-        {/* <Stack>
-          {" "}
-          <Container>
-            <Typography variant="h5">
-              {index}.{topicName}
-            </Typography>
-            {parse(dataToDisplay)}
-          </Container>
-        </Stack>
-        {topicList?.map((item, index) => {
-          return (
-            <DisplayTopics
-              index={item.index}
-              topicList={item.subTopics}
-              topicName={item.subTopicName}
-              dataToDisplay={item.htmlData}
-              key={item._id}
-            />
-          );
-        })} */}
-        <div>
-          {/* {parse(``)}
-           */}
-
-        </div>
+        {/* <Stack height="100vh"> */}
+            <iframe width="100%" hight="100%" srcdoc={dataToDisplay} title="html Preview" >
+            </iframe>
+        {/* </Stack> */}
       </>
     );
   // } else {
