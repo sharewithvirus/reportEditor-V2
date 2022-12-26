@@ -10,19 +10,28 @@ export default function LogoImage({ setImgLogo, imgUrl,setImgUrlLogo }) {
   const handleImageChange = (e) => {
     profile_pic = e.target.files[0];
     console.log(profile_pic);
+
     const ALLOWED_TYPES = [
       "image/png",
+
       "image/jpg",
+
       "image/jpeg",
+
       "image/webp",
     ];
+
     if (profile_pic && ALLOWED_TYPES.includes(profile_pic.type)) {
       let reader = new FileReader();
+
       reader.onloadend = () => {
         setImgPreview(reader.result);
+
         console.log(profile_pic);
       };
+
       reader.readAsDataURL(profile_pic);
+
       setImgLogo(profile_pic);
       setImgUrlLogo("");
     } else {
@@ -56,7 +65,6 @@ export default function LogoImage({ setImgLogo, imgUrl,setImgUrlLogo }) {
         >
           <Button
             variant="outlined"
-            
             color="inherit"
             sx={{
               width: { md: "44%", sm: "44%" },
@@ -67,22 +75,27 @@ export default function LogoImage({ setImgLogo, imgUrl,setImgUrlLogo }) {
               type="file"
               name="logo"
               // hidden
+
               onChange={handleImageChange}
             />
           </Button>
+
           <Typography variant="h5">OR</Typography>
+
           <TextField
             name="logo"
             sx={{
               width: { md: "44%", sm: "44%" },
+
               textAlign: "center",
             }}
-            value={imgPreview ? imgPreview :""}
+            value={imgPreview ? imgPreview : ""}
             placeholder={"PASTE URL HERE !"}
-            onChange={(e)=>handleChange(e)}
+            onChange={(e) => handleChange(e)}
           />
         </Stack>
       </Stack>
+
       <Stack mt={2}>
         {imgPreview === null && imgUrl ? (
           <img
