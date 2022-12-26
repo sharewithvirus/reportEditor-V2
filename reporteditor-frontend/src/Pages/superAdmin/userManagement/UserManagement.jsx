@@ -114,7 +114,7 @@ const UserManagement = () => {
     useEffect(() =>{
         getData();
         getUserList();
-    }, [])
+    }, [open])
     
     return (
         <>

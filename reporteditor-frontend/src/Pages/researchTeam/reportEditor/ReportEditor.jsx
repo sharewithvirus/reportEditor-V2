@@ -243,7 +243,7 @@ function ReportEditor() {
           >
             
             <Stack>
-              {reportData ? (
+              {/* {reportData ? (
                 <Link to={`/u_control/report-preview/${reportData._id}`}>
                   <Button
                     color="inherit"
@@ -258,7 +258,7 @@ function ReportEditor() {
                 </Link>
               ) : (
                 ""
-              )}
+              )} */}
             </Stack>
           </Grid>
         </Grid>
@@ -293,7 +293,7 @@ function ReportEditor() {
               )}
               <Stack mt={8}>
                 <Stack alignContent="center" alignItems="center">
-                  <Typography variant="body2">Author: {"vikas"}</Typography>
+                  <Typography variant="body2">Author: {reportData? reportData.userList : ""}</Typography>
                   <Typography variant="body2">
                     Base Year : {reportData ? reportData.baseYear : ""}
                   </Typography>
@@ -362,7 +362,7 @@ function ReportEditor() {
                 height: "700px",
               }}
             >
-              <Stack
+              {/* <Stack
                 sx={{
                   marginTop: "10px",
                 }}
@@ -376,7 +376,7 @@ function ReportEditor() {
                     textAlign: "center",
                   }}
                 />
-              </Stack>
+              </Stack> */}
               <Stack
                 mt={2}
                 sx={{

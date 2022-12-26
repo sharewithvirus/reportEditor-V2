@@ -107,7 +107,7 @@ const Department = () => {
   useEffect(() => {
     getDepartment();
     getAllIndustries();
-  }, []);
+  }, [open]);
 
   return (
     <>
