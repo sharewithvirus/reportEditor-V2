@@ -122,7 +122,8 @@ function DashboardPanel() {
           {value === 4
             ? getData
               ? getData.map((data, index) => {
-                  if (data.reportStatusResearch.length === value) {
+                // console.log(value);
+                  if (data.reportStatusEditing.length === value) {
                     return (
                       
                         <ReportManagementTable reportData={data} key={data._id} />
@@ -134,7 +135,8 @@ function DashboardPanel() {
             : value === 3
             ? getData
               ? getData.map((data, index) => {
-                  if (data.reportStatusResearch.length === value) {
+                // console.log(value);
+                  if (data.reportStatusEditing.length === value) {
                     return (
                     
                         <ReportManagementTable reportData={data} key={data._id} />
@@ -147,7 +149,7 @@ function DashboardPanel() {
             ? ( getData
               ? getData.map((data, index) => {
                 // console.log(value);
-                  if (data.reportStatusResearch.length === value) {
+                  if (data.reportStatusEditing.length === value) {
                     return (
                       
                         <ReportManagementTable reportData={data} key={data._id} />
@@ -160,7 +162,8 @@ function DashboardPanel() {
             ? (getData
               ? getData.map((data, index) => {
                 // console.log(value);
-                  if (data.reportStatusResearch.length === value) {
+                console.log("status..",data);
+                  if (data.reportStatusEditing.length === value) {
                     return (
                       
                         <ReportManagementTable reportData={data} key={data._id} />
@@ -171,6 +174,7 @@ function DashboardPanel() {
               : "")
             : (getData
             ? getData.map((data, index) => {
+              // console.log(value);
                 return (
                   
                     <ReportManagementTable reportData={data} key={data._id} />

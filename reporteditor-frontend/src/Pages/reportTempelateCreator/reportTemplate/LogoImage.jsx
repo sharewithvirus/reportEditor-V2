@@ -43,9 +43,33 @@ export default function LogoImage({setImgLogo, imgUrl}) {
           component="label"
           color="inherit"
         >
-          select file
-          <input type="file" name="logo" hidden onChange={handleImageChange}/>
-        </Button>
+          <Button
+            variant="outlined"
+            
+            color="inherit"
+            sx={{
+              width: { md: "44%", sm: "44%" },
+            }}
+          >
+            <input
+              type="file"
+              name="logo"
+              // hidden
+              onChange={handleImageChange}
+            />
+          </Button>
+          <Typography variant="h5">OR</Typography>
+          <TextField
+            name="logo"
+            sx={{
+              width: { md: "44%", sm: "44%" },
+              textAlign: "center",
+            }}
+            value={imgPreview ? imgPreview :""}
+            placeholder={"PASTE URL HERE !"}
+            onChange={(e)=>handleChange(e)}
+          />
+        </Stack>
       </Stack>
       <Stack mt={2}>
         {
