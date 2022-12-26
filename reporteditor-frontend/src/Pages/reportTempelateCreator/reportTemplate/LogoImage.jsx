@@ -1,14 +1,12 @@
-import { Button, Stack, TextField, Typography } from "@mui/material";
+import { Button, Stack, Typography } from "@mui/material";
 import imgLogo from "../../../asset/logo/LogoGMI.PNG";
-import React, { useState } from "react";
+import React, {useState } from "react";
 import { useEffect } from "react";
 
-export default function LogoImage({ setImgLogo, imgUrl,setImgUrlLogo }) {
-  const [imgPreview, setImgPreview] = useState(null);
-  let profile_pic = null;
-  
+export default function LogoImage({setImgLogo, imgUrl}) {
+  const [imgPreview,setImgPreview] = useState(null);
   const handleImageChange = (e) => {
-    profile_pic = e.target.files[0];
+    const profile_pic = e.target.files[0];
     console.log(profile_pic);
     const ALLOWED_TYPES = [
       "image/png",
@@ -24,35 +22,26 @@ export default function LogoImage({ setImgLogo, imgUrl,setImgUrlLogo }) {
       };
       reader.readAsDataURL(profile_pic);
       setImgLogo(profile_pic);
-      setImgUrlLogo("");
     } else {
       console.log("File not Supported");
     }
   };
-  if(!profile_pic && imgPreview)
-  {
-    setImgLogo(null);
-    setImgUrlLogo(imgPreview);
-    // uploadImg(imgPreview);
-  }
-  const handleChange = (e) => {
-    setImgPreview(e.target.value);
-  };
 
-  useEffect(() => {
-    if (imgUrl) {
-      console.log(imgUrl);
-      setImgPreview(imgUrl);
+  useEffect(()=> {
+    if(imgUrl){
+        console.log(imgUrl)
+        setImgPreview(imgUrl)
     }
-  }, []);
+  }, [])
   return (
     <div>
       <Stack sx={{ marginTop: "50px" }} spacing={1}>
-        <Typography variant="subtitle2">LOGO</Typography>
-        <Stack
-          flexDirection={"row"}
-          justifyContent="space-between"
-          alignItems={"center"}
+        <Typography variant="subtitle2">URL</Typography>
+
+        <Button
+          variant="outlined"
+          component="label"
+          color="inherit"
         >
           <Button
             variant="outlined"
@@ -62,7 +51,6 @@ export default function LogoImage({ setImgLogo, imgUrl,setImgUrlLogo }) {
               width: { md: "44%", sm: "44%" },
             }}
           >
-            
             <input
               type="file"
               name="logo"
@@ -84,25 +72,31 @@ export default function LogoImage({ setImgLogo, imgUrl,setImgUrlLogo }) {
         </Stack>
       </Stack>
       <Stack mt={2}>
-        {imgPreview === null && imgUrl ? (
-          <img
-            src={imgUrl}
-            alt="user name"
-            style={{
-              height: "100px",
-              width: "200px",
-            }}
-          />
-        ) : (
-          <img
-            src={imgPreview ? imgPreview : imgLogo}
-            alt="user name"
-            style={{
-              height: "100px",
-              width: "200px",
-            }}
-          />
-        )}
+        {
+        imgPreview === null && imgUrl ? 
+                <img
+                src={imgUrl}
+                alt="user name"
+                style={{
+                    
+                    height: "100px",
+                    width: "200px",
+                }}
+                />
+                :
+                <img
+                src={
+                    imgPreview
+                    ? imgPreview
+                    : imgLogo
+                }
+                alt="user name"
+                style={{
+                    height: "100px",
+                    width: "200px",
+                }}
+                />
+                }
       </Stack>
     </div>
   );

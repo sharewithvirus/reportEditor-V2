@@ -3,7 +3,7 @@ const { uploadImg } = require("../config/s3Config");
 
 exports.getAllTemplate = async (req, res) => {
   try {
-    const templateList = await Template.find({ deletedAt: null });
+    const templateList = await Template.find({});
     res.status(200).json({
       status: "Success",
       message: "Template List was successfully retrieved",
@@ -22,7 +22,7 @@ exports.getAllTemplate = async (req, res) => {
 exports.singleTemplateData = async (req, res) => {
   try {
     const { id } = req.params;
-    const template = await Template.findOne({_id:id, deletedAt: null}).select(
+    const template = await Template.findById(id).select(
       "name editor header footer url body headerLogo logoAlignment"
     );
     res.status(200).json({
@@ -41,37 +41,25 @@ exports.singleTemplateData = async (req, res) => {
 };
 
 exports.createTemplate = async (req, res) => {
-  // try {
-    const { name, editor, logoAlignment, header, footer, defaultTemp ,url} = req.body;
-    console.log("Body Log", req.body);
+  try {
+    const { name, editor, logoAlignment, header, footer, defaultTemp } =
+      req.body;
     const file = req.file;
-    if ((!name, !logoAlignment, !header, !footer)){
-      console.log("Error Data")
-      res.status(400).json({
+    console.log(file);
+    console.log(name, logoAlignment, header, footer, defaultTemp);
+    if ((!name, !logoAlignment, !header, !footer, !defaultTemp, !file)) {
+      res.status(200).json({
         status: "error",
-        message: "Bad Request !!",
+        message: "Template Data and Image Require",
       });
       return;
-    } else 
-    if(!file , url ,name, logoAlignment, header, footer){
-      await Template.create({
-        name: name,
-        editor: editor,
-        logoAlignment: logoAlignment,
-        header: header,
-        footer: footer,
-        url: url,
-        defaultTemp,
-      });
-    }
-    else
-    {
+    } else {
       let result;
       if (file) {
         result = await uploadImg(file);
         console.log(result);
       }
-      await Template.create({
+      const newTemplate = await Template.create({
         name: name,
         editor: editor,
         logoAlignment: logoAlignment,
@@ -80,28 +68,27 @@ exports.createTemplate = async (req, res) => {
         url: result?.Location,
         defaultTemp,
       });
+      res.status(200).json({
+        status: "Success",
+        message: "Template created successfully",
+        newTemplate: newTemplate,
+      });
     }
-    res.status(200).json({
-      status: "Success",
-      message: "Template created successfully",
-      // newTemplate: newTemplate,
+  } catch (error) {
+    res.status(500).json({
+      Status: "Error",
+      message: "Internal Server Error",
+      error: error,
     });
-  // } catch (error) {
-  //   res.status(500).json({
-  //     Status: "Error",
-  //     message: "Internal Server Error",
-  //     error: error,
-  //   });
-  // }
+  }
 };
 
 exports.updateTemplate = async (req, res) => {
-  // try {
-    const { _id, name, editor, url, logoAlignment, header, footer} = req.body;
+  try {
+    const { _id, name, editor, logoAlignment, header, footer, defaultTemp } = req.body;
     const file = req.file;
     if (!file) {
-      console.log("File is Not Present");
-      console.log(req.body);
+      console.log(".....",req.body);
       await Template.findByIdAndUpdate(_id, req.body);
       res.status(200).json({
         status: "Success",
@@ -116,32 +103,33 @@ exports.updateTemplate = async (req, res) => {
       }
       await Template.findByIdAndUpdate(_id, {
         name: name,
-        editor: editor, 
+        editor: editor,
         logoAlignment: logoAlignment,
         header: header,
         footer: footer,
         url: result?.Location,
+        defaultTemp,
       });
       res.status(200).json({
         status: "Success",
         message: "Template Updated successfully",
       });
     }
-  // } catch (error) {
-  //   res.status(500).json({
-  //     Status: "Error",
-  //     message: "Internal Server Error",
-  //     error: error,
-  //   });
-  // }
+  } catch (error) {
+    res.status(500).json({
+      Status: "Error",
+      message: "Internal Server Error",
+      error: error,
+    });
+  }
 };
 
 exports.deleteTemplate = async (req, res) => {
   try {
     const { id } = req.params;
-    console.log("Delete Template Id" ,id)
+    console.log(id);
     if (id) {
-      await Template.findByIdAndUpdate(id, {deletedAt: new Date()});
+      await Template.findByIdAndDelete(id);
       res.status(200).json({
         status: "Success",
         message: "Template deleted",

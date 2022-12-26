@@ -15,18 +15,16 @@ const style = {
     p: 4,
 };
 
-const DeleteConfirmationModel = ({open, handleClose, onSubmit, handleDelete, id, }) => {
-
-    const delateCall = (x) => {
-        console.log("Delete Btn Click", x);
-        onSubmit(id);
-    }
+const DeleteConfirmationModel = ({open, handleClose, handleDelete, handleModelClose, id, }) => {
     return (
         <Modal
         open={open}
         onClose={handleClose}
     >
+
         <Box sx={style}>
+         
+            <Typography id="modal-modal-title" variant="h6" component="h2">
                 <Stack display='flex'
                     direction='row'
                     justifyContent='start'
@@ -34,10 +32,10 @@ const DeleteConfirmationModel = ({open, handleClose, onSubmit, handleDelete, id,
                     spacing={2}
                 >
                     <FileCopyRoundedIcon />
-                    <Typography sx={{ fontSize: '20px', fontWeight: 'bold' }}>{`Deleting Confirmation`}</Typography>
+                    <Typography sx={{ fontSize: '20px', fontWeight: 'bold' }}>Deleting Confirmaction</Typography>
                 </Stack>
                 <hr />
-       
+            </Typography>
             <Box>
                 <Grid container spacing={2}>
                     <Grid height={75} item xs={12}>
@@ -50,11 +48,10 @@ const DeleteConfirmationModel = ({open, handleClose, onSubmit, handleDelete, id,
                 justifyContent='center'
                 spacing={2}
             >
-                <Button variant="outlined" color="primary" sx={{ textTransform: "none" }} 
-                onClick={handleClose} >
+                <Button variant="outlined" color="primary" sx={{ textTransform: "none" }} onClick={handleClose} >
                     Cancel
                 </Button>
-                <Button variant="outlined" color="primary" sx={{ textTransform: "none" }} onClick={delateCall} >
+                <Button variant="outlined" color="primary" sx={{ textTransform: "none" }} onClick={() => handleDelete(id)} >
                     Delete
                 </Button>
             </Stack>

@@ -31,16 +31,13 @@ function StatusTable({ completedTask, taskType }) {
                     }}
                   >
                     <IconButton
-                    
                       sx={{
                         color: `${
                           completedTask[index] !== true ? "grey" : "green"
                         }`,
-                        cursor: 'context-menu',
                       }}
                     >
-                      {completedTask[index] !== true ? <WatchLaterOutlinedIcon/> : <TaskAltOutlinedIcon />}
-                      
+                      <TaskAltOutlinedIcon />
                     </IconButton>
                     <Paper
                       variant="outlined"
@@ -75,7 +72,6 @@ function StatusTable({ completedTask, taskType }) {
                     }}
                   >
                     <IconButton
-                    disabled
                       color={
                         completedTask[index] !== true ? "warning" : "success"
                       }
