@@ -175,9 +175,18 @@ export default function FullWidthTabs() {
     setOpen(false);
   };
   const [show, setShow] = useState(false);
-  const copyToClipboard = (copyText) => {
-    copy(`<section class="chart" id="${copyText}">${copyText}</section>`);
-    alert(`<section class="chart" id="${copyText}">${copyText}</section>`);
+  const copyToClipboard = (name,copyText) => {
+    if(name === 'img')
+    {
+      copy(`${copyText}`);
+      alert(`copied URL : ${copyText}`);
+    }
+    else 
+    {
+
+      copy(`<section class="chart" id="${copyText}">${copyText}</section>`);
+      alert(`<section class="chart" id="${copyText}">${copyText}</section>`);
+    }
   };
   const handleChange = (event, newValue) => {
     setValue(newValue);
@@ -434,8 +443,10 @@ export default function FullWidthTabs() {
                     key={item._id}
                     border="1px solid"
                     mt={2}
+                    sx={{cursor:"copy"}}
+                    onClick ={(e)=> copyToClipboard(e.target.name,item.imgUrl)}
                   >
-                    <img src={item.imgUrl} alt={item.name} width="90%" />
+                    <img src={item.imgUrl} alt={item.name} name='img' width="90%" />
                     <Typography>{item.name}</Typography>
                   </Grid>
                 ))}
@@ -495,10 +506,11 @@ export default function FullWidthTabs() {
                           size="small"
                           variant="contained"
                           color="warning"
+                          name = 'btn'
                           sx={{
                             marginRight: "2px",
                           }}
-                          onClick={() => copyToClipboard(chart._id)}
+                          onClick={(e) => copyToClipboard(e.target.name,chart._id)}
                         >
                           Copy
                         </Button>

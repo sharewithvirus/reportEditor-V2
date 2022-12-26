@@ -62,11 +62,11 @@ export default function LogoImage({ setImgLogo, imgUrl,setImgUrlLogo }) {
               width: { md: "44%", sm: "44%" },
             }}
           >
-            select file
+            
             <input
               type="file"
               name="logo"
-              hidden
+              // hidden
               onChange={handleImageChange}
             />
           </Button>

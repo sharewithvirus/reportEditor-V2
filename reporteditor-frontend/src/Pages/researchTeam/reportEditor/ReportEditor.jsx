@@ -320,7 +320,8 @@ function ReportEditor() {
                   <Typography variant="body2">
                     Author:
                    {/* {reportData? reportData.userList : ""} */}
-                   {userList ? userList : ''}</Typography>
+                   {userList ? userList : ''}
+                   </Typography>
                   <Typography variant="body2">
                     Base Year : {reportData ? reportData.baseYear : ""}
                   </Typography>
