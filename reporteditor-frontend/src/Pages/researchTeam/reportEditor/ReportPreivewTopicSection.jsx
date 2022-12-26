@@ -9,11 +9,10 @@ const reportPreivewTopicSection = ({dataToDisplay}) => {
   
     return (
       <>
-        <Stack>
-          <Container>
-            {parse("<html><head><title>Test Page</title><style>body{background-color:#a8d1d1;font-family:Roboto,sans-serif}#chart{max-width:650px;margin:35px auto}</style></head><body><div id='chart'>Hello</div><script src='https://cdn.jsdelivr.net/npm/apexcharts'></script> <script>let options = {chart:{type:'bar'},series:[{name:'sales',data:[30,40,45,50,49,60,70,91,125]}],xaxis:{categories: [1991,1992,1993,1994,1995,1996,1997, 1998,1999]}}; let chart=new ApexCharts(document.querySelector('#chart'), options); chart.render();</script></body></html>")}
-          </Container>
-        </Stack>
+        {/* <Stack height="100vh"> */}
+            <iframe width="100%" hight="100%" srcdoc={dataToDisplay} title="html Preview" >
+            </iframe>
+        {/* </Stack> */}
       </>
     );
   }

@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+const Schema = mongoose.Schema;
 const SubTopic = require("./subTopicModel");
 
 const reportModel = new mongoose.Schema(
@@ -17,7 +18,8 @@ const reportModel = new mongoose.Schema(
         "transferredToResearch",
       ],
     },
-    reportStatusResearch: {
+    reportStatusResearch: [
+      {
       type: String,
       default: ["drafting"],
       enum: [
@@ -26,16 +28,21 @@ const reportModel = new mongoose.Schema(
         "forwardedToEditing",
         "editingVersionDone",
         "researchedPublished",
-      ],
-    },
-    userList:{
+      ]
+      }
+    ],
+    userList:[
+      {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User"
+      }
+    ],
+    industry: [
+      {
       type: mongoose.Schema.Types.ObjectId,
       ref: "Industry"
-    },
-    industry: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "Industry"
-    },
+    }
+  ],
     baseYear:{
       type:String
     },
@@ -84,7 +91,6 @@ const reportModel = new mongoose.Schema(
 const Report = mongoose.model("Report", reportModel);
 
 module.exports = Report;
-
 
 
 
