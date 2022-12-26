@@ -24,20 +24,17 @@ import DeleteConfirmationModel from "../../../components/DeleteConfirmactionMode
 import { UserDataContext } from "../../../context/userContext";
 function ReportTemplateManagement() {
   const [templatesData, setTemplatesData] = useState([]);
-  const [open, setOpen] = useState(false);
+  const [open, setOpen] = React.useState(false);
   const [deleteModelData, setDeleteModelData] = useState("");
   const { setIsLoading, userInfo } = useContext(UserDataContext);
   const [severity, setSeverity] = useState("success");
   const [snacbarMsg, setSnackBarMsg] = useState("");
-  const [alertShow, setAlertShow] = useState(false);
   const navigate = useNavigate();
   // const [defaultTemplate,setDefaultTemplate]=useState(false);
-
   const handleClose = () => {
     setOpen(false);
     setDeleteModelData("");
   };
-
   const changeDefaultTemplate = async (id) => {
     console.log(id);
     setIsLoading(true);
@@ -50,26 +47,23 @@ function ReportTemplateManagement() {
       getData();
     }
   };
-
-  const handleDeleteReq = async (id) => {
-    setIsLoading(true)
-    const res = await deleteTemplate(id);
+  const handleDelete = async () => {
+    setIsLoading(true);
+    const res = await deleteTemplate(deleteModelData._id);
+    console.log(res);
     setIsLoading(false);
     if (res.status == 200) {
-      setAlertShow(true)
       setSnackBarMsg("Data Deleted !");
       setSeverity("success");
       getData();
       setOpen(false);
     } else {
-      setAlertShow(true)
       setSnackBarMsg("Data is not Deleted !");
       setSeverity("error");
       getData();
       setOpen(false);
     }
   };
-
   const getData = async () => {
     setIsLoading(true);
     const res = await getTemplate();
@@ -83,13 +77,14 @@ function ReportTemplateManagement() {
     setDeleteModelData(data);
     setOpen(true);
   };
+  // console.log("templated data to state",templatesData);
   useEffect(() => {
     getData();
   }, []);
   return (
     <>
-      <Snackbar open={alertShow} autoHideDuration={6000} onClose={() => setAlertShow(false)}>
-        <Alert onClose={() => setAlertShow(false)} severity={severity} sx={{ width: "100%" }}>
+      <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
+        <Alert onClose={handleClose} severity={severity} sx={{ width: "100%" }}>
           {snacbarMsg ? snacbarMsg : ""}
         </Alert>
       </Snackbar>
@@ -310,7 +305,6 @@ function ReportTemplateManagement() {
                             size="small"
                             onClick={() => {
                               handleDeleteModel(data);
-                              // handleDeleteReq(data._id);
                             }}
                           >
                             Delete
@@ -342,16 +336,11 @@ function ReportTemplateManagement() {
             : ""}
         </Stack>
       </Box>
-      {
-        open ? 
-          <DeleteConfirmationModel
-            id={deleteModelData?._id}
-            open={open}
-            handleClose={() => handleClose()}
-            onSubmit={(x) => handleDeleteReq(x)}
-          />
-        : ""
-      }
+      <DeleteConfirmationModel
+        open={open}
+        handleClose={handleClose}
+        handleDelete={handleDelete}
+      />
     </>
   );
 }

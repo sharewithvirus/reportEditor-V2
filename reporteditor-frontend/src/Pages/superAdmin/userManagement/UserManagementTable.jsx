@@ -80,10 +80,10 @@ const RowLine = ({ item, index, updateStatus, editModelOpen }) => {
         {item.emailVerified ? "Verified" : "Not Verified"}
       </TableCell>
       <TableCell align="center">
-        {item.department.name ? item?.department?.name : ""}
+        {item.department.name ? item.department.name : ""}
       </TableCell>
       <TableCell align="center">
-        {item?.access?.name ? item?.access?.name : ""}
+        {item.access.name ? item.access.name : ""}
       </TableCell>
       <TableCell align="center">
         <Button
