@@ -31,6 +31,7 @@ function ReportTemplateCreator() {
   const { id } = useParams();
   const navigate = useNavigate();
   const [imgLogo, setImgLogo] = useState(null);
+  const [imgUrlLogo,setImgUrlLogo] = useState("");
   // const [logoAlignment, setLogoAlignment] = useState("left-to");
   const [templateData, setTemplateData] = useState({
     _id: "",
@@ -38,7 +39,7 @@ function ReportTemplateCreator() {
     header: "",
     url: "",
     footer: "",
-    logoAlignment: "left-to",
+    logoAlignment: "left-top",
   });
 
   const handleChange = (e) => {
@@ -47,20 +48,29 @@ function ReportTemplateCreator() {
   };
 
   const submitValues = async () => {
-    console.log(templateData);
-    console.log(imgLogo);
     const formData = new FormData();
-
-    formData.append("templateImg", imgLogo);
-    formData.append("_id", templateData._id);
-    formData.append("name", templateData.name);
-    formData.append("header", templateData.header);
-    formData.append("footer", templateData.footer);
-    formData.append("logoAlignment", templateData.logoAlignment);
+    console.log("Form Data", formData.length)
+    let tempData = templateData;
+    if(imgUrlLogo && !imgLogo)
+    {
+      setTemplateData({ ...templateData, url : imgUrlLogo });
+      tempData.url = imgUrlLogo;
+    }
+    else if(imgLogo){
+      console.log("file...",imgLogo);
+      formData.append("templateImg", imgLogo);
+      formData.append("_id", templateData._id);
+      formData.append("name", templateData.name);
+      formData.append("header", templateData.header);
+      formData.append("footer", templateData.footer);
+      formData.append("logoAlignment", templateData.logoAlignment);
+      console.log("Form Data After Data Implement", formData.length)
+    }
+  
     if (id) {
       setIsLoading(true);
       // alert("UPdate Form Data")
-      const res = await updateTemplate(formData);
+      const res = await updateTemplate(Array.from(formData.keys()).length == 0 ? tempData : formData );
       if (res.status === 200) {
         setSeverity("success");
         setSnackMsg("updated successfully!");
@@ -68,6 +78,10 @@ function ReportTemplateCreator() {
         setopenSnack(true);
 
         navigate("/u_control/report-template-management");
+      }
+      else {
+        setIsLoading(false);
+        alert(res.message)
       }
     } else {
       if (
@@ -79,14 +93,20 @@ function ReportTemplateCreator() {
         alert("Name , Header and Footer CAN NOT  be Empty !");
       } else {
         setIsLoading(true);
-        // alert("Data Send", formData)
-        const res = await createTemplate(formData);
+        alert("Data Send", formData.length);
+        console.log(Array.from(formData.keys()).length);
+        console.log("Updated Template Data", tempData);
+        const res = await createTemplate(Array.from(formData.keys()).length == 0 ? tempData : formData );
         if (res.status === 200) {
           setIsLoading(false);
           setSeverity("success");
           setSnackMsg("created successfully!");
           setIsLoading(false);
           navigate("/u_control/report-template-management");
+        }
+        else {
+          setIsLoading(false);
+          alert(res.message)
         }
       }
     }
@@ -110,6 +130,13 @@ function ReportTemplateCreator() {
     }
     setIsLoading(false);
   };
+
+  // const imgURLChange = (imgURL) => {
+  //   if(imgURL){
+  //     setTemplateData({...templateData, url:imgURL});
+  //   }
+  // }
+
   useEffect(() => {
     console.log(id);
     if (id) {
@@ -178,7 +205,9 @@ function ReportTemplateCreator() {
         </Stack>
         <LogoImage
           setImgLogo={(x) => setImgLogo(x)}
+         
           imgUrl={templateData?.url}
+          setImgUrlLogo = {(y)=>setImgUrlLogo(y)}
         />
         {/* {imgLogo? console.log(imgLogo) : "" } */}
         <Stack
