@@ -12,6 +12,7 @@ import AdbIcon from "@mui/icons-material/Adb";
 import { UserDataContext } from "../context/userContext";
 import { userDashboard, userLogout } from "../Services/authService";
 import { useMediaQuery, useTheme } from "@mui/material";
+import { Stack } from "@mui/system";
 
 const NavBar = (props) => {
   const {
@@ -102,25 +103,50 @@ const NavBar = (props) => {
             sx={{ display: "flex", justifyContent: "space-between" }}
           >
             {/* <AdbIcon sx={{ display: { xs: 'none', md: 'flex' }, mr: 1 }} /> */}
-            <Link to="/">
-              <Typography
-                variant="h6"
-                noWrap
-                
-                sx={{
-                  mr: 2,
-                  display: { xs: "none", md: "flex" },
-                  fontFamily: "monospace",
-                  fontWeight: 700,
-                  letterSpacing: ".3rem",
-                  color: "inherit",
-                  textDecoration: "none",
-                  color: "black",
-                }}
-              >
-                <img src={Logo} alt="logo" />
-              </Typography>
-            </Link>
+            <Stack justifyContent={""} alignItems={"center"}>
+              <Link to="/">
+                <Typography
+                  variant="h6"
+                  noWrap
+                  sx={{
+                    mr: 2,
+                    display: { xs: "none", md: "flex" },
+                    fontFamily: "monospace",
+                    fontWeight: 700,
+                    letterSpacing: ".3rem",
+                    color: "inherit",
+                    textDecoration: "none",
+                    color: "black",
+                  }}
+                >
+                  <img src={Logo} alt="logo" />
+                </Typography>
+              </Link>
+              {userData == "user" ? (
+                <Box
+                  sx={{
+                    flexGrow: 1,
+                    color: "block !important",
+                    cursor: "not-allowed",
+                  }}
+                >
+                  <Button
+                    variant="text"
+                    sx={{
+                      fontSize: "17px",
+                      textTransform: "none",
+                      color: "black",
+                      fontWeight: "600",
+                    }}
+                    size="small"
+                  >
+                    Research Team Mode
+                  </Button>
+                </Box>
+              ) : (
+                ""
+              )}
+            </Stack>
 
             {/* <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}> */}
             {/* <IconButton
@@ -162,11 +188,10 @@ const NavBar = (props) => {
             <Typography
               variant="h5"
               noWrap
-            
               href=""
               sx={{
                 mr: 2,
-                display: { xs: "flex", md: "none" },
+                display: { xs: "flex", md: "none" ,sm:"none" },
                 flexGrow: 1,
                 fontFamily: "monospace",
                 fontWeight: 700,
@@ -261,28 +286,44 @@ const ResearchUserSection = () => {
   const isMatch = useMediaQuery(theme.breakpoints.down("md"));
   return (
     <>
-      <Box sx={{ flexGrow: 2, color: "block !important" }}>
-        {/* <Button
+      <Stack flexDirection={'row'}
+      justifyContent= {'start'}
+      alignItems={'center'}
+      sx={{width:"50%"}}
+      >
+         <Box sx={{ flexGrow: 1, color: "block !important" }}>
+          <Link to="/u_control">
+            <Button
+              variant="text"
+              sx={{ fontSize: "17px", textTransform: "none", color: "black" }}
+              size="small"
+            >
+              Dashboard
+            </Button>
+          </Link>
+        </Box>
+        <Box sx={{ flexGrow: 2, color: "block !important" }}>
+          {/* <Button
           variant="text"
           sx={{ fontSize: "17px", textTransform: "none", color: "black" }}
           size="small"
         >
           Reports Management
         </Button> */}
-        <Link
-          to="/u_control/report-template-management"
-          style={{ textDecoration: "none" }}
-        >
-          <Button
-            variant="text"
-            sx={{ fontSize: "17px", textTransform: "none", color: "black" }}
-            size="small"
+          <Link
+            to="/u_control/report-template-management"
+            style={{ textDecoration: "none" }}
           >
-            Reports Templates
-          </Button>
-        </Link>
-      </Box>
-      {isMatch === false ? 
+            <Button
+              variant="text"
+              sx={{ fontSize: "17px", textTransform: "none", color: "black" }}
+              size="small"
+            >
+              Reports Templates
+            </Button>
+          </Link>
+        </Box>
+        {/* {isMatch === false ? 
        <Box sx={{ flexGrow: 1, color: "block !important" }}>
        <Button
          variant="text"
@@ -297,10 +338,10 @@ const ResearchUserSection = () => {
          Research Team Mode
        </Button>
      </Box>
-      : ""}
-     
-      <Box sx={{ flexGrow: 2, color: "block !important" }}>
-        {/* <Button
+      : ""} */}
+
+        <Box sx={{ flexGrow: 2, color: "block !important" }}>
+          {/* <Button
           variant="contained"
           sx={{
             fontSize: "10px",
@@ -311,31 +352,25 @@ const ResearchUserSection = () => {
         >
           All Reports
         </Button> */}
-        <Link to="/u_control/create-report" style={{ textDecoration: "none" }}>
-          <Button
-            variant="contained"
-            sx={{
-              fontSize: "10px",
-              textTransform: "none",
-              marginLeft: "8px",
-            }}
-            size="small"
+          <Link
+            to="/u_control/create-report"
+            style={{ textDecoration: "none" }}
           >
-            Create A Report
-          </Button>
-        </Link>
-      </Box>
-      <Box sx={{ flexGrow: 1, color: "block !important" }}>
-        <Link to="/u_control">
-          <Button
-            variant="text"
-            sx={{ fontSize: "17px", textTransform: "none", color: "black" }}
-            size="small"
-          >
-            Dashboard
-          </Button>
-        </Link>
-      </Box>
+            <Button
+              variant="contained"
+              sx={{
+                fontSize: "10px",
+                textTransform: "none",
+                marginLeft: "8px",
+              }}
+              size="small"
+            >
+              Create A Report
+            </Button>
+          </Link>
+        </Box>
+       
+      </Stack>
     </>
   );
 };
