@@ -184,8 +184,8 @@ export default function FullWidthTabs() {
     else 
     {
 
-      copy(`<section class="chart" id="${copyText}">${copyText}</section>`);
-      alert(`<section class="chart" id="${copyText}">${copyText}</section>`);
+      copy(`<section id="chart${copyText}"></section>`);
+      alert(`<section id="chart${copyText}"></section>`);
     }
   };
   const handleChange = (event, newValue) => {
