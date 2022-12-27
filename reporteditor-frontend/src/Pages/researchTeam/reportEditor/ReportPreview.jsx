@@ -152,14 +152,14 @@ function ReportPreview() {
           }}
         >
           <Paper elevation={3} square>
-            <Stack justifyContent={"space-between"} direction="row">
+            {/* <Stack justifyContent={"space-between"} direction="row">
               <Typography variant="caption">
                 <b>Last Update : </b>{" "}
                 <b>{data
                   ? moment(data.updatedAt).format("Do MMM YYYY  , h:mm:ss A")
                   : ""}</b>
               </Typography>
-            </Stack>
+            </Stack> */}
             <Stack alignItems={"center"}>
               <Typography variant="h6">{data?.reportData?.name}</Typography>
               <Typography variant="caption"><b>Editor Name : </b> {data?.reportData?.userList}</Typography>

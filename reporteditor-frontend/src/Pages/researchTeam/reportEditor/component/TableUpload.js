@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-
+import parse from "html-react-parser";
 const TableUpload = () => {
   const [tableType, setTableType] = useState("fromScratch");
   console.log(".....", tableType);
@@ -144,24 +144,38 @@ const TableFromScratch = () => {
 };
 const CopyToCreateTable = () => {
   const [data, setData] = useState("");
+  const [formTable, setFormTable] = useState(null);
   const generateTable = () => {
     if (!data) {
       alert("please insert the apropriate data");
     } else {
       alert(data);
-      
+      let finalTable = "";
       let rows = data.split("\n");
-
-      let table = (`<table style="border-collapse:collapse;border:1px solid #ccc;" />`);
-
-      for(let y in rows) {
-         let cells = rows[y].split("\t");
-          let row = ('<tr />');
-          for(let x in cells) {
-              row.append(`<td style="border:1px solid #ccc;padding:.5em;>+${cells[x]}+</td>`);
-          }
-          table.append(row);
+      let table = [`<table style="border-collapse:collapse;border:1px solid #ccc;">`];
+      for (let y in rows) {
+        let cells = rows[y].split("\t");
+       
+        let row = ["<tr/>"];
+        for (let x in cells) {
+        
+          row.push(`<td style="border:1px solid #ccc;padding:.5em;">${cells[x]}</td>`);
+        }
+        table.push(row);
       }
+      table.push('</table>');
+      for (const x of table) {
+        if(x.length>1)
+        {
+          for (const e of x) {
+            finalTable = finalTable+e;
+          }
+        }
+        else{
+          finalTable = finalTable+x;
+        }
+      }
+      setFormTable(finalTable);
 
       // // Insert into DOM
       // ('#excel_table').html(table);
@@ -177,7 +191,7 @@ const CopyToCreateTable = () => {
 
       // // RAW output so you can copy paste to your project :-)
       // ("#raw").text(("#excel_table").html());
-      // ("#raw").html(("#raw").html().replace(/\n/g, '<br/>').replace(/ /g, '&nbsp;'));
+      // ("#raw").html(("#raw").html().replace(/\n/g,'<br/>').replace(/ /g,'&nbsp;'));
     }
   };
   return (
@@ -191,9 +205,9 @@ const CopyToCreateTable = () => {
             <textarea
               name="excel_data"
               className="form-control"
-              rows={4}
+              rows={10}
               value={data}
-              defaultValue={""}
+              
               cols={100}
               onChange={(e) => setData(e.target.value)}
             />
@@ -209,7 +223,9 @@ const CopyToCreateTable = () => {
         <div className="col">
           <h4>Table data will appear below</h4>
           <hr />
-          <div id="excel_table" />
+          <div id="excel_table">
+          {formTable?parse(formTable):""}
+          </div>
         </div>
         <div className="w100 mt-4" />
         <div className="col">
@@ -221,7 +237,10 @@ const CopyToCreateTable = () => {
           <hr />
           <pre className="highlight">
             <code className="language-html">
-              <div className="raw" id="raw" />
+              <div className="raw" id="raw">
+                
+                {formTable? formTable :""}
+              </div>
             </code>
           </pre>
         </div>
