@@ -23,7 +23,7 @@ const drawChartUpdated = async (item) => {
     myElement = {
       series: data.series.split(",").map((item1) => parseFloat(item1)),
       chart: {
-        width: 380,
+        width: 280,
         type: "pie",
       },
       title: {
@@ -35,7 +35,7 @@ const drawChartUpdated = async (item) => {
           breakpoint: 480,
           options: {
             chart: {
-              width: 200,
+              width: 230,
             },
             legend: {
               position: "bottom",
@@ -61,6 +61,7 @@ const drawChartUpdated = async (item) => {
       chart: {
         type: "bar",
         height: 350,
+        width:500,
       },
       plotOptions: {
         bar: {
@@ -91,6 +92,7 @@ const drawChartUpdated = async (item) => {
       chart: {
         height: 350,
         type: "radar",
+        width:500,
       },
       title: {
         text: data?.name,
@@ -110,8 +112,9 @@ const drawChartUpdated = async (item) => {
         },
       ],
       chart: {
-        height: 350,
+        height: 320,
         type: "line",
+        width:500,
         zoom: {
           enabled: false,
         },
@@ -149,6 +152,7 @@ const drawChartUpdated = async (item) => {
       chart: {
         type: "area",
         height: 350,
+        width:500,
         zoom: {
           enabled: false,
         },
@@ -187,7 +191,9 @@ const drawChartUpdated = async (item) => {
       series: data?.series?.split(",").map((item1) => parseFloat(item1)),
       chart: {
       type: 'donut',
+      width:400
     },
+    
     responsive: [{
       breakpoint: 480,
       options: {
