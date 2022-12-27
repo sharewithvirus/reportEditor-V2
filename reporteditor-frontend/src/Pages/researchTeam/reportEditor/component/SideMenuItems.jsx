@@ -179,13 +179,17 @@ function SideMenuItems({
       </>
     );
   } else {
-    
+    const handleClose = () => {
+      setEditId("");
+      setDelId("");
+      handleShow();
+    };
     return (
       <>
         <EditorModal
           open={open}
           handleOpen={handleShow}
-          handleClose={handleShow}
+          handleClose={handleClose}
           saveData={(x) => saveTopicsData(x)}
           subTopicid={item._id}
           delId={delId}

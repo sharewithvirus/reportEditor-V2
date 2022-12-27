@@ -22,7 +22,7 @@ function EditorModal({
   item,
   setDelId,
   setEditId,
-  deleteTopic, 
+  deleteTopic,
   updateTopic,
 }) {
   const style = {
@@ -36,26 +36,28 @@ function EditorModal({
     boxShadow: 24,
     p: 4,
   };
-  // const startValues = {
-  //   subTopicName: "",
-  //   reportId: "",
-  //   subTopicId: "",
-  //   htmlData: "",
-  // }
-
-  // const [data, setData] = useState(startValues);
-  const changeValues = (e) => {
-    setData({ ...data, subTopicName: e.target.value});
+  const startValues = {
+    subTopicName: "",
+    reportId: "",
+    subTopicId: "",
+    htmlData: "",
   };
 
+  const changeValues = (e) => {
+    setData({ ...data, subTopicName: e.target.value });
+  };
+const tempEditedData = {
+  subTopicName: "",
+    id: "",
+}
   // console.log("DATA", data)
-  const [editedTopicData,setEditedTopic] = useState({
+  const [editedTopicData, setEditedTopic] = useState({
     subTopicName: "",
-    id : "",
-  })
-  const handleChangeValues = (e) =>{
-    setEditedTopic({...editedTopicData, subTopicName: e.target.value})
-  }
+    id: "",
+  });
+  const handleChangeValues = (e) => {
+    setEditedTopic({ ...editedTopicData, subTopicName: e.target.value });
+  };
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (subTopicid) {
@@ -68,39 +70,46 @@ function EditorModal({
     // console.log(data)
     const res = await saveData(data);
     if (res.status === 200) {
-      console.log("onclose",res);
-      
+      console.log("onclose", res);
     }
 
     close();
   };
 
   const close = () => {
+    
     setData({
       subTopicName: "",
       reportId: "",
       subTopicId: "",
       htmlData: "",
     });
-    {delId ? setDelId("") : <></>};
-    {editId ? setEditId("") : <></>};
+   
+    console.log("close button");
+    console.log("edit id", editId);
+    console.log("delId", delId);
+    {
+      delId ? setDelId("") :<></>;
+    }
+    {
+      editId ? setEditId("") : <></>;
+    }
     handleClose();
   };
 
   useEffect(() => {
-    if(item){
+    if (item) {
       setEditedTopic({
         subTopicName: item.subTopicName,
-        id : item._id,
-      })
-    }else{
+        id: item._id,
+      });
+    } else {
       setEditedTopic({
         subTopicName: "",
-        id : "",
-      })
-      
+        id: "",
+      });
     }
-  }, [])
+  }, []);
 
   return (
     <div>
@@ -147,8 +156,10 @@ function EditorModal({
           >
             {delId ? (
               <>
-                <Button variant="outlined" sx={{ marginRight: "10px" }}
-                onClick={()=>deleteTopic(delId)}
+                <Button
+                  variant="outlined"
+                  sx={{ marginRight: "10px" }}
+                  onClick={() => deleteTopic(delId)}
                 >
                   Delete
                 </Button>
@@ -169,7 +180,7 @@ function EditorModal({
                   sx={{
                     marginRight: "10px",
                   }}
-                   onClick={()=>updateTopic(editedTopicData)}
+                  onClick={() => updateTopic(editedTopicData)}
                 >
                   UPDATE
                 </Button>
@@ -179,7 +190,6 @@ function EditorModal({
                   sx={{
                     marginLeft: "10px",
                   }}
-                 
                   onClick={() => close()}
                 >
                   CANCEL
@@ -203,7 +213,6 @@ function EditorModal({
                   sx={{
                     marginLeft: "10px",
                   }}
-             
                   onClick={() => close()}
                 >
                   CANCEL
