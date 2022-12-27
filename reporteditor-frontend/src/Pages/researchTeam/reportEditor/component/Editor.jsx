@@ -58,6 +58,7 @@ function Editors({
         disabled ={editorState ? false : true}
         readOnly ={editorState ? false : true}
         editor={ClassicEditor}
+        config={{placeholder: "", removePlugins: ['Title']}}
         data={activeTopicData ? activeTopicData.htmlData : activeHtmlData}
         onReady={(editor) => {
           // You can store the "editor" and use when it is needed.
