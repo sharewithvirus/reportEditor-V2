@@ -131,7 +131,7 @@ function DashboardPanel() {
                     );
                   }
                 })
-              : ""
+              : "No Records Found"
             : value === 3
             ? getData
               ? getData.map((data, index) => {
@@ -144,7 +144,7 @@ function DashboardPanel() {
                     );
                   }
                 })
-              : ""
+              : "No Records Found"
             : value === 2
             ? ( getData
               ? getData.map((data, index) => {
@@ -157,7 +157,7 @@ function DashboardPanel() {
                     );
                   }
                 })
-              : "")
+              : "No Records Found")
             : value === 1
             ? (getData
               ? getData.map((data, index) => {
@@ -171,7 +171,7 @@ function DashboardPanel() {
                     );
                   }
                 })
-              : "")
+              : "No Records Found")
             : (getData
             ? getData.map((data, index) => {
               // console.log(value);
@@ -181,7 +181,7 @@ function DashboardPanel() {
       
                 );
               })
-            : "")}
+            : "No Records Found")}
         </Box>
       </Box>
     </>

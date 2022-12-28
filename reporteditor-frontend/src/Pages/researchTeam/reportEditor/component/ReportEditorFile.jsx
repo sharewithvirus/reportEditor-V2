@@ -161,7 +161,7 @@ export default function FullWidthTabs() {
   const [chartList, setChartList] = useState([]);
   const handleCloseTable = () => {
     getTableData(id);
-    setOpenTable(false)
+    setOpenTable(false);
   };
   const [editId, setEditId] = useState("");
   const [tableData, setTableData] = useState(null);
@@ -193,10 +193,8 @@ export default function FullWidthTabs() {
     }
   };
   const copyToClipboardTable = (copyText) => {
-    
     copy(copyText);
     alert(`TABLE COPIED : ${copyText}`);
-   
   };
   const handleChange = (event, newValue) => {
     setValue(newValue);
@@ -371,18 +369,17 @@ export default function FullWidthTabs() {
       console.log("table data", res.data.data);
     }
   };
-  const deleteTableData = async (tableId)=>{
+  const deleteTableData = async (tableId) => {
     const res = await deleteTable(tableId);
-    console.log("deleted response..",res);
-    setIsLoading(true)
-    if(res.status === 200)
-    {
+    console.log("deleted response..", res);
+    setIsLoading(true);
+    if (res.status === 200) {
       // getChartsData(id);
       getTableData(id);
-      setIsLoading(false)
+      setIsLoading(false);
       console.log("deleted successfully");
     }
-  }
+  };
   useEffect(() => {
     // console.log("renderkkkk");
   }, [formChartData]);
@@ -494,11 +491,12 @@ export default function FullWidthTabs() {
             <Button onClick={handleOpenTable} sx={{ mt: "20px" }}>
               <Typography>ADD TABLE</Typography>
             </Button>
-            <Stack sx={{ height: "450px" }}>
+            <Stack sx={{ height: "500px" }} mt={3} >
               <Grid
                 container
                 columns={{ xs: 4, sm: 8, md: 12 }}
                 sx={{ overflow: "auto" }}
+                spacing={2}
               >
                 {tableData &&
                   tableData.map((table, item) => (
@@ -507,31 +505,44 @@ export default function FullWidthTabs() {
                       sm={3}
                       md={12}
                       mt={3}
-                      sx={{overflowX:"auto",borderBottom:'1px solid',backgroundColor:'rgba(255, 255, 133, 0.5)',cursor:'copy'}}
-                      onClick = {(event)=>{event.stopPropagation();copyToClipboardTable(table.rowData)}}
+                      sx={{
+                        overflowX: "auto",
+                        border: "1px solid",
+                        cursor: "copy",
+                        backgroundColor: "rgba(255, 255, 133, 0.5)",
+                      }}
+                      onClick={(event) => {
+                        event.stopPropagation();
+                        copyToClipboardTable(table.rowData);
+                      }}
                     >
-                      <Stack 
-                      flexDirection={'row'}
-                      justifyContent='space-between'
-                      >
-
-                      <Typography color='Highlight' >{table.name}</Typography>
-                      <Button 
-                      size="small"
-                      variant="text"
-                      color="secondary"
-                      onClick={(event)=>{event.stopPropagation();deleteTableData(table._id)}}
-                      >
-                        DELETE
-                      </Button>
-                      </Stack>
-                      <Stack
-                      
-                      >
-                      <div style={{minWidth:"20vw",color:'red'}}>
-                        {parse(table.rowData?table.rowData:'')}
+                      <div style={{  }}>
+                        <Stack
+                          flexDirection={"row"}
+                          justifyContent="space-between"
+                          
+                        >
+                          <Typography color="Highlight">
+                            {table.name}
+                          </Typography>
+                          <Button
+                            size="small"
+                            variant="text"
+                            color="secondary"
+                            onClick={(event) => {
+                              event.stopPropagation();
+                              deleteTableData(table._id);
+                            }}
+                          >
+                            DELETE
+                          </Button>
+                        </Stack>
+                        <Stack>
+                          <div style={{ color: "red" }}>
+                            {parse(table.rowData ? table.rowData : "")}
+                          </div>
+                        </Stack>
                       </div>
-                      </Stack>
                     </Grid>
                   ))}
               </Grid>

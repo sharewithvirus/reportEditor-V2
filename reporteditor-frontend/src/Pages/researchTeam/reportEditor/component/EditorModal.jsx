@@ -126,18 +126,18 @@ const tempEditedData = {
           </Typography>
           <Stack mt={3}>
             {delId ? (
-              <>
+            
                 <Typography> Are You Sure? You Want To Delete!</Typography>
-              </>
+             
             ) : editId ? (
-              <>
+              
                 <TextField
                   value={editedTopicData.subTopicName}
                   label="Topic Name"
                   variant="outlined"
                   onChange={(e) => handleChangeValues(e)}
                 />
-              </>
+             
             ) : (
               <TextField
                 id="outlined-basic"

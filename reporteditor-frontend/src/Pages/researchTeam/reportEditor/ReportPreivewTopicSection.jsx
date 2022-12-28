@@ -70,7 +70,7 @@ function reportPreivewTopicSection({
 //             <>
 //               <Stack>
 //                 <Container>
-//                   <Typography variant="h5">
+//                   < variant="h5">
 //                     {index}.{topicName}
 //                   </Typography>
 //                   {parse(dataToDisplay)}
