@@ -11,6 +11,7 @@ import {
   TextField,
 } from "@mui/material";
 import AppBar from "@mui/material/AppBar";
+import parse from "html-react-parser";
 import Box from "@mui/material/Box";
 import Modal from "@mui/material/Modal";
 import { styled, useTheme } from "@mui/material/styles";
@@ -39,6 +40,7 @@ import CloseIcon from "@mui/icons-material/Close";
 import copy from "copy-to-clipboard";
 import ShowCharts from "./ShowCharts";
 import TableUpload from "./TableUpload";
+import { deleteTable, getAllTable } from "../../../../Services/tableServices";
 
 const Item = styled(Paper)(({ theme }) => ({
   ...theme.typography.body2,
@@ -71,6 +73,8 @@ const tableStyle = {
   minHeight: "450px",
   p: 3,
   borderRadius: "10px",
+  height: "500px",
+  overflow: "auto",
 };
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -155,8 +159,12 @@ export default function FullWidthTabs() {
   const [active, setActive] = useState(-1);
   const [copyText, setCopyText] = useState("");
   const [chartList, setChartList] = useState([]);
-  const handleCloseTable = () => setOpenTable(false);
+  const handleCloseTable = () => {
+    getTableData(id);
+    setOpenTable(false)
+  };
   const [editId, setEditId] = useState("");
+  const [tableData, setTableData] = useState(null);
   const [formChartData, setFormChartData] = useState({
     name: "",
     series: "",
@@ -175,18 +183,20 @@ export default function FullWidthTabs() {
     setOpen(false);
   };
   const [show, setShow] = useState(false);
-  const copyToClipboard = (name,copyText) => {
-    if(name === 'img')
-    {
+  const copyToClipboard = (name, copyText) => {
+    if (name === "img") {
       copy(`${copyText}`);
       alert(`copied URL : ${copyText}`);
-    }
-    else 
-    {
-
+    } else {
       copy(`<section id="chart${copyText}"></section>`);
       alert(`<section id="chart${copyText}"></section>`);
     }
+  };
+  const copyToClipboardTable = (copyText) => {
+    
+    copy(copyText);
+    alert(`TABLE COPIED : ${copyText}`);
+   
   };
   const handleChange = (event, newValue) => {
     setValue(newValue);
@@ -352,6 +362,27 @@ export default function FullWidthTabs() {
       setIsLoading(false);
     }
   };
+
+  const getTableData = async (reportId) => {
+    const res = await getAllTable(reportId);
+    console.log("response....of table", res);
+    if (res.status === 200) {
+      setTableData(res.data.data);
+      console.log("table data", res.data.data);
+    }
+  };
+  const deleteTableData = async (tableId)=>{
+    const res = await deleteTable(tableId);
+    console.log("deleted response..",res);
+    setIsLoading(true)
+    if(res.status === 200)
+    {
+      // getChartsData(id);
+      getTableData(id);
+      setIsLoading(false)
+      console.log("deleted successfully");
+    }
+  }
   useEffect(() => {
     // console.log("renderkkkk");
   }, [formChartData]);
@@ -359,6 +390,7 @@ export default function FullWidthTabs() {
   useEffect(() => {
     if (id) {
       getChartsData(id);
+      getTableData(id);
     }
     getAllImages();
   }, []);
@@ -443,10 +475,15 @@ export default function FullWidthTabs() {
                     key={item._id}
                     border="1px solid"
                     mt={2}
-                    sx={{cursor:"copy"}}
-                    onClick ={(e)=> copyToClipboard(e.target.name,item.imgUrl)}
+                    sx={{ cursor: "copy" }}
+                    onClick={(e) => copyToClipboard(e.target.name, item.imgUrl)}
                   >
-                    <img src={item.imgUrl} alt={item.name} name='img' width="90%" />
+                    <img
+                      src={item.imgUrl}
+                      alt={item.name}
+                      name="img"
+                      width="90%"
+                    />
                     <Typography>{item.name}</Typography>
                   </Grid>
                 ))}
@@ -457,6 +494,48 @@ export default function FullWidthTabs() {
             <Button onClick={handleOpenTable} sx={{ mt: "20px" }}>
               <Typography>ADD TABLE</Typography>
             </Button>
+            <Stack sx={{ height: "450px" }}>
+              <Grid
+                container
+                columns={{ xs: 4, sm: 8, md: 12 }}
+                sx={{ overflow: "auto" }}
+              >
+                {tableData &&
+                  tableData.map((table, item) => (
+                    <Grid
+                      item
+                      sm={3}
+                      md={12}
+                      mt={3}
+                      sx={{overflowX:"auto",borderBottom:'1px solid',backgroundColor:'rgba(255, 255, 133, 0.5)',cursor:'copy'}}
+                      onClick = {(event)=>{event.stopPropagation();copyToClipboardTable(table.rowData)}}
+                    >
+                      <Stack 
+                      flexDirection={'row'}
+                      justifyContent='space-between'
+                      >
+
+                      <Typography color='Highlight' >{table.name}</Typography>
+                      <Button 
+                      size="small"
+                      variant="text"
+                      color="secondary"
+                      onClick={(event)=>{event.stopPropagation();deleteTableData(table._id)}}
+                      >
+                        DELETE
+                      </Button>
+                      </Stack>
+                      <Stack
+                      
+                      >
+                      <div style={{minWidth:"20vw",color:'red'}}>
+                        {parse(table.rowData?table.rowData:'')}
+                      </div>
+                      </Stack>
+                    </Grid>
+                  ))}
+              </Grid>
+            </Stack>
           </TabPanel>
           <TabPanel value={value} index={2} dir={theme.direction}>
             <Button onClick={handleOpen} sx={{ mt: "20px" }}>
@@ -506,11 +585,13 @@ export default function FullWidthTabs() {
                           size="small"
                           variant="contained"
                           color="warning"
-                          name = 'btn'
+                          name="btn"
                           sx={{
                             marginRight: "2px",
                           }}
-                          onClick={(e) => copyToClipboard(e.target.name,chart._id)}
+                          onClick={(e) =>
+                            copyToClipboard(e.target.name, chart._id)
+                          }
                         >
                           Copy
                         </Button>
@@ -611,7 +692,7 @@ export default function FullWidthTabs() {
         aria-describedby="modal-modal-description"
       >
         <Box sx={tableStyle}>
-          <TableUpload />
+          <TableUpload handleClose={handleCloseTable} />
         </Box>
       </Modal>
     </>
