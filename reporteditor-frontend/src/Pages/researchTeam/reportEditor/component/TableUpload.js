@@ -39,7 +39,7 @@ const TableUpload = ({ handleClose }) => {
               value="fromScratch"
               id="1"
             />
-            <label for="1">Create Table From Scratch</label>
+            <label htmlFor="1">Create Table From Scratch</label>
             <input
               type="radio"
               name="table-type"
@@ -48,7 +48,7 @@ const TableUpload = ({ handleClose }) => {
               value="copyToCreateTable"
               id="2"
             />
-            <label for="1">Create Table Copyieng Tabular Data</label>
+            <label htmlFor="1">Create Table Copyieng Tabular Data</label>
           </div>
           <div className="col-md-12 column" style={{ overflow: "auto" }}>
             {tableType === "copyToCreateTable" ? (

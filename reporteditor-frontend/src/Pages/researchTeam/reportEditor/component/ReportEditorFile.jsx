@@ -138,6 +138,10 @@ export default function FullWidthTabs() {
       value: "donut",
       label: "Donut",
     },
+    {
+      value: "stacked",
+      label: "Stacked Bar",
+    },
   ];
   const theme = useTheme();
 
@@ -208,27 +212,25 @@ export default function FullWidthTabs() {
       label: "",
       categories: "",
     });
-    console.log("formChartData", formChartData);
+    // console.log("formChartData", formChartData);
     if (event.target.value === "pie") {
       setChartFormValues(["series", "label"]);
     } else if (event.target.value === "bar") {
       setChartFormValues(["series", "categories"]);
     } else if (event.target.value === "radar") {
       return setChartFormValues(["series", "categories"]);
-    } else if (event.target.value === "stacked") {
-      return setChartFormValues(["series", "categories"]);
     } else if (event.target.value === "line") {
       return setChartFormValues(["series", "categories"]);
     } else if (event.target.value === "area") {
       return setChartFormValues(["series", "label"]);
-    } else if (event.target.value === "radar") {
-      return setChartFormValues(["series", "categories"]);
-    } else if (event.target.value === "multibar") {
+    }  else if (event.target.value === "multibar") {
       setChartFormValues(["series", "categories"]);
     } else if (event.target.value === "donut") {
       return setChartFormValues(["series", "label"]);
     } else if (event.target.value === "barandline") {
       return setChartFormValues(["series", "categories"]);
+    } else if (event.target.value === "stacked") {
+      return setChartFormValues(["series_names", "series", "categories"]);
     }
   };
 
@@ -256,7 +258,7 @@ export default function FullWidthTabs() {
       } else if (res.data.data.chartType === "radar") {
         return setChartFormValues(["series", "categories"]);
       } else if (res.data.data.chartType === "stacked") {
-        return setChartFormValues(["series", "categories"]);
+        return setChartFormValues(["series_names", "series", "categories"]);
       } else if (res.data.data.chartType === "line") {
         return setChartFormValues(["series", "categories"]);
       } else if (res.data.data.chartType === "area") {
@@ -491,7 +493,7 @@ export default function FullWidthTabs() {
             <Button onClick={handleOpenTable} sx={{ mt: "20px" }}>
               <Typography>ADD TABLE</Typography>
             </Button>
-            <Stack sx={{ height: "500px" }} mt={3} >
+            <Stack sx={{ height: "500px" }} mt={3}>
               <Grid
                 container
                 columns={{ xs: 4, sm: 8, md: 12 }}
@@ -516,11 +518,10 @@ export default function FullWidthTabs() {
                         copyToClipboardTable(table.rowData);
                       }}
                     >
-                      <div style={{  }}>
+                      <div style={{}}>
                         <Stack
                           flexDirection={"row"}
                           justifyContent="space-between"
-                          
                         >
                           <Typography color="Highlight">
                             {table.name}
@@ -645,6 +646,8 @@ export default function FullWidthTabs() {
               <CloseIcon />
             </IconButton>
           </Stack>
+          <div style={{maxHeight:'500px',overflowY:'auto'}}>
+
           <Stack flexDirection={"row"} justifyContent="space-between" mt={2}>
             <TextField
               id="outlined-select-chart"
@@ -682,7 +685,8 @@ export default function FullWidthTabs() {
             saveChartsData={() => saveChartsData()}
             updateChartsDetails={(x) => updateChartsDetails(x)}
             editId={editId}
-          />
+            />
+            </div>
         </Box>
       </Modal>
       <Modal

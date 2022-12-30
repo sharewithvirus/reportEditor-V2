@@ -53,7 +53,8 @@ const GenChart = ({
         ],
       },
     };
-  } else if (chartType === "bar") {
+  } 
+  else if (chartType === "bar") {
     chartData = {
       series: [
         {
@@ -70,6 +71,9 @@ const GenChart = ({
         chart: {
           type: "bar",
           height: 350,
+        },
+        title: {
+          text:inputValue?.name,
         },
         plotOptions: {
           bar: {
@@ -236,6 +240,85 @@ const GenChart = ({
       },
     };
   }
+  else if (chartType === "stacked") {
+    console.log(inputValue);
+    const arrVal = inputValue?.series_names?.split(",");
+    chartData = {   
+      series: [{
+        name: inputValue?.series_names?.split(",")[0],
+        data: inputValue?.series?.split(",").map((item1) => parseInt(item1)),
+      }, {
+        name: inputValue?.series_names?.split(",")[1],
+        data: inputValue?.series2?.split(",").map((item1) => parseInt(item1)),
+      }, {
+        name: inputValue?.series_names?.split(",")[2],
+        data: inputValue?.series3?.split(",").map((item1) => parseInt(item1)),
+      }, {
+        name: inputValue?.series_names?.split(",")[3],
+        data: inputValue?.series4?.split(",").map((item1) => parseInt(item1)),
+      }, {
+        name: inputValue?.series_names?.split(",")[4],
+        data: inputValue?.series5?.split(",").map((item1) => parseInt(item1)),
+      }],
+      options: {
+        chart: {
+          type: 'bar',
+          height: 350,
+          stacked: true,
+        },
+        plotOptions: {
+          bar: {
+            horizontal: true,
+            dataLabels: {
+              total: {
+                enabled: true,
+                offsetX: 0,
+                style: {
+                  fontSize: '13px',
+                  fontWeight: 900
+                }
+              }
+            }
+          },
+        },
+        stroke: {
+          width: 1,
+          colors: ['#fff']
+        },
+        title: {
+          text: 'Fiction Books Sales'
+        },
+        xaxis: {
+          categories: inputValue?.categories?.split(","),
+          labels: {
+            formatter: function (val) {
+              return val + "K"
+            }
+          }
+        },
+        yaxis: {
+          title: {
+            text: undefined
+          },
+        },
+        tooltip: {
+          y: {
+            formatter: function (val) {
+              return val + "K"
+            }
+          }
+        },
+        fill: {
+          opacity: 1
+        },
+        legend: {
+          position: 'top',
+          horizontalAlign: 'left',
+          offsetX: 40
+        }
+      },
+    };
+  }
 
   return (
     <>
@@ -244,7 +327,7 @@ const GenChart = ({
           <ReactApexChart
             options={chartData.options}
             series={chartData.series}
-            type={chartType}
+            type={chartType==='stacked'?'bar':chartType} 
             width={380}
           />
         ) : (
