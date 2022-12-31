@@ -4,35 +4,20 @@ import FileCopyOutlinedIcon from "@mui/icons-material/FileCopyOutlined";
 import { useNavigate, useParams } from "react-router-dom";
 import {
   getReportDataById,
+  getReportPdf,
   getReportPreviewData,
 } from "../../../Services/reportServices";
 import moment from "moment";
 import ReportPreivewTopicSection from "./ReportPreivewTopicSection";
-// import jsPDF from "jspdf";
-import { useRef } from "react";
-
+import { useContext } from "react";
+import UserContext, { UserDataContext } from "../../../context/userContext";
+import { saveAs } from "file-saver";
 function ReportPreview() {
-  const reportTemplateRef = useRef(null);
+  const { setIsLoading } = useContext(UserDataContext);
   const [data, setData] = useState();
   const navigate = useNavigate();
   const { id } = useParams();
-  // ////////////////////////////////////////////////////////////////////// pdf converter
-  // const handleGeneratePdf = () => {
-  //   const doc = new jsPDF({
-  //     unit: "px",
-  //     orientation: "p",
-  //     format: "a4",
-  //     putOnlyUsedFonts: true,
-  //     floatPrecision: 16, // or "smart", default is 16
-  //   });
-  //   // Adding the fonts.
-  //   doc.html(reportTemplateRef.current, {
-  //     async callback(doc) {
-  //       await doc.save("document");
-  //     },
-  //   });
-  // };
-  // ////////////////////////////////////////////////////////////////////////////////////
+
   const getReportData = async () => {
     const res = await getReportPreviewData(id);
     console.log("Report Preview Response", res.data);
@@ -43,6 +28,32 @@ function ReportPreview() {
       }
     }
   };
+
+  // /////////////////////////////////////////////////////
+  const downloadPdf = async () => {
+    console.log("downloadPdf is called....");
+    // setIsLoading(true);
+    const pdfData = await getPdf();
+    console.log(pdfData);
+
+  };
+  const getPdf = async () => {
+    // setIsLoading(true);
+    console.log("getPdf is called...");
+    const { data } = await getReportPdfData();
+    console.log(data);
+    const file = new Blob([data], { type: "application/pdf" });
+    saveAs(file, `report.pdf`);
+    setIsLoading(false);
+  };
+
+  const getReportPdfData = async () => {
+    console.log("getReportPdf is called");
+    const res = await getReportPdf(id);
+    console.log('response of getReportPdfData..',res);
+    return res;
+  };
+  // ////////////////////////////////////////////////////
   useEffect(() => {
     if (id) {
       getReportData();
@@ -56,7 +67,6 @@ function ReportPreview() {
         padding: "15px 50px 5px 50px",
         margin: "5px 50px 5px 50px",
       }}
-      ref={reportTemplateRef}
     >
       <Stack>
         <Grid container spacing={1}>
@@ -66,7 +76,6 @@ function ReportPreview() {
             sm={12}
             sx={{
               display: "flex",
-              
             }}
           >
             <Stack justifyContent={"end"}>
@@ -82,11 +91,20 @@ function ReportPreview() {
             <Stack justifyContent={"center"} alignItems="center">
               <Typography>
                 <FileCopyOutlinedIcon
-                  sx={{ marginRight: "10px", fontSize: "18px" ,fontWeight:'bold'}}
+                  sx={{
+                    marginRight: "10px",
+                    fontSize: "18px",
+                    fontWeight: "bold",
+                  }}
                 />
-                - <span style={{ fontSize: "18px" }}><b>Preview</b></span>
+                -{" "}
+                <span style={{ fontSize: "18px" }}>
+                  <b>Preview</b>
+                </span>
               </Typography>
-              <Typography sx={{ fontSize: "15px", fontWeight: "" ,textAlign:'center'}}>
+              <Typography
+                sx={{ fontSize: "15px", fontWeight: "", textAlign: "center" }}
+              >
                 {data?.reportData?.name}
               </Typography>
             </Stack>
@@ -107,7 +125,7 @@ function ReportPreview() {
                 color="inherit"
                 size="small"
                 sx={{ fontSize: "8px" }}
-                // onClick={handleGeneratePdf}
+                // onClick={downloadPdf}
                 // onClick={()=>window.print()}
               >
                 Export to PDF
@@ -173,12 +191,8 @@ function ReportPreview() {
                 width: "100%",
               }}
             >
-            
               {data ? (
-                <ReportPreivewTopicSection
-                  
-                  dataToDisplay={data?.data}
-                />
+                <ReportPreivewTopicSection dataToDisplay={data?.data} />
               ) : (
                 ""
               )}

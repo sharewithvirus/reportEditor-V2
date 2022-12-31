@@ -61,7 +61,7 @@ export const updateReport = async (data) => {
 }
 
 export const deleteReport = async (reportId) => {
-    // console.log("Role Id", reportId)
+    // console.log("report Id", reportId)
     try {
        return await axios.delete(`/api/v1/report/${reportId}`)
     } catch (error) {
@@ -72,7 +72,7 @@ export const deleteReport = async (reportId) => {
 }
 
 // export const getReportData = async (reportId) => {
-//     // console.log("Role Id", reportId)
+//     // console.log("report Id", reportId)
 //     try {
 //        return await axios.get(`/api/v1/report/reportData/${reportId}`)
 //     } catch (error) {
@@ -81,3 +81,21 @@ export const deleteReport = async (reportId) => {
 //     }
     
 // }
+export const getReportPdf = async (reportId) => {
+    console.log('.....////...//..//..//..//..//./././././.');
+    try {
+        console.log("getReportPdf....",reportId);
+       const res = await axios.get(`/api/v1/report/pdf-generate/${reportId}`, {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+          responseType: "arraybuffer",
+        });
+        console.log("response for getReportPdf",res);
+        return res;
+    } catch (error) {
+       alert(error.response.data.message)
+       return error.response;
+    }
+    
+}

@@ -9,26 +9,6 @@ function reportPreivewTopicSection({
   topicName,
   dataToDisplay,
 }) {
-  // const getChartDetails = async (id) =>{
-  //   const res = await getChartsById(id);
-  //   if(res.status === 200 )
-  //   {
-  //     console.log("chart response", res);
-  //   }
-  // }
-  // // ////////////////////////////////////////// target id of chart
-  // const arr = dataToDisplay?.split("id='");
-  // if(arr)
-  // {
-  //   // console.log("targeted id",arr[1].slice(0,24));
-  //   const id = arr[1].slice(0,24);
-  //   console.log("target id",id);
-  //   getChartDetails(id);
-  // }
-  // // //////////////////////////////////////////
-  // console.log("topic list", topicList.length);
-  // if (topicList.length) {
-  //   console.log();
   return (
     <>
       {/* <Stack height="100vh"> */}
