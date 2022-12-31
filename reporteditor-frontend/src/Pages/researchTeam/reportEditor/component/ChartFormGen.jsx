@@ -52,6 +52,8 @@ const ChartFormGen = ({
                     ? formChartData.series
                     : item === "label"
                     ? formChartData.label
+                    : item === "series1"
+                    ? formChartData.series1
                     : item === "series2"
                     ? formChartData.series2
                     : item === "series3"

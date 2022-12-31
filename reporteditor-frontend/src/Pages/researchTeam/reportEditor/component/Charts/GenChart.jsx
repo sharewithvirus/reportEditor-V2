@@ -51,7 +51,8 @@ const GenChart = ({
         ],
       },
     };
-  } else if (chartType === "bar") {
+  } 
+  else if (chartType === "bar") {
     chartData = {
       series: [
         {
@@ -83,7 +84,8 @@ const GenChart = ({
         },
       },
     };
-  } else if (chartType === "radar") {
+  }
+   else if (chartType === "radar") {
     chartData = {
       series: [
         {
@@ -104,7 +106,8 @@ const GenChart = ({
         },
       },
     };
-  } else if (chartType === "line") {
+  }
+   else if (chartType === "line") {
     chartData = {
       series: [
         {
@@ -141,7 +144,8 @@ const GenChart = ({
         },
       },
     };
-  } else if (chartType === "area") {
+  } 
+  else if (chartType === "area") {
     chartData = {
       series: [
         {
@@ -165,7 +169,7 @@ const GenChart = ({
         },
 
         title: {
-          text: "Fundamental Analysis of Stocks",
+          text:inputValue?.name,
           align: "left",
         },
         subtitle: {
@@ -181,7 +185,8 @@ const GenChart = ({
         },
       },
     };
-  } else if (chartType === "multibar") {
+  }
+   else if (chartType === "multibar") {
     chartData = {
       series: [
         {
@@ -216,6 +221,10 @@ const GenChart = ({
       options: {
         chart: {
           type: "donut",
+        },
+        title: {
+          text:inputValue?.name,
+          align: "left",
         },
         labels: inputValue?.label?.split(","),
         responsive: [
