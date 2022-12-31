@@ -142,6 +142,10 @@ export default function FullWidthTabs() {
       value: "stacked",
       label: "Stacked Bar",
     },
+    {
+      value: "mixed",
+      label: "Mixed Chart",
+    },
   ];
   const theme = useTheme();
 
@@ -223,14 +227,20 @@ export default function FullWidthTabs() {
       return setChartFormValues(["series", "categories"]);
     } else if (event.target.value === "area") {
       return setChartFormValues(["series", "label"]);
-    }  else if (event.target.value === "multibar") {
+    } else if (event.target.value === "multibar") {
       setChartFormValues(["series", "categories"]);
     } else if (event.target.value === "donut") {
       return setChartFormValues(["series", "label"]);
-    } else if (event.target.value === "barandline") {
-      return setChartFormValues(["series", "categories"]);
     } else if (event.target.value === "stacked") {
       return setChartFormValues(["series_names", "series", "categories"]);
+    } else if (event.target.value === "mixed") {
+      return setChartFormValues([
+        "namesForCharts",
+        "series_col",
+        "series_area",
+        "series_line",
+        "labels_as_per_value",
+      ]);
     }
   };
 
@@ -255,8 +265,6 @@ export default function FullWidthTabs() {
         setChartFormValues(["series", "label"]);
       } else if (res.data.data.chartType === "bar") {
         setChartFormValues(["series", "categories"]);
-      } else if (res.data.data.chartType === "radar") {
-        return setChartFormValues(["series", "categories"]);
       } else if (res.data.data.chartType === "stacked") {
         return setChartFormValues(["series_names", "series", "categories"]);
       } else if (res.data.data.chartType === "line") {
@@ -265,12 +273,16 @@ export default function FullWidthTabs() {
         return setChartFormValues(["series", "label"]);
       } else if (res.data.data.chartType === "radar") {
         return setChartFormValues(["series", "categories"]);
-      } else if (res.data.data.chartType === "multibar") {
-        setChartFormValues(["series", "categories"]);
       } else if (res.data.data.chartType === "donut") {
         return setChartFormValues(["series", "label"]);
-      } else if (res.data.data.chartType === "barandline") {
-        return setChartFormValues(["series", "categories"]);
+      } else if (res.data.data.chartType === "mixed") {
+        return setChartFormValues([
+          "namesForCharts",
+          "series_col",
+          "series_area",
+          "series_line",
+          "labels_as_per_value",
+        ]);
       }
     }
   };
@@ -646,47 +658,46 @@ export default function FullWidthTabs() {
               <CloseIcon />
             </IconButton>
           </Stack>
-          <div style={{maxHeight:'500px',overflowY:'auto'}}>
-
-          <Stack flexDirection={"row"} justifyContent="space-between" mt={2}>
-            <TextField
-              id="outlined-select-chart"
-              select
-              label="Select"
-              value={chartType}
-              disabled={editId ? true : false}
-              onChange={SeletFormChange}
-              helperText="Please select your Chart Type"
-            >
-              {chartTypes.map((option) => (
-                <MenuItem key={option.value} value={option.value}>
-                  {option.label}
-                </MenuItem>
-              ))}
-            </TextField>
-            <TextField
-              label="Chart Name"
-              value={formChartData.name}
-              size="small"
-              onChange={(e) =>
-                setFormChartData({ ...formChartData, name: e.target.value })
-              }
-              disabled={show ? true : false}
+          <div style={{ maxHeight: "500px", overflowY: "auto" }}>
+            <Stack flexDirection={"row"} justifyContent="space-between" mt={2}>
+              <TextField
+                id="outlined-select-chart"
+                select
+                label="Select"
+                value={chartType}
+                disabled={editId ? true : false}
+                onChange={SeletFormChange}
+                helperText="Please select your Chart Type"
+              >
+                {chartTypes.map((option) => (
+                  <MenuItem key={option.value} value={option.value}>
+                    {option.label}
+                  </MenuItem>
+                ))}
+              </TextField>
+              <TextField
+                label="Chart Name"
+                value={formChartData.name}
+                size="small"
+                onChange={(e) =>
+                  setFormChartData({ ...formChartData, name: e.target.value })
+                }
+                disabled={show ? true : false}
+              />
+            </Stack>
+            <ChartFormGen
+              formChartData={formChartData}
+              setFormChartData={setFormChartData}
+              setChartFormValues={setChartFormValues}
+              show={show}
+              setShow={setShow}
+              chartFormValues={chartFormValues}
+              chartType={chartType}
+              saveChartsData={() => saveChartsData()}
+              updateChartsDetails={(x) => updateChartsDetails(x)}
+              editId={editId}
             />
-          </Stack>
-          <ChartFormGen
-            formChartData={formChartData}
-            setFormChartData={setFormChartData}
-            setChartFormValues={setChartFormValues}
-            show={show}
-            setShow={setShow}
-            chartFormValues={chartFormValues}
-            chartType={chartType}
-            saveChartsData={() => saveChartsData()}
-            updateChartsDetails={(x) => updateChartsDetails(x)}
-            editId={editId}
-            />
-            </div>
+          </div>
         </Box>
       </Modal>
       <Modal

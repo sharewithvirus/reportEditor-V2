@@ -28,11 +28,11 @@ const ChartFormGen = ({
     ]);
     // console.log("Add Field2", chartFormValues);
   };
-  console.log("formData", formChartData)
+  console.log("formData", formChartData);
   useEffect(() => {
     // console.log("formData", formChartData)
   }, [formChartData, setFormChartData]);
-  console.log("chartFormValues", chartFormValues);
+//   console.log("chartFormValues", chartFormValues);
   return (
     <>
       {chartFormValues.map((item, index) => {
@@ -62,14 +62,23 @@ const ChartFormGen = ({
                     ? formChartData.series5
                     : item === "categories"
                     ? formChartData.categories
-                    :item === "series_names" 
-                    ?
-                    formChartData.series_names
+                    : item === "series_names"
+                    ? formChartData.series_names
+                    : item === "series_col"
+                    ? formChartData.series_col
+                    : item === "series_area"
+                    ? formChartData.series_area
+                    : item === "series_line"
+                    ? formChartData.series_line
+                    : item === "labels_as_per_value"
+                    ? formChartData.labels_as_per_value
+                    : item === 'namesForCharts' ?
+                    formChartData.namesForCharts 
                     : ""
                 }
               />
             )}
-           
+
             {item === "series" &&
             chartType === "bar" &&
             chartFormValues.includes("series2") === false ? (
@@ -80,13 +89,15 @@ const ChartFormGen = ({
               ""
             )}
             {item === "series_names" &&
-            chartType === "stacked" && index === 0  && chartFormValues.includes("series5") === false ? 
+            chartType === "stacked" &&
+            index === 0 &&
+            chartFormValues.includes("series5") === false ? (
               <IconButton aria-label="add" onClick={addSeriesField}>
                 <AddCircleIcon />
               </IconButton>
-              :
-              ''
-           }
+            ) : (
+              ""
+            )}
             {chartType === "stacked" && index == 0 ? (
               <TextField
                 sx={{ marginLeft: "10px" }}

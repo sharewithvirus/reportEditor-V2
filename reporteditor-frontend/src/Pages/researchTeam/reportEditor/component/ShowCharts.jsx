@@ -1,8 +1,7 @@
 import React, { useEffect, useState } from "react";
 import ReactApexChart from "react-apexcharts";
 
-
-function ShowCharts({formChartData, chartType}) {
+function ShowCharts({ formChartData, chartType }) {
   // console.log("formChartData0", formChartData)
   const [inputValue, setInputValue] = useState(formChartData);
 
@@ -19,15 +18,17 @@ function ShowCharts({formChartData, chartType}) {
 
   if (chartType === "pie") {
     chartData = {
-      series: formChartData?.formChartData?.series?.split(",").map((item1) => parseInt(item1)),
-      data:{},
+      series: formChartData?.formChartData?.series
+        ?.split(",")
+        .map((item1) => parseInt(item1)),
+      data: {},
       options: {
         chart: {
           width: 50,
           type: "pie",
         },
         title: {
-          text:formChartData?.formChartData?.name,
+          text: formChartData?.formChartData?.name,
         },
         labels: formChartData?.formChartData?.label?.split(","),
         responsive: [
@@ -45,18 +46,23 @@ function ShowCharts({formChartData, chartType}) {
         ],
       },
     };
-  } 
-  else if (chartType === "bar") {
+  } else if (chartType === "bar") {
     chartData = {
       series: [
         {
-          data: formChartData?.formChartData?.series?.split(",").map((item1) => parseInt(item1)),
+          data: formChartData?.formChartData?.series
+            ?.split(",")
+            .map((item1) => parseInt(item1)),
         },
         {
-          data: formChartData?.formChartData?.series1?.split(",").map((item1) => parseInt(item1)),
+          data: formChartData?.formChartData?.series1
+            ?.split(",")
+            .map((item1) => parseInt(item1)),
         },
         {
-          data: formChartData?.formChartData?.series2?.split(",").map((item1) => parseInt(item1)),
+          data: formChartData?.formChartData?.series2
+            ?.split(",")
+            .map((item1) => parseInt(item1)),
         },
       ],
       options: {
@@ -65,7 +71,7 @@ function ShowCharts({formChartData, chartType}) {
           height: 50,
         },
         title: {
-          text:formChartData?.formChartData?.name,
+          text: formChartData?.formChartData?.name,
         },
         plotOptions: {
           bar: {
@@ -81,13 +87,14 @@ function ShowCharts({formChartData, chartType}) {
         },
       },
     };
-  }
-   else if (chartType === "radar") {
+  } else if (chartType === "radar") {
     chartData = {
       series: [
         {
           name: "Series 1",
-          data: formChartData?.formChartData?.series?.split(",").map((item1) => parseInt(item1)),
+          data: formChartData?.formChartData?.series
+            ?.split(",")
+            .map((item1) => parseInt(item1)),
         },
       ],
       options: {
@@ -96,20 +103,21 @@ function ShowCharts({formChartData, chartType}) {
           type: "radar",
         },
         title: {
-          text:formChartData?.formChartData.name,
+          text: formChartData?.formChartData.name,
         },
         xaxis: {
           categories: formChartData?.formChartData?.categories?.split(","),
         },
       },
     };
-  }
-   else if (chartType === "line") {
+  } else if (chartType === "line") {
     chartData = {
       series: [
         {
           name: "Desktops",
-          data: formChartData.formChartData?.series?.split(",").map((item1) => parseInt(item1)),
+          data: formChartData.formChartData?.series
+            ?.split(",")
+            .map((item1) => parseInt(item1)),
         },
       ],
       options: {
@@ -127,12 +135,12 @@ function ShowCharts({formChartData, chartType}) {
           curve: "straight",
         },
         title: {
-          text:formChartData.formChartData.name,
+          text: formChartData.formChartData.name,
           align: "left",
         },
         grid: {
           row: {
-            colors: ["#f3f3f3", "transparent"], 
+            colors: ["#f3f3f3", "transparent"],
             opacity: 0.5,
           },
         },
@@ -141,13 +149,14 @@ function ShowCharts({formChartData, chartType}) {
         },
       },
     };
-  }
-   else if (chartType === "area") {
+  } else if (chartType === "area") {
     chartData = {
       series: [
         {
           name: "STOCK ABC",
-          data: formChartData?.formChartData?.series?.split(",").map((item1) => parseInt(item1)),
+          data: formChartData?.formChartData?.series
+            ?.split(",")
+            .map((item1) => parseInt(item1)),
         },
       ],
       options: {
@@ -182,17 +191,18 @@ function ShowCharts({formChartData, chartType}) {
         },
       },
     };
-  } 
-  else if (chartType === "donut") {
+  } else if (chartType === "donut") {
     chartData = {
-      series: formChartData?.formChartData?.series?.split(",").map((item1) => parseInt(item1)),
+      series: formChartData?.formChartData?.series
+        ?.split(",")
+        .map((item1) => parseInt(item1)),
       options: {
         chart: {
           type: "donut",
           height: 350,
         },
         title: {
-          text:formChartData?.formChartData?.name,
+          text: formChartData?.formChartData?.name,
         },
         labels: formChartData?.formChartData?.label?.split(","),
         responsive: [
@@ -211,30 +221,45 @@ function ShowCharts({formChartData, chartType}) {
         ],
       },
     };
-  }
-  else if (chartType === "stacked") {
+  } else if (chartType === "stacked") {
     console.log(formChartData);
     const arrVal = formChartData?.formChartData.series_names?.split(",");
-    chartData = {   
-      series: [{
-        name: formChartData?.formChartData.series_names?.split(",")[0],
-        data: formChartData?.formChartData.series?.split(",").map((item1) => parseInt(item1)),
-      }, {
-        name: formChartData?.formChartData.series_names?.split(",")[1],
-        data: formChartData?.formChartData?.series2?.split(",").map((item1) => parseInt(item1)),
-      }, {
-        name: formChartData?.formChartData.series_names?.split(",")[2],
-        data: formChartData?.formChartData?.series3?.split(",").map((item1) => parseInt(item1)),
-      }, {
-        name: formChartData?.formChartData?.series_names?.split(",")[3],
-        data: formChartData?.formChartData?.series4?.split(",").map((item1) => parseInt(item1)),
-      }, {
-        name: formChartData?.formChartData?.series_names?.split(",")[4],
-        data: formChartData?.formChartData.series5?.split(",").map((item1) => parseInt(item1)),
-      }],
+    chartData = {
+      series: [
+        {
+          name: formChartData?.formChartData.series_names?.split(",")[0],
+          data: formChartData?.formChartData.series
+            ?.split(",")
+            .map((item1) => parseInt(item1)),
+        },
+        {
+          name: formChartData?.formChartData.series_names?.split(",")[1],
+          data: formChartData?.formChartData?.series2
+            ?.split(",")
+            .map((item1) => parseInt(item1)),
+        },
+        {
+          name: formChartData?.formChartData.series_names?.split(",")[2],
+          data: formChartData?.formChartData?.series3
+            ?.split(",")
+            .map((item1) => parseInt(item1)),
+        },
+        {
+          name: formChartData?.formChartData?.series_names?.split(",")[3],
+          data: formChartData?.formChartData?.series4
+            ?.split(",")
+            .map((item1) => parseInt(item1)),
+        },
+        {
+          name: formChartData?.formChartData?.series_names?.split(",")[4],
+          data: formChartData?.formChartData.series5
+            ?.split(",")
+            .map((item1) => parseInt(item1)),
+        },
+      ],
       options: {
         chart: {
-          type: 'bar',
+          type: "bar",
           height: 350,
           stacked: true,
         },
@@ -246,64 +271,150 @@ function ShowCharts({formChartData, chartType}) {
                 enabled: true,
                 offsetX: 0,
                 style: {
-                  fontSize: '13px',
-                  fontWeight: 900
-                }
-              }
-            }
+                  fontSize: "13px",
+                  fontWeight: 900,
+                },
+              },
+            },
           },
         },
         stroke: {
           width: 1,
-          colors: ['#fff']
+          colors: ["#fff"],
         },
         title: {
-          text: formChartData?.formChartData?.name
+          text: formChartData?.formChartData?.name,
         },
         xaxis: {
           categories: formChartData?.formChartData?.categories?.split(","),
           labels: {
             formatter: function (val) {
-              return val + "K"
-            }
-          }
+              return val + "K";
+            },
+          },
         },
         yaxis: {
           title: {
-            text: undefined
+            text: undefined,
           },
         },
         tooltip: {
           y: {
             formatter: function (val) {
-              return val + "K"
-            }
-          }
+              return val + "K";
+            },
+          },
         },
         fill: {
-          opacity: 1
+          opacity: 1,
         },
         legend: {
-          position: 'top',
-          horizontalAlign: 'left',
-          offsetX: 40
-        }
+          position: "top",
+          horizontalAlign: "left",
+          offsetX: 40,
+        },
+      },
+    };
+  } else if (chartType === "mixed") {
+    chartData = {
+      series: [
+        {
+          name: formChartData?.formChartData?.namesForCahrts?.split(",")[0],
+          type: "column",
+          data: formChartData?.formChartData?.series_col
+            ?.split(",")
+            .map((item1) => parseInt(item1)),
+        },
+        {
+          name: formChartData?.formChartData?.namesForCahrts?.split(",")[1],
+          type: "area",
+          data: formChartData?.formChartData?.series_area
+            ?.split(",")
+            .map((item1) => parseInt(item1)),
+        },
+        {
+          name: formChartData?.formChartData?.namesForCahrts?.split(",")[2],
+          type: "line",
+          data: formChartData?.formChartData?.series_line
+            ?.split(",")
+            .map((item1) => parseInt(item1)),
+        },
+      ],
+      options: {
+        chart: {
+          height: 350,
+          type: "line",
+          stacked: false,
+        },
+        stroke: {
+          width: [0, 2, 5],
+          curve: "smooth",
+        },
+        plotOptions: {
+          bar: {
+            columnWidth: "50%",
+          },
+        },
+
+        fill: {
+          opacity: [0.85, 0.25, 1],
+          gradient: {
+            inverseColors: false,
+            shade: "light",
+            type: "vertical",
+            opacityFrom: 0.85,
+            opacityTo: 0.55,
+            stops: [0, 100, 100, 100],
+          },
+        },
+        labels: formChartData?.formChartData?.labels_as_per_value?.split(","),
+        markers: {
+          size: 0,
+        },
+        xaxis: {
+          type: "string",
+        },
+        yaxis: {
+          title: {
+            text: formChartData?.formChartData?.name,
+          },
+          min: 0,
+        },
+        tooltip: {
+          shared: true,
+          intersect: false,
+          y: {
+            formatter: function (y) {
+              if (typeof y !== "undefined") {
+                return y.toFixed(0) + " points";
+              }
+              return y;
+            },
+          },
+        },
       },
     };
   }
-  else if (chartType === "mixed")
-  {
-    
-  }
   return (
     <div>
+      {chartType === "mixed" ? (
         <ReactApexChart
           options={chartData.options}
           series={chartData.series}
-          type={chartType==='stacked'?'bar':chartType}
-          width={chartType === 'pie'?'100%':'98%'}
-          height = {chartType ==='stacked'?'400px':'300px'}
+          type={chartType === "mixed" ? "line" : chartType}
+          width={chartType === "pie" ? "100%" : "98%"}
+          height={chartType === "stacked" ? "400px" : "300px"}
         />
+      ) : (
+        <ReactApexChart
+        options={chartData.options}
+        series={chartData.series}
+        type={chartType === "stacked" ? "bar" : chartType}
+        width={chartType === "pie" ? "100%" : "98%"}
+        height={chartType === "stacked" ? "400px" : "300px"}
+      />
+      )}
+      
     </div>
   );
 }

@@ -8,7 +8,7 @@ const chartSchema = new Schema({
     },
     chartType:{
         type:String,
-        enum:[ "pie","donut","line","bar","radar","stacked","multibar","area","barandline"],
+        enum:[ "pie","donut","line","bar","radar","stacked","multibar","area","barandline", "mixed"],
         required:true
     },
     name: {

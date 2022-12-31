@@ -73,7 +73,7 @@ const GenChart = ({
           height: 350,
         },
         title: {
-          text:inputValue?.name,
+          text: inputValue?.name,
         },
         plotOptions: {
           bar: {
@@ -89,7 +89,8 @@ const GenChart = ({
         },
       },
     };
-  } else if (chartType === "radar") {
+  }
+   else if (chartType === "radar") {
     chartData = {
       series: [
         {
@@ -103,18 +104,19 @@ const GenChart = ({
           type: "radar",
         },
         title: {
-          text: "Basic Radar Chart",
+          text: inputValue?.name,
         },
         xaxis: {
           categories: inputValue?.categories?.split(","),
         },
       },
     };
-  } else if (chartType === "line") {
+  }
+   else if (chartType === "line") {
     chartData = {
       series: [
         {
-          name: "Desktops",
+          name: inputValue?.name,
           data: inputValue?.series?.split(",").map((item1) => parseInt(item1)),
         },
       ],
@@ -147,11 +149,12 @@ const GenChart = ({
         },
       },
     };
-  } else if (chartType === "area") {
+  } 
+  else if (chartType === "area") {
     chartData = {
       series: [
         {
-          name: "STOCK ABC",
+          name: inputValue?.name,
           data: inputValue?.series?.split(",").map((item1) => parseInt(item1)),
         },
       ],
@@ -171,11 +174,11 @@ const GenChart = ({
         },
 
         title: {
-          text: "Fundamental Analysis of Stocks",
+          text: inputValue?.name,
           align: "left",
         },
         subtitle: {
-          text: "Price Movements",
+          text: inputValue?.name,
           align: "left",
         },
         labels: inputValue?.label?.split(","),
@@ -187,36 +190,8 @@ const GenChart = ({
         },
       },
     };
-  } else if (chartType === "multibar") {
-    chartData = {
-      series: [
-        {
-          data: inputValue?.series?.split(",").map((item1) => parseInt(item1)),
-        },
-        {
-          data: inputValue?.series?.split(",").map((item1) => parseInt(item1)),
-        },
-      ],
-      options: {
-        chart: {
-          type: "bar",
-          height: 350,
-        },
-        plotOptions: {
-          bar: {
-            borderRadius: 4,
-            horizontal: true,
-          },
-        },
-        dataLabels: {
-          enabled: false,
-        },
-        xaxis: {
-          categories: inputValue?.categories?.split(","),
-        },
-      },
-    };
-  } else if (chartType === "donut") {
+  }
+   else if (chartType === "donut") {
     chartData = {
       series: inputValue?.series?.split(",").map((item1) => parseInt(item1)),
       options: {
@@ -239,30 +214,34 @@ const GenChart = ({
         ],
       },
     };
-  }
+  } 
   else if (chartType === "stacked") {
-    console.log(inputValue);
-    const arrVal = inputValue?.series_names?.split(",");
-    chartData = {   
-      series: [{
-        name: inputValue?.series_names?.split(",")[0],
-        data: inputValue?.series?.split(",").map((item1) => parseInt(item1)),
-      }, {
-        name: inputValue?.series_names?.split(",")[1],
-        data: inputValue?.series2?.split(",").map((item1) => parseInt(item1)),
-      }, {
-        name: inputValue?.series_names?.split(",")[2],
-        data: inputValue?.series3?.split(",").map((item1) => parseInt(item1)),
-      }, {
-        name: inputValue?.series_names?.split(",")[3],
-        data: inputValue?.series4?.split(",").map((item1) => parseInt(item1)),
-      }, {
-        name: inputValue?.series_names?.split(",")[4],
-        data: inputValue?.series5?.split(",").map((item1) => parseInt(item1)),
-      }],
+    chartData = {
+      series: [
+        {
+          name: inputValue?.series_names?.split(",")[0],
+          data: inputValue?.series?.split(",").map((item1) => parseInt(item1)),
+        },
+        {
+          name: inputValue?.series_names?.split(",")[1],
+          data: inputValue?.series2?.split(",").map((item1) => parseInt(item1)),
+        },
+        {
+          name: inputValue?.series_names?.split(",")[2],
+          data: inputValue?.series3?.split(",").map((item1) => parseInt(item1)),
+        },
+        {
+          name: inputValue?.series_names?.split(",")[3],
+          data: inputValue?.series4?.split(",").map((item1) => parseInt(item1)),
+        },
+        {
+          name: inputValue?.series_names?.split(",")[4],
+          data: inputValue?.series5?.split(",").map((item1) => parseInt(item1)),
+        },
+      ],
       options: {
         chart: {
-          type: 'bar',
+          type: "bar",
           height: 350,
           stacked: true,
         },
@@ -274,62 +253,145 @@ const GenChart = ({
                 enabled: true,
                 offsetX: 0,
                 style: {
-                  fontSize: '13px',
-                  fontWeight: 900
-                }
-              }
-            }
+                  fontSize: "13px",
+                  fontWeight: 900,
+                },
+              },
+            },
           },
         },
         stroke: {
           width: 1,
-          colors: ['#fff']
+          colors: ["#fff"],
         },
         title: {
-          text: 'Fiction Books Sales'
+          text: inputValue?.name,
         },
         xaxis: {
           categories: inputValue?.categories?.split(","),
           labels: {
             formatter: function (val) {
-              return val + "K"
-            }
-          }
+              return val + "K";
+            },
+          },
         },
         yaxis: {
           title: {
-            text: undefined
+            text: undefined,
           },
         },
         tooltip: {
           y: {
             formatter: function (val) {
-              return val + "K"
-            }
-          }
+              return val + "K";
+            },
+          },
         },
         fill: {
-          opacity: 1
+          opacity: 1,
         },
         legend: {
-          position: 'top',
-          horizontalAlign: 'left',
-          offsetX: 40
-        }
+          position: "top",
+          horizontalAlign: "left",
+          offsetX: 40,
+        },
       },
     };
   }
+   else if (chartType === "mixed") {
+    chartData = {
+      series: [
+        {
+          name: inputValue?.namesForCharts?.split(",")[0],
+          type: "column",
+          data: inputValue?.series_col?.split(",").map((item1) => parseInt(item1)),
+        },
+        {
+          name: inputValue?.namesForCharts?.split(",")[1],
+          type: "area",
+          data: inputValue?.series_area?.split(",").map((item1) => parseInt(item1)),
+        },
+        {
+          name: inputValue?.namesForCharts?.split(",")[2],
+          type: "line",
+          data: inputValue?.series_line?.split(",").map((item1) => parseInt(item1)),
+        },
+      ],
+      options: {
+        chart: {
+          height: 350,
+          type: "line",
+          stacked: false,
+        },
+        stroke: {
+          width: [0, 2, 5],
+          curve: "smooth",
+        },
+        plotOptions: {
+          bar: {
+            columnWidth: "50%",
+          },
+        },
 
+        fill: {
+          opacity: [0.85, 0.25, 1],
+          gradient: {
+            inverseColors: false,
+            shade: "light",
+            type: "vertical",
+            opacityFrom: 0.85,
+            opacityTo: 0.55,
+            stops: [0, 100, 100, 100],
+          },
+        },
+        labels: inputValue?.labels_as_per_value?.split(","),
+        markers: {
+          size: 0,
+        },
+        xaxis: {
+          type: "string",
+        },
+        yaxis: {
+          title: {
+            text: inputValue?.name,
+          },
+          min: 0,
+        },
+        tooltip: {
+          shared: true,
+          intersect: false,
+          y: {
+            formatter: function (y) {
+              if (typeof y !== "undefined") {
+                return y.toFixed(0) + " points";
+              }
+              return y;
+            },
+          },
+        },
+      },
+    };
+  }
   return (
     <>
       <div id="chart">
         {show ? (
-          <ReactApexChart
-            options={chartData.options}
-            series={chartData.series}
-            type={chartType==='stacked'?'bar':chartType} 
-            width={380}
-          />
+          chartType === "mixed" ? (
+            <ReactApexChart
+              options={chartData.options}
+              series={chartData.series}
+              type={chartType === "mixed" ? "line" : chartType}
+              width={380}
+            />
+          ) : (
+            <ReactApexChart
+              options={chartData.options}
+              series={chartData.series}         
+              type={chartType === "stacked" ? "bar" : chartType}
+              width={380}
+              height={350}
+            />
+          )
         ) : (
           ""
         )}

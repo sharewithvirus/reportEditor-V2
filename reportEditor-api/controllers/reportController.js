@@ -45,7 +45,8 @@ const drawChartUpdated = async (item) => {
       ],
     };
     return myElement;
-  } else if (item.chartType === "bar") {
+  }
+   else if (item.chartType === "bar") {
     myElement = {
       series: [
         {
@@ -81,7 +82,8 @@ const drawChartUpdated = async (item) => {
     };
 
     return myElement;
-  } else if (item.chartType === "radar") {
+  } 
+  else if (item.chartType === "radar") {
     myElement = {
       series: [
         {
@@ -103,7 +105,8 @@ const drawChartUpdated = async (item) => {
     };
 
     return myElement;
-  } else if (item.chartType === "line") {
+  } 
+  else if (item.chartType === "line") {
     myElement = {
       series: [
         {
@@ -141,7 +144,8 @@ const drawChartUpdated = async (item) => {
     };
 
     return myElement;
-  } else if (item.chartType === "area") {
+  } 
+  else if (item.chartType === "area") {
     myElement = {
       series: [
         {
@@ -210,6 +214,159 @@ const drawChartUpdated = async (item) => {
     },
     };
     return myElement;
+  } 
+  else if(item.chartType === "stacked")
+  {
+    myElement ={
+      series: [ {
+        name: data?.series_names?.split(",")[0],
+        data: data?.series?.split(",").map((item1) => parseInt(item1)),
+      },
+      {
+        name: data?.series_names?.split(",")[1],
+        data: data?.series2?.split(",").map((item1) => parseInt(item1)),
+      },
+      {
+        name: data?.series_names?.split(",")[2],
+        data: data?.series3?.split(",").map((item1) => parseInt(item1)),
+      },
+      {
+        name: data?.series_names?.split(",")[3],
+        data: data?.series4?.split(",").map((item1) => parseInt(item1)),
+      },
+      {
+        name: data?.series_names?.split(",")[4],
+        data: data?.series5?.split(",").map((item1) => parseInt(item1)),
+      },],
+      chart: {
+      type: 'bar',
+      height: 350,
+      stacked: true,
+    },
+    plotOptions: {
+      bar: {
+        horizontal: true,
+        dataLabels: {
+          total: {
+            enabled: true,
+            offsetX: 0,
+            style: {
+              fontSize: '13px',
+              fontWeight: 900
+            }
+          }
+        }
+      },
+    },
+    stroke: {
+      width: 1,
+      colors: ['#fff']
+    },
+    title: {
+      text: data?.name,
+    },
+    xaxis: {
+      categories:  data?.categories?.split(","),
+      labels: {
+        formatter: function (val) {
+          return val + "K"
+        }
+      }
+    },
+    yaxis: {
+      title: {
+        text: undefined
+      },
+    },
+    tooltip: {
+      y: {
+        formatter: function (val) {
+          return val + "K"
+        }
+      }
+    },
+    fill: {
+      opacity: 1
+    },
+    legend: {
+      position: 'top',
+      horizontalAlign: 'left',
+      offsetX: 40
+    }
+    };
+    return myElement;
+  }
+  else if (item.chartType === "mixed"){
+  myElement ={
+    series: [ {
+      name: data?.namesForCharts?.split(",")[0],
+      type: "column",
+      data: data?.series_col?.split(",").map((item1) => parseInt(item1)),
+    },
+    {
+      name: data?.namesForCharts?.split(",")[1],
+      type: "area",
+      data: data?.series_area?.split(",").map((item1) => parseInt(item1)),
+    },
+    {
+      name: data?.namesForCharts?.split(",")[2],
+      type: "line",
+      data: data?.series_line?.split(",").map((item1) => parseInt(item1)),
+    },],
+    chart: {
+    height: 350,
+    type: 'line',
+    stacked: false,
+  },
+  stroke: {
+    width: [0, 2, 5],
+    curve: 'smooth'
+  },
+  plotOptions: {
+    bar: {
+      columnWidth: '50%'
+    }
+  },
+  
+  fill: {
+    opacity: [0.85, 0.25, 1],
+    gradient: {
+      inverseColors: false,
+      shade: 'light',
+      type: "vertical",
+      opacityFrom: 0.85,
+      opacityTo: 0.55,
+      stops: [0, 100, 100, 100]
+    }
+  },
+  labels: data?.labels_as_per_value?.split(","),
+  markers: {
+    size: 0
+  },
+  xaxis: {
+    type: 'string'
+  },
+  yaxis: {
+    title: {
+      text: data?.name,
+    },
+    min: 0
+  },
+  tooltip: {
+    shared: true,
+    intersect: false,
+    y: {
+      formatter: function (y) {
+        if (typeof y !== "undefined") {
+          return y.toFixed(0) + " points";
+        }
+        return y;
+  
+      }
+    }
+  }
+  };
+  return myElement;
   }
 };
 
