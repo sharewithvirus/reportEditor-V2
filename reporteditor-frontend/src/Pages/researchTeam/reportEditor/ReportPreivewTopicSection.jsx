@@ -17,7 +17,9 @@ function reportPreivewTopicSection({
         style={{ minHeight: "842px", width: "100%",scrolling:"no"  }}
         srcdoc={dataToDisplay}
         title="html Preview"
-      ></iframe>
+      >
+        
+      </iframe>
 
       {/* </Stack> */}
       {/* <div>

@@ -1257,3 +1257,124 @@ exports.createPdfPreview = async (req, res) => {
     });
   }
 };
+
+exports.createPDFReport = async (req, res) => {
+  try {
+    console.log("Hit Route PDF Create");
+    const { id } = req.params;
+    const reportData = await Report.findById(id)
+      .populate([
+        "template",
+        "industry",
+        "reportImages",
+        "reportCharts",
+        "reportTables",
+      ])
+      .populate({
+        path: "reportCharts",
+        select: "chartType formChartData",
+      })
+      .populate({
+        path: "subTopics",
+        populate: {
+          path: "subTopics",
+          populate: {
+            path: "subTopics",
+            populate: {
+              path: "subTopics",
+              populate: {
+                path: "subTopics",
+                populate: {
+                  path: "subTopics",
+                  populate: {
+                    path: "subTopics",
+                    populate: {
+                      path: "subTopics",
+                      populate: {
+                        path: "subTopics",
+                        populate: {
+                          path: "subTopics",
+                        },
+                      },
+                    },
+                  },
+                },
+              },
+            },
+          },
+        },
+      });
+    let subTopicData = reportData?.subTopics;
+    let reportCharts = reportData?.reportCharts;
+
+    const headings = [];
+    const headingHTML = [];
+    const fullPageHTML = [];
+
+    const subTopicMap = async (x, preIndex) => {
+      x.map(async (itemX, index) => {
+        // console.log(itemX.subTopicName, `${preIndex ? `${preIndex}.${index+1}` : `${index+1}`}`)
+        if (itemX.subTopics.length > 0) {
+          fullPageHTML.push(
+            `<div id="${preIndex ? `${preIndex}.` : ""}${
+              index + 1
+            }"><h3>Chapter: ${preIndex ? `${preIndex}.` : ""}${
+              index + 1
+            } : <strong>${itemX.subTopicName}</strong></h3></div>`,
+            `<div styles="page-break-inside: avoid; page-break-after:always;">${itemX.htmlData}</div>`
+          );
+          headings.push(
+            `index:${preIndex ? `${preIndex}.` : ""}${index + 1} heading:${
+              itemX.subTopicName
+            }`
+          );
+          headingHTML.push(
+            `<div><a href="#${preIndex ? `${preIndex}.` : ""}${
+              index + 1
+            }" style="text-decoration: none; color: black" />${
+              preIndex ? `${preIndex}.` : ""
+            }${index + 1} : ${itemX.subTopicName}</div>`
+          );
+          await subTopicMap(
+            itemX.subTopics,
+            `${preIndex ? `${preIndex}.` : ""}${index + 1}`
+          );
+        } else {
+          fullPageHTML.push(
+            `<div id="${preIndex ? `${preIndex}.` : ""}${
+              index + 1
+            }"><h3>Chapter: ${preIndex ? `${preIndex}.` : ""}${
+              index + 1
+            } : <strong>${itemX.subTopicName}</strong></h3></div>`,
+            `<div styles="page-break-inside: avoid; page-break-after:always;">${itemX.htmlData}</div>`
+          );
+          headings.push(
+            `index:${preIndex ? `${preIndex}.` : ""}${index + 1} heading:${
+              itemX.subTopicName
+            }`
+          );
+          headingHTML.push(
+            `<div><a href="#${preIndex ? `${preIndex}.` : ""}${
+              index + 1
+            }" style="text-decoration: none; color: black" />${
+              preIndex ? `${preIndex}.` : ""
+            }${index + 1} : ${itemX.subTopicName}</div>`
+          );
+        }
+      });
+    };
+    fullPageHTML.push("<html><head></head><body>");
+
+    res.status(200).json({
+      status: "success",
+      message: "PDF URL Download",
+      data: fullPageHTML
+    })
+  } catch (error) {
+    console.log(error)
+    res.status(500).json({
+      status: "Error",
+      message: "Internal Server Error",
+    });
+  }
+}
