@@ -82,7 +82,6 @@ export const deleteReport = async (reportId) => {
     
 // }
 export const getReportPdf = async (reportId) => {
-    console.log('.....////...//..//..//..//..//./././././.');
     try {
         console.log("getReportPdf....",reportId);
        const res = await axios.get(`/api/v1/report/pdf-generate/${reportId}`, {

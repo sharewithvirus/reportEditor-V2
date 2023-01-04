@@ -1304,6 +1304,7 @@ exports.createPDFReport = async (req, res) => {
           },
         },
       });
+      console.log(reportData);
     let subTopicData = reportData?.subTopics;
     let reportCharts = reportData?.reportCharts;
 
@@ -1363,13 +1364,97 @@ exports.createPDFReport = async (req, res) => {
         }
       });
     };
-    fullPageHTML.push("<html><head></head><body>");
 
-    res.status(200).json({
-      status: "success",
-      message: "PDF URL Download",
-      data: fullPageHTML
-    })
+
+    // fullPageHTML.push("<html><head></head><body>");
+    await subTopicMap(subTopicData);
+    // fullPageHTML.push(
+    //   `<script src="https://cdn.jsdelivr.net/npm/apexcharts"></script><script>`
+    // );
+
+    // const getChartScriptSingle = async (data) => {
+    //   const chartData = await drawChartUpdated(data);
+    //   const ele = `const drawChart${data._id ? data._id : ""} = '${
+    //     chartData ? JSON.stringify(chartData) : ""
+    //   }'; const newChart${
+    //     data._id ? data._id : ""
+    //   } = new ApexCharts(document.querySelector('#chart${
+    //     data._id ? data._id : ""
+    //   }'), JSON.parse(drawChart${data._id ? data._id : ""})); newChart${
+    //     data._id ? data._id : ""
+    //   }.render();`;
+    //   return ele;
+    // };
+    // for (let i = 0; i < reportCharts.length; i++) {
+    //   const newHtml = await getChartScriptSingle(reportCharts[i]);
+    //   fullPageHTML.push(newHtml);
+    // }
+
+    // fullPageHTML.push(`</script></body></html>`);
+
+    const joinHTML = fullPageHTML.join("");
+    const dom = cheerio.load(joinHTML);
+
+    const newHtml = `<div id="index"><div style='display:none'><img src='${
+      reportData?.template?.url
+    }' /></div><div style="text-align: center;"><h2>Index</h2></div styles="page-break-after: always;">${headingHTML.join(
+      ""
+    )}</div><div id="content"><div style="page-break-after:always"></div><div styles=" border: 1px solid; zoom: 1">${joinHTML}</div></div>`;
+
+    var options = {
+      format: "A4",
+      directory: "./temp/",
+      border: "1mm",
+      paginationOffset: 1,
+      localUrlAccess: true,
+      header: {
+        height: "30mm",
+        contents: `
+        <div style="width: 100%; display: table;">
+            <div style="display: table-row">
+                <div style="display: table-cell;">${reportData?.template?.header}</div>
+                <div style="width: 25%; display: table-cell;"><img style="height: 50px; float: right;" src="${reportData?.template?.url}"></div>
+            </div>
+            </div>  
+            <hr/>
+          `,
+      },
+      footer: {
+        height: "20mm",
+        contents: `
+        <hr/>
+        <div style="width: 100%; display: table;">
+            <div style="display: table-row">
+                <div style="display: table-cell;">${reportData?.template?.footer}</div>
+                <div style="width: 20%; display: table-cell; text-align: right;">Page: {{page}}</span>/<span>{{pages}}</div>
+            </div>
+        </div>
+          `,
+      },
+      zoomFactor: "0.4rem",
+      childProcessOptions: {
+        env: {
+          OPENSSL_CONF: "/dev/null",
+        },
+      },
+    };
+
+    console.log("newHTML", newHtml);
+    pdf.create(newHtml, options).toStream(function (err, stream) {
+      if(err){
+        console.log(err)
+      }else{
+        stream.pipe(res);
+      }
+    });
+  //   wkhtmltopdf(newHtml, { pageSize: 'A4' })
+  // .pipe(fs.createWriteStream('out.pdf'));
+
+    // res.status(200).json({
+    //   status: "success",
+    //   message: "PDF URL Download",
+    //   data: reportData
+    // })
   } catch (error) {
     console.log(error)
     res.status(500).json({

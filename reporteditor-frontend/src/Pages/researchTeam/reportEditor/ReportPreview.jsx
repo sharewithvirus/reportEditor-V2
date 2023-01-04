@@ -30,28 +30,14 @@ function ReportPreview() {
   };
 
   // /////////////////////////////////////////////////////
-  const downloadPdf = async () => {
-    console.log("downloadPdf is called....");
-    // setIsLoading(true);
-    const pdfData = await getPdf();
-    console.log(pdfData);
-
-  };
-  const getPdf = async () => {
-    // setIsLoading(true);
+  const printPdf = async () => {
+    setIsLoading(true);
     console.log("getPdf is called...");
-    const { data } = await getReportPdfData();
+    const { data } = await getReportPdf(id);
     console.log(data);
     const file = new Blob([data], { type: "application/pdf" });
     saveAs(file, `report.pdf`);
     setIsLoading(false);
-  };
-
-  const getReportPdfData = async () => {
-    console.log("getReportPdf is called");
-    const res = await getReportPdf(id);
-    console.log('response of getReportPdfData..',res);
-    return res;
   };
   // ////////////////////////////////////////////////////
   useEffect(() => {
@@ -125,7 +111,7 @@ function ReportPreview() {
                 color="inherit"
                 size="small"
                 sx={{ fontSize: "8px" }}
-                // onClick={downloadPdf}
+                onClick={() => printPdf()}
                 // onClick={()=>window.print()}
               >
                 Export to PDF
