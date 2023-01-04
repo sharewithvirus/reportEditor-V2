@@ -74,11 +74,6 @@ const ImageUpload = ({ postImage, open }) => {
         }}
         elevation={8}
       >
-        {/* Header Text */}
-        {/* <Typography variant="h4" component="h1">
-                    Upload Image
-                </Typography> */}
-
         {/* Image upload button */}
         <Box>
           <Button
