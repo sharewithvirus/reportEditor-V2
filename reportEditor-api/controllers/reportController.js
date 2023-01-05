@@ -18,7 +18,6 @@ const drawChartUpdated = async (item) => {
   const categories = data.categories.split(",");
 
   let myElement;
-  console.log("categories..",data.series);
   if (item.chartType === "pie") {
     myElement = {
       series: data.series.split(",").map((item1) => parseFloat(item1)),
@@ -373,8 +372,6 @@ const drawChartUpdated = async (item) => {
 const getChartData = async (charttype) => {
   let state;
   if (charttype === "polarArea") {
-    console.log("Chart", charttype);
-    console.log("polarArea");
     state = {
       series: "",
       options: {
@@ -405,8 +402,6 @@ const getChartData = async (charttype) => {
     };
     return state;
   } else if (charttype === "pie") {
-    console.log("Chart", charttype);
-    console.log("Pie");
     state = {
       series: "",
       options: {
@@ -418,8 +413,6 @@ const getChartData = async (charttype) => {
     };
     return state;
   } else if (charttype === "bar") {
-    console.log("Chart", charttype);
-    console.log("Bar");
     state = {
       series: "",
       options: {
@@ -468,8 +461,6 @@ const getChartData = async (charttype) => {
     };
     return state;
   } else if (charttype === "radar") {
-    console.log("Chart", charttype);
-    console.log("Radar");
     state = {
       series: "",
       options: {
@@ -554,8 +545,6 @@ const getChartData = async (charttype) => {
     };
     return state;
   } else if (charttype === "stacked") {
-    console.log("Chart", charttype);
-    console.log("stacked");
     charttype = "bar";
     state = {
       series: "",
@@ -659,8 +648,6 @@ const getChartData = async (charttype) => {
     };
     return state;
   } else if (charttype === "line") {
-    console.log("Chart", charttype);
-    console.log("line");
     state = {
       series: "",
       options: {
@@ -754,8 +741,6 @@ const getChartData = async (charttype) => {
     };
     return state;
   } else if (charttype === "area") {
-    console.log("Chart", charttype);
-    console.log("area");
     state = {
       series: "",
       options: {
@@ -832,8 +817,6 @@ const getChartData = async (charttype) => {
     };
     return state;
   } else if (charttype === "multibar") {
-    console.log("Chart", charttype);
-    console.log("Muktibar");
     charttype = "bar";
     state = {
       series: "",
@@ -870,8 +853,6 @@ const getChartData = async (charttype) => {
     };
     return state;
   } else if (charttype === "donut") {
-    console.log("Chart", charttype);
-    console.log("Donut");
     state = {
       series: "",
       options: {
@@ -886,8 +867,6 @@ const getChartData = async (charttype) => {
     };
     return state;
   } else if (charttype === "barandline") {
-    console.log("Chart", charttype);
-    console.log("Brand Line");
     state = {
       series: "",
       options: {
@@ -954,7 +933,6 @@ exports.createReport = async (req, res) => {
   try {
     const { name, userList, industry, template, baseYear, forecastYear } =
       req.body;
-    console.log(req.body);
     const newReport = await Report.create({
       name,
       userList,
@@ -1016,7 +994,6 @@ exports.getReportsList = async (req, res) => {
 exports.updateReport = async (req, res) => {
   try {
     const { _id, name, baseYear, forecastYear, userList, template } = req.body;
-    // console.log(req.body);
     await Report.findByIdAndUpdate(_id, req.body);
     res.status(200).json({
       status: "Success",
@@ -1033,9 +1010,7 @@ exports.updateReport = async (req, res) => {
 
 exports.getSingleReport = async (req, res) => {
   try {
-    console.log("Single Report Route Hit");
     const { id } = req.params;
-    console.log(id);
     const reportData = await Report.findById(id).populate({
       path: "subTopics",
       populate: {
@@ -1304,7 +1279,7 @@ exports.createPDFReport = async (req, res) => {
           },
         },
       });
-      console.log(reportData);
+      // console.log("ReportData", reportData);
     let subTopicData = reportData?.subTopics;
     let reportCharts = reportData?.reportCharts;
 
@@ -1314,7 +1289,6 @@ exports.createPDFReport = async (req, res) => {
 
     const subTopicMap = async (x, preIndex) => {
       x.map(async (itemX, index) => {
-        // console.log(itemX.subTopicName, `${preIndex ? `${preIndex}.${index+1}` : `${index+1}`}`)
         if (itemX.subTopics.length > 0) {
           fullPageHTML.push(
             `<div id="${preIndex ? `${preIndex}.` : ""}${
@@ -1368,29 +1342,29 @@ exports.createPDFReport = async (req, res) => {
 
     // fullPageHTML.push("<html><head></head><body>");
     await subTopicMap(subTopicData);
-    // fullPageHTML.push(
-    //   `<script src="https://cdn.jsdelivr.net/npm/apexcharts"></script><script>`
-    // );
+    fullPageHTML.push(
+      `<script src="https://cdn.jsdelivr.net/npm/apexcharts"></script><script>`
+    );
 
-    // const getChartScriptSingle = async (data) => {
-    //   const chartData = await drawChartUpdated(data);
-    //   const ele = `const drawChart${data._id ? data._id : ""} = '${
-    //     chartData ? JSON.stringify(chartData) : ""
-    //   }'; const newChart${
-    //     data._id ? data._id : ""
-    //   } = new ApexCharts(document.querySelector('#chart${
-    //     data._id ? data._id : ""
-    //   }'), JSON.parse(drawChart${data._id ? data._id : ""})); newChart${
-    //     data._id ? data._id : ""
-    //   }.render();`;
-    //   return ele;
-    // };
-    // for (let i = 0; i < reportCharts.length; i++) {
-    //   const newHtml = await getChartScriptSingle(reportCharts[i]);
-    //   fullPageHTML.push(newHtml);
-    // }
+    const getChartScriptSingle = async (data) => {
+      const chartData = await drawChartUpdated(data);
+      const ele = `const drawChart${data._id ? data._id : ""} = '${
+        chartData ? JSON.stringify(chartData) : ""
+      }'; const newChart${
+        data._id ? data._id : ""
+      } = new ApexCharts(document.querySelector('#chart${
+        data._id ? data._id : ""
+      }'), JSON.parse(drawChart${data._id ? data._id : ""})); newChart${
+        data._id ? data._id : ""
+      }.render();`;
+      return ele;
+    };
+    for (let i = 0; i < reportCharts.length; i++) {
+      const newHtml = await getChartScriptSingle(reportCharts[i]);
+      fullPageHTML.push(newHtml);
+    }
 
-    // fullPageHTML.push(`</script></body></html>`);
+    fullPageHTML.push(`</script></body></html>`);
 
     const joinHTML = fullPageHTML.join("");
     const dom = cheerio.load(joinHTML);
@@ -1439,24 +1413,23 @@ exports.createPDFReport = async (req, res) => {
       },
     };
 
-    console.log("newHTML", newHtml);
-    pdf.create(newHtml, options).toStream(function (err, stream) {
-      if(err){
-        console.log(err)
-      }else{
-        stream.pipe(res);
-      }
-    });
-  //   wkhtmltopdf(newHtml, { pageSize: 'A4' })
-  // .pipe(fs.createWriteStream('out.pdf'));
+    console.log("NEW HTML", newHtml);
+    // pdf.create(newHtml, options).toStream(function (err, stream) {
+    //   if(err){
+    //     console.log(err)
+    //   }else{
+    //     stream.pipe(res);
+    //   }
+    // });
 
-    // res.status(200).json({
-    //   status: "success",
-    //   message: "PDF URL Download",
-    //   data: reportData
-    // })
+    // var stream = wkhtmltopdf(fs.createReadStream(`${__dirname}/reportPdfFile.html`));
+    // stream.pipe(res)
+
+    wkhtmltopdf(`${newHtml}`)
+  .pipe(res);
+
+  
   } catch (error) {
-    console.log(error)
     res.status(500).json({
       status: "Error",
       message: "Internal Server Error",

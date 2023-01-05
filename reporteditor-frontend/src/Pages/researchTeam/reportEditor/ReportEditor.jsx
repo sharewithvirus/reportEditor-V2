@@ -277,7 +277,7 @@ function ReportEditor() {
                       height: "3vh",
                     }}
                   >
-                    Preview
+                    Previews
                   </Button>
                 </Link>
               ) : (
