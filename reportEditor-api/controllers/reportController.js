@@ -1346,19 +1346,26 @@ exports.createPDFReport = async (req, res) => {
       `<script src="https://cdn.jsdelivr.net/npm/apexcharts"></script><script>`
     );
 
+    fullPageHTML.push('const genrateChartImage = (chartId, chartDataText)=>{const chartURIImg = encodeURI(chartDataText);const imageUri = `https://quickchart.io/apex-charts/render?format=png&config=${chartURIImg}`;const img = document.createElement("img");img.src = imageUri;const chartDiv = document.getElementById(`${chartId}`);chartDiv.appendChild(img);}         ');
+
     const getChartScriptSingle = async (data) => {
       const chartData = await drawChartUpdated(data);
-      const ele = `const drawChart${data._id ? data._id : ""} = '${
-        chartData ? JSON.stringify(chartData) : ""
-      }'; const newChart${
-        data._id ? data._id : ""
-      } = new ApexCharts(document.querySelector('#chart${
-        data._id ? data._id : ""
-      }'), JSON.parse(drawChart${data._id ? data._id : ""})); newChart${
-        data._id ? data._id : ""
-      }.render();`;
+
+      // const ele = `const drawChart${data._id ? data._id : ""} = '${chartData ? JSON.stringify(chartData) : ""}'; 
+      
+      // const newChart${data._id ? data._id : ""} = 
+      // new ApexCharts(document.querySelector('#chart${data._id ? data._id : ""}'), JSON.parse(drawChart${data._id ? data._id : ""})); 
+      // newChart${data._id ? data._id : ""}.render();`;
+
+      const ele = ` 
+      
+      const drawChart${data._id ? data._id : ""} = '${chartData ? JSON.stringify(chartData) : ""}';
+      genrateChartImage("chart${data._id ? data._id : ""}", drawChart${data._id ? data._id : ""});
+      `;
+      
       return ele;
     };
+
     for (let i = 0; i < reportCharts.length; i++) {
       const newHtml = await getChartScriptSingle(reportCharts[i]);
       fullPageHTML.push(newHtml);
@@ -1368,6 +1375,8 @@ exports.createPDFReport = async (req, res) => {
 
     const joinHTML = fullPageHTML.join("");
     const dom = cheerio.load(joinHTML);
+
+    console.log("Dom HTML", dom.html());
 
     const newHtml = `<div id="index"><div style='display:none'><img src='${
       reportData?.template?.url
@@ -1413,7 +1422,7 @@ exports.createPDFReport = async (req, res) => {
       },
     };
 
-    console.log("NEW HTML", newHtml);
+    // console.log("NEW HTML", newHtml);
     // pdf.create(newHtml, options).toStream(function (err, stream) {
     //   if(err){
     //     console.log(err)

@@ -98,7 +98,7 @@ function ReportPreview() {
           <Grid
             item
             md={2}
-            sm={12}
+            sm={12} 
             sx={{
               display: "flex",
               justifyContent: "end",
