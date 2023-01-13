@@ -1234,7 +1234,7 @@ exports.createPdfPreview = async (req, res) => {
 };
 
 exports.createPDFReport = async (req, res) => {
-  try {
+  // try {
     console.log("Hit Route PDF Create");
     const { id } = req.params;
     const reportData = await Report.findById(id)
@@ -1340,49 +1340,100 @@ exports.createPDFReport = async (req, res) => {
     };
 
 
-    // fullPageHTML.push("<html><head></head><body>");
+    fullPageHTML.push("<html><head></head><body>");
     await subTopicMap(subTopicData);
-    fullPageHTML.push(
-      `<script src="https://cdn.jsdelivr.net/npm/apexcharts"></script><script>`
-    );
+    fullPageHTML.push(`</script></body></html>`);
+    let joinHTML = fullPageHTML.join("");
 
-    fullPageHTML.push('const genrateChartImage = (chartId, chartDataText)=>{const chartURIImg = encodeURI(chartDataText);const imageUri = `https://quickchart.io/apex-charts/render?format=png&config=${chartURIImg}`;const img = document.createElement("img");img.src = imageUri;const chartDiv = document.getElementById(`${chartId}`);chartDiv.appendChild(img);}         ');
-
-    const getChartScriptSingle = async (data) => {
-      const chartData = await drawChartUpdated(data);
-
-      // const ele = `const drawChart${data._id ? data._id : ""} = '${chartData ? JSON.stringify(chartData) : ""}'; 
-      
-      // const newChart${data._id ? data._id : ""} = 
-      // new ApexCharts(document.querySelector('#chart${data._id ? data._id : ""}'), JSON.parse(drawChart${data._id ? data._id : ""})); 
-      // newChart${data._id ? data._id : ""}.render();`;
-
-      const ele = ` 
-      
-      const drawChart${data._id ? data._id : ""} = '${chartData ? JSON.stringify(chartData) : ""}';
-      genrateChartImage("chart${data._id ? data._id : ""}", drawChart${data._id ? data._id : ""});
-      `;
-      
-      return ele;
-    };
-
-    for (let i = 0; i < reportCharts.length; i++) {
-      const newHtml = await getChartScriptSingle(reportCharts[i]);
-      fullPageHTML.push(newHtml);
+    const generateChartImage = async (chartData) => {
+      const chartDataText = await drawChartUpdated(chartData);
+      const chartURIImg = encodeURI(JSON.stringify(chartDataText));
+      const imageUri = `https://quickchart.io/apex-charts/render?format=png&config=${chartURIImg}`;
+      const element = `<img src="${imageUri}" alt="chart${chartData._id}" />`;
+      return element;
     }
 
-    fullPageHTML.push(`</script></body></html>`);
+    // for (let i = 0; i < reportCharts.length; i++) {
+    //   const chartDa = reportCharts[i]
+    //   const data = await generateChartImage(chartDa);
+    //   // console.log(data)
+    //   console.log(joinHTML);
+    //   const agger = joinHTML.split(`<section id="chart${chartDa._id}">`)
+    //   console.log(agger)
+    //   arryOfArry.push(agger);
+    //   // console.log(JSON.stringify(chartData)
+    //   // fullPageHTML.push(newHtml);
+    // }
+    let finalHTMLCode = '';
+    let finalHTMLCodeArry = [];
+    let chartId = [];
+    for (let i = 0; i < reportCharts.length; i++) {
+      const chartDa = reportCharts[i]
+      const data = await generateChartImage(chartDa);
+      let agger;
+      if(i === 0){
+        agger = joinHTML.split(`<section id="chart${chartDa._id}"></section>`)
+      }else{
+        agger = finalHTMLCode.split(`<section id="chart${chartDa._id}"></section>`)
+      }
+      // const finalArry = [agger[0], data, agger[1]];
+      console.log("Split Arry Length", agger.length)
+      finalHTMLCodeArry.push(agger);
+      chartId.push(`chart${chartDa._id}`)
+      finalHTMLCode = [agger[0], data, agger[1]].join('');
+    }
 
-    const joinHTML = fullPageHTML.join("");
-    const dom = cheerio.load(joinHTML);
+    // res.status(200).json({
+    //   chartIds: chartId,
+    //   chartsCount: reportCharts.length,
+    //   fullHtmlCode: joinHTML,
+    //   afterJoinString: finalHTMLCode,
+    //   // ArryByChartCodeArry: finalHTMLCodeArry
+    //   // data: joinHTML
+    // })
+    // fullPageHTML.push(
+    //   `<script src="https://cdn.jsdelivr.net/npm/apexcharts"></script><script>`
+    // );
 
-    console.log("Dom HTML", dom.html());
+    // fullPageHTML.push('');
+
+    // const getChartScriptSingle = async (data) => {
+    //   const chartData = await drawChartUpdated(data);
+
+    //   // const ele = `const drawChart${data._id ? data._id : ""} = '${chartData ? JSON.stringify(chartData) : ""}'; 
+      
+    //   // const newChart${data._id ? data._id : ""} = 
+    //   // new ApexCharts(document.querySelector('#chart${data._id ? data._id : ""}'), JSON.parse(drawChart${data._id ? data._id : ""})); 
+    //   // newChart${data._id ? data._id : ""}.render();`;
+
+    //   // const ele = ` 
+    //   // const drawChart${data._id ? data._id : ""} = '${chartData ? JSON.stringify(chartData) : ""}';
+    //   // genrateChartImage("chart${data._id ? data._id : ""}", drawChart${data._id ? data._id : ""});
+    //   // `;
+      
+    //   // return ele;
+    //   return JSON.stringify(chartData);
+    // };
+    
+
+    // for (let i = 0; i < reportCharts.length; i++) {
+    //   const newHtml = await getChartScriptSingle(reportCharts[i]);
+    //   fullPageHTML.push(newHtml);
+    // }
+
+
+    // const joinHTML = fullPageHTML.join("");
+
+
+    // const dom = cheerio.load(joinHTML);
+
+    // console.log("Dom HTML", dom.html());
 
     const newHtml = `<div id="index"><div style='display:none'><img src='${
       reportData?.template?.url
     }' /></div><div style="text-align: center;"><h2>Index</h2></div styles="page-break-after: always;">${headingHTML.join(
       ""
-    )}</div><div id="content"><div style="page-break-after:always"></div><div styles=" border: 1px solid; zoom: 1">${joinHTML}</div></div>`;
+    )}</div><div id="content"><div style="page-break-after:always"></div><div styles=" border: 1px solid; zoom: 1">${finalHTMLCode}</div></div>`;
 
     var options = {
       format: "A4",
@@ -1438,10 +1489,10 @@ exports.createPDFReport = async (req, res) => {
   .pipe(res);
 
   
-  } catch (error) {
-    res.status(500).json({
-      status: "Error",
-      message: "Internal Server Error",
-    });
-  }
+  // } catch (error) {
+  //   res.status(500).json({
+  //     status: "Error",
+  //     message: "Internal Server Error",
+  //   });
+  // }
 }
