@@ -1377,6 +1377,7 @@ exports.createPDFReport = async (req, res) => {
         agger = finalHTMLCode.split(`<section id="chart${chartDa._id}"></section>`)
       }
       // const finalArry = [agger[0], data, agger[1]];
+      console.log(data)
       console.log("Split Arry Length", agger.length)
       finalHTMLCodeArry.push(agger);
       chartId.push(`chart${chartDa._id}`)
