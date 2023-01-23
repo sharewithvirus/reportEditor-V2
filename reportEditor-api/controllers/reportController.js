@@ -1,11 +1,10 @@
 const fs = require("fs");
 const path = require("path");
-const pdf = require("html-pdf");
 const wkhtmltopdf = require("wkhtmltopdf");
+const pdf = require("html-pdf");
 const Report = require("../model/reportModel");
 const Template = require("../model/templateModel");
 const chartModel = require("../model/chartModel");
-const jsonToHtml = require("node-json2html");
 const cheerio = require("cheerio");
 // const { map } = require("cheerio/lib/api/traversing");
 
@@ -1234,7 +1233,7 @@ exports.createPdfPreview = async (req, res) => {
 };
 
 exports.createPDFReport = async (req, res) => {
-  // try {
+  try {
     console.log("Hit Route PDF Create");
     const { id } = req.params;
     const reportData = await Report.findById(id)
@@ -1296,7 +1295,7 @@ exports.createPDFReport = async (req, res) => {
             }"><h3>Chapter: ${preIndex ? `${preIndex}.` : ""}${
               index + 1
             } : <strong>${itemX.subTopicName}</strong></h3></div>`,
-            `<div styles="page-break-inside: avoid; page-break-after:always;">${itemX.htmlData}</div>`
+            `<div styles="page-break-inside: avoid; page-break-after:always; page-break-before:always;">${itemX.htmlData}</div>`
           );
           headings.push(
             `index:${preIndex ? `${preIndex}.` : ""}${index + 1} heading:${
@@ -1321,7 +1320,7 @@ exports.createPDFReport = async (req, res) => {
             }"><h3>Chapter: ${preIndex ? `${preIndex}.` : ""}${
               index + 1
             } : <strong>${itemX.subTopicName}</strong></h3></div>`,
-            `<div styles="page-break-inside: avoid; page-break-after:always;">${itemX.htmlData}</div>`
+            `<div styles="page-break-inside: avoid; page-break-after:always; page-break-before:always;">${itemX.htmlData}</div>`
           );
           headings.push(
             `index:${preIndex ? `${preIndex}.` : ""}${index + 1} heading:${
@@ -1342,28 +1341,16 @@ exports.createPDFReport = async (req, res) => {
 
     fullPageHTML.push("<html><head></head><body>");
     await subTopicMap(subTopicData);
-    fullPageHTML.push(`</script></body></html>`);
+    fullPageHTML.push(`</body></html>`);
     let joinHTML = fullPageHTML.join("");
 
     const generateChartImage = async (chartData) => {
       const chartDataText = await drawChartUpdated(chartData);
       const chartURIImg = encodeURI(JSON.stringify(chartDataText));
       const imageUri = `https://quickchart.io/apex-charts/render?format=png&config=${chartURIImg}`;
-      const element = `<img src="${imageUri}" alt="chart${chartData._id}" />`;
+      const element = `<div><img src="${imageUri}" alt="chart${chartData._id}" /></div>`;
       return element;
     }
-
-    // for (let i = 0; i < reportCharts.length; i++) {
-    //   const chartDa = reportCharts[i]
-    //   const data = await generateChartImage(chartDa);
-    //   // console.log(data)
-    //   console.log(joinHTML);
-    //   const agger = joinHTML.split(`<section id="chart${chartDa._id}">`)
-    //   console.log(agger)
-    //   arryOfArry.push(agger);
-    //   // console.log(JSON.stringify(chartData)
-    //   // fullPageHTML.push(newHtml);
-    // }
     let finalHTMLCode = '';
     let finalHTMLCodeArry = [];
     let chartId = [];
@@ -1376,59 +1363,23 @@ exports.createPDFReport = async (req, res) => {
       }else{
         agger = finalHTMLCode.split(`<section id="chart${chartDa._id}"></section>`)
       }
-      // const finalArry = [agger[0], data, agger[1]];
-      console.log(data)
-      console.log("Split Arry Length", agger.length)
       finalHTMLCodeArry.push(agger);
       chartId.push(`chart${chartDa._id}`)
-      finalHTMLCode = [agger[0], data, agger[1]].join('');
+      if(agger.length > 2){
+        let finalString = []
+        for (let i = 0; i < agger.length; i++) {
+          if(i === Number(agger.length -1)){
+            finalString.push(agger[i]);
+          }else{            
+            finalString.push(agger[i]);
+            finalString.push(data);
+          }
+          finalHTMLCode = finalString.join('');
+        }
+      }else if (agger.length == 2){
+        finalHTMLCode = [agger[0], data, agger[1]].join('');
+      }
     }
-
-    // res.status(200).json({
-    //   chartIds: chartId,
-    //   chartsCount: reportCharts.length,
-    //   fullHtmlCode: joinHTML,
-    //   afterJoinString: finalHTMLCode,
-    //   // ArryByChartCodeArry: finalHTMLCodeArry
-    //   // data: joinHTML
-    // })
-    // fullPageHTML.push(
-    //   `<script src="https://cdn.jsdelivr.net/npm/apexcharts"></script><script>`
-    // );
-
-    // fullPageHTML.push('');
-
-    // const getChartScriptSingle = async (data) => {
-    //   const chartData = await drawChartUpdated(data);
-
-    //   // const ele = `const drawChart${data._id ? data._id : ""} = '${chartData ? JSON.stringify(chartData) : ""}'; 
-      
-    //   // const newChart${data._id ? data._id : ""} = 
-    //   // new ApexCharts(document.querySelector('#chart${data._id ? data._id : ""}'), JSON.parse(drawChart${data._id ? data._id : ""})); 
-    //   // newChart${data._id ? data._id : ""}.render();`;
-
-    //   // const ele = ` 
-    //   // const drawChart${data._id ? data._id : ""} = '${chartData ? JSON.stringify(chartData) : ""}';
-    //   // genrateChartImage("chart${data._id ? data._id : ""}", drawChart${data._id ? data._id : ""});
-    //   // `;
-      
-    //   // return ele;
-    //   return JSON.stringify(chartData);
-    // };
-    
-
-    // for (let i = 0; i < reportCharts.length; i++) {
-    //   const newHtml = await getChartScriptSingle(reportCharts[i]);
-    //   fullPageHTML.push(newHtml);
-    // }
-
-
-    // const joinHTML = fullPageHTML.join("");
-
-
-    // const dom = cheerio.load(joinHTML);
-
-    // console.log("Dom HTML", dom.html());
 
     const newHtml = `<div id="index"><div style='display:none'><img src='${
       reportData?.template?.url
@@ -1474,26 +1425,31 @@ exports.createPDFReport = async (req, res) => {
       },
     };
 
-    // console.log("NEW HTML", newHtml);
-    // pdf.create(newHtml, options).toStream(function (err, stream) {
-    //   if(err){
-    //     console.log(err)
-    //   }else{
-    //     stream.pipe(res);
-    //   }
-    // });
+    console.log("NEW HTML", newHtml);
+  
+    pdf.create(newHtml, options).toStream(function (err, stream) {
+      if(err){
+        console.log(err)
+      }else{
+        stream.pipe(res);
+      }
+    });
 
-    // var stream = wkhtmltopdf(fs.createReadStream(`${__dirname}/reportPdfFile.html`));
-    // stream.pipe(res)
-
-    wkhtmltopdf(`${newHtml}`)
-  .pipe(res);
+    // const header = fs.readFileSync(path.resolve(__dirname, "./htmlFiles/header.html"))
+    // console.log(header);
+    // wkhtmltopdf(`${newHtml}`, { 
+    //   pageSize: 'A4',
+    //   headerHtml: header,
+    // })
+    // wkhtmltopdf(`<img src="https://quickchart.io/apex-charts/render?format=png&config=%7B%22series%22:%5B100,200,300,400%5D,%22chart%22:%7B%22width%22:280,%22type%22:%22pie%22%7D,%22title%22:%7B%22text%22:%22Rohit%20yadav%22%7D,%22labels%22:%5B%22a%22,%22b%22,%22c%22,%22d%22%5D,%22responsive%22:%5B%7B%22breakpoint%22:480,%22options%22:%7B%22chart%22:%7B%22width%22:230%7D,%22legend%22:%7B%22position%22:%22bottom%22%7D%7D%7D%5D%7D" alt="chart63b5271e58211fb1735a5806" />`, { pageSize: 'A4' })
+  // .pipe(res);
 
   
-  // } catch (error) {
-  //   res.status(500).json({
-  //     status: "Error",
-  //     message: "Internal Server Error",
-  //   });
-  // }
+  } catch (error) {
+    console.log(error)
+    res.status(500).json({
+      status: "Error",
+      message: "Internal Server Error",
+    });
+  }
 }
