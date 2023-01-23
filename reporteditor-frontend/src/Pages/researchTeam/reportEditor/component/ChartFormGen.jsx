@@ -48,20 +48,18 @@ const ChartFormGen = ({
                 variant="outlined"
                 onChange={(e) => handleFormValueChange(e)}
                 value={
-                  item === "series"
-                    ? formChartData.series
-                    : item === "label"
-                    ? formChartData.label
-                    : item === "series1"
-                    ? formChartData.series1
-                    : item === "series2"
-                    ? formChartData.series2
-                    : item === "series3"
-                    ? formChartData.series3
-                    : item === "series4"
+                  item === "series" ? formChartData.series : item === "label" ? formChartData.label : item === "series1" ? formChartData.series1 : item === "series2" ? formChartData.series2 : item === "series3" ? formChartData.series3 : item === "series4"
                     ? formChartData.series4
                     : item === "series5"
                     ? formChartData.series5
+                    : item === "series6"
+                    ? formChartData.series6
+                    : item === "series7"
+                    ? formChartData.series7
+                    : item === "series8"
+                    ? formChartData.series8
+                    : item === "series9"
+                    ? formChartData.series9
                     : item === "categories"
                     ? formChartData.categories
                     : item === "series_names"
@@ -83,7 +81,16 @@ const ChartFormGen = ({
 
             {item === "series" &&
             chartType === "bar" &&
-            chartFormValues.includes("series2") === false ? (
+            chartFormValues.includes("series9") === false ? (
+              <IconButton aria-label="add" onClick={addSeriesField}>
+                <AddCircleIcon />
+              </IconButton>
+            ) : (
+              ""
+            )}
+            {item === "series" &&
+            chartType === "radar" &&
+            chartFormValues.includes("series4") === false ? (
               <IconButton aria-label="add" onClick={addSeriesField}>
                 <AddCircleIcon />
               </IconButton>

@@ -220,7 +220,7 @@ export default function FullWidthTabs() {
     if (event.target.value === "pie") {
       setChartFormValues(["series", "label"]);
     } else if (event.target.value === "bar") {
-      setChartFormValues(["series", "categories"]);
+      setChartFormValues(["series", "series_names", "categories"]);
     } else if (event.target.value === "radar") {
       return setChartFormValues(["series", "categories"]);
     } else if (event.target.value === "line") {

@@ -64,6 +64,41 @@ function ShowCharts({ formChartData, chartType }) {
             ?.split(",")
             .map((item1) => parseInt(item1)),
         },
+        {
+          data: formChartData?.formChartData?.series3
+            ?.split(",")
+            .map((item1) => parseInt(item1)),
+        },
+        {
+          data: formChartData?.formChartData?.series4
+            ?.split(",")
+            .map((item1) => parseInt(item1)),
+        },
+        {
+          data: formChartData?.formChartData?.series5
+            ?.split(",")
+            .map((item1) => parseInt(item1)),
+        },
+        {
+          data: formChartData?.formChartData?.series6
+            ?.split(",")
+            .map((item1) => parseInt(item1)),
+        },
+        {
+          data: formChartData?.formChartData?.series7
+            ?.split(",")
+            .map((item1) => parseInt(item1)),
+        },
+        {
+          data: formChartData?.formChartData?.series8
+            ?.split(",")
+            .map((item1) => parseInt(item1)),
+        },
+        {
+          data: formChartData?.formChartData?.series9
+            ?.split(",")
+            .map((item1) => parseInt(item1)),
+        }
       ],
       options: {
         chart: {
@@ -75,8 +110,9 @@ function ShowCharts({ formChartData, chartType }) {
         },
         plotOptions: {
           bar: {
+            horizontal: false,
             borderRadius: 4,
-            horizontal: true,
+            // horizontal: true,
           },
         },
         dataLabels: {
@@ -93,6 +129,30 @@ function ShowCharts({ formChartData, chartType }) {
         {
           name: "Series 1",
           data: formChartData?.formChartData?.series
+            ?.split(",")
+            .map((item1) => parseInt(item1)),
+        },
+        {
+          name: "Series 2",
+          data: formChartData?.formChartData?.series1
+            ?.split(",")
+            .map((item1) => parseInt(item1)),
+        },
+        {
+          name: "Series 3",
+          data: formChartData?.formChartData?.series2
+            ?.split(",")
+            .map((item1) => parseInt(item1)),
+        },
+        {
+          name: "Series 4",
+          data: formChartData?.formChartData?.series3
+            ?.split(",")
+            .map((item1) => parseInt(item1)),
+        },
+        {
+          name: "Series 5",
+          data: formChartData?.formChartData?.series4
             ?.split(",")
             .map((item1) => parseInt(item1)),
         },
@@ -265,7 +325,7 @@ function ShowCharts({ formChartData, chartType }) {
         },
         plotOptions: {
           bar: {
-            horizontal: true,
+            vertical: true,
             dataLabels: {
               total: {
                 enabled: true,
@@ -407,14 +467,13 @@ function ShowCharts({ formChartData, chartType }) {
         />
       ) : (
         <ReactApexChart
-        options={chartData.options}
-        series={chartData.series}
-        type={chartType === "stacked" ? "bar" : chartType}
-        width={chartType === "pie" ? "100%" : "98%"}
-        height={chartType === "stacked" ? "400px" : "300px"}
-      />
+          options={chartData.options}
+          series={chartData.series}
+          type={chartType === "stacked" ? "bar" : chartType}
+          width={chartType === "pie" ? "100%" : "98%"}
+          height={chartType === "stacked" ? "400px" : "300px"}
+        />
       )}
-      
     </div>
   );
 }

@@ -66,6 +66,27 @@ const GenChart = ({
         {
           data: inputValue?.series2?.split(",").map((item1) => parseInt(item1)),
         },
+        {
+          data: inputValue?.series3?.split(",").map((item1) => parseInt(item1)),
+        },
+        {
+          data: inputValue?.series4?.split(",").map((item1) => parseInt(item1)),
+        },
+        {
+          data: inputValue?.series5?.split(",").map((item1) => parseInt(item1)),
+        },
+        {
+          data: inputValue?.series6?.split(",").map((item1) => parseInt(item1)),
+        },
+        {
+          data: inputValue?.series7?.split(",").map((item1) => parseInt(item1)),
+        },
+        {
+          data: inputValue?.series8?.split(",").map((item1) => parseInt(item1)),
+        },
+        {
+          data: inputValue?.series9?.split(",").map((item1) => parseInt(item1)),
+        },
       ],
       options: {
         chart: {
@@ -77,12 +98,12 @@ const GenChart = ({
         },
         plotOptions: {
           bar: {
+            vertical: true,
             borderRadius: 4,
-            horizontal: true,
           },
         },
         dataLabels: {
-          enabled: false,
+          enabled: true,
         },
         xaxis: {
           categories: inputValue?.categories?.split(","),
@@ -96,6 +117,22 @@ const GenChart = ({
         {
           name: "Series 1",
           data: inputValue?.series?.split(",").map((item1) => parseInt(item1)),
+        },
+        {
+          name: "Series 2",
+          data: inputValue?.series1?.split(",").map((item1) => parseInt(item1)),
+        },
+        {
+          name: "Series 3",
+          data: inputValue?.series2?.split(",").map((item1) => parseInt(item1)),
+        },
+        {
+          name: "Series 4",
+          data: inputValue?.series3?.split(",").map((item1) => parseInt(item1)),
+        },
+        {
+          name: "Series 5",
+          data: inputValue?.series4?.split(",").map((item1) => parseInt(item1)),
         },
       ],
       options: {
@@ -247,7 +284,7 @@ const GenChart = ({
         },
         plotOptions: {
           bar: {
-            horizontal: true,
+            vertical: true,
             dataLabels: {
               total: {
                 enabled: true,
