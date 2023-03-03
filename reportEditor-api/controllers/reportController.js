@@ -1,11 +1,11 @@
 const fs = require("fs");
 const path = require("path");
 const wkhtmltopdf = require("wkhtmltopdf");
-const pdf = require("html-pdf");
 const Report = require("../model/reportModel");
 const Template = require("../model/templateModel");
 const chartModel = require("../model/chartModel");
 const cheerio = require("cheerio");
+const sanitizeHtml = require('sanitize-html');
 // const { map } = require("cheerio/lib/api/traversing");
 
 //const SubTopic = require("../model/subTopicModel");
@@ -1218,6 +1218,7 @@ exports.createPdfPreview = async (req, res) => {
       (reportData.reportCharts = []),
       (reportData.reportTables = []),
       (reportData.reportImages = []),
+      // res.status(200).send(dom.html())
       res.status(200).json({
         status: "success",
         message: "Report Data",
@@ -1425,24 +1426,23 @@ exports.createPDFReport = async (req, res) => {
       },
     };
 
-    console.log("NEW HTML", newHtml);
+    console.log("NEW HTML", sanitizeHtml(newHtml));
   
-    pdf.create(newHtml, options).toStream(function (err, stream) {
-      if(err){
-        console.log(err)
-      }else{
-        stream.pipe(res);
-      }
-    });
-
+    // pdf.create(newHtml, options).toStream(function (err, stream) {
+    //   if(err){
+    //     console.log(err)
+    //   }else{
+    //     stream.pipe(res);
+    //   }
+    // });
     // const header = fs.readFileSync(path.resolve(__dirname, "./htmlFiles/header.html"))
     // console.log(header);
-    // wkhtmltopdf(`${newHtml}`, { 
-    //   pageSize: 'A4',
-    //   headerHtml: header,
-    // })
+    wkhtmltopdf(sanitizeHtml(`${newHtml}`,{allowedTags: [ 'b', 'i', 'em', 'strong', 'a', 'div', 'img' ],  allowedSchemes: [ 'data', 'http' ]}, ), { 
+      pageSize: 'A4',
+      // headerHtml: header,
+    })
     // wkhtmltopdf(`<img src="https://quickchart.io/apex-charts/render?format=png&config=%7B%22series%22:%5B100,200,300,400%5D,%22chart%22:%7B%22width%22:280,%22type%22:%22pie%22%7D,%22title%22:%7B%22text%22:%22Rohit%20yadav%22%7D,%22labels%22:%5B%22a%22,%22b%22,%22c%22,%22d%22%5D,%22responsive%22:%5B%7B%22breakpoint%22:480,%22options%22:%7B%22chart%22:%7B%22width%22:230%7D,%22legend%22:%7B%22position%22:%22bottom%22%7D%7D%7D%5D%7D" alt="chart63b5271e58211fb1735a5806" />`, { pageSize: 'A4' })
-  // .pipe(res);
+  .pipe(res);
 
   
   } catch (error) {
